@@ -1,0 +1,2332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_color_text_white"
+    android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/base_color_text_white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:text="婚姻状况"
+                        android:textColor="#272031"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+                >
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3">
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        >
+                    <TableRow>
+                    <RadioGroup
+                        android:id="@+id/maritalStatus_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_x="3px"
+                        android:orientation="horizontal">
+                        <RadioButton
+                            android:id="@+id/weiHunCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:button="@null"
+                            android:checked="true"
+                            android:layout_marginRight="4dp"
+                            android:drawableLeft="@drawable/radio_check"
+                            android:drawablePadding="2dp"
+                            android:text="未婚"
+                            android:textColor="#272031"
+                            android:textSize="12sp" />
+
+                        <RadioButton
+                            android:id="@+id/jieHunCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/radio_check"
+                            android:drawablePadding="2dp"
+                            android:layout_marginRight="4dp"
+                            android:text="结婚"
+                            android:textColor="#272031"
+                            android:textSize="12sp" />
+
+                        <RadioButton
+                            android:id="@+id/liHunCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/radio_check"
+                            android:drawablePadding="2dp"
+                            android:text="离婚"
+                            android:layout_marginRight="4dp"
+                            android:textColor="#272031"
+                            android:textSize="12sp" />
+
+                        <RadioButton
+                            android:id="@+id/sangOuCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/radio_check"
+                            android:drawablePadding="2dp"
+                            android:layout_marginRight="4dp"
+                            android:text="丧偶"
+                            android:textColor="#272031"
+                            android:textSize="12sp" />
+                    </RadioGroup>
+                    </TableRow>
+                    </TableLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e1e1e2"
+
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1.5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:text="药物过敏史"
+                        android:textColor="#272031"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp">
+
+                        <RadioGroup
+                            android:id="@+id/medicineAllergy_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_x="3px"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/medicineAllergy_noCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:checked="true"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="无"
+                                android:textColor="#272031"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+                                android:id="@+id/medicineAllergy_yesCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="有"
+                                android:textColor="#272031"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="离婚"
+                                android:textColor="#272031"
+                                android:textSize="14sp"
+                                android:visibility="invisible" />
+
+                            <RadioButton
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="丧偶"
+                                android:textColor="#272031"
+                                android:textSize="14sp"
+                                android:visibility="invisible" />
+                        </RadioGroup>
+                    </RelativeLayout>
+
+                    <TableLayout
+                        android:id="@+id/medicineAllergy_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+
+                        >
+
+                        <TableRow>
+
+                            <CheckBox
+                                android:id="@+id/medicineAllergy_checkbox_qingmeisu"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="青霉素"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/medicineAllergy_checkbox_huangan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="磺胺"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/medicineAllergy_checkbox_lianmeisu"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="链霉素"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginTop="8dp">
+
+                            <CheckBox
+                                android:id="@+id/medicineAllergy_checkbox_qita"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="其他"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+                        <TableRow android:layout_marginBottom="8dp">
+
+                            <EditText
+                                android:visibility="gone"
+                                android:id="@+id/edt_ywgms"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:hint="点此填写其他过敏物"
+                                android:text=""
+                                android:inputType="text"
+                                android:textColor="@color/color_line_text"
+                                android:textColorHint="@color/color_line_text"
+                                android:textSize="12sp"
+
+                                />
+                        </TableRow>
+                    </TableLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e1e1e2"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1.5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:text="既往病史"
+                        android:textColor="#272031"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp">
+
+                        <RadioGroup
+                            android:id="@+id/pastMedicalHistory_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_x="3px"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/pastMedicalHistory_noCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="无"
+                                android:checked="true"
+                                android:textColor="#272031"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+                                android:id="@+id/pastMedicalHistory_yesCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="有"
+                                android:textColor="#272031"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="离婚"
+                                android:textColor="#272031"
+                                android:textSize="14sp"
+                                android:visibility="invisible" />
+
+                            <RadioButton
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="丧偶"
+                                android:textColor="#272031"
+                                android:textSize="14sp"
+                                android:visibility="invisible" />
+                        </RadioGroup>
+                    </RelativeLayout>
+
+                    <TableLayout
+                        android:id="@+id/pastMedicalHistory_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/pastMedicalHistory_checkbox_gaoxueya"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="高血压"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/pastMedicalHistory_checkbox_tangniaobing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="糖尿病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/pastMedicalHistory_checkbox_guanxinbing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="冠心病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/pastMedicalHistory_checkbox_naozuzhong"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="脑卒中"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/pastMedicalHistory_checkbox_jiehebing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="结核病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/pastMedicalHistory_checkbox_exingzhongliu"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="恶性肿瘤"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/pastMedicalHistory_checkbox_ganyan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="肝炎"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/pastMedicalHistory_checkbox_chuanranbing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="传染病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/pastMedicalHistory_checkbox_zzjb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="重症精神疾病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp">
+
+                            <TableRow>
+
+                                <CheckBox
+                                    android:id="@+id/pastMedicalHistory_checkbox_mxfjb"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:paddingLeft="4dp"
+                                    android:text="慢性阻塞性肺疾病"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                            </TableRow>
+
+
+                        </TableLayout>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/pastMedicalHistory_checkbox_qita"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="其他"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                        </TableRow>
+
+
+                        <TableRow android:layout_marginBottom="8dp">
+
+                            <EditText
+                                android:visibility="gone"
+                                android:id="@+id/edt_jwbs"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:hint="点此填写其他病史"
+                                android:text=""
+                                android:inputType="text"
+                                android:textColor="@color/color_line_text"
+                                android:textColorHint="@color/color_line_text"
+                                android:textSize="12sp"
+
+                                />
+                        </TableRow>
+                    </TableLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e1e1e2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1.5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:text="家族病史"
+                        android:textColor="#272031"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:text="父亲"
+                            android:textColor="#272031"
+                            android:textSize="14sp"
+
+                            />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <RadioGroup
+                                android:id="@+id/familyMedicalhistory_father_group"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_x="3px"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/familyMedicalhistory_father_noCheck"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@null"
+                                    android:button="@null"
+                                    android:checked="true"
+                                    android:drawableLeft="@drawable/radio_check"
+                                    android:drawablePadding="2dp"
+                                    android:text="无"
+                                    android:textColor="#272031"
+                                    android:textSize="14sp" />
+
+                                <RadioButton
+                                    android:id="@+id/familyMedicalhistory_father_yesCheck"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@null"
+                                    android:button="@null"
+
+                                    android:drawableLeft="@drawable/radio_check"
+                                    android:drawablePadding="2dp"
+                                    android:paddingLeft="10dp"
+                                    android:text="有"
+                                    android:textColor="#272031"
+                                    android:textSize="14sp" />
+
+                            </RadioGroup>
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <TableLayout
+                        android:id="@+id/familyMedicalhistory_father_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/fmh_father_checkbox_gxy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="高血压"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_father_checkbox_tnb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="糖尿病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_father_checkbox_gxb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="冠心病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/fmh_father_checkbox_gy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+
+                                android:paddingLeft="4dp"
+                                android:text="肝炎"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_father_checkbox_jhb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="结核病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_father_checkbox_exzl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="恶性肿瘤"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp">
+
+                            <TableRow>
+
+                                <CheckBox
+                                    android:id="@+id/fmh_father_checkbox_xtjx"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:paddingLeft="4dp"
+                                    android:text="先天畸形"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                                <CheckBox
+                                    android:id="@+id/fmh_father_checkbox_zsxfjb"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:paddingLeft="4dp"
+                                    android:text="先天性阻塞性肺疾病"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                            </TableRow>
+
+
+                        </TableLayout>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/fmh_father_checkbox_qt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="其他"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                        </TableRow>
+
+
+                        <TableRow android:layout_marginBottom="8dp">
+
+                            <EditText
+                                android:visibility="gone"
+                                android:id="@+id/edt_father"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:hint="点此填写其他病史"
+                                android:text=""
+                                android:inputType="text"
+                                android:textColor="@color/color_line_text"
+                                android:textColorHint="@color/color_line_text"
+                                android:textSize="12sp"
+
+                                />
+                        </TableRow>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1"
+                                android:background="#e1e1e2" />
+
+                        </TableRow>
+                    </TableLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:text="母亲"
+                            android:textColor="#272031"
+                            android:textSize="14sp"
+
+                            />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <RadioGroup
+                                android:id="@+id/familyMedicalhistory_mother_group"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_x="3px"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/familyMedicalhistory_mother_noCheck"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+
+                                    android:background="@null"
+                                    android:button="@null"
+                                    android:checked="true"
+                                    android:drawableLeft="@drawable/radio_check"
+                                    android:drawablePadding="2dp"
+                                    android:text="无"
+                                    android:textColor="#272031"
+                                    android:textSize="14sp" />
+
+                                <RadioButton
+                                    android:id="@+id/familyMedicalhistory_mother_yesCheck"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@null"
+                                    android:button="@null"
+
+                                    android:drawableLeft="@drawable/radio_check"
+                                    android:drawablePadding="2dp"
+                                    android:paddingLeft="10dp"
+                                    android:text="有"
+                                    android:textColor="#272031"
+                                    android:textSize="14sp" />
+
+                            </RadioGroup>
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <TableLayout
+                        android:id="@+id/familyMedicalhistory_mother_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/fmh_mother_checkbox_gxy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="高血压"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_mother_checkbox_tnb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="糖尿病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_mother_checkbox_gxb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="冠心病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/fmh_mother_checkbox_gy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="肝炎"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_mother_checkbox_jhb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="结核病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_mother_checkbox_exzl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="恶性肿瘤"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp">
+
+                            <TableRow>
+
+                                <CheckBox
+                                    android:id="@+id/fmh_mother_checkbox_xtjx"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:paddingLeft="4dp"
+                                    android:text="先天畸形"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                                <CheckBox
+                                    android:id="@+id/fmh_mother_checkbox_zsxfjb"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:paddingLeft="4dp"
+                                    android:text="先天性阻塞性肺疾病"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                            </TableRow>
+
+
+                        </TableLayout>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/fmh_mother_checkbox_qt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="其他"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                        </TableRow>
+
+
+                        <TableRow android:layout_marginBottom="8dp">
+
+                            <EditText
+                                android:visibility="gone"
+                                android:id="@+id/edt_mother"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:hint="点此填写其他病史"
+                                android:text=""
+                                android:inputType="text"
+                                android:textColor="@color/color_line_text"
+                                android:textColorHint="@color/color_line_text"
+                                android:textSize="12sp"
+
+                                />
+                        </TableRow>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1"
+                                android:background="#e1e1e2" />
+
+                        </TableRow>
+                    </TableLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:text="兄弟姐妹"
+                            android:textColor="#272031"
+                            android:textSize="14sp"
+
+                            />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <RadioGroup
+                                android:id="@+id/familyMedicalhistory_sister_group"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_x="3px"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/familyMedicalhistory_sister_noCheck"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@null"
+                                    android:button="@null"
+                                    android:drawableLeft="@drawable/radio_check"
+                                    android:drawablePadding="2dp"
+                                    android:text="无"
+                                    android:checked="true"
+                                    android:textColor="#272031"
+                                    android:textSize="14sp" />
+
+                                <RadioButton
+                                    android:id="@+id/familyMedicalhistory_sister_yesCheck"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@null"
+                                    android:button="@null"
+
+                                    android:drawableLeft="@drawable/radio_check"
+                                    android:drawablePadding="2dp"
+                                    android:paddingLeft="10dp"
+                                    android:text="有"
+                                    android:textColor="#272031"
+                                    android:textSize="14sp" />
+
+                            </RadioGroup>
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <TableLayout
+                        android:id="@+id/familyMedicalhistory_sister_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/fmh_sister_checkbox_gxy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="高血压"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_sister_checkbox_tnb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="糖尿病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_sister_checkbox_gxb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="冠心病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/fmh_sister_checkbox_gy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="肝炎"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_sister_checkbox_jhb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="结核病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_sister_checkbox_exzl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="恶性肿瘤"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp">
+
+                            <TableRow>
+
+                                <CheckBox
+                                    android:id="@+id/fmh_sister_checkbox_xtjx"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:paddingLeft="4dp"
+                                    android:text="先天畸形"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                                <CheckBox
+                                    android:id="@+id/fmh_sister_checkbox_zsxfjb"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:paddingLeft="4dp"
+                                    android:text="先天性阻塞性肺疾病"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                            </TableRow>
+
+
+                        </TableLayout>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/fmh_sister_checkbox_qt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="其他"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                        </TableRow>
+
+
+                        <TableRow android:layout_marginBottom="8dp">
+
+                            <EditText
+                                android:visibility="gone"
+                                android:id="@+id/edi_sister"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:hint="点此填写其他病史"
+                                android:text=""
+                                android:inputType="text"
+                                android:textColor="@color/color_line_text"
+                                android:textColorHint="@color/color_line_text"
+                                android:textSize="12sp"
+
+                                />
+                        </TableRow>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1"
+                                android:background="#e1e1e2" />
+
+                        </TableRow>
+                    </TableLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:text="子女"
+                            android:textColor="#272031"
+                            android:textSize="14sp"
+
+                            />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_weight="1">
+
+                            <RadioGroup
+                                android:id="@+id/familyMedicalhistory_children_group"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_x="3px"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/familyMedicalhistory_children_noCheck"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@null"
+                                    android:button="@null"
+                                    android:checked="true"
+
+                                    android:drawableLeft="@drawable/radio_check"
+                                    android:drawablePadding="2dp"
+                                    android:text="无"
+                                    android:textColor="#272031"
+                                    android:textSize="14sp" />
+
+                                <RadioButton
+                                    android:id="@+id/familyMedicalhistory_children_yesCheck"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@null"
+                                    android:button="@null"
+                                    android:drawableLeft="@drawable/radio_check"
+                                    android:drawablePadding="2dp"
+                                    android:paddingLeft="10dp"
+                                    android:text="有"
+
+                                    android:textColor="#272031"
+                                    android:textSize="14sp" />
+
+                            </RadioGroup>
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <TableLayout
+                        android:id="@+id/familyMedicalhistory_children_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/fmh_children_checkbox_gxy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="true"
+                                android:paddingLeft="4dp"
+                                android:text="高血压"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_children_checkbox_tnb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="糖尿病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_children_checkbox_gxb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="冠心病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/fmh_children_checkbox_gy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="肝炎"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_children_checkbox_jhb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="结核病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/fmh_children_checkbox_exzl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="恶性肿瘤"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp">
+
+                            <TableRow>
+
+                                <CheckBox
+                                    android:id="@+id/fmh_children_checkbox_xtjx"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:paddingLeft="4dp"
+                                    android:text="先天畸形"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                                <CheckBox
+                                    android:id="@+id/fmh_children_checkbox_zsxfjb"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:paddingLeft="4dp"
+                                    android:text="先天性阻塞性肺疾病"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                            </TableRow>
+
+
+                        </TableLayout>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/fmh_children_checkbox_qt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="其他"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                        </TableRow>
+
+
+                        <TableRow android:layout_marginBottom="8dp">
+
+                            <EditText
+                                android:visibility="gone"
+                                android:id="@+id/edt_children"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:hint="点此填写其他病史"
+                                android:text=""
+                                android:inputType="text"
+                                android:textColor="@color/color_line_text"
+                                android:textColorHint="@color/color_line_text"
+                                android:textSize="12sp"
+
+                                />
+                        </TableRow>
+
+                    </TableLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e1e1e2" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:text="血型"
+                        android:textColor="#272031"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+                >
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3">
+                    <TableLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:shrinkColumns="1"
+                        >
+                    <TableRow>
+                    <RadioGroup
+                        android:id="@+id/blood_type_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_x="3px"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/A_type_Check"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:button="@null"
+                            android:checked="true"
+                            android:drawableLeft="@drawable/radio_check"
+                            android:drawablePadding="2dp"
+                            android:text="A型"
+                            android:layout_marginRight="4dp"
+                            android:textColor="#272031"
+                            android:textSize="12sp" />
+
+                        <RadioButton
+                            android:id="@+id/B_type_Check"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/radio_check"
+                            android:drawablePadding="2dp"
+                            android:text="B型"
+                            android:layout_marginRight="4dp"
+                            android:textColor="#272031"
+                            android:textSize="12sp" />
+
+                        <RadioButton
+                            android:id="@+id/AB_type_Check"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/radio_check"
+                            android:drawablePadding="2dp"
+                            android:text="AB型"
+                            android:layout_marginRight="4dp"
+                            android:textColor="#272031"
+                            android:textSize="12sp" />
+
+                        <RadioButton
+                            android:id="@+id/O_type_Check"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/radio_check"
+                            android:drawablePadding="2dp"
+                            android:text="O型"
+                            android:layout_marginRight="4dp"
+                            android:textColor="#272031"
+                            android:textSize="12sp" />
+                    </RadioGroup>
+                    </TableRow>
+                    </TableLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e1e1e2"
+
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1.5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:text="遗传病史"
+                        android:textColor="#272031"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp">
+
+                        <RadioGroup
+                            android:id="@+id/geneticHistory_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_x="3px"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/geneticHistory_noCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:checked="true"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="无"
+                                android:textColor="#272031"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+                                android:id="@+id/geneticHistory_yesCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="有"
+                                android:textColor="#272031"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="离婚"
+                                android:textColor="#272031"
+                                android:textSize="14sp"
+                                android:visibility="invisible" />
+
+                            <RadioButton
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="丧偶"
+                                android:textColor="#272031"
+                                android:textSize="14sp"
+                                android:visibility="invisible" />
+                        </RadioGroup>
+                    </RelativeLayout>
+
+                    <TableLayout
+                        android:id="@+id/geneticHistory_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/gh_checkbox_gxy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="高血压"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/gh_checkbox_tnb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="糖尿病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/gh_checkbox_gxb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="冠心病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/gh_checkbox_nzu"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="脑卒中"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/gh_checkbox_jhb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="结核病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/gh_checkbox_exzl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="恶性肿瘤"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/gh_checkbox_gy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="肝炎"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/gh_checkbox_crb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="传染病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/gh_checkbox_zzjsjb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:checked="false"
+                                android:paddingLeft="4dp"
+                                android:text="重症精神疾病"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+                        </TableRow>
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp">
+
+                            <TableRow>
+
+                                <CheckBox
+                                    android:id="@+id/gh_checkbox_zsxfjb"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:paddingLeft="4dp"
+                                    android:text="慢性阻塞性肺疾病"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                            </TableRow>
+
+
+                        </TableLayout>
+
+                        <TableRow android:layout_marginBottom="5dp">
+
+                            <CheckBox
+                                android:id="@+id/gh_checkbox_qt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/checkbox_selector"
+                                android:paddingLeft="4dp"
+                                android:text="其他"
+                                android:textColor="#272031"
+                                android:textSize="12sp" />
+
+                        </TableRow>
+
+
+                        <TableRow android:layout_marginBottom="8dp">
+
+                            <EditText
+                                android:visibility="gone"
+                                android:id="@+id/edt_ycbs"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:hint="点此填写其他病史"
+                                android:text=""
+                                android:inputType="text"
+                                android:textColor="@color/color_line_text"
+                                android:textColorHint="@color/color_line_text"
+                                android:textSize="12sp"
+                                />
+                        </TableRow>
+                    </TableLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e1e1e2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1.5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:text="吸烟情况"
+                        android:textColor="#272031"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp">
+
+                        <RadioGroup
+                            android:id="@+id/smokeState_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_x="3px"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/smokeState_noCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:checked="true"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="无"
+                                android:textColor="#272031"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+                                android:id="@+id/smokeState_yesCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:checked="false"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+
+                                android:text="有"
+                                android:textColor="#272031"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+                                android:id="@+id/radioButton17"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="离婚"
+                                android:textColor="#272031"
+                                android:textSize="14sp"
+                                android:visibility="invisible" />
+
+                            <RadioButton
+                                android:id="@+id/radioButton18"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="丧偶"
+                                android:textColor="#272031"
+                                android:textSize="14sp"
+                                android:visibility="invisible" />
+                        </RadioGroup>
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/smokeState_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TableRow>
+
+                                <CheckBox
+                                    android:id="@+id/smokeState_checkbox_cb"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:paddingLeft="4dp"
+                                    android:text="从不"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                                <CheckBox
+                                    android:id="@+id/smokeState_checkbox_oer"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:checked="false"
+                                    android:paddingLeft="4dp"
+                                    android:text="偶尔"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                                <CheckBox
+                                    android:id="@+id/smokeState_checkbox_jc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:checked="false"
+                                    android:paddingLeft="4dp"
+                                    android:text="经常"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_marginBottom="8dp"
+                                android:layout_marginTop="8dp">
+
+                                <CheckBox
+                                    android:id="@+id/smokeState_checkbox_mt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:checked="false"
+                                    android:paddingLeft="4dp"
+                                    android:text="每天"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                                <CheckBox
+                                    android:id="@+id/smokeState_checkbox_yjy"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:checked="false"
+                                    android:paddingLeft="4dp"
+                                    android:text="已戒烟"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:checked="false"
+                                    android:paddingLeft="4dp"
+                                    android:text="每天"
+                                    android:textColor="#272031"
+                                    android:visibility="invisible"
+                                    android:textSize="12sp" />
+                            </TableRow>
+
+                            <TableRow android:layout_marginBottom="8dp">
+
+                            </TableRow>
+                        </TableLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e1e1e2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1.5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:text="喝酒情况"
+                        android:textColor="#272031"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp">
+
+                        <RadioGroup
+                            android:id="@+id/drinkState_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_x="3px"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/drinkState_noCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:checked="true"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="无"
+                                android:textColor="#272031"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+                                android:id="@+id/drinkState_yesCheck"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:checked="false"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+
+                                android:text="有"
+                                android:textColor="#272031"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+                                android:id="@+id/radioButton181"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="离婚"
+                                android:textColor="#272031"
+                                android:textSize="14sp"
+                                android:visibility="invisible" />
+
+                            <RadioButton
+                                android:id="@+id/radioButton19"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:button="@null"
+                                android:drawableLeft="@drawable/radio_check"
+                                android:drawablePadding="2dp"
+                                android:text="丧偶"
+                                android:textColor="#272031"
+                                android:textSize="14sp"
+                                android:visibility="invisible" />
+                        </RadioGroup>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/drinkState_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        >
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TableRow>
+
+                                <CheckBox
+                                    android:id="@+id/drinkState_checkbox_cb"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:paddingLeft="4dp"
+                                    android:text="从不"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                                <CheckBox
+                                    android:id="@+id/drinkState_checkbox_oer"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:checked="false"
+                                    android:paddingLeft="4dp"
+                                    android:text="偶尔"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                                <CheckBox
+                                    android:id="@+id/drinkState_checkbox_jc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:checked="false"
+                                    android:paddingLeft="4dp"
+                                    android:text="经常"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_marginBottom="8dp"
+                                android:layout_marginTop="8dp">
+
+                                <CheckBox
+                                    android:id="@+id/drinkState_checkbox_mt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:checked="false"
+                                    android:paddingLeft="4dp"
+                                    android:text="每天"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                                <CheckBox
+                                    android:id="@+id/drinkState_checkbox_yjj"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:checked="false"
+                                    android:paddingLeft="4dp"
+                                    android:text="已戒酒"
+                                    android:textColor="#272031"
+                                    android:textSize="12sp" />
+
+                                <CheckBox
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:button="@drawable/checkbox_selector"
+                                    android:checked="false"
+                                    android:paddingLeft="4dp"
+                                    android:text="每天"
+                                    android:textColor="#272031"
+                                    android:visibility="invisible"
+                                    android:textSize="12sp" />
+                            </TableRow>
+
+                            <TableRow android:layout_marginBottom="8dp">
+
+                            </TableRow>
+                        </TableLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e1e1e2" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="16dp"
+        android:background="@color/actionbar_color"
+        android:text="保存"
+        android:textColor="@color/base_color_text_white"
+        android:textSize="18sp"
+        />
+</LinearLayout>

@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:id="@+id/layout_main"
+    android:background="@color/base_color_text_white">
+
+    <include layout="@layout/layout_toolbar" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/scrollView">
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <RelativeLayout
+                android:layout_height="50dp"
+                android:layout_width="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_color2"
+                    android:text="头像" />
+
+                <com.zzu.ehome.view.CircleImageView
+                    android:id="@+id/iv_head"
+                    android:layout_height="40dp"
+                    android:layout_width="40dp"
+                    android:background="@drawable/icon_user_tx1"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/img_right1"
+                    android:layout_marginRight="4dp"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/img_right1"
+                    android:layout_height="18dp"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/icon_arrow_r"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="#e1e1e2" />
+
+            <RelativeLayout
+                android:layout_height="50dp"
+                android:layout_width="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_color2"
+                    android:text="姓名" />
+
+                <EditText
+                    android:id="@+id/edt_name"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:hint="请输入您的姓名"
+                    android:layout_centerVertical="true"
+                    android:textColorHint="#949395"
+                    android:textColor="#949395"
+                    android:background="@null"
+                    android:gravity="right"
+
+                    android:layout_toLeftOf="@+id/img_right2"
+                    android:layout_marginRight="4dp"
+                    android:textSize="14sp"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/img_right2"
+                    android:layout_height="18dp"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/icon_arrow_r"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="#e1e1e2" />
+
+            <RelativeLayout
+                android:layout_height="50dp"
+                android:layout_width="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_color2"
+                    android:text="身份证号" />
+
+                <EditText
+                    android:id="@+id/edt_card_num"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:hint="请输入身份证号"
+                    android:background="@null"
+                    android:layout_centerVertical="true"
+                    android:textColorHint="#949395"
+                    android:textColor="#949395"
+                    android:gravity="right"
+                    android:layout_toLeftOf="@+id/img_right3"
+                    android:layout_marginRight="4dp"
+                    android:textSize="14sp"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/img_right3"
+                    android:layout_height="18dp"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/icon_arrow_r"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="#e1e1e2" />
+
+            <RelativeLayout
+                android:id="@+id/layout_age"
+                android:layout_height="50dp"
+                android:layout_width="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_color2"
+                    android:text="年龄" />
+
+                <TextView
+                    android:id="@+id/edt_age"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:hint="请输入年龄"
+                    android:layout_centerVertical="true"
+                    android:textColorHint="#949395"
+                    android:background="@null"
+                    android:textColor="#949395"
+                    android:gravity="right"
+                    android:layout_toLeftOf="@+id/img_right4"
+                    android:layout_marginRight="4dp"
+                    android:textSize="14sp"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/img_right4"
+                    android:layout_height="18dp"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/icon_arrow_r"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="#e1e1e2" />
+
+            <RelativeLayout
+                android:id="@+id/rlsex"
+                android:layout_height="50dp"
+                android:layout_width="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_color2"
+                    android:text="性别" />
+
+                <TextView
+                    android:id="@+id/tv_sex2"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="请选择性别"
+                    android:layout_centerVertical="true"
+                    android:textColor="#949395"
+                    android:layout_toLeftOf="@+id/img_right5"
+                    android:layout_marginRight="4dp"
+                    android:textSize="14sp"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/img_right5"
+                    android:layout_height="18dp"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/icon_arrow_r"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="#e1e1e2" />
+
+            <RelativeLayout
+                android:id="@+id/layout_height"
+                android:layout_height="50dp"
+                android:layout_width="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_color2"
+                    android:text="身高" />
+
+                <TextView
+                    android:id="@+id/edt_height"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:hint="请输入身高"
+                    android:gravity="right"
+                    android:textColor="#949395"
+                    android:layout_centerVertical="true"
+                    android:textColorHint="#949395"
+                    android:background="@null"
+                    android:layout_toLeftOf="@+id/img_right6"
+                    android:layout_marginRight="4dp"
+                    android:textSize="14sp"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/img_right6"
+                    android:layout_height="18dp"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/icon_arrow_r"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="#e1e1e2" />
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+    <TextView
+            android:id="@+id/tv_save"
+            android:layout_height="48dp"
+            android:layout_width="match_parent"
+            android:background="@color/actionbar_color"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:text="保存"
+            android:clickable="true"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true" />
+
+
+
+
+</LinearLayout>

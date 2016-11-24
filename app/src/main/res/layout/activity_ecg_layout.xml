@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#05B6AC"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/ivhome"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@mipmap/bg_xindian"
+
+                />
+        </LinearLayout>
+    </ScrollView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="top">
+
+        <ImageView
+            android:id="@+id/ivback"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="7dp"
+            android:src="@mipmap/icon_arrow_left" />
+    </RelativeLayout>
+
+
+<RelativeLayout
+    android:layout_height="48dp"
+    android:layout_width="match_parent"
+    android:layout_gravity="bottom"
+
+    >
+    <Button
+        android:id="@+id/btn_des"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#4c5c67"
+        android:gravity="center"
+        android:textColor="@color/base_color_text_white"
+        android:text="查看心电报告"
+        />
+    </RelativeLayout>
+
+</FrameLayout>

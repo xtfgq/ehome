@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <!--<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+-->
+        <ScrollView
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent"
+           >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <!--<LinearLayout
+                    android:id="@+id/llocr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4.5"
+                        android:gravity="center"
+                        android:text="检查指标"
+                        android:textColor="#0f2536"
+                        android:textSize="14sp" />
+
+                    <TextView
+
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.75"
+                        android:gravity="center"
+                        android:text="结果"
+                        android:textColor="#0f2536"
+                        android:textSize="14sp" />
+
+                    <TextView
+
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.75"
+                        android:gravity="center"
+                        android:textColor="#0f2536"
+                        android:visibility="invisible" />
+
+                    <TextView
+
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:text="参考值"
+                        android:textColor="#0f2536"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>-->
+
+              <!--  <View
+                    android:id="@+id/up"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/llocr"
+                    android:background="@color/actionbar_color" />-->
+
+                <com.zzu.ehome.view.MyScrollListView
+                    android:id="@+id/lilstView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="7dp"
+                    android:divider="@null"
+                    android:dividerHeight="7dp">
+                </com.zzu.ehome.view.MyScrollListView>
+
+               <!-- <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/lilstView"
+                    android:background="@color/actionbar_color" />-->
+
+
+            </LinearLayout>
+        </ScrollView>
+
+      <Button
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+
+            android:background="@color/actionbar_color"
+            android:text="保存"
+            android:textColor="@color/white" />
+ <!--   </RelativeLayout>&ndash;&gt;-->
+</LinearLayout>

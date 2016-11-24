@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.CardView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true"
+        app:cardPreventCornerOverlap="false"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="16dp">
+
+        <RelativeLayout
+            android:id="@+id/llalready"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_head"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:scaleType="centerCrop"
+                android:background="@mipmap/pic_photo2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_below="@+id/iv_head"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_rl"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="#4e5c67"
+                    android:text="父亲"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:text="15637147870"
+                    android:textColor="#4e5c67"
+                    android:gravity="center"
+                    android:layout_weight="3" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>

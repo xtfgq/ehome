@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="74dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_head"
+            android:layout_width="78dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/pic_defaultads"
+            android:layout_marginRight="8dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="74dp"
+          >
+
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+
+            >
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="冬病夏治避免3大误区"
+                android:textSize="14sp"
+                android:textColor="#272031"
+                android:layout_marginTop="2dp"
+                android:singleLine="true"
+
+
+                />
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="艾草是什么？教你正确选艾草。"
+                android:textSize="12sp"
+                android:textColor="#81868c"
+                android:singleLine="true"
+                android:layout_marginTop="4dp"
+
+                />
+        </LinearLayout>
+        >
+            <TextView
+                android:id="@+id/timetv"
+                android:layout_marginTop="34dp"
+                android:gravity="center"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="12sp"
+                android:textColor="#7e7e7e"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="#e1e1e2" />
+
+</LinearLayout>

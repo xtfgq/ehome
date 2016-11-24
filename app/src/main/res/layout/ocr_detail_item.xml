@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_height="32dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        >
+
+        <TextView
+            android:id="@+id/tvname"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="白细胞计数"
+            android:gravity="center|left"
+            android:textColor="#949395"
+            android:layout_weight="4.5"/>
+        <TextView
+            android:id="@+id/ednum"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text=""
+
+            android:gravity="center"
+            android:textColor="#949395"
+            android:layout_weight="1.75"/>
+        <TextView
+            android:id="@+id/tvAtoB"
+            android:layout_width="0dp"
+            android:paddingLeft="7dp"
+            android:layout_height="match_parent"
+            android:text="g/l"
+            android:gravity="left|center_vertical"
+            android:textColor="#949395"
+            android:layout_weight="1.75"/>
+        <TextView
+            android:id="@+id/tvRange"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="4-10"
+            android:textColor="#949395"
+            android:layout_weight="2"/>
+    </LinearLayout>
+
+</LinearLayout>

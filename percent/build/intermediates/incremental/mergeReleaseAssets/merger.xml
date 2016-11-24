@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="D:\eh3\percent\assets"/><source path="D:\eh3\percent\build\generated\assets\shaders\release"/></dataSet><dataSet config="release"><source path="D:\eh3\percent\build-types\release\assets"/></dataSet></merger>

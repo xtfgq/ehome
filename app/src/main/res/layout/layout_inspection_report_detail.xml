@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+
+    >
+
+    <include
+
+        layout="@layout/layout_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:orientation="horizontal"
+
+                >
+
+                <TextView
+
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4.5"
+                    android:gravity="center"
+                    android:text="检查指标"
+                    android:textColor="#0f2536"
+                    android:textSize="14sp" />
+
+                <TextView
+
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.75"
+                    android:gravity="center"
+                    android:text="结果"
+                    android:textColor="#0f2536"
+                    android:textSize="14sp" />
+
+                <TextView
+
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.75"
+                    android:gravity="center"
+                    android:textColor="#0f2536"
+                    android:visibility="invisible" />
+
+                <TextView
+
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="参考值"
+                    android:textColor="#0f2536"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+
+                android:background="@color/actionbar_color" />
+
+            <com.zzu.ehome.view.MyScrollListView
+                android:id="@+id/lilstView"
+                android:layout_width="match_parent"
+                android:divider="@null"
+                android:scrollbars="none"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/actionbar_color" />
+            <TextView
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:textColor="#949395"
+                android:layout_marginBottom="16dp"
+                android:text="本报告只对送检结果负责，结果仅供医生参考"
+                android:layout_height="24dp"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>
