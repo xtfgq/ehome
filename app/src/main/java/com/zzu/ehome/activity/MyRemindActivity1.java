@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -28,6 +30,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import static com.zzu.ehome.R.id.layout_no_msg;
+
 /**
  * Created by Mersens on 2016/8/18.
  */
@@ -38,6 +42,7 @@ public class MyRemindActivity1 extends BaseActivity {
     List<MyRemindBean> list = null;
     private MyRemindAdapter myRemindAdapter;
     public static final int ADD_REMIND= 0x19;
+    private LinearLayout layout_no_msg;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -52,6 +57,7 @@ public class MyRemindActivity1 extends BaseActivity {
 
     public void initViews() {
         listView = (SwipeMenuListView) findViewById(R.id.listView);
+        layout_no_msg=(LinearLayout)findViewById(R.id.layout_no_msg);
         setDefaultTXViewMethod(R.mipmap.icon_arrow_left, "我的提醒", "添加", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
@@ -86,7 +92,11 @@ public class MyRemindActivity1 extends BaseActivity {
                     if (array.getJSONObject(0).has("MessageCode")) {
 //                        Toast.makeText(MyRemindActivity1.this, array.getJSONObject(0).getString("MessageContent").toString(),
 //                                Toast.LENGTH_SHORT).show();
+                        layout_no_msg.setVisibility(View.VISIBLE);
+                        listView.setVisibility(View.GONE);
                     } else {
+                        layout_no_msg.setVisibility(View.GONE);
+                        listView.setVisibility(View.VISIBLE);
                         MyRemindDate date = JsonTools.getData(result.toString(), MyRemindDate.class);
                         list = date.getData();
                         myRemindAdapter = new MyRemindAdapter(MyRemindActivity1.this, list);
@@ -144,6 +154,8 @@ public class MyRemindActivity1 extends BaseActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    layout_no_msg.setVisibility(View.VISIBLE);
+                    listView.setVisibility(View.GONE);
                 }
 
             }

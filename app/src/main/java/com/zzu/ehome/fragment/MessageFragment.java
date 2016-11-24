@@ -166,6 +166,7 @@ public class MessageFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         messageAdapter=null;
+        listView.setAdapter(null);
     }
 
     public void initDatas() {

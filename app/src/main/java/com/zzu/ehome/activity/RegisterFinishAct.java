@@ -51,7 +51,7 @@ public class RegisterFinishAct extends BaseSimpleActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnext:
-                Intent i=new Intent(RegisterFinishAct.this,HealthFilesActivity1.class);
+                Intent i=new Intent(RegisterFinishAct.this,HealthFilesActivity.class);
 //                i.putExtra("UserId",SharePreferenceUtil.getInstance(RegisterFinishAct.this).getPARENTID());
                 i.putExtra("UserId",SharePreferenceUtil.getInstance(RegisterFinishAct.this).getUserId());
                 i.putExtra("TagFile","TagFile");

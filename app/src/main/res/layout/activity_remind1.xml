@@ -10,11 +10,36 @@
 
     <include layout="@layout/layout_toolbar" />
     <com.baoyz.swipemenulistview.SwipeMenuListView
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:divider="@null"
         android:dividerHeight="10dp"
         android:id="@+id/listView" />
+    <LinearLayout
+        android:id="@+id/layout_no_msg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="128dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_none" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:text="暂无发现您的提醒"
+            android:textColor="@color/base_color_text_black"
+            android:textSize="@dimen/text_size_normal" />
+
+
+        </LinearLayout>
 
 
 

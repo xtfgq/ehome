@@ -25,6 +25,7 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.activity.AboutEhomeActivity;
 import com.zzu.ehome.activity.AdviceActivity;
 import com.zzu.ehome.activity.AppointmentActivity1;
+import com.zzu.ehome.activity.HealthFilesActivity;
 import com.zzu.ehome.activity.HealthFilesActivity1;
 import com.zzu.ehome.activity.LoginActivity1;
 import com.zzu.ehome.activity.MyFocusActivity;
@@ -248,11 +249,18 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
             case R.id.layout_wdda:
                 //我的档案
                 userid=SharePreferenceUtil.getInstance(getActivity()).getUserId();
-                if (!TextUtils.isEmpty(userid)) {
-                    Intent i=new Intent(getActivity(),HealthFilesActivity1.class);
-                    i.putExtra("UserId",SharePreferenceUtil.getInstance(getActivity()).getUserId());
-                    i.putExtra("type",type);
-                    startActivity(i);
+                if (!TextUtils.isEmpty(userid) && type!=null) {
+                    if(type.equals("2")){
+                        Intent i=new Intent(getActivity(),HealthFilesActivity.class);
+                        i.putExtra("UserId",SharePreferenceUtil.getInstance(getActivity()).getUserId());
+                        i.putExtra("type",type);
+                        startActivity(i);
+                    }else{
+                        Intent i=new Intent(getActivity(),HealthFilesActivity1.class);
+                        i.putExtra("UserId",SharePreferenceUtil.getInstance(getActivity()).getUserId());
+                        i.putExtra("type",type);
+                        startActivity(i);
+                    }
                 } else {
                     startActivity(new Intent(getActivity(), LoginActivity1.class));
                 }
