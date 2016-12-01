@@ -74,6 +74,7 @@ public class OfficeListActivity extends BaseActivity {
                     if (array.getJSONObject(0).has("MessageCode")) {
 //                        Toast.makeText(OfficeListActivity.this, array.getJSONObject(0).getString("MessageContent").toString(),
 //                                Toast.LENGTH_SHORT).show();
+                        show("暂无数据");
                     } else {
                         DepDateTemp date = JsonTools.getData(result.toString(), DepDateTemp.class);
                         List<DepTempBean> mList = date.getData();
@@ -110,6 +111,9 @@ public class OfficeListActivity extends BaseActivity {
                             }
                             adapter = new OfficeListAdapter(OfficeListActivity.this, depAllList, sid);
                             listView.setAdapter(adapter);
+                            if(depAllList.size()==0){
+                                show("暂无数据");
+                            }
                         }
 
                     }

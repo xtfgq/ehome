@@ -420,7 +420,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="8dp"
                             android:layout_toRightOf="@+id/img_zx4"
-                            android:text="健康咨询"
+                            android:text="慢病调理"
                             android:textColor="#0f2536"
                             android:textSize="14sp" />
 

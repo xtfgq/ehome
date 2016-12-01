@@ -58,6 +58,15 @@ public abstract class SupperBaseActivity extends FragmentActivity {
     private HeadView mHeadView;
     private RequestMaker requestMaker;
     private EHomeDao dao;
+    public EHomeDao getDao() {
+        return dao;
+    }
+
+    public void setDao(EHomeDao dao) {
+        this.dao = dao;
+    }
+
+
     private CustomProgressDialog progressDialog = null;
     private Boolean isVisible;
     private Handler mHandler = new Handler() {
@@ -498,5 +507,13 @@ public abstract class SupperBaseActivity extends FragmentActivity {
 
         progressDialog.show();
         mHandler.sendEmptyMessageDelayed(0, 30000);
+    }
+    public  void show(String message) {
+
+        DialogTips dialog = new DialogTips(SupperBaseActivity.this, message, "确定");
+
+        dialog.show();
+        dialog = null;
+
     }
 }

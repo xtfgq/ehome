@@ -31,7 +31,7 @@ public class AddUserInfoActivity extends BaseActivity implements View.OnClickLis
     private RequestMaker requestMaker;
     private EditText edt_name,edt_card_num,edt_age,edt_phone;
     private SexPopupWindows sexPopupWindows;
-    private String name,userNo,age,phone,sex,userid;
+    private String name,userNo,age,phone,sex="",userid;
     private RelativeLayout  rlsex;
 
     private TextView tv_sex;

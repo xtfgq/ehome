@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.SelectPatientAdapter;
+import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.bean.DoctorSchemaByTopmdBean;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.bean.UserContactor;
@@ -112,8 +113,11 @@ public class SelectPatientActivity extends BaseActivity {
                     org.json.JSONArray array = mySO
                             .getJSONArray("UserContactorInquiryByTopmd");
                     if (array.getJSONObject(0).has("MessageCode")) {
-//                        Toast.makeText(SelectPatientActivity.this, array.getJSONObject(0).getString("MessageContent").toString(),
-//                                Toast.LENGTH_SHORT).show();
+
+                       if(Integer.valueOf(array.getJSONObject(0).getString("MessageCode"))==2) {
+                           Add();
+                       }
+
                     } else {
                         UserContactorData date = JsonTools.getData(result.toString(), UserContactorData.class);
                         list = date.getData();
@@ -130,23 +134,27 @@ public class SelectPatientActivity extends BaseActivity {
 
     }
 
-    public void confirmExit() {
-        DialogTips dialog = new DialogTips(SelectPatientActivity.this, "", "就诊人信息缺失，请完善信息！",
-                "确定", true, true);
-        dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogInterface, int userId) {
-                startActivity(new Intent(SelectPatientActivity.this, ComplateUserInfoActivity.class));
-            }
-        });
 
-        dialog.show();
-        dialog = null;
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ADD_PATIENT && data != null) {
             initDatas();
         }
+    }
+    public void Add() {
+       final DialogTips dialog = new DialogTips(SelectPatientActivity.this, "", "请添加就诊人",
+                "确定", true, true);
+        dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int userId) {
+
+                Intent intent1 = new Intent(SelectPatientActivity.this, AddUserInfoActivity.class);
+                startActivityForResult(intent1, ADD_PATIENT );
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
     }
 }

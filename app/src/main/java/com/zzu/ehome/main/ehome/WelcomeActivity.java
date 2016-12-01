@@ -92,20 +92,15 @@ public class WelcomeActivity extends BaseSimpleActivity {
             ToastUtils.showMessage(WelcomeActivity.this, R.string.msgUninternet);
             return;
         }
-
-
         if (!SharePreferenceUtil.getInstance(WelcomeActivity.this).getIsFirst()) {
             mHandler.sendEmptyMessageDelayed(GO_GUIDE, SPLASH_DELAY_MILLIS);
         } else {
-
             mHandler.sendEmptyMessageDelayed(GO_HOME, SPLASH_DELAY_MILLIS);
         }
     }
 
     private void goHome() {
-
         startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
-
         finish();
 
     }

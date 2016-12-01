@@ -23,7 +23,6 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.activity.BaseSimpleActivity;
 import com.zzu.ehome.activity.LoginActivity1;
 import com.zzu.ehome.activity.PrivateDoctorFragment;
-import com.zzu.ehome.activity.RegisterActivity;
 import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.StepBean;
@@ -44,8 +43,6 @@ import com.zzu.ehome.view.DialogTips;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-
-import static android.R.id.message;
 
 
 public class MainActivity extends BaseSimpleActivity implements View.OnClickListener{
@@ -419,6 +416,7 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
                 EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager)));
                 break;
             case 2:
+
                 img_private_doctor.setImageResource(R.mipmap.icon_private_doctor_pressed);
                 tv_private_doctor.setTextColor(selectColor);
                 break;
@@ -503,4 +501,5 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
         String inde=index+"";
         super.onSaveInstanceState(outState);
     }
+
 }

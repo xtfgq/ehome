@@ -8,11 +8,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zzu.ehome.R;
-import com.zzu.ehome.adapter.SelectHospitalAdapter;
 import com.zzu.ehome.adapter.SelectRelationAdapter;
-import com.zzu.ehome.bean.HospitalBean;
 import com.zzu.ehome.bean.RelationshipInBean;
-import com.zzu.ehome.fragment.DoctorFragment;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;

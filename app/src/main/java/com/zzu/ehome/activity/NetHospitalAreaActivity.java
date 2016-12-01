@@ -61,10 +61,22 @@ public class NetHospitalAreaActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String subname = mList.get(position).get("Name").toString();
+                String LngAndLat=mList.get(position).get("LngAndLat").toString();
+                double Longitude,Latitude;
+                if(LngAndLat.contains(",")) {
+                    String[] lngandlatStr = LngAndLat.split(",");
+                    Longitude = Double.parseDouble(lngandlatStr[0]);
+                    Latitude = Double.parseDouble(lngandlatStr[1]);
+                }else{
+                    Longitude = 0;
+                    Latitude = 0;
+                }
 
                 Intent intent = new Intent(NetHospitalAreaActivity.this, InternetMap.class);
                 intent.putExtra("Base", name);
                 intent.putExtra("Name", subname);
+                intent.putExtra("Latitude",Latitude);
+                intent.putExtra("Longitude",Longitude);
                 startActivity(intent);
 
             }
@@ -94,6 +106,9 @@ public class NetHospitalAreaActivity extends BaseActivity {
                                     array.getJSONObject(i).getString("ID"));
 //                            map.put("Value",
 //                                    array.getJSONObject(i).getString("Value"));
+                            map.put("LngAndLat",
+                                    array.getJSONObject(i).getString("LngAndLat"));
+
                             mList.add(map);
                         }
                         adapter = new NetHospitalAreaAdapter(NetHospitalAreaActivity.this, mList);

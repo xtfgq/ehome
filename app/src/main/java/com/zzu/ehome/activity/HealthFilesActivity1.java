@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.CustomApplcation;
+import com.zzu.ehome.bean.HealthFiles;
 import com.zzu.ehome.fragment.HealthFilesFragment2;
 import com.zzu.ehome.main.ehome.MainActivity;
 import com.zzu.ehome.utils.SharePreferenceUtil;
@@ -20,6 +21,8 @@ import com.zzu.ehome.view.HeadView;
 public class HealthFilesActivity1 extends BaseActivity implements HealthFilesFragment2.MyListener {
     private  String usrid,tag="";
     private String type=null;
+    private HealthFiles healthFiles=null;
+    public static final String HEALTHFILES="healthFiles";
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -56,8 +59,11 @@ public class HealthFilesActivity1 extends BaseActivity implements HealthFilesFra
             @Override
             public void onClick() {
                 Intent i=new Intent(HealthFilesActivity1.this,HealthFilesActivity.class);
-                i.putExtra("UserId", SharePreferenceUtil.getInstance(HealthFilesActivity1.this).getUserId());
-                i.putExtra("type",type);
+                Bundle bundle = new Bundle();
+                bundle.putString("UserId", SharePreferenceUtil.getInstance(HealthFilesActivity1.this).getUserId());
+                bundle.putString("type",type);
+                bundle.putSerializable(HEALTHFILES,healthFiles);
+                i.putExtras(bundle);
                 startActivity(i);
 //                startActivity(new Intent(HealthFilesActivity1.this, HealthFilesActivity.class));
             }
@@ -77,6 +83,11 @@ public class HealthFilesActivity1 extends BaseActivity implements HealthFilesFra
     @Override
     public void getType(String type) {
         this.type=type;
+    }
+
+    @Override
+    public void getHealthFiles(HealthFiles hf) {
+        this.healthFiles=hf;
     }
 
     @Override

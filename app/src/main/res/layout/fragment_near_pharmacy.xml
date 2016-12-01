@@ -1,15 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zzu.ehome.view.PullToRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:id="@+id/refresh_view"
-    android:layout_height="match_parent">
-    <include layout="@layout/refresh_head" />
-    <com.zzu.ehome.view.PullableListView
-        android:scrollbars="none"
+    android:layout_height="match_parent"
+    >
+
+
+    <com.zzu.ehome.view.PullToRefreshLayout
+        android:id="@+id/refresh_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/refresh_head" />
+
+        <com.zzu.ehome.view.PullableListView
+            android:id="@+id/lilstView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:scrollbars="none" />
+
+        <include layout="@layout/load_more" />
+
+    </com.zzu.ehome.view.PullToRefreshLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null"
-        android:id="@+id/lilstView"
-        />
-    <include layout="@layout/load_more" />
-</com.zzu.ehome.view.PullToRefreshLayout>
+        android:orientation="vertical"
+        android:id="@+id/layout_no_msg"
+        android:background="@color/base_color_text_white"
+        android:visibility="gone"
+        >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="128dp"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_none" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:text="正在签约中..."
+            android:textColor="@color/base_color_text_black"
+            android:textSize="@dimen/text_size_normal" />
+
+    </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

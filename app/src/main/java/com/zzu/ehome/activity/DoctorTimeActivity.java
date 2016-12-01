@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zzu.ehome.R;
@@ -104,6 +105,7 @@ public class DoctorTimeActivity extends BaseActivity {
                     if (array.getJSONObject(0).has("MessageCode")) {
 //                        Toast.makeText(DoctorTimeActivity.this, array.getJSONObject(0).getString("MessageContent").toString(),
 //                                Toast.LENGTH_SHORT).show();
+                        show(array.getJSONObject(0).getString("MessageContent").toString());
                     } else {
                         DoctorSchemaByTopmdDate date = JsonTools.getData(result.toString(), DoctorSchemaByTopmdDate.class);
                         List<DoctorSchemaByTopmdBean> mList=date.getData();

@@ -1319,6 +1319,18 @@ public class RequestMaker {
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.RelationshipInquiry, Constants.RelationshipInquiry,
                 SOAP_URL, paramMap);
     }
+    public void UserRelationshipExit
+            (String homeid,String userid,JsonAsyncTask_Info task) {
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        String str = "<Request><UserID>%s</UserID><RUserID>%s</RUserID></Request>";
+
+        str = String.format(str, new Object[]
+                {homeid,userid});
+        paramMap.put("str", str);
+        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.UserRelationshipExit, Constants.UserRelationshipExit,
+                SOAP_URL, paramMap);
+    }
+
 
 
 

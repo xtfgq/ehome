@@ -839,6 +839,7 @@
                 android:id="@+id/layout_jl"
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <LinearLayout

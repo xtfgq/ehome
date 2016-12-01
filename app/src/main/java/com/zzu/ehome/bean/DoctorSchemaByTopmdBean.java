@@ -32,6 +32,11 @@ public class DoctorSchemaByTopmdBean implements Serializable{
     @SerializedName("RMB")
     private String RMB;
 
+
+
+    @SerializedName("SchemaStatu")
+    private String SchemaStatu;
+
     public String getRegistId() {
         return RegistId;
     }
@@ -174,5 +179,11 @@ public class DoctorSchemaByTopmdBean implements Serializable{
 //            "PictureURL": "",
 //            "Introduction": ""
 //    },
+    public String getSchemaStatu() {
+        return SchemaStatu;
+    }
 
+    public void setSchemaStatu(String schemaStatu) {
+        SchemaStatu = schemaStatu;
+    }
 }

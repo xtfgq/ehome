@@ -157,8 +157,8 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                     yp_num.setText(0 + "");
                     tv_yp.setText("药品名：");
                     jibu_num.setText("0");
-                    tv_time.setText("今天暂无就诊数据");
-                    tv_address.setText("");
+//                    tv_time.setText("今天暂无就诊数据");
+//                    tv_address.setText("");
                 }
             }
         }
@@ -278,7 +278,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                     org.json.JSONArray array = mySO
                             .getJSONArray("HealthDataSearchByDate");
                     getJIbu();
-                    getTreatmentInquiryLatest(userid, date);
+//                    getTreatmentInquiryLatest(userid, date);
                     stopProgressDialog();
 
                     if (array.getJSONObject(0).has("MessageCode")) {

@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.zzu.ehome.R;
@@ -30,6 +30,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Created by Mersens on 2016/8/17.
@@ -49,6 +50,8 @@ public class CooperationPharmacyFragment extends BaseFragment {
     private boolean isReflash=false;
     private boolean isLoading=false;
     public static String ID="id";
+    private LinearLayout layout_no_msg;
+
 
 
 
@@ -72,6 +75,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
         adapter=new MyAdapter(list);
         requestMaker = RequestMaker.getInstance();
         mListView=(ListView)mView.findViewById(R.id.lilstView);
+        layout_no_msg=(LinearLayout)mView.findViewById(R.id.layout_no_msg);
         pulltorefreshlayout = (PullToRefreshLayout) mView.findViewById(R.id.refresh_view);
         mListView.setAdapter(adapter);
     }
@@ -81,7 +85,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
         pulltorefreshlayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-                pageindex=0;
+                pageindex=1;
                 isReflash=true;
                 isLoading=false;
                 initDatas();
@@ -206,8 +210,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
                 try {
                     JSONArray array = mySO.getJSONArray("PharmacyInquiry");
                     if (array.getJSONObject(0).has("MessageCode")) {
-                        Toast.makeText(getActivity(), array.getJSONObject(0).getString("MessageContent").toString(),
-                                Toast.LENGTH_SHORT).show();
+
                     } else {
                         for(int i=0;i<array.length();i++){
                             JSONObject json=array.getJSONObject(i);
@@ -238,6 +241,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
                         }
                         adapter.setList(list);
                         adapter.notifyDataSetChanged();
+                        layout_no_msg.setVisibility(View.GONE);
                     }
 
                 } catch (JSONException e) {

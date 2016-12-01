@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
+import com.zzu.ehome.view.DialogTips;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +44,7 @@ import java.util.List;
 /**
  * Created by Mersens on 2016/8/26.
  */
-public class PrivateDoctorFragment extends BaseFragment {
+public class PrivateDoctorFragment extends BaseFragment implements DoctorListFragment.OnSearchResultListener {
     private View mView;
     private RelativeLayout layout_all_yiyuan, layout_all_zhicheng, layout_all_manbing;
     private ImageView img_arrow_yy, img_arrow_zc, img_arrow_mb;
@@ -61,6 +63,8 @@ public class PrivateDoctorFragment extends BaseFragment {
     private String title = "";
     private String goodAt = "";
     private TextView tv_yy, tv_zc, tv_mb;
+    private boolean isNoData=false;
+
 
     @Nullable
     @Override
@@ -75,9 +79,9 @@ public class PrivateDoctorFragment extends BaseFragment {
         mView = view;
         requestMaker = RequestMaker.getInstance();
         initViews();
-
         initEvent();
     }
+
 
     public void initViews() {
         tv_yy = (TextView) mView.findViewById(R.id.tv_yy);
@@ -342,7 +346,6 @@ public class PrivateDoctorFragment extends BaseFragment {
                 adapter.notifyDataSetChanged();
                 pop.showAsDropDown(layout_all_manbing);
                 turnToUp(img_arrow_mb);
-
                 break;
         }
 /*        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -407,7 +410,6 @@ public class PrivateDoctorFragment extends BaseFragment {
         }
     }
 
-
     public void addFragment(Type type) {
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -428,6 +430,9 @@ public class PrivateDoctorFragment extends BaseFragment {
                 mFragment = DoctorListFragment.getInstance(hosptialId, title, goodAt);
                 break;
         }
+        if(mFragment!=null){
+            ((DoctorListFragment)mFragment).setOnSearchResultListener(this);
+        }
         return mFragment;
     }
 
@@ -439,6 +444,23 @@ public class PrivateDoctorFragment extends BaseFragment {
     protected void lazyLoad() {
 
     }
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(hidden){
+        }else{
+            if(isNoData){
+                if (TextUtils.isEmpty(hosptialId) && TextUtils.isEmpty(title) && TextUtils.isEmpty(goodAt)) {
+                    show("近期上线，敬请期待！");
+                }
+            }
+        }
+    }
+    @Override
+    public void onNoData(boolean isNoData) {
+        this.isNoData=isNoData;
+    }
+
 
     private void turnToUp(ImageView iv) {
         Matrix matrix = new Matrix();
@@ -458,5 +480,12 @@ public class PrivateDoctorFragment extends BaseFragment {
         // 重新绘制Bitmap
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         iv.setImageBitmap(bitmap);
+    }
+
+    public  void show(String message) {
+
+        DialogTips dialog = new DialogTips(getActivity(), message, "确定");
+        dialog.show();
+        dialog = null;
     }
 }

@@ -4,9 +4,7 @@
 
     <!-- 个推SDK权限配置开始 -->
 
-
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -24,7 +22,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 浮动通知权限 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <!-- 自定义权限 -->
+
     <!-- 自定义权限 -->
     <uses-permission android:name="getui.permission.GetuiService.com.zzu.ehome" />
 
@@ -32,8 +30,6 @@
 
     <!-- 这个权限用于访问GPS定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-
     <!-- 用于读取手机当前的状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 录音 -->
@@ -41,8 +37,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-   <!-- <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />-->
-   <!-- <uses-permission android:name="android.permission.READ_CONTACTS" />-->
+
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
@@ -67,8 +62,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Timetodo">
         <activity
-            android:theme="@style/WelcomeTheme"
-            android:name=".main.ehome.WelcomeActivity">
+            android:name=".main.ehome.WelcomeActivity"
+            android:theme="@style/WelcomeTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -77,9 +72,9 @@
         </activity>
 
 
-        <activity android:name=".main.ehome.MainActivity"
-            android:launchMode="singleTop"
-            />
+        <activity
+            android:name=".main.ehome.MainActivity"
+            android:launchMode="singleTop" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.GuideActivity" />
@@ -114,7 +109,7 @@
         <activity android:name=".activity.AppointmentActivity1" />
         <activity android:name=".activity.MyReportActivity" />
 
-        <activity android:name="activity.MedicalRecordsActivity"/>
+        <activity android:name="activity.MedicalRecordsActivity" />
 
         <activity
             android:name=".activity.HypertensionActivity"
@@ -231,6 +226,7 @@
                 <data android:scheme="tencent1105350087" />
 
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -240,10 +236,10 @@
         </activity>
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <service
             android:name="com.igexin.download.DownloadService"
@@ -320,10 +316,12 @@
         <activity
             android:name=".activity.NotMapActivity"
             android:theme="@style/mydialog">
-            <intent-filter android:priority="0" >
+            <intent-filter android:priority="0">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="geo" />
             </intent-filter>
 
@@ -422,7 +420,7 @@
 
             android:windowSoftInputMode="stateHidden|adjustResize">
 
-          <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -483,60 +481,36 @@
             android:value="iM3WSOgMEqZBKTcQKlNKFYcI9sRh8h0g" />
         <!--会话列表-->
 
-        <activity android:name=".MapLocationActivity"
+        <activity
+            android:name=".MapLocationActivity"
             android:theme="@style/AppTheme" />
         /**
         就诊记录
         **/
-        <activity android:name=".activity.MedicalRecordsActivity"
-            />
-        <activity android:name=".activity.MedicalRecordsDesActivity"
-            />
+        <activity android:name=".activity.MedicalRecordsActivity" />
+        <activity android:name=".activity.MedicalRecordsDesActivity" />
         <activity
             android:name=".activity.SelectTimesActivity"
             android:theme="@style/mydialog" />
-        <activity
-            android:name=".activity.YYJLDesActivity"
-            />
-        <activity
-            android:name=".activity.PersonalInfoActivity"
-            />
-        <activity
-            android:name=".activity.WebVideoActivity"
-            />
-        <activity
-            android:name=".activity.UploadOcrPicActivity"
-            />
-        <activity
-            android:name=".activity.SmartWebView"
-            />
-        <activity
-            android:name=".activity.NewsWebView"
-            />
+        <activity android:name=".activity.YYJLDesActivity" />
+        <activity android:name=".activity.PersonalInfoActivity" />
+        <activity android:name=".activity.WebVideoActivity" />
+        <activity android:name=".activity.UploadOcrPicActivity" />
+        <activity android:name=".activity.SmartWebView" />
+        <activity android:name=".activity.NewsWebView" />
         <activity
             android:name=".activity.OcrActivity"
-            android:windowSoftInputMode="adjustPan"
-            />
-        <activity
-            android:name=".activity.SelectOfficeActivity1"
-            />
-        <activity
-            android:name=".activity.CampaignActivity"
-            />
-        <activity
-            android:name=".activity.InternetParentHospitalActivity"
-            />
-        <activity
-            android:name=".activity.SelectOCRHosActivity"
-            />
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".activity.SelectOfficeActivity1" />
+        <activity android:name=".activity.CampaignActivity" />
+        <activity android:name=".activity.InternetParentHospitalActivity" />
+        <activity android:name=".activity.SelectOCRHosActivity" />
         <activity android:name=".activity.UricacidActivity"></activity>
         <activity android:name=".activity.CholesterolActivity"></activity>
         <activity
             android:name=".activity.SelectRelationActivity"
             android:theme="@style/mydialog" />
-        <activity
-            android:name=".activity.ECGPDFStaticActivity"
-            />
+        <activity android:name=".activity.ECGPDFStaticActivity" />
 
         <service
             android:name="com.baidu.location.f"
@@ -546,14 +520,12 @@
         <!--第三方相关,向第三方推送服务请求 token 的服务 -->
         <service
             android:name="io.rong.push.core.PushRegistrationService"
-            android:exported="false">
-        </service>
+            android:exported="false"></service>
 
         <!-- 处理 push 消息相关的服务 -->
         <service
             android:name="io.rong.push.core.MessageHandleService"
-            android:exported="true">
-        </service>
+            android:exported="true"></service>
 
         <!-- push服务 -->
         <service
@@ -585,8 +557,8 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:exported="true"
-            android:name="com.zzu.ehome.DemoNotificationReceiver">
+            android:name="com.zzu.ehome.DemoNotificationReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
                 <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
@@ -600,14 +572,14 @@
         <!-- end -->
 
         <!-- imlib config begin -->
-       <!-- 正式服务-->
-       <meta-data
+        <!-- 正式服务-->
+        <meta-data
             android:name="RONG_CLOUD_APP_KEY"
             android:value="x18ywvqf8xjpc" />
- <!--&lt;!&ndash;  测试服务&ndash;&gt;-->
-       <!-- <meta-data
-            android:name="RONG_CLOUD_APP_KEY"
-            android:value="e0x9wycfxehzq" />-->
+        <!--&lt;!&ndash;  测试服务&ndash;&gt;-->
+        <!--  <meta-data
+                    android:name="RONG_CLOUD_APP_KEY"
+                    android:value="e0x9wycfxehzq" />-->
 
         <service
             android:name="io.rong.imlib.ipc.RongService"
@@ -622,8 +594,6 @@
             android:name="io.rong.imlib.HeartbeatReceiver"
             android:process=":ipc" />
 
-
-        <!-- imlib config end -->
 
     </application>
 

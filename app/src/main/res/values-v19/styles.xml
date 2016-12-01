@@ -8,6 +8,7 @@
         <!--         <item name="android:windowTranslucentNavigation" >true</item> -->
         <item name="android:windowTranslucentStatus">true</item>
         <item name="colorAccent">@color/color_line_text</item>
+        <item name="android:windowActionBar">false</item>
 
         <item name="colorControlNormal">@color/color_line_text</item>
 

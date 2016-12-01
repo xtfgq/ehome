@@ -159,7 +159,7 @@ public class ChangePasswordActivity extends BaseActivity {
                             for (int i = 0; i < array.length(); i++) {
                                 chkcode = array.getJSONObject(i)
                                         .getString("MessageContent");
-//                                ToastUtils.showMessage(ChangePasswordActivity.this,chkcode+"");
+                               ToastUtils.showMessage(ChangePasswordActivity.this,chkcode+"");
 
 
 

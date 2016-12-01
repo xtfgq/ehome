@@ -10,15 +10,15 @@ import java.net.URL;
  */
 public class Constants {
     //测试服务器地址
-    //       public static String EhomeURL = "http://ehome.staging.topmd.cn:81";
-    //       public static final String ICON = "http://p2d.staging.topmd.cn/Images/headImg/";
-    //       public static final String	URL002Topmd	= "http://staging.topmd.cn/android/TopMD.asmx";
-    //       public static final String	JE_BASE_URL	= "http://staging.topmd.cn/";
-    //       public static final String	JE_BASE_URL3	= "http://staging.topmd.cn";
-    //       public static final String Download="http://file.staging.topmd.cn/upload/";
-    //public static String PlatformURL= EhomeURL;
+//    public static String EhomeURL = "http://ehome.staging.topmd.cn:81";
+//    public static final String ICON = "http://p2d.staging.topmd.cn/Images/headImg/";
+//    public static final String URL002Topmd = "http://staging.topmd.cn/android/TopMD.asmx";
+//    public static final String JE_BASE_URL = "http://staging.topmd.cn/";
+//    public static final String JE_BASE_URL3 = "http://staging.topmd.cn";
+//    public static final String Download = "http://file.staging.topmd.cn/upload/";
+//    public static String PlatformURL = EhomeURL;
 
-    //正式服务器
+//    正式服务器
     public static String EhomeURL = "http://ehome.topmd.cn";
     public static final String ICON = "http://p2d.topmd.cn/Images/headImg/";
     public static final String URL002Topmd = "http://www.topmd.cn/android/TopMD.asmx";
@@ -179,6 +179,7 @@ public class Constants {
     //胆固醇
     public static final String CholestenoneInquiry = "CholestenoneInquiry";
     public static final String RelationshipInquiry = "RelationshipInquiry";
+    public static final String UserRelationshipExit = "UserRelationshipExit";
 
 
 }

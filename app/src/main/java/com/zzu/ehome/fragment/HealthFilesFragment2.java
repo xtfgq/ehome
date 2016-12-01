@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.HealthFilesActivity1;
+import com.zzu.ehome.bean.HealthFiles;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -59,6 +59,7 @@ public class HealthFilesFragment2 extends BaseFragment {
 
     public interface MyListener{
         void getType(String type);
+        void getHealthFiles(HealthFiles hf);
     }
 
     @Override
@@ -115,8 +116,6 @@ public class HealthFilesFragment2 extends BaseFragment {
             @Override
             public void processJsonObject(Object result) {
                 JSONObject mySO = (JSONObject) result;
-                Log.e("JSONObject",mySO.toString());
-
                 try {
                     JSONArray json = mySO.getJSONArray("BaseDataInquiry");
                     if (json.getJSONObject(0).has("MessageCode")) {
@@ -136,11 +135,12 @@ public class HealthFilesFragment2 extends BaseFragment {
                         maritalStatusNames = jsonobject.getString("Marriage");
                         smokeStateNames = jsonobject.getString("Smoking");
                         drinkStateNames = jsonobject.getString("Drinking");
-                        medicineAllergyNames = jsonobject.getString("DrugAllergy");
+                         medicineAllergyNames = jsonobject.getString("DrugAllergy");
                         pastMedicalHistoryNames = jsonobject.getString("MedicalHistory");
                         geneticHistoryNmaes = jsonobject.getString("GeneticHistory");
                         familyNames = jsonobject.getString("FamilyHistory");
                         bloodtype= jsonobject.getString("BloodType");
+                        buildHealthFiles();
                         clearFlowData();
                         setDatas();
                     }
@@ -151,7 +151,20 @@ public class HealthFilesFragment2 extends BaseFragment {
 
             }
         }));
+    }
 
+    public  void buildHealthFiles(){
+        HealthFiles healthFiles=new HealthFiles.Builder()
+                .addBloodtype(bloodtype)
+                .addDrinkStateNames(drinkStateNames)
+                .addfamilyNames(familyNames)
+                .addGeneticHistory(geneticHistoryNmaes)
+                .addMaritalStatus(maritalStatusNames)
+                .addMedicineAllergy(medicineAllergyNames)
+                .addPastMedicalHistory(pastMedicalHistoryNames)
+                .addSmokeStateNames(smokeStateNames)
+                .build();
+        mActivity.getHealthFiles(healthFiles);
     }
 
     public void setDatas() {
@@ -165,11 +178,18 @@ public class HealthFilesFragment2 extends BaseFragment {
 
         if (!TextUtils.isEmpty(medicineAllergyNames)) {
             String names[] = medicineAllergyNames.split(",");
-
             for (int i = 0; i < names.length; i++) {
                 if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
-
-                    flowMedicineAllergy.addView(getTextView(names[i]), lp);
+                    if(names[i].contains("-")){
+                        String others[]=names[i].split("-");
+                        if(others.length>=2) {
+                            if (!TextUtils.isEmpty(others[1])) {
+                                flowMedicineAllergy.addView(getTextView(others[1]), lp);
+                            }
+                        }
+                    }else {
+                        flowMedicineAllergy.addView(getTextView(names[i]), lp);
+                    }
                 }
             }
         } else {
@@ -179,7 +199,16 @@ public class HealthFilesFragment2 extends BaseFragment {
             String names[] = pastMedicalHistoryNames.split(",");
             for (int i = 0; i < names.length; i++) {
                 if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
-                    flowPastMedicalHistory.addView(getTextView(names[i]), lp);
+                    if(names[i].contains("-")) {
+                        String others[] = names[i].split("-");
+                        if(others.length>=2){
+                            if(!TextUtils.isEmpty(others[1])) {
+                                flowPastMedicalHistory.addView(getTextView(others[1]), lp);
+                            }
+                        }
+                    }else{
+                        flowPastMedicalHistory.addView(getTextView(names[i]), lp);
+                    }
                 }
             }
         } else {
@@ -199,7 +228,6 @@ public class HealthFilesFragment2 extends BaseFragment {
 
                 } else if ("子女".equals(names[0])) {
                     familyMedicalhistory_childrenNames = familyMedicalhistory_childrenNames + names[1] + ",";
-
                 }
             }
 
@@ -208,7 +236,16 @@ public class HealthFilesFragment2 extends BaseFragment {
             String names[] = familyMedicalhistory_fatherNames.split(",");
             for (int i = 0; i < names.length; i++) {
                 if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
-                    flowFamilyMedicalhistory_Father.addView(getTextView(names[i]), lp);
+                    if(names[i].contains("-")) {
+                        String others[] = names[i].split("-");
+                        if(others.length>=2) {
+                            if (!TextUtils.isEmpty(others[1])) {
+                                flowFamilyMedicalhistory_Father.addView(getTextView(others[1]), lp);
+                            }
+                        }
+                    }else{
+                        flowFamilyMedicalhistory_Father.addView(getTextView(names[i]), lp);
+                    }
                 }
             }
         } else {
@@ -219,7 +256,16 @@ public class HealthFilesFragment2 extends BaseFragment {
             String names[] = familyMedicalhistory_motherNames.split(",");
             for (int i = 0; i < names.length; i++) {
                 if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
-                    flowFamilyMedicalhistory_Mother.addView(getTextView(names[i]), lp);
+                    if(names[i].contains("-")) {
+                        String others[] = names[i].split("-");
+                        if(others.length>=2) {
+                            if (!TextUtils.isEmpty(others[1])) {
+                                flowFamilyMedicalhistory_Mother.addView(getTextView(others[1]), lp);
+                            }
+                        }
+                    }else{
+                        flowFamilyMedicalhistory_Mother.addView(getTextView(names[i]), lp);
+                    }
                 }
             }
         } else {
@@ -230,7 +276,16 @@ public class HealthFilesFragment2 extends BaseFragment {
             String names[] = familyMedicalhistory_sisterNames.split(",");
             for (int i = 0; i < names.length; i++) {
                 if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
-                    flowFamilyMedicalhistory_Sister.addView(getTextView(names[i]), lp);
+                    if(names[i].contains("-")) {
+                        String others[] = names[i].split("-");
+                        if(others.length>=2) {
+                            if (!TextUtils.isEmpty(others[1])) {
+                                flowFamilyMedicalhistory_Sister.addView(getTextView(others[1]), lp);
+                            }
+                        }
+                    }else{
+                        flowFamilyMedicalhistory_Sister.addView(getTextView(names[i]), lp);
+                    }
                 }
             }
         } else {
@@ -241,7 +296,16 @@ public class HealthFilesFragment2 extends BaseFragment {
             String names[] = familyMedicalhistory_childrenNames.split(",");
             for (int i = 0; i < names.length; i++) {
                 if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
-                    flowFamilyMedicalhistory_Children.addView(getTextView(names[i]), lp);
+                    if(names[i].contains("-")) {
+                        String others[] = names[i].split("-");
+                        if(others.length>=2) {
+                            if (!TextUtils.isEmpty(others[1])) {
+                                flowFamilyMedicalhistory_Children.addView(getTextView(others[1]), lp);
+                            }
+                        }
+                    }else{
+                        flowFamilyMedicalhistory_Children.addView(getTextView(names[i]), lp);
+                    }
                 }
             }
         } else {
@@ -252,7 +316,16 @@ public class HealthFilesFragment2 extends BaseFragment {
             String names[] = geneticHistoryNmaes.split(",");
             for (int i = 0; i < names.length; i++) {
                 if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
-                    flow_GeneticHistory.addView(getTextView(names[i]), lp);
+                    if(names[i].contains("-")) {
+                        String others[] = names[i].split("-");
+                        if(others.length>=2) {
+                            if (!TextUtils.isEmpty(others[1])) {
+                                flow_GeneticHistory.addView(getTextView(others[1]), lp);
+                            }
+                        }
+                    }else{
+                        flow_GeneticHistory.addView(getTextView(names[i]), lp);
+                    }
                 }
             }
         } else {
@@ -266,7 +339,6 @@ public class HealthFilesFragment2 extends BaseFragment {
             tv_smokeState.setText(smokeStateNames);
         }
     }
-
 
     public void clearFlowData() {
         familyMedicalhistory_fatherNames = "";//家族病史（父亲）
@@ -289,7 +361,6 @@ public class HealthFilesFragment2 extends BaseFragment {
         tv.setTextColor(getResources().getColor(R.color.text_color1));
         return tv;
     }
-
 
     public static Fragment getInstance(String id) {
         userid =id ;

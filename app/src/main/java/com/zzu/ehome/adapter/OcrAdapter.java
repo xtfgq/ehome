@@ -3,6 +3,7 @@ package com.zzu.ehome.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
@@ -52,7 +53,6 @@ public class OcrAdapter extends BaseListAdapter<OcrBean>{
             holder.num = (EditText) convertView.findViewById(R.id.ednum);
             holder.AToB = (TextView) convertView.findViewById(R.id.tvAtoB);
             holder.tvrange=(TextView)convertView.findViewById(R.id.tvRange) ;
-
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -61,10 +61,8 @@ public class OcrAdapter extends BaseListAdapter<OcrBean>{
 
         OcrBean item = getItem(position);
         holder.name.setText(item.getName());
-
-            holder.num.setText(item.getNum());
-
-
+        holder.num.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        holder.num.setText(item.getNum());
         holder.AToB.setText(item.getAToB());
         holder.tvrange.setText(item.getRange());
         return convertView;

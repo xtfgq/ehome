@@ -106,7 +106,14 @@ public class MyAppointmetAdapter extends BaseListAdapter<OrderInquiryByTopmd> {
                             .into(holder0.ivhead);
                 }
                 holder0.ivstatus.setVisibility(View.GONE);
-                holder0.tvtime.setText("预约时间：" + DateUtils.StringPattern(item.getGoTime(), "yyyy/MM/dd HH:mm:ss", "yyyy/M/dd") + "  " + item.getSchemaWeek() + "  " + item.getBeginTime() + "-" + item.getEndTime());
+                if(TextUtils.isEmpty(item.getBeginTime())){
+                    holder0.tvtime.setText("预约时间：" + DateUtils.StringPattern(item.getGoTime(), "yyyy/MM/dd HH:mm:ss", "yyyy/M/dd") + "  " + item.getSchemaWeek() );
+                }else if(TextUtils.isEmpty(item.getEndTime())){
+                    holder0.tvtime.setText("预约时间：" + DateUtils.StringPattern(item.getGoTime(), "yyyy/MM/dd HH:mm:ss", "yyyy/M/dd") + "  " + item.getSchemaWeek() + "  " + item.getBeginTime());
+                }else {
+
+                    holder0.tvtime.setText("预约时间：" + DateUtils.StringPattern(item.getGoTime(), "yyyy/MM/dd HH:mm:ss", "yyyy/M/dd") + "  " + item.getSchemaWeek() + "  " + item.getBeginTime() + "-" + item.getEndTime());
+                }
                 break;
             case 1:
                 OrderInquiryByTopmd item1 = getItem(position);
@@ -124,8 +131,14 @@ public class MyAppointmetAdapter extends BaseListAdapter<OrderInquiryByTopmd> {
                             .into(holder1.ivhead);
                 }
                 holder1.ivstatus.setVisibility(View.VISIBLE);
-                holder1.tvtime.setText("预约时间：" + DateUtils.StringPattern(item1.getGoTime(), "yyyy/MM/dd HH:mm:ss", "yyyy/M/dd") + "  " + item1.getSchemaWeek() + "  " + item1.getBeginTime() + "-" + item1.getEndTime());
-                break;
+                if(TextUtils.isEmpty(item1.getBeginTime())){
+                    holder1.tvtime.setText("预约时间：" + DateUtils.StringPattern(item1.getGoTime(), "yyyy/MM/dd HH:mm:ss", "yyyy/M/dd") + "  " + item1.getSchemaWeek());
+                }else if(TextUtils.isEmpty(item1.getEndTime())){
+                    holder1.tvtime.setText("预约时间：" + DateUtils.StringPattern(item1.getGoTime(), "yyyy/MM/dd HH:mm:ss", "yyyy/M/dd") + "  " + item1.getSchemaWeek() + "  " + item1.getBeginTime()) ;
+                }else {
+                    holder1.tvtime.setText("预约时间：" + DateUtils.StringPattern(item1.getGoTime(), "yyyy/MM/dd HH:mm:ss", "yyyy/M/dd") + "  " + item1.getSchemaWeek() + "  " + item1.getBeginTime() + "-" + item1.getEndTime());
+                }
+                    break;
         }
 
         return convertView;

@@ -3,14 +3,17 @@ package com.zzu.ehome.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -48,7 +51,8 @@ public class DoctorListFragment extends BaseFragment {
     private RequestMaker requestMaker;
     private List<MSDoctorBean> mList = null;
     private MyAdapter adapter;
-
+    private LinearLayout layout_no_msg;
+    private OnSearchResultListener listener;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,6 +71,7 @@ public class DoctorListFragment extends BaseFragment {
 
     public void initViews() {
         requestMaker = RequestMaker.getInstance();
+        layout_no_msg = (LinearLayout) mView.findViewById(R.id.layout_no_msg);
         hosptialId = getArguments().getString(HOSPTIALID) == null ? "" : getArguments().getString(HOSPTIALID);
         title = getArguments().getString(TITLE) == null ? "" : getArguments().getString(TITLE);
         goodAt = getArguments().getString(GOODAT) == null ? "" : getArguments().getString(GOODAT);
@@ -94,7 +99,6 @@ public class DoctorListFragment extends BaseFragment {
         mListView.setAdapter(adapter);
         getDoctorListData(hosptialId, title, goodAt);
     }
-
 
 
 //    @Override
@@ -187,7 +191,7 @@ public class DoctorListFragment extends BaseFragment {
 
     }
 
-    public void getDoctorListData(String hosptialId, String title, String goodAt) {
+    public void getDoctorListData(final String hosptialId, final String title, final String goodAt) {
 
 
         requestMaker.MSDoctorInquiry(hosptialId, title, goodAt, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
@@ -200,12 +204,25 @@ public class DoctorListFragment extends BaseFragment {
                     if (array.getJSONObject(0).has("MessageCode")) {
 //                        Toast.makeText(getActivity(), array.getJSONObject(0).getString("MessageContent").toString(),
 //                                Toast.LENGTH_SHORT).show();
+                        if (TextUtils.isEmpty(hosptialId) && TextUtils.isEmpty(title) && TextUtils.isEmpty(goodAt)) {
+                            if(listener!=null){
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        listener.onNoData(true);
+                                    }
+                                },100);
+                            }
+                        }
+                        layout_no_msg.setVisibility(View.VISIBLE);
+                        mListView.setVisibility(View.GONE);
                     } else {
                         mList = new ArrayList<>();
+                        layout_no_msg.setVisibility(View.GONE);
+                        mListView.setVisibility(View.VISIBLE);
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject json = array.getJSONObject(i);
                             mList.add(getDataFromJson(json));
-
 
                         }
 
@@ -263,8 +280,8 @@ public class DoctorListFragment extends BaseFragment {
         bean.setSignCount(SignCount);
         String Speciaty = json.getString("Speciaty");
         bean.setSpeciaty(Speciaty);
-        String url=Constants.EhomeURL + ImageURL.replace("~", "").replace("\\", "/");
-        RongIM.getInstance().refreshUserInfoCache(new UserInfo(DoctorID,DoctorName , Uri.parse(url)));
+        String url = Constants.EhomeURL + ImageURL.replace("~", "").replace("\\", "/");
+        RongIM.getInstance().refreshUserInfoCache(new UserInfo(DoctorID, DoctorName, Uri.parse(url)));
         return bean;
     }
 
@@ -281,5 +298,13 @@ public class DoctorListFragment extends BaseFragment {
     @Override
     protected void lazyLoad() {
 
+    }
+
+    public interface OnSearchResultListener {
+        void onNoData(boolean ishas);
+    }
+
+    public void setOnSearchResultListener(OnSearchResultListener listener) {
+        this.listener = listener;
     }
 }

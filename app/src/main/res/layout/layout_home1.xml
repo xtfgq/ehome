@@ -94,7 +94,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="8dp"
-                                android:text="建立档案"
+                                android:text="就诊记录"
                                 android:textColor="#272031"
                                 android:textSize="@dimen/text_size_normal" />
                         </LinearLayout>

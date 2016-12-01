@@ -116,7 +116,7 @@ public class MyHomeLayout extends LinearLayout {
     }
 
     public void addMainItem(final RelationDes item){
-        mainView=inflater.inflate(home_relation,null);
+        mainView=inflater.inflate(R.layout.home_relation,null);
         ImageView imageView=(ImageView) mainView.findViewById(R.id.ivpeople);
         TextView tv_name=(TextView)mainView.findViewById(R.id.tvname);
         if (TextUtils.isEmpty(item.getUser_Icon())||item.getUser_Icon().contains("vine.gif")) {

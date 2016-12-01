@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.zzu.ehome.R;
+import com.zzu.ehome.bean.HealthFiles;
 import com.zzu.ehome.fragment.HealthFilesFragment1;
 import com.zzu.ehome.view.HeadView;
 
@@ -14,13 +15,16 @@ import com.zzu.ehome.view.HeadView;
 public class HealthFilesActivity extends BaseActivity {
     private String usrid;
     private String type=null;
+    private HealthFiles hf=null;
 
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         setContentView(R.layout.layout_health_activity);
-        usrid=this.getIntent().getStringExtra("UserId");
-        type=getIntent().getStringExtra("type");
+        Bundle bundle=getIntent().getExtras();
+        usrid=bundle.getString("UserId");
+        type=bundle.getString("type");
+        hf=(HealthFiles) bundle.getSerializable(HealthFilesActivity1.HEALTHFILES);
         initViews();
         initEvent();
         initDatas();
@@ -42,7 +46,7 @@ public class HealthFilesActivity extends BaseActivity {
     public void initDatas() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.fragment_container, HealthFilesFragment1.getInstance(usrid,type)).commit();
+        ft.replace(R.id.fragment_container, HealthFilesFragment1.getInstance(usrid,type,hf)).commit();
     }
 
 }

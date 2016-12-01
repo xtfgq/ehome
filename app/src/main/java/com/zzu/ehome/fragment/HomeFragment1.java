@@ -49,9 +49,11 @@ import com.zzu.ehome.activity.HealthFilesActivity1;
 import com.zzu.ehome.activity.HypertensionActivity;
 import com.zzu.ehome.activity.InspectionReportActivity;
 import com.zzu.ehome.activity.LoginActivity1;
+import com.zzu.ehome.activity.MedicalRecordsActivity;
 import com.zzu.ehome.activity.NearPharmacyActivity;
 import com.zzu.ehome.activity.NewsWebView;
 import com.zzu.ehome.activity.OrdinaryYuYueActivity;
+import com.zzu.ehome.activity.PersonalCenterInfo;
 import com.zzu.ehome.activity.StaticWebView;
 import com.zzu.ehome.activity.WebVideoActivity;
 import com.zzu.ehome.adapter.HomeNewsAdapter;
@@ -413,7 +415,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
-        getBaseData();
+//        getBaseData();
 
     }
     public void getBaseData(){
@@ -621,27 +623,35 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                 break;
             case R.id.layout_add:
                 String userid = SharePreferenceUtil.getInstance(getActivity()).getUserId();
-                if (!TextUtils.isEmpty(userid)) {
-                    if(type!=null){
-
-                        if("3".equals(type)){
-                            Intent i = new Intent(getActivity(), HealthFilesActivity1.class);
-                            i.putExtra("UserId", userid);
-                            i.putExtra("type",type);
-                            startActivity(i);
-                        }else if("2".equals(type)){
-                            Intent i = new Intent(getActivity(), HealthFilesActivity.class);
-                            i.putExtra("UserId", userid);
-                            i.putExtra("type",type);
-                            startActivity(i);
-                        }
-                    }else {
-                        return;
-                    }
-
-                } else {
+//                if (!TextUtils.isEmpty(userid)) {
+//                    if(type!=null){
+//
+//                        if("3".equals(type)){
+//                            Intent i = new Intent(getActivity(), HealthFilesActivity1.class);
+//                            i.putExtra("UserId", userid);
+//                            i.putExtra("type",type);
+//                            startActivity(i);
+//                        }else if("2".equals(type)){
+//                            Intent i = new Intent(getActivity(), HealthFilesActivity.class);
+//                            i.putExtra("UserId", userid);
+//                            i.putExtra("type",type);
+//                            startActivity(i);
+//                        }
+//                    }else {
+//                        return;
+//                    }
+//
+//                } else {
+                if (TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
                     startActivity(new Intent(getActivity(), LoginActivity1.class));
+                    return;
                 }
+                if(checkCardNo(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
+                    getActivity().startActivity(new Intent(getActivity(), MedicalRecordsActivity.class));
+                    return;
+                }
+//                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+//                }
                 break;
             case R.id.layout_fjyd:
                 startIntent(getActivity(), NearPharmacyActivity.class);
@@ -1549,6 +1559,15 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         String Speciaty = json.getString("Speciaty");
         bean.setSpeciaty(Speciaty);
         return bean;
+    }
+    private Boolean  checkCardNo(String  userid){
+        User dbUser=dao.findUserInfoById(userid);
+        if (TextUtils.isEmpty(dbUser.getUserno())) {
+            startActivity(new Intent(getActivity(), PersonalCenterInfo.class));
+            return false;
+        }else{
+            return true;
+        }
     }
 
 

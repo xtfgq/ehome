@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import com.zzu.ehome.view.HeadView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.zzu.ehome.R.id.tv;
 
 /**
  * Created by Administrator on 2016/9/8.
@@ -70,7 +73,7 @@ public class YYJLDesActivity extends BaseActivity {
         tvnumber.setText(record.getNumber().trim() + "片/次");
         edt_time.setText((record.getMedicationTime()).split(" ")[0]);
         editText_bz.setText(record.getRemarks().replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&").replace("(null)",""));
-
+        editText_bz.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         String imgstr = record.getDrugImage();
         List<String> mList = new ArrayList<String>();

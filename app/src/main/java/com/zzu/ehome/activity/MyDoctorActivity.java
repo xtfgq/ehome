@@ -136,7 +136,7 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
                 startActivityForResult(intent, ADD_DOCTOR);
                 break;
             case R.id.layout_add_time:
-                if (TextUtils.isEmpty(department_id)) {
+                if (TextUtils.isEmpty(doctor_id)) {
                     ToastUtils.showMessage(MyDoctorActivity.this, "请选择医生");
                     return;
                 }
@@ -263,6 +263,9 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
             if (!TextUtils.isEmpty(hosptial)) {
                 tv_hosptial.setText(hosptial);
 
+                tv_office.setText("请选择科室");
+                tv_doctor.setText("请选择医生");
+                tv_time.setText("请选择时间");
             }
         }
         if (requestCode == ADD_OFFICE && resultCode == ADD_OFFICE && data != null) {
@@ -271,6 +274,9 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
             if (!TextUtils.isEmpty(office)) {
                 tv_office.setVisibility(View.VISIBLE);
                 tv_office.setText(office);
+                doctor_id="";
+                tv_doctor.setText("请选择医生");
+                tv_time.setText("请选择时间");
 
             }
         }
@@ -281,7 +287,7 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
             if (!TextUtils.isEmpty(doctor)) {
                 tv_doctor.setVisibility(View.VISIBLE);
                 tv_doctor.setText(doctor);
-
+                tv_time.setText("请选择时间");
             }
         }
         if (requestCode == ADD_TIME && resultCode == ADD_TIME && data != null) {
@@ -321,7 +327,7 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
                     tv_office.setVisibility(View.VISIBLE);
                     tv_doctor.setVisibility(View.VISIBLE);
                     tv_doctor.setText(doctor);
-                    tv_time.setText("");
+                    tv_time.setText("请选择时间");
 
                 }
 

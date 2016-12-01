@@ -6,12 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,7 +31,6 @@ import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.baidu.mapapi.search.poi.PoiSortType;
 import com.zzu.ehome.R;
-import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.PullToRefreshLayout;
 
@@ -48,7 +47,7 @@ public class NearPharmacyFragment extends BaseFragment {
     public LocationClient mLocationClient;
     public MyLocationListener mMyLocationListener;
     private LocationClientOption.LocationMode tempMode = LocationClientOption.LocationMode.Hight_Accuracy;
-    private String tempcoor = "gcj02";
+    private String tempcoor = "bd09ll";
     private PoiSearch mPoiSearch = null;
     int radius = 1000;
     private static String keyWorlds = "药店";
@@ -62,6 +61,7 @@ public class NearPharmacyFragment extends BaseFragment {
     private MyAdapter adapter=null;
     private boolean isReflash=false;
     private boolean isLoading=false;
+    private LinearLayout layout_no_msg;
 
 
     @Nullable
@@ -78,7 +78,6 @@ public class NearPharmacyFragment extends BaseFragment {
         initViews();
         initEvent();
         initDatas();
-
     }
 
     public void initViews() {
@@ -87,6 +86,7 @@ public class NearPharmacyFragment extends BaseFragment {
         mListView.setAdapter(adapter);
         mPoiSearch = PoiSearch.newInstance();
         mPoiSearch.setOnGetPoiSearchResultListener(poiSearchListener);
+        layout_no_msg=(LinearLayout)mView.findViewById(R.id.layout_no_msg);
         pulltorefreshlayout = (PullToRefreshLayout) mView.findViewById(R.id.refresh_view);
 
     }
@@ -238,13 +238,15 @@ public class NearPharmacyFragment extends BaseFragment {
         @Override
         public void onGetPoiResult(PoiResult poiResult) {
             if (poiResult == null || poiResult.error == SearchResult.ERRORNO.RESULT_NOT_FOUND) {
-                ToastUtils.showMessage(getActivity(), "未找到结果");
                 if(isReflash){
                     isReflash=false;
                     pulltorefreshlayout.refreshFinish(PullToRefreshLayout.SUCCEED);
                 }else if(isLoading){
                     isLoading=false;
                     pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                }
+                if(pageNum==1) {
+                    layout_no_msg.setVisibility(View.VISIBLE);
                 }
                 return;
             }
@@ -256,6 +258,7 @@ public class NearPharmacyFragment extends BaseFragment {
                 List<PoiInfo> mList=poiResult.getAllPoi();
                 if(mList!=null && mList.size()>0){
                     list.addAll(mList);
+
                 }
                 adapter.setList(list);
                 adapter.notifyDataSetChanged();
@@ -303,7 +306,7 @@ public class NearPharmacyFragment extends BaseFragment {
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(tempMode);// 设置定位模式
         option.setCoorType(tempcoor);// 返回的定位结果是百度经纬度，默认值gcj02
-        option.setScanSpan(10000);// 设置发起定位请求的间隔时间,单位为ms
+        option.setScanSpan(3000);// 设置发起定位请求的间隔时间,单位为3000ms
         option.setIsNeedAddress(true);
         option.setOpenGps(true);
         mLocationClient.setLocOption(option);

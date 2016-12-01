@@ -11,8 +11,6 @@ import com.zzu.ehome.bean.User;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.rong.imlib.statistics.UserData.username;
-
 /**
  * Created by zzu on 2016/4/6.
  */
@@ -175,6 +173,9 @@ public class EHomeDaoImpl implements EHomeDao {
         }
 
     }
+
+
+
     @Override
     public boolean findRsIsExist(String rsid) {
         boolean flag = false;
@@ -202,7 +203,7 @@ public class EHomeDaoImpl implements EHomeDao {
     public void updateResInfo(RelationDes rs, String rsid) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("UPDATE relation_db SET relationid=?,img=?,ship=? where relationid=?", new Object[]{
-               rs.getRUserID(),rs.getUser_Icon(),rs.getRelationship(), rsid});
+                rs.getRUserID(),rs.getUser_Icon(),rs.getRelationship(), rsid});
         db.close();
     }
 
@@ -259,5 +260,6 @@ public class EHomeDaoImpl implements EHomeDao {
             return null;
         }
     }
+
 
 }

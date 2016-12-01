@@ -107,14 +107,14 @@ public class MyAppointmentFragmet extends BaseFragment {
                         OrderInquiryByTopmdDate date = JsonTools.getData(result.toString(), OrderInquiryByTopmdDate.class);
                         List <OrderInquiryByTopmd> temp=date.getData();
                         for(OrderInquiryByTopmd bean:temp){
-                            if(!bean.getOrderStatus().equals("02")){
+                           if(!bean.getOrderStatus().equals("02")){
                                 if(bean.getOrderStatus().equals("07")){
                                     bean.setType(1);
                                 }else{
                                     bean.setType(0);
                                 }
                                 list.add(bean);
-                            }
+                          }
                         }
                         if(list.size()==0){
                             layout_none.setVisibility(View.VISIBLE);

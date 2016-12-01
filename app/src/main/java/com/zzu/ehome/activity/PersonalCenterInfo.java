@@ -262,23 +262,26 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
         String age = edt_age.getText().toString().trim();
         if (TextUtils.isEmpty(age)) {
 //            ToastCompat.makeText(PersonalCenterInfo.this,"请输入年龄！", Toast.LENGTH_LONG);
-            ToastUtils.showMessage(PersonalCenterInfo.this, "请输入年龄！");
+//            ToastUtils.showMessage(PersonalCenterInfo.this, "请输入年龄！");
+            show("请输入年龄！");
             return;
         }
         if (name.length() > 4) {
-            ToastUtils.showMessage(PersonalCenterInfo.this, "姓名长度超长！");
+//            ToastUtils.showMessage(PersonalCenterInfo.this, "姓名长度超长！");
 //            ToastCompat.makeText(PersonalCenterInfo.this,"姓名长度超长！", Toast.LENGTH_LONG);
-
+            show("姓名长度超长！");
             return;
         }
         if (!IOUtils.isName(name)) {
 //            ToastCompat.makeText(PersonalCenterInfo.this,"姓名需要输入汉字！", Toast.LENGTH_LONG);
-           ToastUtils.showMessage(PersonalCenterInfo.this, "姓名需要输入汉字");
+//           ToastUtils.showMessage(PersonalCenterInfo.this, "姓名需要输入汉字");
+            show("请输入两个字以上的姓名");
             return;
         }
         height = edt_height.getText().toString();
         if (TextUtils.isEmpty(height)) {
-            ToastUtils.showMessage(PersonalCenterInfo.this, "请输入身高");
+            show("请输入身高!");
+//            ToastUtils.showMessage(PersonalCenterInfo.this, "请输入身高");
             return;
         }
         startProgressDialog();

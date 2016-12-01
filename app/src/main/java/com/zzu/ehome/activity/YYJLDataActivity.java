@@ -74,7 +74,6 @@ public class YYJLDataActivity extends BaseActivity {
                 isReflash = true;
                 isLoading = false;
                 initDate();
-
             }
 
             @Override

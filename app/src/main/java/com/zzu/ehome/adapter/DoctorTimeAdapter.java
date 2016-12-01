@@ -19,6 +19,9 @@ import com.zzu.ehome.view.DialogTips;
 
 import java.util.List;
 
+import static com.zzu.ehome.R.color.actionbar_color;
+import static com.zzu.ehome.R.id.tv;
+
 /**
  * Created by Mersens on 2016/8/9.
  */
@@ -43,8 +46,19 @@ public class DoctorTimeAdapter extends BaseListAdapter<DoctorSchemaByTopmdBean> 
         TextView tv_gh=(TextView) mView.findViewById(R.id.tv_gh);
         TextView tvcontent=(TextView)mView.findViewById(R.id.tvcontent);
         TextView tvresidue=(TextView)mView.findViewById(R.id.tvresidue);
+
         tvcontent.setText(mList.get(position).getScheduleTimeContent());
         tvresidue.setText("剩余号源"+mList.get(position).getRegistNum());
+       int status= Integer.valueOf(mList.get(position).getSchemaStatu());
+        if(status==1){
+            tv_gh.setText("挂号");
+            tv_gh.setBackgroundColor(mContext.getResources().getColor(R.color.actionbar_color));
+            tv_gh.setEnabled(true);
+        }else if(status==0||Integer.valueOf(mList.get(position).getRegistNum())<0){
+            tv_gh.setText("停诊");
+            tv_gh.setEnabled(false);
+            tv_gh.setBackgroundColor(mContext.getResources().getColor(R.color.bottom_text_color_normal));
+        }
         tv_gh.setOnClickListener(new MyClickListener(position));
         return mView;
     }

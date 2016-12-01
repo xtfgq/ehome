@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text=""
-            android:inputType="number"
+
             android:background="@drawable/bg_edit"
             android:gravity="center"
             android:textColor="#949395"

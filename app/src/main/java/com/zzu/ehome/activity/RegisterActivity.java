@@ -206,7 +206,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                                 .getString("MessageCode")) == 0) {
                             chkcode = array.getJSONObject(0)
                                     .getString("MessageContent");
-//                           ToastUtils.showMessage(RegisterActivity.this,chkcode+"");
+                           ToastUtils.showMessage(RegisterActivity.this,chkcode+"");
                         } else {
                             showDialog(array.getJSONObject(0)
                                     .getString("MessageContent"));

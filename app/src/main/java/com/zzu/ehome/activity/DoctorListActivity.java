@@ -78,6 +78,7 @@ public class DoctorListActivity extends BaseActivity {
                     if (array.getJSONObject(0).has("MessageCode")) {
 //                        Toast.makeText(DoctorListActivity.this, array.getJSONObject(0).getString("MessageContent").toString(),
 //                                Toast.LENGTH_SHORT).show();
+                        show(array.getJSONObject(0).getString("MessageContent"));
                     } else {
                         DortorlIst date = JsonTools.getData(result.toString(), DortorlIst.class);
                         mList = date.getData();

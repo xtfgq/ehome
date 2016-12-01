@@ -43,6 +43,7 @@ import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.HeadView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -52,6 +53,8 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.UserInfo;
+
+import static io.rong.imlib.statistics.UserData.phone;
 
 /**
  * Created by Administrator on 2016/8/5.
@@ -96,12 +99,8 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                 title = "添加家人";
                 login.setText("添加");
                 tvselect.setVisibility(View.GONE);
-                if (mIntent.getStringExtra("usrid") != null) {
-                    SharePreferenceUtil.getInstance(LoginActivity1.this).setPARENTID(SharePreferenceUtil.getInstance(LoginActivity1.this).getUserId());
-                    userid = mIntent.getStringExtra("usrid");
-                    getUser(userid);
+                homeid=SharePreferenceUtil.getInstance(LoginActivity1.this).getHomeId();
 
-                }
             }
             if(mIntent.getStringExtra("Home")!=null){
                 hometag=mIntent.getStringExtra("Home");
@@ -281,11 +280,10 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                                     Intent intenthealth = new Intent("refresh");
                                     sendBroadcast(intenthealth);
                                     startActivity(new Intent(LoginActivity1.this,MainActivity.class));
+                                    finish();
                                 } else {
-                                    SharePreferenceUtil.getInstance(LoginActivity1.this).setPARENTID(array.getJSONObject(0).getString("UserID"));
-                                    Intent i = new Intent(LoginActivity1.this, RelationActivity.class);
-                                    i.putExtra("relation", "rela");
-                                    startActivity(i);
+                                    UserShipInquiry(homeid,list.get(0).getUserid());
+
                                 }
 
                             } else {
@@ -298,13 +296,13 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                                  sendBroadcast(intenthealth);
                                 EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
                                 SharePreferenceUtil.getInstance(LoginActivity1.this).setHomeId(array.getJSONObject(0).getString("UserID"));
+                                finish();
                             }
                             SharePreferenceUtil.getInstance(LoginActivity1.this).setIsFirst(true);
                             if(!TextUtils.isEmpty(hometag)) {
                                 Intent i=new Intent(LoginActivity1.this, MainActivity.class);
                                 i.putExtra("Home","Home");
                                 startActivity(i);
-                            }else {
                                 finish();
                             }
 
@@ -565,6 +563,40 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
 
         dialog.show();
         dialog = null;
+
+    }
+    private void UserShipInquiry(String homeid,final String userid){
+        requestMaker.UserRelationshipExit(homeid,userid,new JsonAsyncTask_Info(LoginActivity1.this, true, new JsonAsyncTaskOnComplete(){
+
+            @Override
+            public void processJsonObject(Object result) {
+                try {
+                    JSONObject mySO = (JSONObject) result;
+                    org.json.JSONArray array = mySO
+                            .getJSONArray("UserRelationshipExit");
+                    int code=Integer.valueOf(array.getJSONObject(0).getString("MessageCode"));
+                   switch(code){
+                       case 0:
+                           showDialog(array.getJSONObject(0).getString("MessageContent"));
+                           mEditPhone.setText("");
+                           mEditPass.setText("");
+                           break;
+                       case 1:
+                               break;
+                       case 2:
+                           SharePreferenceUtil.getInstance(LoginActivity1.this).setPARENTID(userid);
+                           Intent i = new Intent(LoginActivity1.this, RelationActivity.class);
+                           i.putExtra("relation", "rela");
+                           startActivity(i);
+
+
+                       break;
+                   }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        } ));
 
     }
 

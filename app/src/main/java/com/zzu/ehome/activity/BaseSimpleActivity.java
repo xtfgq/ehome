@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,7 +21,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 
 import com.zzu.ehome.R;

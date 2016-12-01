@@ -17,12 +17,12 @@ import android.widget.RadioGroup;
 import android.widget.TableLayout;
 
 import com.zzu.ehome.R;
+import com.zzu.ehome.bean.HealthFiles;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.utils.ToastUtils;
-import com.zzu.ehome.view.crop.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -126,11 +126,25 @@ public class HealthFilesFragment1 extends BaseFragment {
     private String geneticHistoryNmaes = "";//遗传病史
     private String drinkStateNames = "";//喝酒状况
     private String smokeStateNames = "";//吸烟状况
-    private String bloodtype="";
+    private String bloodtype = "";
     private String familyNames = "";
+
+    private String maritalStatusNamesEdit = "";//婚姻状况
+    private String medicineAllergyNamesEdit = "";//药物过敏
+    private String pastMedicalHistoryNamesEdit = "";//既往病史
+    private String familyMedicalhistory_fatherNamesEdit = "";//家族病史（父亲）
+    private String familyMedicalhistory_motherNamesEdit = "";//家族病史（母亲）
+    private String familyMedicalhistory_sisterNamesEdit = "";//家族病史（兄弟姐妹）
+    private String familyMedicalhistory_childrenNamesEdit = "";//家族病史（子女）
+    private String geneticHistoryNmaesEdit = "";//遗传病史
+    private String drinkStateNamesEdit = "";//喝酒状况
+    private String smokeStateNamesEdit = "";//吸烟状况
+    private String bloodtypeEdit = "";
+    private String familyNamesEdit = "";
     public static String userid;
     private RequestMaker requestMaker;
     public static String stype = null;
+    public  HealthFiles healthfiles = null;
 
 
     @Nullable
@@ -138,12 +152,11 @@ public class HealthFilesFragment1 extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.layout_healthfiles2, null);
     }
-
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mView = view;
+        healthfiles=(HealthFiles)getArguments().getSerializable("healthfiles");
         userid = SharePreferenceUtil.getInstance(getActivity()).getUserId();
         requestMaker = RequestMaker.getInstance();
         initViews();
@@ -156,7 +169,7 @@ public class HealthFilesFragment1 extends BaseFragment {
         B_type_Check = (RadioButton) mView.findViewById(R.id.B_type_Check);
         AB_type_Check = (RadioButton) mView.findViewById(R.id.AB_type_Check);
         O_type_Check = (RadioButton) mView.findViewById(R.id.O_type_Check);
-        blood_type_group=(RadioGroup)mView.findViewById(R.id.blood_type_group);
+        blood_type_group = (RadioGroup) mView.findViewById(R.id.blood_type_group);
 
         btn_save = (Button) mView.findViewById(R.id.btn_save);
         //婚姻状况
@@ -291,11 +304,480 @@ public class HealthFilesFragment1 extends BaseFragment {
         edi_sister = (EditText) mView.findViewById(R.id.edi_sister);
         edt_children = (EditText) mView.findViewById(R.id.edt_children);
         edt_ycbs = (EditText) mView.findViewById(R.id.edt_ycbs);
+        setInitData();
     }
 
-    public void initEvent() {
+    public void setInitData() {
         map = new HashMap<String, String>();
-        map.put(MARITALSTATUS + ":", weiHunCheck.getText().toString());
+        if(healthfiles==null){
+            return;
+        }
+        familyNames = healthfiles.familyNames;
+        if (!TextUtils.isEmpty(familyNames) && familyNames.contains(",")) {
+            String nametypes[] = familyNames.split(",");
+            for (int i = 0; i < nametypes.length; i++) {
+                if (nametypes[i].contains(":")) {
+                    String names[] = nametypes[i].split(":");
+                    if ("父亲".equals(names[0])) {
+                        familyMedicalhistory_fatherNames = familyMedicalhistory_fatherNames + nametypes[i] + ",";
+                    } else if ("母亲".equals(names[0])) {
+                        familyMedicalhistory_motherNames = familyMedicalhistory_motherNames + nametypes[i] + ",";
+
+                    } else if ("兄弟姐妹".equals(names[0])) {
+                        familyMedicalhistory_sisterNames = familyMedicalhistory_sisterNames + nametypes[i] + ",";
+
+                    } else if ("子女".equals(names[0])) {
+                        familyMedicalhistory_childrenNames = familyMedicalhistory_childrenNames + nametypes[i] + ",";
+                    }
+                }
+            }
+        }
+
+        maritalStatusNames = healthfiles.maritalStatusNames;
+        medicineAllergyNames = healthfiles.medicineAllergyNames;
+        pastMedicalHistoryNames = healthfiles.pastMedicalHistoryNames;
+        geneticHistoryNmaes = healthfiles.geneticHistoryNmaes;
+        drinkStateNames = healthfiles.drinkStateNames;
+        smokeStateNames = healthfiles.smokeStateNames;
+        bloodtype = healthfiles.bloodtype;
+        if(TextUtils.isEmpty(maritalStatusNames)){
+            map.put(MARITALSTATUS + ":", weiHunCheck.getText().toString());
+        }
+        if(TextUtils.isEmpty(bloodtype)){
+            map.put(BLOODTYPE + ":", A_type_Check.getText().toString());
+        }
+        setInitMaritalStatus();
+        setInitMedicineAllergy();
+        setInitPastMedicalHistory();
+        setInitGeneticHistory();
+        setInitBloodType();
+        setInitDrinkState();
+        setInitSmokeState();
+        setFathers();
+        setMothers();
+        setSister();
+        setChildren();
+
+    }
+
+    public void setInitMaritalStatus() {
+        if (!TextUtils.isEmpty(maritalStatusNames)) {
+            if ("未婚".equals(maritalStatusNames)) {
+                weiHunCheck.setChecked(true);
+                map.put(MARITALSTATUS+":"+"未婚","未婚");
+            } else if ("结婚".equals(maritalStatusNames)) {
+                map.put(MARITALSTATUS+":"+"结婚","结婚");
+                jieHunCheck.setChecked(true);
+            } else if ("离婚".equals(maritalStatusNames)) {
+                map.put(MARITALSTATUS+":"+"离婚","离婚");
+                liHunCheck.setChecked(true);
+            } else if ("丧偶".equals(maritalStatusNames)) {
+                map.put(MARITALSTATUS+":"+"丧偶","丧偶");
+                sangOuCheck.setChecked(true);
+            }
+        }
+    }
+
+    public void setInitBloodType(){
+        if (!TextUtils.isEmpty(bloodtype)) {
+            if ("A型".equals(bloodtype)) {
+                map.put(BLOODTYPE+":"+"A型","A型");
+                A_type_Check.setChecked(true);
+            } else if ("B型".equals(bloodtype)) {
+                map.put(BLOODTYPE+":"+"B型","B型");
+                B_type_Check.setChecked(true);
+            } else if ("AB型".equals(bloodtype)) {
+                map.put(BLOODTYPE+":"+"AB型","AB型");
+                AB_type_Check.setChecked(true);
+            } else if ("O型".equals(bloodtype)) {
+                map.put(BLOODTYPE+":"+"O型","O型");
+                O_type_Check.setChecked(true);
+            }
+        }
+    }
+
+    public void setInitDrinkState(){
+        if(!TextUtils.isEmpty(drinkStateNames)&&!"无".equals(drinkStateNames)){
+            drinkState_yesCheck.setChecked(true);
+            drinkState_type.setVisibility(View.VISIBLE);
+            if ("从不".equals(drinkStateNames)) {
+                map.put(DRINKSTATE_CODE+":"+"从不","从不");
+                drinkState_checkbox_cb.setChecked(true);
+            } else if ("偶尔".equals(drinkStateNames)) {
+                map.put(DRINKSTATE_CODE+":"+"偶尔","偶尔");
+                drinkState_checkbox_oer.setChecked(true);
+            } else if ("经常".equals(drinkStateNames)) {
+                map.put(DRINKSTATE_CODE+":"+"经常","经常");
+                drinkState_checkbox_jc.setChecked(true);
+            } else if ("每天".equals(drinkStateNames)) {
+                map.put(DRINKSTATE_CODE+":"+"每天","每天");
+                drinkState_checkbox_mt.setChecked(true);
+            }else if ("已戒酒".equals(drinkStateNames)) {
+                map.put(DRINKSTATE_CODE+":"+"已戒酒","已戒酒");
+                drinkState_checkbox_yjj.setChecked(true);
+            }
+        }
+    }
+
+    public void  setInitSmokeState(){
+        if(!TextUtils.isEmpty(smokeStateNames)&&!"无".equals(smokeStateNames)){
+            smokeState_yesCheck.setChecked(true);
+            smokeState_type.setVisibility(View.VISIBLE);
+            if ("从不".equals(smokeStateNames)) {
+                map.put(SMOKESTATE_CODE+":"+"从不","从不");
+                smokeState_checkbox_cb.setChecked(true);
+            } else if ("偶尔".equals(smokeStateNames)) {
+                map.put(SMOKESTATE_CODE+":"+"偶尔","偶尔");
+                smokeState_checkbox_oer.setChecked(true);
+            } else if ("经常".equals(smokeStateNames)) {
+                map.put(SMOKESTATE_CODE+":"+"经常","经常");
+                smokeState_checkbox_jc.setChecked(true);
+            } else if ("每天".equals(smokeStateNames)) {
+                map.put(SMOKESTATE_CODE+":"+"每天","每天");
+                smokeState_checkbox_mt.setChecked(true);
+            }else if ("已戒烟".equals(smokeStateNames)) {
+                map.put(SMOKESTATE_CODE+":"+"已戒烟","已戒烟");
+                smokeState_checkbox_yjy.setChecked(true);
+            }
+        }
+    }
+
+    public void setFathers(){
+        if(!TextUtils.isEmpty(familyMedicalhistory_fatherNames)){
+            familyMedicalhistory_father_yesCheck.setChecked(true);
+            familyMedicalhistory_father_type.setVisibility(View.VISIBLE);
+            String names[] = familyMedicalhistory_fatherNames.split(",");
+            for (int i = 0; i < names.length; i++) {
+                String vals[]=names[i].split(":");
+                if (!TextUtils.isEmpty(vals[1]) && !" ".equals(vals[1]) && "父亲".equals(vals[0])) {
+                    if(vals[1].contains("-")){
+                        String others[]=vals[1].split("-");
+                        if(others.length>=2){
+                        if(!TextUtils.isEmpty(others[1]) && others[0].equals("其他")){
+                            edt_father.setVisibility(View.VISIBLE);
+                            edt_father.setText(others[1]);
+                            fmh_father_checkbox_qt.setChecked(true);
+                        }
+                        }
+                    }else {
+                        if("高血压".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_FATHER_CODE+":"+"高血压","高血压");
+                            fmh_father_checkbox_gxy.setChecked(true);
+                        }else if("糖尿病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_FATHER_CODE+":"+"糖尿病","糖尿病");
+                            fmh_father_checkbox_tnb.setChecked(true);
+                        }else if("冠心病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_FATHER_CODE+":"+"冠心病","冠心病");
+                            fmh_father_checkbox_gxb.setChecked(true);
+                        }else if("结核病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_FATHER_CODE+":"+"结核病","结核病");
+                            fmh_father_checkbox_jhb.setChecked(true);
+                        }else if("恶性肿瘤".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_FATHER_CODE+":"+"恶性肿瘤","恶性肿瘤");
+                            fmh_father_checkbox_exzl.setChecked(true);
+                        }else if("肝炎".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_FATHER_CODE+":"+"肝炎","肝炎");
+                            fmh_father_checkbox_gy.setChecked(true);
+                        }else if("先天畸形".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_FATHER_CODE+":"+"先天畸形","先天畸形");
+                            fmh_father_checkbox_xtjx.setChecked(true);
+                        }else if("先天性阻塞性肺疾病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_FATHER_CODE+":"+"先天性阻塞性肺疾病","先天性阻塞性肺疾病");
+                            fmh_father_checkbox_zsxfjb.setChecked(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void setMothers(){
+        if(!TextUtils.isEmpty(familyMedicalhistory_motherNames)){
+            familyMedicalhistory_mother_yesCheck.setChecked(true);
+            familyMedicalhistory_mother_type.setVisibility(View.VISIBLE);
+            String names[] = familyMedicalhistory_motherNames.split(",");
+            for (int i = 0; i < names.length; i++) {
+                String vals[]=names[i].split(":");
+                if (!TextUtils.isEmpty(vals[1]) && !" ".equals(vals[1]) && "母亲".equals(vals[0])) {
+                    if(vals[1].contains("-")){
+                        String others[]=vals[1].split("-");
+                        if(others.length>=2) {
+                            if (!TextUtils.isEmpty(others[1]) && others[0].equals("其他")) {
+                                edt_mother.setVisibility(View.VISIBLE);
+                                edt_mother.setText(others[1]);
+                                fmh_mother_checkbox_qt.setChecked(true);
+                            }
+                        }
+                    }else {
+                        if("高血压".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_MOTHER_CODE+":"+"高血压","高血压");
+                            fmh_mother_checkbox_gxy.setChecked(true);
+                        }else if("糖尿病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_MOTHER_CODE+":"+"糖尿病","糖尿病");
+                            fmh_mother_checkbox_tnb.setChecked(true);
+                        }else if("冠心病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_MOTHER_CODE+":"+"冠心病","冠心病");
+                            fmh_mother_checkbox_gxb.setChecked(true);
+                        }else if("结核病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_MOTHER_CODE+":"+"结核病","结核病");
+                            fmh_mother_checkbox_jhb.setChecked(true);
+                        }else if("恶性肿瘤".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_MOTHER_CODE+":"+"恶性肿瘤","恶性肿瘤");
+                            fmh_mother_checkbox_exzl.setChecked(true);
+                        }else if("肝炎".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_MOTHER_CODE+":"+"肝炎","肝炎");
+                            fmh_mother_checkbox_gy.setChecked(true);
+                        }else if("先天畸形".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_MOTHER_CODE+":"+"先天畸形","先天畸形");
+                            fmh_mother_checkbox_xtjx.setChecked(true);
+                        }else if("先天性阻塞性肺疾病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_MOTHER_CODE+":"+"先天性阻塞性肺疾病","先天性阻塞性肺疾病");
+                            fmh_mother_checkbox_zsxfjb.setChecked(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void setSister(){
+        if(!TextUtils.isEmpty(familyMedicalhistory_sisterNames)){
+            familyMedicalhistory_sister_yesCheck.setChecked(true);
+            familyMedicalhistory_sister_type.setVisibility(View.VISIBLE);
+            String names[] = familyMedicalhistory_sisterNames.split(",");
+            for (int i = 0; i < names.length; i++) {
+                String vals[]=names[i].split(":");
+                if (!TextUtils.isEmpty(vals[1]) && !" ".equals(vals[1]) && "兄弟姐妹".equals(vals[0])) {
+                    if(vals[1].contains("-")){
+                        String others[]=vals[1].split("-");
+                        if(others.length>=2) {
+                            if (!TextUtils.isEmpty(others[1]) && others[0].equals("其他")) {
+                                edi_sister.setVisibility(View.VISIBLE);
+                                edi_sister.setText(others[1]);
+                                fmh_sister_checkbox_qt.setChecked(true);
+                            }
+                        }
+                    }else {
+                        if("高血压".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_SISTER_CODE+":"+"高血压","高血压");
+                            fmh_sister_checkbox_gxy.setChecked(true);
+                        }else if("糖尿病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_SISTER_CODE+":"+"糖尿病","糖尿病");
+                            fmh_sister_checkbox_tnb.setChecked(true);
+                        }else if("冠心病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_SISTER_CODE+":"+"冠心病","冠心病");
+                            fmh_sister_checkbox_gxb.setChecked(true);
+                        }else if("结核病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_SISTER_CODE+":"+"结核病","结核病");
+                            fmh_sister_checkbox_jhb.setChecked(true);
+                        }else if("恶性肿瘤".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_SISTER_CODE+":"+"恶性肿瘤","恶性肿瘤");
+                            fmh_sister_checkbox_exzl.setChecked(true);
+                        }else if("肝炎".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_SISTER_CODE+":"+"肝炎","肝炎");
+                            fmh_sister_checkbox_gy.setChecked(true);
+                        }else if("先天畸形".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_SISTER_CODE+":"+"先天畸形","先天畸形");
+                            fmh_sister_checkbox_xtjx.setChecked(true);
+                        }else if("先天性阻塞性肺疾病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_SISTER_CODE+":"+"先天性阻塞性肺疾病","先天性阻塞性肺疾病");
+                            fmh_sister_checkbox_zsxfjb.setChecked(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public  void setChildren(){
+        if(!TextUtils.isEmpty(familyMedicalhistory_childrenNames)){
+            familyMedicalhistory_children_yesCheck.setChecked(true);
+            familyMedicalhistory_children_type.setVisibility(View.VISIBLE);
+            String names[] = familyMedicalhistory_childrenNames.split(",");
+            for (int i = 0; i < names.length; i++) {
+                String vals[]=names[i].split(":");
+                if (!TextUtils.isEmpty(vals[1]) && !" ".equals(vals[1]) && "子女".equals(vals[0])) {
+                    if(vals[1].contains("-")){
+                        String others[]=vals[1].split("-");
+                        if(others.length>=2) {
+                            if (!TextUtils.isEmpty(others[1]) && others[0].equals("其他")) {
+                                edt_children.setVisibility(View.VISIBLE);
+                                edt_children.setText(others[1]);
+                                fmh_children_checkbox_qt.setChecked(true);
+                            }
+                        }
+                    }else {
+                        if("高血压".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_CHILDREN_CODE+":"+"高血压","高血压");
+                            fmh_children_checkbox_gxy.setChecked(true);
+                        }else if("糖尿病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_CHILDREN_CODE+":"+"糖尿病","糖尿病");
+                            fmh_children_checkbox_tnb.setChecked(true);
+                        }else if("冠心病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_CHILDREN_CODE+":"+"冠心病","冠心病");
+                            fmh_children_checkbox_gxb.setChecked(true);
+                        }else if("结核病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_CHILDREN_CODE+":"+"结核病","结核病");
+                            fmh_children_checkbox_jhb.setChecked(true);
+                        }else if("恶性肿瘤".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_CHILDREN_CODE+":"+"恶性肿瘤","恶性肿瘤");
+                            fmh_children_checkbox_exzl.setChecked(true);
+                        }else if("肝炎".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_CHILDREN_CODE+":"+"肝炎","肝炎");
+                            fmh_children_checkbox_gy.setChecked(true);
+                        }else if("先天畸形".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_CHILDREN_CODE+":"+"先天畸形","先天畸形");
+                            fmh_children_checkbox_xtjx.setChecked(true);
+                        }else if("先天性阻塞性肺疾病".equals(vals[1])){
+                            map.put(FAMILYMEDICALHISTORY_CHILDREN_CODE+":"+"先天性阻塞性肺疾病","先天性阻塞性肺疾病");
+                            fmh_children_checkbox_zsxfjb.setChecked(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void setInitMedicineAllergy(){
+        if(!TextUtils.isEmpty(medicineAllergyNames)){
+            medicineAllergy_yesCheck.setChecked(true);
+            medicineAllergy_type.setVisibility(View.VISIBLE);
+            String names[] = medicineAllergyNames.split(",");
+            for (int i = 0; i < names.length; i++) {
+                if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
+                    if(names[i].contains("-")){
+                        String others[]=names[i].split("-");
+                        if(others.length>=2) {
+                            if (!TextUtils.isEmpty(others[1]) && others[0].equals("其他")) {
+                                edt_ywgms.setVisibility(View.VISIBLE);
+                                edt_ywgms.setText(others[1]);
+                                medicineAllergy_checkbox_qita.setChecked(true);
+                            }
+                        }
+                    }else {
+                        if("青霉素".equals(names[i])){
+                            map.put(MEDICINEALLERGY_CODE+":"+"青霉素","青霉素");
+                            medicineAllergy_checkbox_qingmeisu.setChecked(true);
+                        }else if("磺胺".equals(names[i])){
+                            map.put(MEDICINEALLERGY_CODE+":"+"磺胺","磺胺");
+                            medicineAllergy_checkbox_huangan.setChecked(true);
+                        }else if("链霉素".equals(names[i])){
+                            map.put(MEDICINEALLERGY_CODE+":"+"链霉素","链霉素");
+                            medicineAllergy_checkbox_lianmeisu.setChecked(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void setInitPastMedicalHistory(){
+        if(!TextUtils.isEmpty(pastMedicalHistoryNames)){
+            pastMedicalHistory_yesCheck.setChecked(true);
+            pastMedicalHistory_type.setVisibility(View.VISIBLE);
+            String names[] = pastMedicalHistoryNames.split(",");
+            for (int i = 0; i < names.length; i++) {
+                if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
+                    if(names[i].contains("-")) {
+                        String others[] = names[i].split("-");
+                        if(others.length>=2) {
+                            if (!TextUtils.isEmpty(others[1]) && others[0].equals("其他")) {
+                                edt_jwbs.setVisibility(View.VISIBLE);
+                                edt_jwbs.setText(others[1]);
+                                pastMedicalHistory_checkbox_qita.setChecked(true);
+                            }
+                        }
+                    }else{
+                        if("高血压".equals(names[i])){
+                            map.put(PASTMEDICALHISTORY_CODE+":"+"高血压","高血压");
+                            pastMedicalHistory_checkbox_gaoxueya.setChecked(true);
+                        }else if("糖尿病".equals(names[i])){
+                            map.put(PASTMEDICALHISTORY_CODE+":"+"糖尿病","糖尿病");
+                            pastMedicalHistory_checkbox_tangniaobing.setChecked(true);
+                        }else if("冠心病".equals(names[i])){
+                            map.put(PASTMEDICALHISTORY_CODE+":"+"冠心病","冠心病");
+                            pastMedicalHistory_checkbox_guanxinbing.setChecked(true);
+                        }else if("脑卒中".equals(names[i])){
+                            map.put(PASTMEDICALHISTORY_CODE+":"+"脑卒中","脑卒中");
+                            pastMedicalHistory_checkbox_naozuzhong.setChecked(true);
+                        }else if("结核病".equals(names[i])){
+                            map.put(PASTMEDICALHISTORY_CODE+":"+"结核病","结核病");
+                            pastMedicalHistory_checkbox_jiehebing.setChecked(true);
+                        }else if("恶性肿瘤".equals(names[i])){
+                            map.put(PASTMEDICALHISTORY_CODE+":"+"恶性肿瘤","恶性肿瘤");
+                            pastMedicalHistory_checkbox_exingzhongliu.setChecked(true);
+                        }else if("肝炎".equals(names[i])){
+                            map.put(PASTMEDICALHISTORY_CODE+":"+"肝炎","肝炎");
+                            pastMedicalHistory_checkbox_ganyan.setChecked(true);
+                        }else if("传染病".equals(names[i])){
+                            map.put(PASTMEDICALHISTORY_CODE+":"+"传染病","传染病");
+                            pastMedicalHistory_checkbox_chuanranbing.setChecked(true);
+                        }else if("重症精神疾病".equals(names[i])){
+                            map.put(PASTMEDICALHISTORY_CODE+":"+"重症精神疾病","重症精神疾病");
+                            pastMedicalHistory_checkbox_zzjb.setChecked(true);
+                        }else if("慢性阻塞性肺疾病".equals(names[i])){
+                            map.put(PASTMEDICALHISTORY_CODE+":"+"慢性阻塞性肺疾病","慢性阻塞性肺疾病");
+                            pastMedicalHistory_checkbox_mxfjb.setChecked(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void setInitGeneticHistory(){
+        if(!TextUtils.isEmpty(geneticHistoryNmaes)){
+            geneticHistory_yesCheck.setChecked(true);
+            geneticHistory_type.setVisibility(View.VISIBLE);
+            String names[] = geneticHistoryNmaes.split(",");
+            for (int i = 0; i < names.length; i++) {
+                if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
+                    if(names[i].contains("-")) {
+                        String others[] = names[i].split("-");
+                        if(others.length>=2) {
+                            if (!TextUtils.isEmpty(others[1]) && others[0].equals("其他")) {
+                                edt_ycbs.setVisibility(View.VISIBLE);
+                                edt_ycbs.setText(others[1]);
+                                gh_checkbox_qt.setChecked(true);
+                            }
+                        }
+                    }else{
+                        if("高血压".equals(names[i])){
+                            map.put(GENETICHISTORY_CODE+":"+"高血压","高血压");
+                            gh_checkbox_gxy.setChecked(true);
+                        }else if("糖尿病".equals(names[i])){
+                            map.put(GENETICHISTORY_CODE+":"+"糖尿病","糖尿病");
+                            gh_checkbox_tnb.setChecked(true);
+                        }else if("冠心病".equals(names[i])){
+                            map.put(GENETICHISTORY_CODE+":"+"冠心病","冠心病");
+                            gh_checkbox_gxb.setChecked(true);
+                        }else if("脑卒中".equals(names[i])){
+                            map.put(GENETICHISTORY_CODE+":"+"脑卒中","脑卒中");
+                            gh_checkbox_nzu.setChecked(true);
+                        }else if("结核病".equals(names[i])){
+                            map.put(GENETICHISTORY_CODE+":"+"结核病","结核病");
+                            gh_checkbox_jhb.setChecked(true);
+                        }else if("恶性肿瘤".equals(names[i])){
+                            map.put(GENETICHISTORY_CODE+":"+"恶性肿瘤","恶性肿瘤");
+                            gh_checkbox_exzl.setChecked(true);
+                        }else if("肝炎".equals(names[i])){
+                            map.put(GENETICHISTORY_CODE+":"+"肝炎","肝炎");
+                            gh_checkbox_gy.setChecked(true);
+                        }else if("传染病".equals(names[i])){
+                            map.put(GENETICHISTORY_CODE+":"+"传染病","传染病");
+                            gh_checkbox_crb.setChecked(true);
+                        }else if("重症精神疾病".equals(names[i])){
+                            map.put(GENETICHISTORY_CODE+":"+"重症精神疾病","重症精神疾病");
+                            gh_checkbox_zzjsjb.setChecked(true);
+                        }else if("慢性阻塞性肺疾病".equals(names[i])){
+                            map.put(GENETICHISTORY_CODE+":"+"慢性阻塞性肺疾病","慢性阻塞性肺疾病");
+                            gh_checkbox_zsxfjb.setChecked(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public void initEvent() {
         maritalStatus_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -310,7 +792,6 @@ public class HealthFilesFragment1 extends BaseFragment {
                 }
             }
         });
-        map.put(BLOODTYPE + ":", A_type_Check.getText().toString());
         blood_type_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -333,6 +814,12 @@ public class HealthFilesFragment1 extends BaseFragment {
                     medicineAllergy_type.setVisibility(View.VISIBLE);
                 } else if (checkedId == medicineAllergy_noCheck.getId()) {
                     medicineAllergy_type.setVisibility(View.GONE);
+                    medicineAllergy_checkbox_qingmeisu .setChecked(false);
+                    medicineAllergy_checkbox_huangan .setChecked(false);
+                    medicineAllergy_checkbox_lianmeisu.setChecked(false);
+                    medicineAllergy_checkbox_qita.setChecked(false);
+                    edt_ywgms.setText("");
+                    edt_ywgms.setVisibility(View.GONE);
                 }
             }
         });
@@ -343,6 +830,19 @@ public class HealthFilesFragment1 extends BaseFragment {
                     pastMedicalHistory_type.setVisibility(View.VISIBLE);
                 } else if (checkedId == pastMedicalHistory_noCheck.getId()) {
                     pastMedicalHistory_type.setVisibility(View.GONE);
+                    pastMedicalHistory_checkbox_gaoxueya.setChecked(false);
+                    pastMedicalHistory_checkbox_tangniaobing.setChecked(false);
+                    pastMedicalHistory_checkbox_guanxinbing.setChecked(false);
+                    pastMedicalHistory_checkbox_naozuzhong .setChecked(false);
+                    pastMedicalHistory_checkbox_jiehebing .setChecked(false);
+                    pastMedicalHistory_checkbox_exingzhongliu .setChecked(false);
+                    pastMedicalHistory_checkbox_ganyan .setChecked(false);
+                    pastMedicalHistory_checkbox_chuanranbing .setChecked(false);
+                    pastMedicalHistory_checkbox_zzjb.setChecked(false);
+                    pastMedicalHistory_checkbox_mxfjb.setChecked(false);
+                    pastMedicalHistory_checkbox_qita.setChecked(false);
+                    edt_jwbs.setText("");
+                    edt_jwbs.setVisibility(View.GONE);
                 }
             }
         });
@@ -353,6 +853,17 @@ public class HealthFilesFragment1 extends BaseFragment {
                     familyMedicalhistory_father_type.setVisibility(View.VISIBLE);
                 } else if (checkedId == familyMedicalhistory_father_noCheck.getId()) {
                     familyMedicalhistory_father_type.setVisibility(View.GONE);
+                    fmh_father_checkbox_gxy.setChecked(false);
+                    fmh_father_checkbox_tnb .setChecked(false);
+                    fmh_father_checkbox_gxb.setChecked(false);
+                    fmh_father_checkbox_gy .setChecked(false);
+                    fmh_father_checkbox_jhb .setChecked(false);
+                    fmh_father_checkbox_exzl.setChecked(false);
+                    fmh_father_checkbox_xtjx.setChecked(false);
+                    fmh_father_checkbox_zsxfjb.setChecked(false);
+                    fmh_father_checkbox_qt.setChecked(false);
+                    edt_father.setText("");
+                    edt_father.setVisibility(View.GONE);
                 }
             }
         });
@@ -363,6 +874,17 @@ public class HealthFilesFragment1 extends BaseFragment {
                     familyMedicalhistory_mother_type.setVisibility(View.VISIBLE);
                 } else if (checkedId == familyMedicalhistory_mother_noCheck.getId()) {
                     familyMedicalhistory_mother_type.setVisibility(View.GONE);
+                    fmh_mother_checkbox_gxy.setChecked(false);
+                    fmh_mother_checkbox_tnb .setChecked(false);
+                    fmh_mother_checkbox_gxb.setChecked(false);
+                    fmh_mother_checkbox_gy .setChecked(false);
+                    fmh_mother_checkbox_jhb .setChecked(false);
+                    fmh_mother_checkbox_exzl.setChecked(false);
+                    fmh_mother_checkbox_xtjx.setChecked(false);
+                    fmh_mother_checkbox_zsxfjb.setChecked(false);
+                    fmh_mother_checkbox_qt.setChecked(false);
+                    edt_mother.setText("");
+                    edt_mother.setVisibility(View.GONE);
                 }
             }
         });
@@ -373,6 +895,17 @@ public class HealthFilesFragment1 extends BaseFragment {
                     familyMedicalhistory_sister_type.setVisibility(View.VISIBLE);
                 } else if (checkedId == familyMedicalhistory_sister_noCheck.getId()) {
                     familyMedicalhistory_sister_type.setVisibility(View.GONE);
+                    fmh_sister_checkbox_gxy.setChecked(false);
+                    fmh_sister_checkbox_tnb .setChecked(false);
+                    fmh_sister_checkbox_gxb.setChecked(false);
+                    fmh_sister_checkbox_gy .setChecked(false);
+                    fmh_sister_checkbox_jhb .setChecked(false);
+                    fmh_sister_checkbox_exzl.setChecked(false);
+                    fmh_sister_checkbox_xtjx.setChecked(false);
+                    fmh_sister_checkbox_zsxfjb.setChecked(false);
+                    fmh_sister_checkbox_qt.setChecked(false);
+                    edi_sister.setText("");
+                    edi_sister.setVisibility(View.GONE);
                 }
             }
         });
@@ -383,6 +916,17 @@ public class HealthFilesFragment1 extends BaseFragment {
                     familyMedicalhistory_children_type.setVisibility(View.VISIBLE);
                 } else if (checkedId == familyMedicalhistory_children_noCheck.getId()) {
                     familyMedicalhistory_children_type.setVisibility(View.GONE);
+                    fmh_children_checkbox_gxy.setChecked(false);
+                    fmh_children_checkbox_tnb .setChecked(false);
+                    fmh_children_checkbox_gxb.setChecked(false);
+                    fmh_children_checkbox_gy .setChecked(false);
+                    fmh_children_checkbox_jhb .setChecked(false);
+                    fmh_children_checkbox_exzl.setChecked(false);
+                    fmh_children_checkbox_xtjx.setChecked(false);
+                    fmh_children_checkbox_zsxfjb.setChecked(false);
+                    fmh_children_checkbox_qt.setChecked(false);
+                    edt_children.setText("");
+                    edt_children.setVisibility(View.GONE);
                 }
             }
         });
@@ -393,6 +937,21 @@ public class HealthFilesFragment1 extends BaseFragment {
                     geneticHistory_type.setVisibility(View.VISIBLE);
                 } else if (checkedId == geneticHistory_noCheck.getId()) {
                     geneticHistory_type.setVisibility(View.GONE);
+                    gh_checkbox_gxy.setChecked(false);
+                    gh_checkbox_tnb .setChecked(false);
+                    gh_checkbox_gxb .setChecked(false);
+                    gh_checkbox_nzu .setChecked(false);
+                    gh_checkbox_jhb .setChecked(false);
+                    gh_checkbox_exzl.setChecked(false);
+                    gh_checkbox_gy .setChecked(false);
+                    gh_checkbox_crb .setChecked(false);
+                    gh_checkbox_zzjsjb .setChecked(false);
+                    gh_checkbox_zsxfjb .setChecked(false);
+                    gh_checkbox_qt .setChecked(false);
+                    edt_ycbs.setText("");
+                    edt_ycbs.setVisibility(View.GONE);
+
+
                 }
             }
         });
@@ -403,6 +962,11 @@ public class HealthFilesFragment1 extends BaseFragment {
                     smokeState_type.setVisibility(View.VISIBLE);
                 } else if (checkedId == smokeState_noCheck.getId()) {
                     smokeState_type.setVisibility(View.GONE);
+                    smokeState_checkbox_cb .setChecked(false);
+                    smokeState_checkbox_oer .setChecked(false);
+                    smokeState_checkbox_jc .setChecked(false);
+                    smokeState_checkbox_mt .setChecked(false);
+                    smokeState_checkbox_yjy .setChecked(false);
                 }
             }
         });
@@ -413,6 +977,11 @@ public class HealthFilesFragment1 extends BaseFragment {
                     drinkState_type.setVisibility(View.VISIBLE);
                 } else if (checkedId == drinkState_noCheck.getId()) {
                     drinkState_type.setVisibility(View.GONE);
+                    drinkState_checkbox_cb.setChecked(false);
+                    drinkState_checkbox_oer.setChecked(false);
+                    drinkState_checkbox_jc .setChecked(false);
+                    drinkState_checkbox_mt .setChecked(false);
+                    drinkState_checkbox_yjj .setChecked(false);
                 }
             }
         });
@@ -565,7 +1134,7 @@ public class HealthFilesFragment1 extends BaseFragment {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                maritalStatusNames = "";//婚姻状况
+/*                maritalStatusNames = "";//婚姻状况
                 medicineAllergyNames = "";//药物过敏
                 pastMedicalHistoryNames = "";//既往病史
                 familyMedicalhistory_fatherNames = "";//家族病史（父亲）
@@ -575,7 +1144,7 @@ public class HealthFilesFragment1 extends BaseFragment {
                 geneticHistoryNmaes = "";//遗传病史
                 drinkStateNames = "";//喝酒状况
                 smokeStateNames = "";//吸烟状况
-                bloodtype="";
+                bloodtype = "";*/
                 for (Map.Entry<String, String> entry : map.entrySet()) {
                     String key = entry.getKey();
                     if (!TextUtils.isEmpty(key)) {
@@ -584,10 +1153,9 @@ public class HealthFilesFragment1 extends BaseFragment {
                 }
                 if (stype.equals("2")) {
                     add();
-                } else if(stype.equals("3")){
+                } else if (stype.equals("3")) {
                     upload();
-                }
-                else if(stype.equals("0")){
+                } else if (stype.equals("0")) {
                     add();
                 }
             }
@@ -596,42 +1164,80 @@ public class HealthFilesFragment1 extends BaseFragment {
 
     public void add() {
 
+
         if (edt_father.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_father))) {
-            familyMedicalhistory_fatherNames = familyMedicalhistory_fatherNames + "父亲:" + getEdtValue(edt_father);
+            familyMedicalhistory_fatherNamesEdit = familyMedicalhistory_fatherNamesEdit + "父亲:" + getEdtValue(edt_father);
         }
         if (edt_mother.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_mother))) {
-            familyMedicalhistory_motherNames = familyMedicalhistory_motherNames + "母亲:" + getEdtValue(edt_mother);
+            familyMedicalhistory_motherNamesEdit = familyMedicalhistory_motherNamesEdit + "母亲:" + getEdtValue(edt_mother);
         }
         if (edi_sister.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edi_sister))) {
-            familyMedicalhistory_sisterNames = familyMedicalhistory_sisterNames + "兄弟姐妹:" + getEdtValue(edi_sister);
+            familyMedicalhistory_sisterNamesEdit = familyMedicalhistory_sisterNamesEdit + "兄弟姐妹:" + getEdtValue(edi_sister);
         }
         if (edt_children.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_children))) {
-            familyMedicalhistory_childrenNames = familyMedicalhistory_childrenNames + "子女:" + getEdtValue(edt_children);
+            familyMedicalhistory_childrenNamesEdit = familyMedicalhistory_childrenNamesEdit + "子女:" + getEdtValue(edt_children);
         }
-        String familyNames = familyMedicalhistory_fatherNames + familyMedicalhistory_motherNames + familyMedicalhistory_sisterNames + familyMedicalhistory_childrenNames;
+        if(familyMedicalhistory_father_noCheck.isChecked()){
+            familyMedicalhistory_fatherNamesEdit="";
+        }
+        if(familyMedicalhistory_mother_noCheck.isChecked()){
+            familyMedicalhistory_motherNamesEdit="";
+        }
+        if(familyMedicalhistory_sister_noCheck.isChecked()){
+            familyMedicalhistory_sisterNamesEdit="";
+
+        }
+        if(familyMedicalhistory_children_noCheck.isChecked()){
+            familyMedicalhistory_childrenNamesEdit="";
+        }
+
+        String familyNames = familyMedicalhistory_fatherNamesEdit + familyMedicalhistory_motherNamesEdit + familyMedicalhistory_sisterNamesEdit + familyMedicalhistory_childrenNamesEdit;
         if (TextUtils.isEmpty(familyNames)) {
             familyNames = " " + ":" + " " + "," + " " + ":" + " ";
         }
         String names[] = familyNames.split(",");
+        if(names.length==1){
+            names[0]=names[0]+",";
+        }
         List<String> list = Arrays.asList(names);
         startProgressDialog();
-        if (TextUtils.isEmpty(smokeStateNames)) {
-            smokeStateNames = "从不";
+        if (TextUtils.isEmpty(smokeStateNamesEdit)) {
+            smokeStateNamesEdit = "无";
         }
+
         if (TextUtils.isEmpty(drinkStateNames)) {
-            drinkStateNames = "从不";
+            drinkStateNamesEdit = "无";
+        }
+        if(smokeState_noCheck.isChecked()){
+            smokeStateNamesEdit = "无";
+        }
+        if(drinkState_noCheck.isChecked()){
+            drinkStateNamesEdit = "无";
         }
 
         if (edt_ywgms.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_ywgms))) {
-            medicineAllergyNames = medicineAllergyNames + getEdtValue(edt_ywgms);
+            medicineAllergyNamesEdit = medicineAllergyNamesEdit + getEdtValue(edt_ywgms);
         }
+
+
         if (edt_jwbs.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_jwbs))) {
-            pastMedicalHistoryNames = pastMedicalHistoryNames + getEdtValue(edt_jwbs);
+            pastMedicalHistoryNamesEdit = pastMedicalHistoryNamesEdit + getEdtValue(edt_jwbs);
         }
+
         if (edt_ycbs.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_ycbs))) {
-            geneticHistoryNmaes = geneticHistoryNmaes + getEdtValue(edt_ycbs);
+            geneticHistoryNmaesEdit = geneticHistoryNmaesEdit + getEdtValue(edt_ycbs);
         }
-        requestMaker.BaseDataInsertInsert(userid, maritalStatusNames, medicineAllergyNames, geneticHistoryNmaes, pastMedicalHistoryNames, list, smokeStateNames, drinkStateNames,bloodtype, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
+        if(medicineAllergy_noCheck.isChecked()){
+            medicineAllergyNamesEdit="";
+        }
+        if(geneticHistory_noCheck.isChecked()){
+            geneticHistoryNmaesEdit="";
+        }
+        if(pastMedicalHistory_noCheck.isChecked()){
+            pastMedicalHistoryNamesEdit="";
+        }
+
+        requestMaker.BaseDataInsertInsert(userid, maritalStatusNamesEdit, medicineAllergyNamesEdit, geneticHistoryNmaesEdit, pastMedicalHistoryNamesEdit, list, smokeStateNamesEdit, drinkStateNamesEdit, bloodtypeEdit, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
                 stopProgressDialog();
@@ -654,44 +1260,73 @@ public class HealthFilesFragment1 extends BaseFragment {
 
     public void upload() {
         if (edt_father.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_father))) {
-            familyMedicalhistory_fatherNames = familyMedicalhistory_fatherNames + "父亲:" + getEdtValue(edt_father);
+            familyMedicalhistory_fatherNamesEdit = familyMedicalhistory_fatherNamesEdit + "父亲:" + getEdtValue(edt_father);
         }
         if (edt_mother.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_mother))) {
-            familyMedicalhistory_motherNames = familyMedicalhistory_motherNames + "母亲:" + getEdtValue(edt_mother);
+            familyMedicalhistory_motherNamesEdit = familyMedicalhistory_motherNamesEdit + "母亲:" + getEdtValue(edt_mother);
         }
         if (edi_sister.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edi_sister))) {
-            familyMedicalhistory_sisterNames = familyMedicalhistory_sisterNames + "兄弟姐妹:" + getEdtValue(edi_sister);
+            familyMedicalhistory_sisterNamesEdit = familyMedicalhistory_sisterNamesEdit + "兄弟姐妹:" + getEdtValue(edi_sister);
         }
         if (edt_children.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_children))) {
-            familyMedicalhistory_childrenNames = familyMedicalhistory_childrenNames + "子女:" + getEdtValue(edt_children);
+            familyMedicalhistory_childrenNamesEdit = familyMedicalhistory_childrenNamesEdit + "子女:" + getEdtValue(edt_children);
         }
-        String familyNames = familyMedicalhistory_fatherNames + familyMedicalhistory_motherNames + familyMedicalhistory_sisterNames + familyMedicalhistory_childrenNames;
+        if(familyMedicalhistory_father_noCheck.isChecked()){
+            familyMedicalhistory_fatherNamesEdit="";
+        }
+        if(familyMedicalhistory_mother_noCheck.isChecked()){
+            familyMedicalhistory_motherNamesEdit="";
+        }
+        if(familyMedicalhistory_sister_noCheck.isChecked()){
+            familyMedicalhistory_sisterNamesEdit="";
+
+        }
+        if(familyMedicalhistory_children_noCheck.isChecked()){
+            familyMedicalhistory_childrenNamesEdit="";
+        }
+        String familyNames = familyMedicalhistory_fatherNamesEdit + familyMedicalhistory_motherNamesEdit + familyMedicalhistory_sisterNamesEdit + familyMedicalhistory_childrenNamesEdit;
         if (TextUtils.isEmpty(familyNames)) {
             familyNames = " " + ":" + " " + "," + " " + ":" + " ";
         }
         String names[] = familyNames.split(",");
+        if(names.length==1){
+            names[0]=names[0]+",";
+        }
         List<String> list = Arrays.asList(names);
         startProgressDialog();
-        if (TextUtils.isEmpty(smokeStateNames)) {
-            smokeStateNames = "从不";
+        if (TextUtils.isEmpty(smokeStateNamesEdit)) {
+            smokeStateNamesEdit = "无";
         }
-        if (TextUtils.isEmpty(drinkStateNames)) {
-            drinkStateNames = "从不";
+        if (TextUtils.isEmpty(drinkStateNamesEdit)) {
+            drinkStateNamesEdit = "无";
+        }
+        if(smokeState_noCheck.isChecked()){
+            smokeStateNamesEdit = "无";
+        }
+        if(drinkState_noCheck.isChecked()){
+            drinkStateNamesEdit = "无";
         }
         if (edt_ywgms.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_ywgms))) {
-            medicineAllergyNames = medicineAllergyNames + getEdtValue(edt_ywgms);
+            medicineAllergyNamesEdit = medicineAllergyNamesEdit + getEdtValue(edt_ywgms);
         }
         if (edt_jwbs.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_jwbs))) {
-            pastMedicalHistoryNames = pastMedicalHistoryNames + getEdtValue(edt_jwbs);
+            pastMedicalHistoryNamesEdit = pastMedicalHistoryNamesEdit + getEdtValue(edt_jwbs);
         }
         if (edt_ycbs.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_ycbs))) {
-            geneticHistoryNmaes = geneticHistoryNmaes + getEdtValue(edt_ycbs);
+            geneticHistoryNmaesEdit = geneticHistoryNmaesEdit + getEdtValue(edt_ycbs);
         }
-        requestMaker.BaseDataUpdate(userid, maritalStatusNames, medicineAllergyNames, geneticHistoryNmaes, pastMedicalHistoryNames, list, smokeStateNames, drinkStateNames,bloodtype, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
+        if(medicineAllergy_noCheck.isChecked()){
+            medicineAllergyNamesEdit="";
+        }
+        if(geneticHistory_noCheck.isChecked()){
+            geneticHistoryNmaesEdit="";
+        }
+        if(pastMedicalHistory_noCheck.isChecked()){
+            pastMedicalHistoryNamesEdit="";
+        }
+        requestMaker.BaseDataUpdate(userid, maritalStatusNamesEdit, medicineAllergyNamesEdit, geneticHistoryNmaesEdit, pastMedicalHistoryNamesEdit, list, smokeStateNamesEdit, drinkStateNamesEdit, bloodtypeEdit, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
-                String str = maritalStatusNames + "+" + medicineAllergyNames + "+" + geneticHistoryNmaes + "+" + pastMedicalHistoryNames;
-
                 stopProgressDialog();
                 String value = result.toString();
                 try {
@@ -715,37 +1350,37 @@ public class HealthFilesFragment1 extends BaseFragment {
         int code = Integer.parseInt(str[0]);
         switch (code) {
             case MEDICINEALLERGY_CODE:
-                medicineAllergyNames = medicineAllergyNames + str[1] + ",";
+                medicineAllergyNamesEdit = medicineAllergyNamesEdit + str[1] + ",";
                 break;
             case PASTMEDICALHISTORY_CODE:
-                pastMedicalHistoryNames = pastMedicalHistoryNames + str[1] + ",";
+                pastMedicalHistoryNamesEdit = pastMedicalHistoryNamesEdit + str[1] + ",";
                 break;
             case FAMILYMEDICALHISTORY_FATHER_CODE:
-                familyMedicalhistory_fatherNames = familyMedicalhistory_fatherNames + "父亲:" + str[1] + ",";
+                familyMedicalhistory_fatherNamesEdit = familyMedicalhistory_fatherNamesEdit + "父亲:" + str[1] + ",";
                 break;
             case FAMILYMEDICALHISTORY_MOTHER_CODE:
-                familyMedicalhistory_motherNames = familyMedicalhistory_motherNames + "母亲:" + str[1] + ",";
+                familyMedicalhistory_motherNamesEdit = familyMedicalhistory_motherNamesEdit + "母亲:" + str[1] + ",";
                 break;
             case FAMILYMEDICALHISTORY_SISTER_CODE:
-                familyMedicalhistory_sisterNames = familyMedicalhistory_sisterNames + "兄弟姐妹:" + str[1] + ",";
+                familyMedicalhistory_sisterNamesEdit = familyMedicalhistory_sisterNamesEdit + "兄弟姐妹:" + str[1] + ",";
                 break;
             case FAMILYMEDICALHISTORY_CHILDREN_CODE:
-                familyMedicalhistory_childrenNames = familyMedicalhistory_childrenNames + "子女:" + str[1] + ",";
+                familyMedicalhistory_childrenNamesEdit = familyMedicalhistory_childrenNamesEdit + "子女:" + str[1] + ",";
                 break;
             case GENETICHISTORY_CODE:
-                geneticHistoryNmaes = geneticHistoryNmaes + str[1] + ",";
+                geneticHistoryNmaesEdit = geneticHistoryNmaesEdit + str[1] + ",";
                 break;
             case SMOKESTATE_CODE:
-                smokeStateNames = str[1];
+                smokeStateNamesEdit = str[1];
                 break;
             case DRINKSTATE_CODE:
-                drinkStateNames = str[1];
+                drinkStateNamesEdit = str[1];
                 break;
             case MARITALSTATUS:
-                maritalStatusNames = map.get(key);
+                maritalStatusNamesEdit = map.get(key);
                 break;
             case BLOODTYPE:
-                bloodtype = map.get(key);
+                bloodtypeEdit = map.get(key);
                 break;
         }
 
@@ -844,7 +1479,6 @@ public class HealthFilesFragment1 extends BaseFragment {
                     addData(SMOKESTATE_CODE, buttonView, isChecked);
                     break;
             }
-
         }
     }
 
@@ -860,7 +1494,7 @@ public class HealthFilesFragment1 extends BaseFragment {
         if (isChecked) {
             map.put(type + ":" + box.getText().toString(), box.getText().toString());
         } else {
-            if (map.containsKey(type + ":" + box.getText().toString()) && map.containsValue(box.getText().toString())) {
+            if (map.containsKey(type + ":" + box.getText().toString())) {
                 map.remove(type + ":" + box.getText().toString());
             }
         }
@@ -937,14 +1571,22 @@ public class HealthFilesFragment1 extends BaseFragment {
         }
     }
 
-    public static Fragment getInstance(String id, String type) {
+    public static Fragment getInstance(String id, String type, HealthFiles hf) {
         userid = id;
         stype = type;
-        return new HealthFilesFragment1();
+        HealthFilesFragment1 fragment=  new HealthFilesFragment1();
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("healthfiles",hf);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     public String getEdtValue(EditText edt) {
-        return edt.getText().toString().trim();
+        String str=edt.getText().toString().trim();
+        if(!TextUtils.isEmpty(str)){
+            return "其他-" + str;
+        }
+        return "其他-" +"" ;
     }
 
     @Override
