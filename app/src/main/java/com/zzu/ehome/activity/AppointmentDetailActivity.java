@@ -2,6 +2,7 @@ package com.zzu.ehome.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -199,7 +200,7 @@ public class AppointmentDetailActivity extends BaseActivity implements View.OnCl
         tv_name.setText(bean.getUser_FullName());
         tv_zc.setText(bean.getDoctor_Title() + "/" + bean.getHosptial_Name());
         tv_doctor_jj.setText("暂无");
-        tv_sc.setText(bean.getDoctor_Specialty());
+        tv_sc.setText(Html.fromHtml(bean.getDoctor_Specialty()));
 
 //        tv_sc.post(new Runnable() {
 //            @Override

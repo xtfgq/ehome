@@ -238,6 +238,9 @@ public abstract class SupperBaseActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         isVisible = true;
+        if( CustomApplcation.getInstance().isOnLine==0){
+            confirmLogin();
+        }
     }
 
     @Override
@@ -465,6 +468,7 @@ public abstract class SupperBaseActivity extends FragmentActivity {
             public void onClick(View v) {
                 User dbUser = dao.findUserInfoById(SharePreferenceUtil.getInstance(CustomApplcation.getInstance()).getUserId());
                 dialog.dismiss();
+                CustomApplcation.getInstance().isOnLine=-1;
                 if (TextUtils.isEmpty(dbUser.getUserno())) {
                     UserClientBind();
                 } else {

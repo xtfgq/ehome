@@ -819,6 +819,7 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                                     RongIM.getInstance().setCurrentUserInfo(new UserInfo(userid, name, Uri.parse(head)));
                                     RongIM.getInstance().setMessageAttachedUserInfo(true);
                                 }
+                                CustomApplcation.getInstance().isOnLine=1;
                             }
                         });
 
@@ -826,6 +827,7 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    CustomApplcation.getInstance().isOnLine=0;
                 }
 
             }

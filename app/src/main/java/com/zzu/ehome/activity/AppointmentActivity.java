@@ -131,7 +131,7 @@ public class AppointmentActivity extends BaseActivity {
                         String url = jsonObject.getString("User_Icon").replace("~", "").replace("\\", "/");
                         bean.setUser_Icon(Constants.ICON + url);
                         bean.setDoctor_Title(jsonObject.getString("Doctor_Title"));
-                        bean.setDoctor_Specialty(jsonObject.getString("Doctor_Specialty"));
+                        bean.setDoctor_Specialty(jsonObject.getString("Doctor_Specialty").toString());
                         bean.setHosptial_Name(hosptial);
                         bean.setHosptial_office(office);
                         mList.add(bean);

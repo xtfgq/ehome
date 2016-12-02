@@ -38,6 +38,7 @@ public class CustomApplcation extends MultiDexApplication {
     public static List<Activity> mList = new LinkedList<Activity>();
 
     public int count=0;
+    public int isOnLine=-1;
     public static CustomApplcation mInstance;
     private NetReceiver mReceiver;
 

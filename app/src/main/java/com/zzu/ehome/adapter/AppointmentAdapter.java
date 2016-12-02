@@ -2,6 +2,7 @@ package com.zzu.ehome.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -67,7 +68,7 @@ public class AppointmentAdapter extends BaseListAdapter<DoctorBean> {
         holder.tv_zc.setText(bean.getDoctor_Title());
         holder.tv_yy.setText(bean.getHosptial_Name());
         holder.tv_ks.setText(bean.getHosptial_office());
-        holder.tv_sc_msg.setText(bean.getDoctor_Specialty());
+        holder.tv_sc_msg.setText(Html.fromHtml(bean.getDoctor_Specialty()));
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

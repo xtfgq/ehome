@@ -556,14 +556,12 @@
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
-        <receiver
+ <receiver
             android:name="com.zzu.ehome.DemoNotificationReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
-                <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
                 <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
-                <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
             </intent-filter>
         </receiver>
 
@@ -573,11 +571,11 @@
 
         <!-- imlib config begin -->
         <!-- 正式服务-->
-        <meta-data
+   <meta-data
             android:name="RONG_CLOUD_APP_KEY"
             android:value="x18ywvqf8xjpc" />
-        <!--&lt;!&ndash;  测试服务&ndash;&gt;-->
-        <!--  <meta-data
+<!--   &lt;!&ndash;&lt;!&ndash;  测试服务&ndash;&gt;&ndash;&gt;-->
+      <!--   <meta-data
                     android:name="RONG_CLOUD_APP_KEY"
                     android:value="e0x9wycfxehzq" />-->
 

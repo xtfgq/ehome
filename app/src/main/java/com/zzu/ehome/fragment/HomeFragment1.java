@@ -235,6 +235,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
             } else {
                 if(CustomApplcation.getInstance().isRead) {
                     readCache();
+                    ReConnetRong();
                 }else {
                     initHomeNotUserId();
                 }
@@ -582,6 +583,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
 //                            confirmExit();
 //                        }
 //                    });
+                    CustomApplcation.getInstance().isOnLine=0;
                     Intent rongyun = new Intent("rongyun");
                     getActivity().sendBroadcast(rongyun);
 
@@ -1199,6 +1201,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                                 UserClientBindChange(rsTemp.getRUserID(), rsTarget.getRUserID(), pos);
                             }
                         });
+                        ReConnetRong();
                     } else {
                         RelationBean date = JsonTools.getData(result.toString(), RelationBean.class);
                         List<RelationDes> list = date.getData();
@@ -1252,6 +1255,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                     org.json.JSONArray array = mySO
                             .getJSONArray("UserRelationshipInquiry");
                     if (array.getJSONObject(0).has("MessageCode")) {
+                        ReConnetRong();
                     } else {
                         RelationBean date = JsonTools.getData(result.toString(), RelationBean.class);
                         List<RelationDes> list = date.getData();
@@ -1427,6 +1431,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                         }else {
                             RongIM.getInstance().setCurrentUserInfo(new UserInfo(userid, name, Uri.parse(head)));
                         }
+                        CustomApplcation.getInstance().isOnLine=1;
                     } else {
                         Toast.makeText(getActivity(), array.getJSONObject(0).getString("MessageContent").toString(),
                                 Toast.LENGTH_SHORT).show();
@@ -1434,6 +1439,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    CustomApplcation.getInstance().isOnLine=0;
                 }
 
             }

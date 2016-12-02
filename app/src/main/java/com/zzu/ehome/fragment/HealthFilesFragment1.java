@@ -1584,9 +1584,9 @@ public class HealthFilesFragment1 extends BaseFragment {
     public String getEdtValue(EditText edt) {
         String str=edt.getText().toString().trim();
         if(!TextUtils.isEmpty(str)){
-            return "其他-" + str;
+            return "其他-" + str+",";
         }
-        return "其他-" +"" ;
+        return "其他-" +"," ;
     }
 
     @Override

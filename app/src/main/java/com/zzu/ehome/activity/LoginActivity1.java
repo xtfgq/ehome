@@ -478,8 +478,10 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                             @Override
                             public void OnSuccess(String userid) {
 //                                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
+
                                 RongIM.getInstance().setCurrentUserInfo(new UserInfo(userid, name, Uri.parse(head)));
                                 RongIM.getInstance().setMessageAttachedUserInfo(true);
+                                CustomApplcation.getInstance().isOnLine=1;
                             }
                         });
 
@@ -490,6 +492,7 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    CustomApplcation.getInstance().isOnLine=0;
                 }
 
             }
