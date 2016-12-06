@@ -44,8 +44,10 @@ import com.zzu.ehome.DemoContext;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.EcgDesActivity;
 import com.zzu.ehome.activity.ExaminationReportActivity;
+import com.zzu.ehome.activity.ExaminationTestActivity;
 import com.zzu.ehome.activity.HealthFilesActivity;
 import com.zzu.ehome.activity.HealthFilesActivity1;
+import com.zzu.ehome.activity.HealthInstructionActivity;
 import com.zzu.ehome.activity.HypertensionActivity;
 import com.zzu.ehome.activity.InspectionReportActivity;
 import com.zzu.ehome.activity.LoginActivity1;
@@ -184,7 +186,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals("refresh")) {
+            if (action.equals("userrefresh")) {
                 if (mList.size() > 0) mList.clear();
                 initDatas();
                 linearLayout.removeAllViews();
@@ -192,7 +194,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                 if (!TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
                     nologin.setVisibility(View.GONE);
                     if (SharePreferenceUtil.getInstance(getActivity()).getUserId().equals(SharePreferenceUtil.getInstance(getActivity()).getHomeId())) {
-                        initHomeFamily();
+                       initHomeFamily();
                     } else {
                         if(CustomApplcation.getInstance().isRead){
                             readCache();
@@ -223,7 +225,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         location();
         initEvent();
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("refresh");
+        intentFilter.addAction("userrefresh");
 
         getActivity().registerReceiver(mRefreshReciver, intentFilter);
 //        EventBus.getDefault().register(this);
@@ -644,16 +646,18 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
 //                    }
 //
 //                } else {
-                if (TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
-                    startActivity(new Intent(getActivity(), LoginActivity1.class));
-                    return;
-                }
-                if(checkCardNo(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
-                    getActivity().startActivity(new Intent(getActivity(), MedicalRecordsActivity.class));
-                    return;
-                }
+
 //                    startActivity(new Intent(getActivity(), LoginActivity1.class));
 //                }
+                //                if (TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
+//                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+//                    return;
+//                }
+//                if(checkCardNo(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
+//                    getActivity().startActivity(new Intent(getActivity(), MedicalRecordsActivity.class));
+//                    return;
+//                }
+                startIntent(getActivity(), HealthInstructionActivity.class);
                 break;
             case R.id.layout_fjyd:
                 startIntent(getActivity(), NearPharmacyActivity.class);
@@ -667,7 +671,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                 if (TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
                     startIntent(getActivity(), LoginActivity1.class);
                 } else {
-                    startIntent(getActivity(), InspectionReportActivity.class);
+                    startIntent(getActivity(), ExaminationTestActivity.class);
                 }
                 break;
             case R.id.layout_tjbg:
@@ -775,24 +779,6 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
             }
         });
 
-//        DialogEnsureCancelView dialogEnsureCancelView = new DialogEnsureCancelView(
-//                getActivity()).setDialogMsg("", "你的账号在其他设备上登陆？", "重新登陆")
-//                .setOnClickListenerEnsure(new View.OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(View v) {
-//
-//
-//
-//                    }
-//                }).setOnClickListenerCancle(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//                    }
-//                });
-//        DialogUtils.showSelfDialog(getActivity(), dialogEnsureCancelView);
-
     }
 
     /**
@@ -812,11 +798,6 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                 getWeather(city);
 
             }
-
-
-
-
-
         public void onReceivePoi(BDLocation poiLocation) {
         }
     }
@@ -960,26 +941,26 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                     CommonUtils.connent(token, new CommonUtils.RongIMListener() {
                         @Override
                         public void OnSuccess(String userid) {
+
                             try {
                                 User dbUser = dao.findUserInfoById(SharePreferenceUtil.getInstance(getActivity()).getUserId());
-                                RongIM.getInstance().refreshUserInfoCache(new UserInfo(dbUser.getUserid(), dbUser.getNick(), Uri.parse(dbUser.getImgHead())));
-                                RongIM.getInstance().setCurrentUserInfo(new UserInfo(dbUser.getUserid(), dbUser.getNick(), Uri.parse(dbUser.getImgHead())));
+//                                RongIM.getInstance().refreshUserInfoCache(new UserInfo(dbUser.getUserid(), dbUser.getNick(), Uri.parse(dbUser.getImgHead())));
+
+                               RongIM.getInstance().setCurrentUserInfo(new UserInfo(dbUser.getUserid(), dbUser.getNick(), Uri.parse(dbUser.getImgHead())));
                                 RongIM.getInstance().setMessageAttachedUserInfo(true);
-                                getDoctorListData("","","");
-                                RongIM.getInstance().getRongIMClient().setConnectionStatusListener(new MyConnectionStatusListener());
+                              RongIM.getInstance().getRongIMClient().setConnectionStatusListener(new MyConnectionStatusListener());
                                 initUnreadCountListener();
                             } catch (Exception e) {
                                 e.printStackTrace();
-                            }
-                        }
+                           }
+                       }
                     });
                 } else {
                     User dbUser = dao.findUserInfoById(SharePreferenceUtil.getInstance(getActivity()).getUserId());
                     RongIM.getInstance().setCurrentUserInfo(new UserInfo(dbUser.getUserid(), dbUser.getNick(), Uri.parse(dbUser.getImgHead())));
                     RongIM.getInstance().setMessageAttachedUserInfo(true);
-                    getDoctorListData("","","");
                     RongIM.getInstance().getRongIMClient().setConnectionStatusListener(new MyConnectionStatusListener());
-                    initUnreadCountListener();
+                   initUnreadCountListener();
                 }
             }
 
@@ -1145,9 +1126,11 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
     }
 
     private void initUnreadCountListener() {
+//        final Conversation.ConversationType[] conversationTypes = {Conversation.ConversationType.PRIVATE, Conversation.ConversationType.DISCUSSION,
+//                Conversation.ConversationType.GROUP, Conversation.ConversationType.SYSTEM,
+//                Conversation.ConversationType.PUBLIC_SERVICE};
         final Conversation.ConversationType[] conversationTypes = {Conversation.ConversationType.PRIVATE, Conversation.ConversationType.DISCUSSION,
-                Conversation.ConversationType.GROUP, Conversation.ConversationType.SYSTEM,
-                Conversation.ConversationType.PUBLIC_SERVICE};
+                Conversation.ConversationType.GROUP};
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -1163,8 +1146,9 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         public void onMessageIncreased(int count) {
             CustomApplcation.getInstance().count = count;
 
-            Intent intenthealth = new Intent("Num");
-            getActivity().sendBroadcast(intenthealth);
+                Intent intenthealth = new Intent("NumRefresh");
+                getActivity().sendBroadcast(intenthealth);
+
         }
     };
 
@@ -1392,7 +1376,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                             de.greenrobot.event.EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
                             linearLayout.changePostion(pos);
                             CustomApplcation.getInstance().isRead=true;
-                            Intent intenthealth = new Intent("refresh");
+                            Intent intenthealth = new Intent("userrefresh");
                             getActivity().sendBroadcast(intenthealth);
                             stopProgressDialog();
                         }
@@ -1488,39 +1472,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
             }
         });
     }
-    public void getDoctorListData(String hosptialId, String title, String goodAt) {
-        requestMaker.MSDoctorInquiry(hosptialId, title, goodAt, new JsonAsyncTask_Info(mContext, true, new JsonAsyncTaskOnComplete() {
-            @Override
-            public void processJsonObject(Object result) {
-                JSONObject mySO = (JSONObject) result;
-                try {
-                    JSONArray array = mySO.getJSONArray("MSDoctorInquiry");
 
-                    if (array.getJSONObject(0).has("MessageCode")) {
-//                        Toast.makeText(getActivity(), array.getJSONObject(0).getString("MessageContent").toString(),
-//                                Toast.LENGTH_SHORT).show();
-                    } else {
-                        List<MSDoctorBean> mDList = new ArrayList<MSDoctorBean>();
-
-                        for (int i = 0; i < array.length(); i++) {
-                            JSONObject json = array.getJSONObject(i);
-                            mDList.add(getDataFromJson(json));
-                            String url=Constants.EhomeURL + mDList.get(i).getImageURL().replace("~", "").replace("\\", "/");
-                            RongIM.getInstance().refreshUserInfoCache(new UserInfo(mDList.get(i).getDoctorID(),mDList.get(i).getDoctorName() , Uri.parse(Constants.EhomeURL + mDList.get(i).getImageURL().replace("~", "").replace("\\", "/"))));
-
-                        }
-
-
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }));
-
-
-    }
     /**
      * 解析json数据
      *

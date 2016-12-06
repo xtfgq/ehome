@@ -300,7 +300,7 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                         getToken(array.getJSONObject(0).getString("UserID"),array.getJSONObject(0).getString("RealName"),Constants.JE_BASE_URL3 + array.getJSONObject(0).getString("PictureURL").replace("~", "").replace("\\", "/"));
                     }
                     CustomApplcation.getInstance().isRead=false;
-                    Intent intenthealth = new Intent("refresh");
+                    Intent intenthealth = new Intent("userrefresh");
                     sendBroadcast(intenthealth);
 
                 } catch (Exception e) {
@@ -380,7 +380,7 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                 dao.updateUserInfo(userOld, userid);
                 mImageLoader.displayImage(
                         imgHead, iv_head);
-                Intent intenthealth = new Intent("refresh");
+                Intent intenthealth = new Intent("userrefresh");
                 sendBroadcast(intenthealth);
                 Log.e("fff", imgHead);
 //                ToastUtils.showMessage(PersonalCenterInfo.this,"vvvvvvvvv");

@@ -3,6 +3,7 @@ package com.zzu.ehome.activity;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.umeng.analytics.MobclickAgent;
+import com.zzu.ehome.DemoContext;
 import com.zzu.ehome.R;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.StepBean;
@@ -199,7 +201,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                                 .getJSONArray("UserClientIDChange");
                         StepDetector.CURRENT_SETP = 0;
                         ToastUtils.showMessage(SettingActivity.this, "退出登陆成功");
+
                         RongIM.getInstance().logout();
+                        RongIM.getInstance().disconnect();
+                        SharedPreferences.Editor edit = DemoContext.getInstance().getSharedPreferences().edit();
+                        edit.putString("DEMO_TOKEN", "");
+                        edit.apply();
+
                         startActivity(new Intent(SettingActivity.this, MainActivity.class));
                         StepBean step = new StepBean();
                         step.setEndTime("");
@@ -211,7 +219,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         SharePreferenceUtil.getInstance(SettingActivity.this).setUserId("");
                         SharePreferenceUtil.getInstance(SettingActivity.this).setHomeId("");
                         EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
-                        Intent intenthealth = new Intent("refresh");
+                        Intent intenthealth = new Intent("userrefresh");
                         sendBroadcast(intenthealth);
                         finishActivity();
 

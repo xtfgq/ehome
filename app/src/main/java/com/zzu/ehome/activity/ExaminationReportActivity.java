@@ -73,30 +73,14 @@ public class ExaminationReportActivity extends BaseActivity {
         layout_none.setVisibility(View.GONE);
         layout_search=(RelativeLayout)findViewById(R.id.layout_search);
         layout_add=(RelativeLayout) findViewById(R.id.layout_add);
-        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "体检报告", new HeadView.OnLeftClickListener() {
+        setDefaultViewMethod(R.mipmap.icon_arrow_left, "体检报告", R.mipmap.icon_add_zoushi, new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
                 finishActivity();
             }
-        });
-    }
-
-    public void initEvent() {
-        layout_search.setOnClickListener(new View.OnClickListener() {
+        }, new HeadView.OnRightClickListener() {
             @Override
-            public void onClick(View v) {
-                dbUser = dao.findUserInfoById(userid);
-                if(dbUser.getUserno()==null|| TextUtils.isEmpty(dbUser.getUserno())){
-                    startActivity(new Intent(ExaminationReportActivity.this,PersonalCenterInfo.class));
-                    return;
-                }
-
-                startActivity(new Intent(ExaminationReportActivity.this, SmartWebView.class));
-            }
-        });
-        layout_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            public void onClick() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
                         showMissingPermissionDialog();
@@ -106,10 +90,40 @@ public class ExaminationReportActivity extends BaseActivity {
                 Intent intent = new Intent(ExaminationReportActivity.this, CreateReportActivity.class);
                 intent.putExtra("ADD","");
                 startActivityForResult(intent, ADD);
-
-
             }
         });
+
+    }
+
+    public void initEvent() {
+//        layout_search.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dbUser = dao.findUserInfoById(userid);
+//                if(dbUser.getUserno()==null|| TextUtils.isEmpty(dbUser.getUserno())){
+//                    startActivity(new Intent(ExaminationReportActivity.this,PersonalCenterInfo.class));
+//                    return;
+//                }
+//
+//                startActivity(new Intent(ExaminationReportActivity.this, SmartWebView.class));
+//            }
+//        });
+//        layout_add.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
+//                        showMissingPermissionDialog();
+//                        return;
+//                    }
+//                }
+//                Intent intent = new Intent(ExaminationReportActivity.this, CreateReportActivity.class);
+//                intent.putExtra("ADD","");
+//                startActivityForResult(intent, ADD);
+//
+//
+//            }
+//        });
 
     }
 

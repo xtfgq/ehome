@@ -83,7 +83,7 @@ public class WeightAndHeightAct extends BaseSimpleActivity implements View.OnCli
                     doWeight(parentId);
                 }
                 CustomApplcation.getInstance().isRead=false;
-                Intent intenthealth1 = new Intent("refresh");
+                Intent intenthealth1 = new Intent("userrefresh");
                 sendBroadcast(intenthealth1);
 
                 break;
@@ -95,7 +95,7 @@ public class WeightAndHeightAct extends BaseSimpleActivity implements View.OnCli
 
                 }
                 CustomApplcation.getInstance().isRead=false;
-                Intent intenthealth = new Intent("refresh");
+                Intent intenthealth = new Intent("userrefresh");
                 sendBroadcast(intenthealth);
 
 

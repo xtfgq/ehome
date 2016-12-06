@@ -122,7 +122,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
         @Override
         public void onReceive(Context context, Intent intent) {
             String action=intent.getAction();
-            if(action.equals("refresh")){
+            if(action.equals("userrefresh")){
                 userid = SharePreferenceUtil.getInstance(getActivity()).getUserId();
                 if(!TextUtils.isEmpty(userid)) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -157,8 +157,8 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                     yp_num.setText(0 + "");
                     tv_yp.setText("药品名：");
                     jibu_num.setText("0");
-//                    tv_time.setText("今天暂无就诊数据");
-//                    tv_address.setText("");
+                    tv_time.setText("今天暂无就诊数据");
+                    tv_address.setText("");
                 }
             }
         }
@@ -173,7 +173,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
         dbUser = dao.findUserInfoById(userid);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("action.Weight");
-        intentFilter.addAction("refresh");
+        intentFilter.addAction("userrefresh");
         getActivity().registerReceiver(mRefrushBroadcastReceiver, intentFilter);
         getActivity().registerReceiver(mRefreshReciver, intentFilter);
         mPermissionsChecker = new PermissionsChecker(getActivity());
@@ -278,7 +278,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                     org.json.JSONArray array = mySO
                             .getJSONArray("HealthDataSearchByDate");
                     getJIbu();
-//                    getTreatmentInquiryLatest(userid, date);
+                    getTreatmentInquiryLatest(userid, date);
                     stopProgressDialog();
 
                     if (array.getJSONObject(0).has("MessageCode")) {

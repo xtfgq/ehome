@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,7 +18,11 @@ import android.widget.RadioGroup;
 import android.widget.TableLayout;
 
 import com.zzu.ehome.R;
+import com.zzu.ehome.activity.AddSuccussAct;
+import com.zzu.ehome.activity.RegisterFinishAct;
+import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.bean.HealthFiles;
+import com.zzu.ehome.main.ehome.MainActivity;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -33,6 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.lzy.okgo.utils.OkLogger.tag;
+
 /**
  * Created by Mersens on 2016/7/27.
  */
@@ -40,6 +47,7 @@ public class HealthFilesFragment1 extends BaseFragment {
     private View mView;
     private Button btn_save;
     private RadioButton weiHunCheck, jieHunCheck, liHunCheck, sangOuCheck;
+    private static String tagfile="";
 
     private RadioGroup maritalStatus_group, medicineAllergy_group, pastMedicalHistory_group,
             familyMedicalhistory_father_group, familyMedicalhistory_mother_group,
@@ -1247,8 +1255,15 @@ public class HealthFilesFragment1 extends BaseFragment {
                     JSONArray array = mySO.getJSONArray("BaseDataInsert");
                     if (array.getJSONObject(0).getString("MessageCode")
                             .equals("0")) {
-                        ToastUtils.showMessage(getActivity(), array.getJSONObject(0).getString("MessageContent"));
-                        getActivity().finish();
+                        if(TextUtils.isEmpty(tagfile)) {
+                            ToastUtils.showMessage(getActivity(), array.getJSONObject(0).getString("MessageContent"));
+                            getActivity().finish();
+                        }else{
+                            CustomApplcation.getInstance().finishSingleActivityByClass(RegisterFinishAct.class);
+                            Intent i=new Intent(getActivity(), MainActivity.class);
+                            i.putExtra("Home","Home");
+                            getActivity().startActivity(i);
+                        }
                     } else
                         ToastUtils.showMessage(getActivity(), array.getJSONObject(0).getString("MessageContent"));
                 } catch (JSONException e) {
@@ -1571,11 +1586,13 @@ public class HealthFilesFragment1 extends BaseFragment {
         }
     }
 
-    public static Fragment getInstance(String id, String type, HealthFiles hf) {
+    public static Fragment getInstance(String id, String type, HealthFiles hf,String tag) {
         userid = id;
         stype = type;
         HealthFilesFragment1 fragment=  new HealthFilesFragment1();
+        tagfile=tag;
         Bundle bundle=new Bundle();
+
         bundle.putSerializable("healthfiles",hf);
         fragment.setArguments(bundle);
         return fragment;

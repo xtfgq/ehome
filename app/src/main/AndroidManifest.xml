@@ -110,7 +110,7 @@
         <activity android:name=".activity.MyReportActivity" />
 
         <activity android:name="activity.MedicalRecordsActivity" />
-
+        <activity android:name=".activity.ExaminationTestActivity" />
         <activity
             android:name=".activity.HypertensionActivity"
             android:theme="@style/AppTheme" />
@@ -145,6 +145,7 @@
         <activity
             android:name=".activity.SmokeStateActivity"
             android:theme="@style/mydialog" />
+
         <activity
             android:name=".activity.SelectHospitalActivity"
             android:theme="@style/mydialog" />
@@ -153,7 +154,7 @@
         <activity
             android:name=".activity.SelectItemActivity"
             android:theme="@style/mydialog" />
-
+        <activity android:name=".activity.HealthInstructionActivity" />
         <!-- 个推SDK配置开始 -->
         <!-- 配置的第三方参数属性 -->
         <meta-data

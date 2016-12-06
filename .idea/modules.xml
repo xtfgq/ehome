@@ -6,11 +6,8 @@
       <module fileurl="file://$PROJECT_DIR$/StickyListHeaders_lib/StickyListHeaders_lib.iml" filepath="$PROJECT_DIR$/StickyListHeaders_lib/StickyListHeaders_lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/eh3.iml" filepath="$PROJECT_DIR$/eh3.iml" />
-      <module fileurl="file://$PROJECT_DIR$/homelib/homelib.iml" filepath="$PROJECT_DIR$/homelib/homelib.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
-      <module fileurl="file://$PROJECT_DIR$/okhttp_lib/okhttp_lib.iml" filepath="$PROJECT_DIR$/okhttp_lib/okhttp_lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/percent/percent.iml" filepath="$PROJECT_DIR$/percent/percent.iml" />
-      <module fileurl="file://$PROJECT_DIR$/shortcut_lib/shortcut_lib.iml" filepath="$PROJECT_DIR$/shortcut_lib/shortcut_lib.iml" />
     </modules>
   </component>
 </project>

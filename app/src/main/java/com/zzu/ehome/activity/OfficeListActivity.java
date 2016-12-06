@@ -62,11 +62,13 @@ public class OfficeListActivity extends BaseActivity {
     }
 
     private void getSub(String id) {
+        startProgressDialog();
         requestMaker.HospitalDepertByTopmd(id, "All", new JsonAsyncTask_Info(
                 OfficeListActivity.this, true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
                 String rs = result.toString();
+
                 try {
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO
@@ -74,8 +76,10 @@ public class OfficeListActivity extends BaseActivity {
                     if (array.getJSONObject(0).has("MessageCode")) {
 //                        Toast.makeText(OfficeListActivity.this, array.getJSONObject(0).getString("MessageContent").toString(),
 //                                Toast.LENGTH_SHORT).show();
+                        stopProgressDialog();
                         show("暂无数据");
                     } else {
+                        stopProgressDialog();
                         DepDateTemp date = JsonTools.getData(result.toString(), DepDateTemp.class);
                         List<DepTempBean> mList = date.getData();
                         for (DepTempBean bean : mList) {
@@ -118,6 +122,8 @@ public class OfficeListActivity extends BaseActivity {
 
                     }
                 } catch (Exception e) {
+                    stopProgressDialog();
+                    show("暂无数据");
                     e.printStackTrace();
                 }
 

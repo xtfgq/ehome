@@ -1246,11 +1246,11 @@ public class RequestMaker {
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.BloodRoutineInsert, Constants.BloodRoutineInsert,
                 SOAP_URL, paramMap);
     }
-    public void OCRRecordInquiry(String CardNO,String PageIndex,String PageSize,JsonAsyncTask_Info task) {
+    public void OCRRecordInquiry(String CardNO,String fromto,String PageIndex,String PageSize,JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
-        String str = "<Request><CardNO>%s</CardNO><PageIndex>%s</PageIndex><PageSize>%s</PageSize></Request>";
+        String str = "<Request><CardNO>%s</CardNO><FromTo>%s</FromTo><PageIndex>%s</PageIndex><PageSize>%s</PageSize></Request>";
         str = String.format(str, new Object[]
-                {CardNO,PageIndex,PageSize});
+                {CardNO,fromto,PageIndex,PageSize});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.OCRRecordInquiry, Constants.OCRRecordInquiry,
                 SOAP_URL, paramMap);

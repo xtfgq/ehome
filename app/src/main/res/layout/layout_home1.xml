@@ -7,7 +7,7 @@
 
     android:orientation="vertical">
 
-   <View
+<View
         android:id="@+id/v_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
@@ -88,13 +88,13 @@
                             <ImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:src="@mipmap/addfile" />
+                                android:src="@mipmap/icon_zhidao" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="8dp"
-                                android:text="就诊记录"
+                                android:text="健康指导"
                                 android:textColor="#272031"
                                 android:textSize="@dimen/text_size_normal" />
                         </LinearLayout>
@@ -265,15 +265,47 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                    <RelativeLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:background="@color/base_color_text_white"
+                        >
+                        <ImageView
+                            android:id="@+id/ivcircle"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_marginLeft="7dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/icon_circle"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_toRightOf="@+id/ivcircle"
+                            android:text="社区互联网医院服务"
+                            android:textSize="11sp"
+                            android:textColor="#AAA8AF"/>
+                    </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+                    android:background="#e5e5ea"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="156dp"
-                    android:layout_marginTop="10dp"
                     android:background="@color/base_color_text_white"
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:id="@+id/layout_yygh"
+                        android:id="@+id/layout_free_consultation"
+
                         android:layout_width="156dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -283,7 +315,8 @@
                             android:layout_width="46dp"
                             android:layout_height="46dp"
                             android:layout_marginBottom="8dp"
-                            android:src="@drawable/icon_yuyue" />
+                            android:src="@mipmap/icon_wangluo"
+                           />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -296,7 +329,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="名医在线 极速挂号"
+                            android:text="预约在线 视频问诊"
                             android:textColor="#BEB7C7"
                             android:textSize="14sp" />
 
@@ -315,7 +348,7 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:id="@+id/layout_srys"
+                            android:id="@+id/layout_jcbg"
                             android:layout_width="match_parent"
                             android:layout_height="64dp"
                             android:gravity="center"
@@ -329,14 +362,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="私人医生"
                                     android:textColor="#272031"
-                                    android:textSize="14sp" />
+                                    android:textSize="14sp"
+                                    android:text="轻体检" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="专属医生 贴心服务"
+                                    android:text="智能健康 自助检查"
                                     android:textColor="#BEB7C7"
                                     android:textSize="12sp" />
 
@@ -346,11 +379,12 @@
                                 android:layout_width="36dp"
                                 android:layout_height="36dp"
                                 android:layout_marginLeft="8dp"
-                                android:src="@drawable/icon_doctor_de" />
+
+                                android:src="@mipmap/icon_report_jc" />
 
 
-                        </LinearLayout>
 
+                    </LinearLayout>
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
@@ -364,7 +398,7 @@
                             android:orientation="horizontal">
 
                             <LinearLayout
-                                android:id="@+id/layout_free_consultation"
+                              android:id="@+id/layout_xdbg"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -375,20 +409,20 @@
                                     android:layout_width="34dp"
                                     android:layout_height="34dp"
                                     android:layout_marginBottom="4dp"
-                                    android:src="@mipmap/icon_wangluo" />
+                                    android:src="@drawable/icon_report_xd"  />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="2dp"
-                                    android:text="网络门诊"
+                                    android:text="心电检查"
                                     android:textColor="#272031"
                                     android:textSize="14sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="预约视频问诊"
+                                    android:text="心电检查,在线分析"
                                     android:textColor="#BEB7C7"
                                     android:textSize="12sp" />
                             </LinearLayout>
@@ -424,7 +458,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="查看身边药店"
+                                    android:text="身边药店随身查"
                                     android:textColor="#BEB7C7"
                                     android:textSize="12sp" />
 
@@ -434,16 +468,46 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-
+                <RelativeLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@color/base_color_text_white"
+                    >
+                    <ImageView
+                        android:id="@+id/ivcircle2"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginLeft="7dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/icon_circle"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/ivcircle2"
+                        android:text="实体医院服务"
+                        android:textSize="11sp"
+                        android:textColor="#AAA8AF"/>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
+                    android:background="#e5e5ea"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="156dp"
-                    android:layout_marginTop="10dp"
+
                     android:background="@color/base_color_text_white"
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:id="@+id/layout_jcbg"
+                        android:id="@+id/layout_yygh"
                         android:layout_width="156dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -453,20 +517,20 @@
                             android:layout_width="46dp"
                             android:layout_height="46dp"
                             android:layout_marginBottom="8dp"
-                            android:src="@drawable/icon_report_jc" />
+                            android:src="@drawable/icon_yuyue" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="4dp"
-                            android:text="检查报告"
+                            android:text="预约挂号"
                             android:textColor="#272031"
                             android:textSize="16sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="血液 尿液检查化验"
+                            android:text="三甲医院专家"
                             android:textColor="#BEB7C7"
                             android:textSize="14sp" />
 
@@ -507,7 +571,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="体检报告查询管理"
+                                    android:text="历史体检报告记录管理"
                                     android:textColor="#BEB7C7"
                                     android:textSize="12sp" />
 
@@ -529,7 +593,8 @@
                             android:background="#e5e5ea" />
 
                         <LinearLayout
-                            android:id="@+id/layout_xdbg"
+                            android:id="@+id/layout_srys"
+
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
@@ -544,14 +609,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="心电报告"
+                                    android:text="私人医生"
                                     android:textColor="#272031"
                                     android:textSize="14sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="心电报告查询管理"
+                                    android:text="慢病专家在线问答"
                                     android:textColor="#BEB7C7"
                                     android:textSize="12sp" />
 
@@ -561,7 +626,7 @@
                                 android:layout_width="36dp"
                                 android:layout_height="36dp"
                                 android:layout_marginLeft="8dp"
-                                android:src="@drawable/icon_report_xd" />
+                                android:src="@drawable/icon_doctor_de" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

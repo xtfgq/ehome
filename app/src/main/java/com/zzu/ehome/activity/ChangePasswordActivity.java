@@ -260,7 +260,7 @@ public class ChangePasswordActivity extends BaseActivity {
                         SharePreferenceUtil.getInstance(ChangePasswordActivity.this).setUserId("");
                         SharePreferenceUtil.getInstance(ChangePasswordActivity.this).setHomeId("");
                         startActivity(new Intent(ChangePasswordActivity.this,LoginActivity1.class));
-                        Intent intenthealth = new Intent("refresh");
+                        Intent intenthealth = new Intent("userrefresh");
                         sendBroadcast(intenthealth);
                         finishActivity();
 

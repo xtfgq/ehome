@@ -8,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -23,7 +25,10 @@ import com.zzu.ehome.view.HeadView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zzu.ehome.R.id.scrollView2;
+import static com.zzu.ehome.R.id.textView;
 import static com.zzu.ehome.R.id.tv;
+import static com.zzu.ehome.R.id.view;
 
 /**
  * Created by Administrator on 2016/9/8.
@@ -39,6 +44,7 @@ public class YYJLDesActivity extends BaseActivity {
     private RecyclerView resultRecyclerView;
     private MedicationRecord record;
     private GridAdapter mAdapter;
+    private ScrollView scrollViewDes;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -62,6 +68,7 @@ public class YYJLDesActivity extends BaseActivity {
         tvnumber = (TextView) findViewById(R.id.tvnum);
         editText_bz = (TextView) findViewById(R.id.editText_bz);
         tvwordnumber = (TextView) findViewById(R.id.tvwordnumber);
+        scrollViewDes=(ScrollView)findViewById(R.id.scrollView2);
         record = (MedicationRecord) mIntent.getSerializableExtra("YYJLRecords");
         resultRecyclerView = (RecyclerView) findViewById(R.id.result_recycler);
 
@@ -74,7 +81,18 @@ public class YYJLDesActivity extends BaseActivity {
         edt_time.setText((record.getMedicationTime()).split(" ")[0]);
         editText_bz.setText(record.getRemarks().replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&").replace("(null)",""));
         editText_bz.setMovementMethod(ScrollingMovementMethod.getInstance());
+        editText_bz.setOnTouchListener(new View.OnTouchListener() {
 
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    scrollViewDes.requestDisallowInterceptTouchEvent(false);
+                }else{
+                    scrollViewDes.requestDisallowInterceptTouchEvent(true);
+                }
+                return false;
+            }
+        });
         String imgstr = record.getDrugImage();
         List<String> mList = new ArrayList<String>();
         if (imgstr.indexOf(",") >= 0) {
@@ -94,6 +112,8 @@ public class YYJLDesActivity extends BaseActivity {
         resultRecyclerView.setLayoutManager(new GridLayoutManager(YYJLDesActivity.this, 3));
         resultRecyclerView.setAdapter(mAdapter);
     }
+
+
 
     private class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
         private Context mContext;

@@ -277,7 +277,7 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                                     upload(SharePreferenceUtil.getInstance(LoginActivity1.this).getPARENTID(), array.getJSONObject(0).getString("UserID"));
                                     SharePreferenceUtil.getInstance(LoginActivity1.this).setUserId(array.getJSONObject(0).getString("UserID"));
                                     EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
-                                    Intent intenthealth = new Intent("refresh");
+                                    Intent intenthealth = new Intent("userrefresh");
                                     sendBroadcast(intenthealth);
                                     startActivity(new Intent(LoginActivity1.this,MainActivity.class));
                                     finish();
@@ -292,10 +292,10 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                                 if(array.getJSONObject(0).has("UserNO")){
                                     getJIbu(array.getJSONObject(0).getString("UserNO"),array.getJSONObject(0).getString("UserID"));
                                 }
-                                Intent intenthealth = new Intent("refresh");
+                                Intent intenthealth = new Intent("userrefresh");
                                  sendBroadcast(intenthealth);
-                                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
-                                SharePreferenceUtil.getInstance(LoginActivity1.this).setHomeId(array.getJSONObject(0).getString("UserID"));
+//                                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
+                               SharePreferenceUtil.getInstance(LoginActivity1.this).setHomeId(array.getJSONObject(0).getString("UserID"));
                                 finish();
                             }
                             SharePreferenceUtil.getInstance(LoginActivity1.this).setIsFirst(true);

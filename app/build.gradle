@@ -62,7 +62,6 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile project(':shortcut_lib')
     compile files('libs/ShareSDK-QQ-2.7.8.jar')
     compile files('libs/ShareSDK-Core-2.7.8.jar')
     compile files('libs/ShareSDK-QZone-2.7.8.jar')
@@ -74,9 +73,9 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-Moments-2.7.8.jar')
     compile files('libs/MobTools-2016.1020.1028.jar')
     compile files('libs/MobCommons-2016.1020.1028.jar')
-    compile files('libs/MiPush_SDK_Client_2_2_21.jar')
-    compile files('libs/Hw.jar')
     compile 'com.lovedise:permissiongen:0.0.6'
-
+    compile 'com.lzy.net:okgo:2.1.3'
+    compile 'com.lzy.net:okrx:0.1.2'
+    compile 'com.lzy.net:okserver:1.1.2'
     compile project(':Rong_Cloud_Android_IMKit_SDK_v2_7_3_stable')
 }

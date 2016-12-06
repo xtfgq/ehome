@@ -57,7 +57,7 @@ public class MessageFragment extends BaseFragment {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            if (action.equals("Num")&&mList.size()>0) {
+            if (action.equals("NumRefresh")&&mList.size()>0) {
                 mList.get(1).setNum(CustomApplcation.getInstance().count);
                 messageAdapter = new MessageAdapter(getActivity(), mList);
                 listView.setAdapter(messageAdapter);

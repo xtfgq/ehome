@@ -110,8 +110,6 @@ public class MyRemindActivity1 extends BaseActivity {
                                     case 0:
                                         createMenu1(menu);
                                         break;
-
-
                                 }
                             }
 

@@ -151,7 +151,7 @@ private String code,value;
                                         dbUser.setOrder(orders);
                                         dao.updateUserInfo(dbUser,userid);
                                         CustomApplcation.getInstance().isRead=false;
-                                        Intent intenthealth = new Intent("refresh");
+                                        Intent intenthealth = new Intent("userrefresh");
                                         sendBroadcast(intenthealth);
                                     }
 

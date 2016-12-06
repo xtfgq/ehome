@@ -16,6 +16,7 @@ import com.zzu.ehome.bean.ResultContent;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -64,20 +65,29 @@ public class InspectionReportActivity extends BaseActivity {
 
 
     public void initViews() {
+        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "血常规检查报告", new HeadView.OnLeftClickListener() {
+            @Override
+            public void onClick() {
 
-        setDefaultViewMethod(R.mipmap.icon_arrow_left, "检查报告", R.drawable.icon_ocr, new HeadView.OnLeftClickListener() {
-            @Override
-            public void onClick() {
-                finishActivity();
-            }
-        }, new HeadView.OnRightClickListener() {
-            @Override
-            public void onClick() {
-//                showTabs();
-                startActivity(new Intent(InspectionReportActivity.this,SelectOCRHosActivity.class));
+
+                    finishActivity();
 
             }
         });
+
+//        setDefaultViewMethod(R.mipmap.icon_arrow_left, "检查报告", new HeadView.OnLeftClickListener() {
+//            @Override
+//            public void onClick() {
+//                finishActivity();
+//            }
+//        }, new HeadView.OnRightClickListener() {
+//            @Override
+//            public void onClick() {
+////                showTabs();
+//                startActivity(new Intent(InspectionReportActivity.this,SelectOCRHosActivity.class));
+//
+//            }
+//        });
         pulltorefreshlayout = (PullToRefreshLayout) findViewById(R.id.refresh_view);
 
         listView = (ListView) findViewById(R.id.listView);
@@ -112,7 +122,7 @@ public class InspectionReportActivity extends BaseActivity {
                 Intent i = new Intent(InspectionReportActivity.this, InspectionReportDetailActivity.class);
                 i.putExtra("Type", mList.get(position).getOCRType());
                 i.putExtra("RecordID", mList.get(position).getID());
-                i.putExtra("Title", mList.get(position).getOCRTypeName());
+                i.putExtra("Title", DateUtils.StringPattern(mList.get(position).getCreatedDate(), "yyyy/MM/dd HH:mm:ss", "yyyy-MM-dd"));
                 startActivity(i);
             }
         });
@@ -154,7 +164,7 @@ public class InspectionReportActivity extends BaseActivity {
 
     public void initDatas() {
         dbUser = dao.findUserInfoById(usrid);
-        requestMaker.OCRRecordInquiry(dbUser.getUserno(), page + "", 10 + "", new JsonAsyncTask_Info(InspectionReportActivity.this, true, new JsonAsyncTaskOnComplete() {
+        requestMaker.OCRRecordInquiry(dbUser.getUserno(), "04",page + "", 10 + "", new JsonAsyncTask_Info(InspectionReportActivity.this, true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
                 try {
@@ -176,7 +186,7 @@ public class InspectionReportActivity extends BaseActivity {
                             rc.setOCRType(arraySub.getJSONObject(i).getString("OCRType"));
                             rc.setOCRTypeName(arraySub.getJSONObject(i).getString("OCRTypeName"));
                             rc.setRownumber(arraySub.getJSONObject(i).getString("rownumber"));
-                            rc.setFromto(arraySub.getJSONObject(i).getString("Fromto"));
+//                            rc.setFromto(arraySub.getJSONObject(i).getString("Fromto"));
                             mList.add(rc);
                         }
                         if (isFirst) {

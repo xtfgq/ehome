@@ -80,7 +80,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         @Override
         public void onReceive(Context context, Intent intent) {
             String action=intent.getAction();
-            if(action.equals("refresh")){
+            if(action.equals("userrefresh")){
                 userid = SharePreferenceUtil.getInstance(getActivity()).getUserId();
                 initDatas();
             }
@@ -92,7 +92,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("refresh");
+        intentFilter.addAction("userrefresh");
         getActivity().registerReceiver(mRefreshReciver, intentFilter);
         return inflater.inflate(R.layout.layout_user_center, null);
     }

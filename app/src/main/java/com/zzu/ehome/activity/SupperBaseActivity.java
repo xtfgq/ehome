@@ -392,7 +392,7 @@ public abstract class SupperBaseActivity extends FragmentActivity {
                         dao.updateStep(step);
                         SharePreferenceUtil.getInstance(CustomApplcation.getInstance()).setUserId("");
                         SharePreferenceUtil.getInstance(CustomApplcation.getInstance()).setIsRemeber(false);
-                        Intent intenthealth = new Intent("refresh");
+                        Intent intenthealth = new Intent("userrefresh");
                         sendBroadcast(intenthealth);
                         Intent i = new Intent(CustomApplcation.getInstance(), LoginActivity1.class);
                         i.putExtra("logout", "logout");

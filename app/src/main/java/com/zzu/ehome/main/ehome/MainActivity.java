@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.igexin.sdk.PushManager;
 import com.umeng.analytics.MobclickAgent;
-import com.xys.badge_lib.BadgeUtil;
+
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.BaseSimpleActivity;
 import com.zzu.ehome.activity.LoginActivity1;
@@ -93,17 +93,12 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
                 setTab(index);
                 selectCommitItem(index);
             }
-            if(action.equals("Num")){
+            if(action.equals("NumRefresh")){
                 if (CustomApplcation.getInstance().count == 0) {
                     tv_dot.setVisibility(View.GONE);
-
-                    BadgeUtil.resetBadgeCount(MainActivity.this,R.drawable.push);
                 }else if (CustomApplcation.getInstance().count > 0 && CustomApplcation.getInstance().count < 100) {
                     tv_dot.setVisibility(View.VISIBLE);
-
                     tv_dot.setText(CustomApplcation.getInstance().count + "");
-
-                    BadgeUtil.setBadgeCount(MainActivity.this, CustomApplcation.getInstance().count,R.drawable.push);
                 }
 
 
@@ -228,7 +223,7 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
         intentFilter.addAction("action.DateOrFile");
         intentFilter.addAction("PrivateDoctor");
         intentFilter.addAction("Health");
-        intentFilter.addAction("Num");
+        intentFilter.addAction("NumRefresh");
         registerReceiver(mDateOrFileBroadcastReceiver, intentFilter);
         if(null!=savedInstanceState){
             resetFragmet(savedInstanceState);

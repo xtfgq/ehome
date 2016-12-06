@@ -11,11 +11,8 @@
             <option value="$PROJECT_DIR$/Rong_Cloud_Android_IMKit_SDK_v2_7_3_stable" />
             <option value="$PROJECT_DIR$/StickyListHeaders_lib" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/homelib" />
             <option value="$PROJECT_DIR$/library" />
-            <option value="$PROJECT_DIR$/okhttp_lib" />
             <option value="$PROJECT_DIR$/percent" />
-            <option value="$PROJECT_DIR$/shortcut_lib" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

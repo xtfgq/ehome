@@ -16,6 +16,7 @@ public class HealthFilesActivity extends BaseActivity {
     private String usrid;
     private String type=null;
     private HealthFiles hf=null;
+    private String tag="";
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -24,6 +25,7 @@ public class HealthFilesActivity extends BaseActivity {
         Bundle bundle=getIntent().getExtras();
         usrid=bundle.getString("UserId");
         type=bundle.getString("type");
+        tag=bundle.getString("TagFile");
         hf=(HealthFiles) bundle.getSerializable(HealthFilesActivity1.HEALTHFILES);
         initViews();
         initEvent();
@@ -46,7 +48,7 @@ public class HealthFilesActivity extends BaseActivity {
     public void initDatas() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.fragment_container, HealthFilesFragment1.getInstance(usrid,type,hf)).commit();
+        ft.replace(R.id.fragment_container, HealthFilesFragment1.getInstance(usrid,type,hf,tag)).commit();
     }
 
 }

@@ -40,7 +40,8 @@
         <ScrollView
             android:id="@+id/rfushsv"
             android:layout_width="fill_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/back_color">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -180,11 +181,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:background="@color/base_color_text_white"
+
                     android:orientation="vertical">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
+                        android:background="@color/base_color_text_white"
                         android:layout_height="wrap_content">
 
                         <ImageView
@@ -224,12 +226,12 @@
                         android:id="@+id/tv_sc"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp"
+                      android:paddingRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
                         android:ellipsize="end"
                         android:lineSpacingExtra="3dp"
-
+                        android:background="@color/base_color_text_white"
                         android:textSize="14sp" />
 
                     <include
@@ -237,8 +239,9 @@
                         layout="@layout/layout_more"
                         android:visibility="gone" />
 
-                </LinearLayout>
 
+
+                </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="70dp" />

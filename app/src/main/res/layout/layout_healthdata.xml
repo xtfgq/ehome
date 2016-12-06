@@ -564,15 +564,16 @@
                     android:layout_marginLeft="4dp"
                     android:src="@mipmap/icon_xueya_date" />
             </LinearLayout>
-            <View
+           <!-- <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#cccccc" />
+                android:background="#cccccc" />-->
 
             <LinearLayout
                 android:id="@+id/layout_ls"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -666,6 +667,7 @@
                 android:id="@+id/layout_dgc"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -839,7 +841,7 @@
                 android:id="@+id/layout_jl"
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
-                android:visibility="gone"
+
                 android:orientation="horizontal">
 
                 <LinearLayout

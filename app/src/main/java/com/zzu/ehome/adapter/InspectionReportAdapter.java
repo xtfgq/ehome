@@ -38,30 +38,30 @@ public class InspectionReportAdapter  extends BaseListAdapter<ResultContent>{
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = getInflater().inflate(R.layout.ocr2_item, null);
-            holder.name = (TextView) convertView.findViewById(R.id.tv_title);
+//            holder.name = (TextView) convertView.findViewById(R.id.tv_title);
             holder.tvtime = (TextView) convertView.findViewById(R.id.tv_time);
-            holder.ivocr=(ImageView)convertView.findViewById(R.id.ivocr);
+//            holder.ivocr=(ImageView)convertView.findViewById(R.id.ivocr);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.name.setText(item.getOCRTypeName());
+//        holder.name.setText(item.getOCRTypeName());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        holder.tvtime.setText(DateUtils.StringPattern(item.getCreatedDate(), "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd"));
-        if(Integer.valueOf(item.getFromto())==2){
-            holder.ivocr.setVisibility(View.VISIBLE);
-        }else{
-            holder.ivocr.setVisibility(View.INVISIBLE);
-        }
+        holder.tvtime.setText(DateUtils.StringPattern(item.getCreatedDate(), "yyyy/MM/dd HH:mm:ss", "yyyy-MM-dd"));
+//        if(Integer.valueOf(item.getFromto())==2){
+//            holder.ivocr.setVisibility(View.VISIBLE);
+//        }else{
+//            holder.ivocr.setVisibility(View.INVISIBLE);
+//        }
         return convertView;
     }
 
 
     public class ViewHolder {
 
-        private TextView name;
+//        private TextView name;
         private TextView tvtime;
-        private ImageView ivocr;
+//        private ImageView ivocr;
 
     }
 
