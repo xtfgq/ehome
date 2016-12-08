@@ -44,6 +44,7 @@ import com.zzu.ehome.utils.ImageUtil;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
+import com.zzu.ehome.utils.ScreenUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.SharePopupWindow;
@@ -74,7 +75,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     private View vTop;
     private String type=null;
     private SharePopupWindow share;
-    private RelativeLayout layout_wdys;
+    private RelativeLayout layout_wdys,rlusertop;
     private BroadcastReceiver mRefreshReciver=new BroadcastReceiver() {
 
         @Override
@@ -144,6 +145,12 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                 tv_mydoctor);
         layout_wdys=(RelativeLayout)mView.findViewById(R.id.layout_wdys);
         tv_edit=(TextView)mView.findViewById(R.id.tv_edit);
+        rlusertop=(RelativeLayout)mView.findViewById(R.id.rlusertop);
+        ViewGroup.LayoutParams para;
+        para =  rlusertop.getLayoutParams();
+        para.width = ScreenUtils.getScreenWidth(getActivity());
+        para.height = para.width*20/75;
+        rlusertop.setLayoutParams(para);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int h = CommonUtils.getStatusHeight(getActivity());
             ViewGroup.LayoutParams params = vTop.getLayoutParams();

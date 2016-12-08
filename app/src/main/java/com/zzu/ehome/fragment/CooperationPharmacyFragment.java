@@ -31,6 +31,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zzu.ehome.R.id.tvnodate;
+
 
 /**
  * Created by Mersens on 2016/8/17.
@@ -51,6 +53,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
     private boolean isLoading=false;
     public static String ID="id";
     private LinearLayout layout_no_msg;
+    private TextView  tvnodate;
 
 
 
@@ -77,6 +80,8 @@ public class CooperationPharmacyFragment extends BaseFragment {
         mListView=(ListView)mView.findViewById(R.id.lilstView);
         layout_no_msg=(LinearLayout)mView.findViewById(R.id.layout_no_msg);
         pulltorefreshlayout = (PullToRefreshLayout) mView.findViewById(R.id.refresh_view);
+        tvnodate=(TextView)mView.findViewById(R.id.tvnodate);
+        tvnodate.setText("正在签约中...");
         mListView.setAdapter(adapter);
     }
 

@@ -21,17 +21,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <View
+                android:layout_height="50dp"
+                android:layout_width="match_parent"
+                android:background="@drawable/bg_user_top"
+                />
 
             <RelativeLayout
+                android:id="@+id/rlusertop"
                 android:layout_width="match_parent"
-                android:layout_height="124dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/bg_user">
 
                 <FrameLayout
                     android:layout_width="67dp"
                     android:layout_height="67dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true">
+                   android:layout_centerInParent="true">
 
                     <com.zzu.ehome.view.CircleImageView
                         android:id="@+id/icon_user"

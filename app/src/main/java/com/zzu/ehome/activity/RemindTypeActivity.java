@@ -61,6 +61,10 @@ public class RemindTypeActivity extends BaseActivity {
                 pos = position;
                 mList.get(position).setSelct(true);
                 mAdapter.notifyDataSetChanged();
+                Intent intent = new Intent();
+                intent.putExtra("Type", type[pos]);
+                setResult(AddRemindActivity.ADD_TYPE, intent);
+                finish();
             }
         });
     }
@@ -79,6 +83,10 @@ public class RemindTypeActivity extends BaseActivity {
         listView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
     }
+
+
+
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -71,6 +71,7 @@ public class BloodPressureFragment extends BaseFragment {
     private int pbvalue, pbvalue2;
     private EHomeDao dao;
     private User dbUser;
+    int level=0;
 
     @Nullable
     @Override
@@ -195,7 +196,7 @@ public class BloodPressureFragment extends BaseFragment {
                     return;
                 }
                 btnsave.setEnabled(false);
-                requestMaker.BloodPressureInsert(cardNo,userid,ssy + "", szy + "", mb + "", chtime, new JsonAsyncTask_Info(
+                requestMaker.BloodPressureInsert(cardNo,userid,ssy + "", szy + "", mb + "", chtime, level+"",new JsonAsyncTask_Info(
                         getActivity(), true, new JsonAsyncTaskOnComplete() {
                     public void processJsonObject(Object result) {
                         String value = result.toString();
@@ -343,18 +344,22 @@ public class BloodPressureFragment extends BaseFragment {
             case 1:
                 iv.setImageResource(R.drawable.pic_circle_g_b);
                 tv.setText("血压正常");
+                level=0;
                 break;
             case 2:
                 iv.setImageResource(R.drawable.pic_circle_g_y);
                 tv.setText("高血压一期");
+                level=1;
                 break;
             case 3:
                 iv.setImageResource(R.drawable.pic_circle_org_b);
                 tv.setText("高血压二期");
+                level=2;
                 break;
             case 4:
                 iv.setImageResource(R.drawable.pic_circle_o_r);
                 tv.setText("高血压三期");
+                level=3;
                 break;
 
         }

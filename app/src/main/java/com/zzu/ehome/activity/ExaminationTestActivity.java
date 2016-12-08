@@ -62,6 +62,10 @@ public class ExaminationTestActivity extends BaseActivity{
                         startActivity(new Intent(ExaminationTestActivity.this, InspectionReportActivity.class));
 
                         break;
+//                    case 2:
+//                        startActivity(new Intent(ExaminationTestActivity.this, BiochemicalReportActivity.class));
+//
+//                        break;
 
                 }
             }

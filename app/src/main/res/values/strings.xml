@@ -26,7 +26,7 @@
     <string name="set_pass_again">重新设置密码(6位以上)</string>
     <string name="input_pass">输入密码</string>
     <string name="tv_home">首页</string>
-    <string name="tv_health">健康</string>
+    <string name="tv_health">记录</string>
     <string name="tv_doctor">问医</string>
     <string name="tv_msg">消息</string>
     <string name="tv_about">\u3000\u3000健康E家是个人健康数据服务专家，记录分析个人和全家日常健康指标，让历史体检报告可数字化管理，记录在社区互联网医院的各类检查，常规心电和24小时心电社区检查，三甲医院远程诊断，预约实体医院挂号，足不出社区即向三甲医院网络远程问诊，更有慢性病私人医生的咨询服务，哇，真是健康一家啊！</string>

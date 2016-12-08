@@ -74,7 +74,7 @@ public class InspectionReportDetailActivity extends BaseActivity {
             @Override
             public void processJsonObject(Object result) {
                 try {
-                    Log.e("tag00",result.toString());
+
                     JSONObject mySO = (JSONObject) result;
                     org.json.JSONArray array = mySO
                             .getJSONArray("BloodRoutineInquiry");

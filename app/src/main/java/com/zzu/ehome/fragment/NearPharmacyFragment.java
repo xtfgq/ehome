@@ -37,6 +37,8 @@ import com.zzu.ehome.view.PullToRefreshLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zzu.ehome.R.id.tvnodate;
+
 /**
  * Created by Mersens on 2016/8/17.
  * NearPharmacyFragment
@@ -62,6 +64,7 @@ public class NearPharmacyFragment extends BaseFragment {
     private boolean isReflash=false;
     private boolean isLoading=false;
     private LinearLayout layout_no_msg;
+    private TextView tvnodate;
 
 
     @Nullable
@@ -88,7 +91,8 @@ public class NearPharmacyFragment extends BaseFragment {
         mPoiSearch.setOnGetPoiSearchResultListener(poiSearchListener);
         layout_no_msg=(LinearLayout)mView.findViewById(R.id.layout_no_msg);
         pulltorefreshlayout = (PullToRefreshLayout) mView.findViewById(R.id.refresh_view);
-
+        tvnodate=(TextView)mView.findViewById(R.id.tvnodate);
+        tvnodate.setText("暂无数据");
     }
 
     public void initEvent() {

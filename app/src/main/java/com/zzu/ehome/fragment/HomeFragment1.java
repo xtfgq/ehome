@@ -56,6 +56,7 @@ import com.zzu.ehome.activity.NearPharmacyActivity;
 import com.zzu.ehome.activity.NewsWebView;
 import com.zzu.ehome.activity.OrdinaryYuYueActivity;
 import com.zzu.ehome.activity.PersonalCenterInfo;
+import com.zzu.ehome.activity.RegisterActivity;
 import com.zzu.ehome.activity.StaticWebView;
 import com.zzu.ehome.activity.WebVideoActivity;
 import com.zzu.ehome.adapter.HomeNewsAdapter;
@@ -76,6 +77,7 @@ import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.service.DownloadServiceForAPK;
 import com.zzu.ehome.service.StepDetector;
 import com.zzu.ehome.utils.CommonUtils;
+import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.utils.DialogUtils;
 import com.zzu.ehome.utils.ImageOptions;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
@@ -105,11 +107,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 
+import static com.zzu.ehome.R.id.imageView_lift;
+import static com.zzu.ehome.R.id.imageView_right;
 import static com.zzu.ehome.db.DBHelper.mContext;
 import static com.zzu.ehome.fragment.HealthDataFragment.PERMISSIONS;
 
@@ -133,6 +138,8 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
     private int page = 1;
     private View vTop;
     private String type=null;
+    PackageManager pm ;
+    boolean permission;
 
 
     @Override
@@ -248,8 +255,10 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getPermission();
         }
+        city = "郑州市";
         getWeather(city);
         versioninquiry();
+
 
         return mView;
 
@@ -286,6 +295,13 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         myScrollView = (MyScrollView) mView.findViewById(R.id.scrollView4);
         linearLayout = (MyHomeLayout) mView.findViewById(R.id.llhome);
         rlhometitle = (RelativeLayout) mView.findViewById(R.id.homehead);
+
+        ViewGroup.LayoutParams para;
+        para =  rlhometitle.getLayoutParams();
+        para.width = ScreenUtils.getScreenWidth(getActivity());
+        para.height = para.width*18/25;
+        rlhometitle.setLayoutParams(para);
+
         nologin=(ImageView)mView.findViewById(R.id.nologin);
         tv_pmlv=(TextView)mView.findViewById(R.id.tv_pmlv);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -419,6 +435,13 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
     public void onResume() {
         super.onResume();
 //        getBaseData();
+
+
+    }
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
 
     }
     public void getBaseData(){
@@ -660,6 +683,12 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                 startIntent(getActivity(), HealthInstructionActivity.class);
                 break;
             case R.id.layout_fjyd:
+
+
+                if (!permission) {
+                    showDialog("请检查定位权限是否被第三方禁用");
+                    return;
+                }
                 startIntent(getActivity(), NearPharmacyActivity.class);
                 break;
             case R.id.layout_srys:
@@ -780,6 +809,14 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         });
 
     }
+    private void showDialog(String message) {
+
+        DialogTips dialog = new DialogTips(getActivity(), message, "确定");
+
+        dialog.show();
+        dialog = null;
+
+    }
 
     /**
      * 定位SDK监听函数
@@ -790,23 +827,31 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         public void onReceiveLocation(BDLocation location) {
 
             if (location == null) {
+
                 return;
 
             }
                 city = location.getCity();
                 mLocation = location;
+
+            if(Double.compare(location.getLatitude(),4.9e-324)==0){
+                permission=false;
+                return;
+          }
+
                 getWeather(city);
+            permission=true;
 
             }
         public void onReceivePoi(BDLocation poiLocation) {
         }
     }
-    private void getWeather(String city){
+    private void getWeather(final String strCity){
         /**
          * 天气接口查询
          */
-        tvcity.setText(city);
-        requestMaker.WeatherInquiry(city, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
+
+        requestMaker.WeatherInquiry(strCity, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
                 try {
@@ -838,6 +883,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                     } else {
                         set(ivweather, weather);
                     }
+                    tvcity.setText(strCity);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1527,6 +1573,8 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
             return true;
         }
     }
+
+
 
 
 }

@@ -37,12 +37,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
                     android:background="@drawable/bg_header">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="48dp"
+                        android:textColor="#7e7787"
+                        android:textSize="10sp"
+                        android:text="日常数据记录服务"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -55,15 +64,15 @@
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
                                 android:src="@mipmap/icon_data" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="8dp"
-                                android:text="记录数据"
+                                android:text="日常记录"
                                 android:textColor="#272031"
                                 android:textSize="@dimen/text_size_normal"
 
@@ -72,6 +81,7 @@
 
                         <View
                             android:layout_width="1dp"
+                            android:layout_marginTop="4dp"
                             android:layout_height="match_parent"
                             android:layout_marginBottom="8dp"
                             android:background="#e5e5ea" />
@@ -86,8 +96,8 @@
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
                                 android:src="@mipmap/icon_zhidao" />
 
                             <TextView
@@ -306,7 +316,8 @@
                     <LinearLayout
                         android:id="@+id/layout_free_consultation"
 
-                        android:layout_width="156dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -324,14 +335,14 @@
                             android:layout_marginBottom="4dp"
                             android:text="预约挂号"
                             android:textColor="#272031"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="预约在线 视频问诊"
                             android:textColor="#BEB7C7"
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
@@ -344,7 +355,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="5"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -371,7 +382,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="智能健康 自助检查"
                                     android:textColor="#BEB7C7"
-                                    android:textSize="12sp" />
+                                    android:textSize="11sp" />
 
                             </LinearLayout>
 
@@ -424,7 +435,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="心电检查,在线分析"
                                     android:textColor="#BEB7C7"
-                                    android:textSize="12sp" />
+                                    android:textSize="11sp" />
                             </LinearLayout>
 
                             <View
@@ -460,7 +471,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="身边药店随身查"
                                     android:textColor="#BEB7C7"
-                                    android:textSize="12sp" />
+                                    android:textSize="11sp" />
 
                             </LinearLayout>
 
@@ -508,7 +519,8 @@
 
                     <LinearLayout
                         android:id="@+id/layout_yygh"
-                        android:layout_width="156dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -525,14 +537,14 @@
                             android:layout_marginBottom="4dp"
                             android:text="预约挂号"
                             android:textColor="#272031"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="三甲医院专家"
                             android:textColor="#BEB7C7"
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
@@ -545,7 +557,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="5"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -573,7 +585,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="历史体检报告记录管理"
                                     android:textColor="#BEB7C7"
-                                    android:textSize="12sp" />
+                                    android:textSize="11sp" />
 
                             </LinearLayout>
 
@@ -594,16 +606,17 @@
 
                         <LinearLayout
                             android:id="@+id/layout_srys"
-
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
+
                             android:gravity="center"
                             android:orientation="horizontal">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+
                                 android:orientation="vertical">
 
                                 <TextView
@@ -616,15 +629,16 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="慢病专家在线问答"
+                                    android:text="慢病专家在线问答        "
                                     android:textColor="#BEB7C7"
-                                    android:textSize="12sp" />
+                                    android:textSize="11sp" />
 
                             </LinearLayout>
 
                             <ImageView
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
+
+                                android:layout_width="34dp"
+                                android:layout_height="32dp"
                                 android:layout_marginLeft="8dp"
                                 android:src="@drawable/icon_doctor_de" />
                         </LinearLayout>

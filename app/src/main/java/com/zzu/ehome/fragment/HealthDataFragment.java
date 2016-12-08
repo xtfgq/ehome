@@ -509,8 +509,10 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
 
 
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
+                    tv_time.setText("今天暂无就诊数据");
+                    tv_address.setText("");
                 }
             }
         }));
@@ -676,22 +678,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(!TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            dbUser = dao.findUserInfoById(userid);
-            CurrnetDate = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
-            date = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
-            tvdate.setText(DateUtils.getDateDetail(date) + DateUtils.StringPattern(date, "yyyy-MM-dd", "MM月dd日"));
-            EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
-            imageView_lift.setVisibility(View.VISIBLE);
-            imageView_right.setVisibility(View.INVISIBLE);
 
-            initData();
-        }
-    }
 
     @Override
     public void onDestroy() {
@@ -863,6 +850,25 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
             return false;
         }else{
             return true;
+        }
+    }
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(hidden){
+        }else{
+            if(!TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                dbUser = dao.findUserInfoById(userid);
+                CurrnetDate = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
+                date = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
+                tvdate.setText(DateUtils.getDateDetail(date) + DateUtils.StringPattern(date, "yyyy-MM-dd", "MM月dd日"));
+                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
+                imageView_lift.setVisibility(View.VISIBLE);
+                imageView_right.setVisibility(View.INVISIBLE);
+
+                initData();
+            }
         }
     }
 
