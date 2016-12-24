@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,6 +32,7 @@ import com.zzu.ehome.activity.MyRemindActivity1;
 import com.zzu.ehome.activity.MyReportActivity;
 import com.zzu.ehome.activity.PersonalCenterInfo;
 import com.zzu.ehome.activity.SettingActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.ShareModel;
 import com.zzu.ehome.bean.User;
@@ -52,10 +51,9 @@ import com.zzu.ehome.view.SharePopupWindow;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import de.greenrobot.event.EventBus;
-
-import static com.zzu.ehome.application.CustomApplcation.mList;
 
 /**
  * Created by Mersens on 2016/8/5.
@@ -67,6 +65,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     private RequestMaker requestMaker;
     private ImageView icon_user;
     private TextView tv_name,tv_mydoctor;
+    private SupperBaseActivity activity;
     private RelativeLayout layout_msg, layout_wdda, layout_wdbg,
             layout_wdyy, layout_wdtx,  layout_yqhy,
             layout_yjfk, layout_about, layout_setting;
@@ -100,7 +99,9 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void onAttach(Context context) {
+
         super.onAttach(context);
+        activity=(SupperBaseActivity)context;
     }
 
     @Override
@@ -130,7 +131,6 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         layout_wdbg = (RelativeLayout) mView.findViewById(R.id.layout_wdbg);
         layout_wdyy = (RelativeLayout) mView.findViewById(R.id.layout_wdyy);
         layout_wdtx = (RelativeLayout) mView.findViewById(R.id.layout_wdtx);
-
         layout_yqhy = (RelativeLayout) mView.findViewById(R.id.layout_yqhy);
         layout_yjfk = (RelativeLayout) mView.findViewById(R.id.layout_yjfk);
         layout_about = (RelativeLayout) mView.findViewById(R.id.layout_about);
@@ -249,6 +249,10 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         switch (v.getId()) {
             case R.id.tvGoMyFaimily:
                 doGoFamily();
@@ -256,6 +260,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
             case R.id.layout_wdda:
                 //我的档案
                 userid=SharePreferenceUtil.getInstance(getActivity()).getUserId();
+                type=dao.findUserInfoById(userid).getType()+"";
                 if (!TextUtils.isEmpty(userid) && type!=null) {
                     if(type.equals("2")){
                         Intent i=new Intent(getActivity(),HealthFilesActivity.class);
@@ -396,42 +401,14 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
-        getBaseData();
+        userid = SharePreferenceUtil.getInstance(getActivity()).getUserId();
+//        if(!TextUtils.isEmpty(userid)) {
+//            getBaseData();
+//        }
     }
 
 
-    public void getBaseData(){
-        requestMaker.BaseDataInquiry(userid, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
-            @Override
-            public void processJsonObject(Object result) {
-                JSONObject mySO = (JSONObject) result;
-                Log.e("JSONObject",mySO.toString());
 
-                try {
-                    JSONArray json = mySO.getJSONArray("BaseDataInquiry");
-                    if (json.getJSONObject(0).has("MessageCode")) {
-                        String MessageCode = json.getJSONObject(0).getString("MessageCode");
-                        if ("2".equals(MessageCode)) {
-                            type="2";
-                            return;
-                        }
-                        if ("1".equals(MessageCode)) {
-                            type="1";
-                            ToastUtils.showMessage(getActivity(), "查询失败！");
-                            return;
-                        }
-                    } else {
-                        type="3";
-
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }));
-    }
 
     @Override
     public void onDestroy() {

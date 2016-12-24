@@ -28,7 +28,6 @@ import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.Images;
-import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.ImageUtil;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -159,11 +158,11 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
 
     public void initEvent() {
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
-        edt_time.setText(df.format(new Date()));
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+//        edt_time.setText(df.format(new Date()));
         edt_time.setOnClickListener(this);
 //        lljzhen.setOnClickListener(this);
-//        edt_jzdw.setOnClickListener(this);
+       edt_jzdw.setOnClickListener(this);
         btn_save.setOnClickListener(this);
         rlphoto.setOnClickListener(this);
         rlphoto.setVisibility(View.VISIBLE);
@@ -296,27 +295,36 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
 
             case R.id.btn_save:
                 //保存按钮
-                if (CommonUtils.isFastClick())
-                    return;
-
+/*                if (CommonUtils.isFastClick())
+                    return;*/
+                setEventEnable(false);
                 jzyy = edt_jzdw.getText().toString();
                 zdjg = edt_jzjg.getText().toString();
 
                 checktime = edt_time.getText().toString();
                 if (checktime.equals("")) {
-                    ToastUtils.showMessage(CreateReportActivity.this, "请选择体检日期!");
+                    setEventEnable(true);
+                    show("请选择体检日期！");
                     return;
                 } else if (jzyy.equals("")) {
-                    ToastUtils.showMessage(CreateReportActivity.this, "请输入体检机构!");
+                    setEventEnable(true);
+                    show("请输入体检机构！");
+
                     return;
                 } else if (zdjg.equals("")) {
-                    ToastUtils.showMessage(CreateReportActivity.this, "请填写体检人姓名!");
+                    setEventEnable(true);
+                    show("请填写体检人姓名!");
+
                     return;
                 } else if (zdjg.length() > 5) {
-                    ToastUtils.showMessage(CreateReportActivity.this, "体检人姓名过长!");
+                    setEventEnable(true);
+                    show("体检人姓名过长!");
+
                     return;
                 }else if(images.size()==1){
-                    ToastUtils.showMessage(CreateReportActivity.this, "请上传体检报告内容");
+                    setEventEnable(true);
+                    show("请上传体检报告内容!");
+
                     return;
                 }
 
@@ -325,6 +333,7 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
                 if (images != null && images.size() > 1) {
                     if (images.size() > 9) {
                         ToastUtils.showMessage(CreateReportActivity.this, "你最多可以选择9张");
+                        setEventEnable(true);
                         return;
                     }
                     List<String> imgs = new ArrayList<String>(images);
@@ -366,12 +375,14 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
                             Intent intent = new Intent();
                             intent.putExtra("ADD", "");
                             setResult(ExaminationReportActivity.ADD, intent);
-                            Toast.makeText(CreateReportActivity.this, array.getJSONObject(0).getString("MessageContent").toString(),
+                            Toast.makeText(CreateReportActivity.this, "添加成功",
                                     Toast.LENGTH_SHORT).show();
                             finish();
 
                         } catch (Exception e) {
                             e.printStackTrace();
+                        }finally {
+                            setEventEnable(true);
                         }
 
                     }
@@ -386,7 +397,16 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
 
         }
     }
-
+    public void setEventEnable(boolean flag){
+        if(flag){
+            btn_save.setEnabled(true);
+            btn_save.setBackgroundResource(R.color.actionbar_color);
+        }
+        else{
+            btn_save.setEnabled(false);
+            btn_save.setBackgroundResource(R.color.bottom_text_color_normal);
+        }
+    }
     private String getPhotoFileName(int i) {
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat(
@@ -429,6 +449,9 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
             case Constants.ADDTTIME:
                 if (data != null) {
                     String time = data.getStringExtra("time");
+                    if(time.contains("00")){
+                        return;
+                    }
                     if (!TextUtils.isEmpty(time)) {
                         edt_time.setText(time);
                         checktime = time;

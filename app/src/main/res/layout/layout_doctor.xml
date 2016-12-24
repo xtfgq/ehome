@@ -5,6 +5,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
     <include layout="@layout/layout_toolbar" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,6 +29,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:text="选择医院"
+                android:textSize="14sp"
                 android:textColor="#0f2536"/>
 
             <TextView
@@ -36,18 +38,19 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="12dp"
+                android:layout_marginRight="24dp"
                 android:text="请选择医院"
                 android:textColor="#949395"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
 
             <ImageView
                 android:id="@+id/icon_lift_cardid"
-                android:layout_width="10dp"
-                android:layout_height="22dp"
+                android:layout_width="8dp"
+                android:layout_height="16dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+
                 android:src="@drawable/icon_arrow_r" />
 
         </RelativeLayout>
@@ -80,15 +83,15 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:text="请选择科室"
-                android:layout_marginRight="12dp"
+                android:layout_marginRight="24dp"
                 android:textColor="#949395"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
 
             <ImageView
                 android:id="@+id/icon_lift_keshi"
-                android:layout_width="10dp"
-                android:layout_height="22dp"
+                android:layout_width="8dp"
+                android:layout_height="16dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/icon_arrow_r" />
@@ -121,16 +124,16 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="12dp"
+                android:layout_marginRight="24dp"
                 android:text="请选择医生"
                 android:textColor="#949395"
-                android:textSize="16sp"/>
+                android:textSize="14sp"/>
 
 
             <ImageView
                 android:id="@+id/icon_lift_ys"
-                android:layout_width="10dp"
-                android:layout_height="22dp"
+                android:layout_width="8dp"
+                android:layout_height="16dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/icon_arrow_r" />
@@ -164,16 +167,16 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="选择就诊时间"
-                android:layout_marginRight="12dp"
+                android:text="请选择就诊时间"
+                android:layout_marginRight="24dp"
                 android:textColor="#949395"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
 
             <ImageView
                 android:id="@+id/icon_lift_sj"
-                android:layout_width="10dp"
-                android:layout_height="22dp"
+                android:layout_width="8dp"
+                android:layout_height="16dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/icon_arrow_r" />

@@ -4,16 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zzu.ehome.R;
-import com.zzu.ehome.adapter.SelectHospitalAdapter;
 import com.zzu.ehome.adapter.SuggarAdapter;
 import com.zzu.ehome.fragment.BloodSugarFragment;
-import com.zzu.ehome.fragment.BooldFatFragment;
-import com.zzu.ehome.fragment.DoctorFragment;
 
 import java.util.ArrayList;
 import java.util.List;

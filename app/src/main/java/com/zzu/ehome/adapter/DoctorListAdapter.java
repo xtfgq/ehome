@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zzu.ehome.R;
-import com.zzu.ehome.activity.DoctorListActivity;
 import com.zzu.ehome.activity.DoctorTimeActivity;
 import com.zzu.ehome.bean.DoctorBeanDes;
 
@@ -53,7 +52,7 @@ public class DoctorListAdapter extends BaseListAdapter<DoctorBeanDes> {
             public void onClick(View v) {
                 Intent i = new Intent(context, DoctorTimeActivity.class);
                 i.putExtra("HospitalID", hosid);
-                i.putExtra("DepartmentID", depid);
+                i.putExtra("DepartmentID", item.getDepartmentID());
                 i.putExtra("DoctorId", item.getDoctorID());
                 i.putExtra("DepartName", DepartmentName);
                 i.putExtra("picUrl", picUrl);

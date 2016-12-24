@@ -4,20 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
 import com.igexin.sdk.PushManager;
 import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.R;
-import com.zzu.ehome.activity.BaseSimpleActivity;
 import com.zzu.ehome.activity.GuideActivity;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
-import com.zzu.ehome.utils.ToastUtils;
 
-public class WelcomeActivity extends BaseSimpleActivity {
+public class WelcomeActivity extends FragmentActivity {
 
     private static final long SPLASH_DELAY_MILLIS = 1000;
 
@@ -88,10 +87,7 @@ public class WelcomeActivity extends BaseSimpleActivity {
     };
 
     private void init() {
-        if (!isNetworkAvailable()) {
-            ToastUtils.showMessage(WelcomeActivity.this, R.string.msgUninternet);
-            return;
-        }
+
         if (!SharePreferenceUtil.getInstance(WelcomeActivity.this).getIsFirst()) {
             mHandler.sendEmptyMessageDelayed(GO_GUIDE, SPLASH_DELAY_MILLIS);
         } else {

@@ -74,7 +74,6 @@ public class AppointmentAdapter extends BaseListAdapter<DoctorBean> {
             public void onClick(View v) {
                 Intent intent = new Intent(mcontext, AppointmentDetailActivity.class);
                 intent.putExtra("department_id", AppointmentActivity.department_id);
-
                 intent.putExtra("doctor_id", bean.getUser_Id());
                 mcontext.startActivity(intent);
             }

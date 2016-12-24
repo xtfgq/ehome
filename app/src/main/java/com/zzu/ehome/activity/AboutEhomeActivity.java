@@ -6,8 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.R;
@@ -16,7 +14,6 @@ import com.zzu.ehome.utils.DialogUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
-import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.DialogEnsureCancelView;
 import com.zzu.ehome.view.HeadView;
 
@@ -136,7 +133,7 @@ public class AboutEhomeActivity extends BaseActivity {
 
     public void initViews() {
 
-        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "关于健康E家", new HeadView.OnLeftClickListener() {
+        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "关于App", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
                 finishActivity();

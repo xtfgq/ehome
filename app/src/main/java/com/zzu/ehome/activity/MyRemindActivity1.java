@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -29,8 +28,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
-
-import static com.zzu.ehome.R.id.layout_no_msg;
 
 /**
  * Created by Mersens on 2016/8/18.

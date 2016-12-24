@@ -9,8 +9,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
 import com.zzu.ehome.utils.RequestMaker;
+import com.zzu.ehome.utils.ScreenUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.DialogTips;
@@ -38,6 +41,8 @@ import java.util.List;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.UserInfo;
+
+import static com.zzu.ehome.R.id.lrtop;
 
 /**
  * Created by Mersens on 2016/8/16.
@@ -63,6 +68,7 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
     private TextView tvnotie,tv_oltime,tvdes;
     private String headurl;
     private EHomeDaoImpl dao;
+    private RelativeLayout rltop;
 
 
     @Override
@@ -98,6 +104,12 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
         tv_apply=(TextView)findViewById(R.id.tv_apply);
         tvnotie=(TextView)findViewById(R.id.tvnotie);
         tv_oltime=(TextView)findViewById(R.id.tv_oltime);
+        rltop=(RelativeLayout)findViewById(R.id.rltop);
+        ViewGroup.LayoutParams para;
+        para =  rltop.getLayoutParams();
+        para.width = ScreenUtils.getScreenWidth(DoctorDetialActivity.this);
+        para.height = para.width*20/75;
+        rltop.setLayoutParams(para);
     }
 
     public void initEvent() {
@@ -342,8 +354,9 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
 
 
                                     User dbUser = dao.findUserInfoById(SharePreferenceUtil.getInstance(DoctorDetialActivity.this).getUserId());
-                                    if(TextUtils.isEmpty(dbUser.getAge())){
-                                        startActivity(new Intent(DoctorDetialActivity.this,PersonalCenterInfo.class));
+
+                                    if (TextUtils.isEmpty(dbUser.getUserno())) {
+                                        completeInfoTips();
                                         return;
                                     }
                                     RongIM.getInstance().startPrivateChat(DoctorDetialActivity.this, doctorid, title);
@@ -415,6 +428,30 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
                 }
                 RongIM.getInstance().startPrivateChat(DoctorDetialActivity.this, doctorid, title);
 
+            }
+        });
+
+        dialog.show();
+        dialog = null;
+    }
+    private Boolean  checkCardNo(){
+        User dbUser=dao.findUserInfoById(SharePreferenceUtil.getInstance(DoctorDetialActivity.this).getUserId());
+        if (TextUtils.isEmpty(dbUser.getUserno())) {
+            completeInfoTips();
+            return false;
+        }else{
+            return true;
+        }
+    }
+    /**
+     * 如果用户信息不完善，显示提示框
+     */
+    public void completeInfoTips() {
+        DialogTips dialog = new DialogTips(DoctorDetialActivity.this, "", "用户信息缺失，请先完善信息",
+                "去完善", true, true);
+        dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int userId) {
+                startActivity(new Intent(DoctorDetialActivity.this, PersonalCenterInfo.class));
             }
         });
 

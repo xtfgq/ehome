@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="60dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:orientation="horizontal">
@@ -16,34 +16,44 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvcontent"
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
+                android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="#0f2536"
-                android:text=""
-                android:layout_marginTop="4dp" />
+                android:text="2016-12-19"
+                android:maxLines="2"
+                />
 
-            <TextView
-                android:id="@+id/tvresidue"
-                android:layout_width="wrap_content"
+            <RelativeLayout
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:textSize="14sp"
-                android:textColor="#0f2536"
-                android:text="剩余号源 7"
-                android:layout_marginBottom="4dp" />
+                android:layout_width="match_parent"
+
+                >
+                <TextView
+                    android:id="@+id/tvresidue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textSize="14sp"
+                    android:textColor="@color/actionbar_color"
+                    android:text="剩余号源 7"
+
+
+                    />
+                </RelativeLayout>
+
 
         </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="96dp"
+            android:layout_width="72dp"
             android:layout_height="match_parent">
 
             <TextView

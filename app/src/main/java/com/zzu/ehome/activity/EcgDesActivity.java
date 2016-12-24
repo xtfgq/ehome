@@ -15,6 +15,8 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.utils.ScreenUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 
+import static com.zzu.ehome.R.id.llback;
+
 
 /**
  * Created by Administrator on 2016/9/9.
@@ -23,6 +25,7 @@ public class EcgDesActivity extends BaseSimpleActivity implements View.OnClickLi
     private ImageView ivhome;
     private ImageView        ivback;
     private Button btn_ecg;
+    private LinearLayout  llback;
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -41,11 +44,12 @@ public class EcgDesActivity extends BaseSimpleActivity implements View.OnClickLi
         btn_ecg=(Button)findViewById(R.id.btn_des);
 
         ivback=(ImageView)findViewById(R.id.ivback);
+        llback=(LinearLayout)findViewById(R.id.llback);
     }
     private void intiEvnents(){
         btn_ecg.setOnClickListener(this);
 
-        ivback.setOnClickListener(this);
+        llback.setOnClickListener(this);
     }
 
     @Override
@@ -54,7 +58,7 @@ public class EcgDesActivity extends BaseSimpleActivity implements View.OnClickLi
             case R.id.btn_des:
                 startActivity(new Intent(EcgDesActivity.this,ECGActivity1.class));
                 break;
-            case R.id.ivback:
+            case R.id.llback:
                 finish();
                 break;
 

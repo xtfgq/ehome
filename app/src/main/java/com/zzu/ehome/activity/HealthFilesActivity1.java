@@ -40,7 +40,7 @@ public class HealthFilesActivity1 extends BaseActivity implements HealthFilesFra
     }
 
     public void initViews() {
-        setDefaultViewMethod(R.mipmap.icon_arrow_left, "健康档案", R.mipmap.icon_editor, new HeadView.OnLeftClickListener() {
+        setDefaultViewMethod(R.mipmap.icon_arrow_left, "我的档案", R.mipmap.icon_editor, new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
                 if(!TextUtils.isEmpty(tag)) {

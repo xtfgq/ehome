@@ -68,7 +68,7 @@ private String code,value;
         if (mIntent != null) {
             if (mIntent.getStringExtra("relation") != null) {
                 tag = mIntent.getStringExtra("relation");
-                lldot.setVisibility(View.GONE);
+                lldot.setVisibility(View.VISIBLE);
 
             }
         } else {

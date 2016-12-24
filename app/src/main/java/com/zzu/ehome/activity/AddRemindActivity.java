@@ -163,11 +163,11 @@ public class AddRemindActivity extends BaseActivity implements TimePopWindows.On
     private void addRemind() {
         Time = tvtime.getText().toString();
         if (TextUtils.isEmpty(tvweek.getText().toString())) {
-            ToastUtils.showMessage(AddRemindActivity.this, "请选择提醒频次！");
+            show("请选择提醒频次！");
             return;
         }
         if (TextUtils.isEmpty(tvwenzhen.getText().toString())) {
-            ToastUtils.showMessage(AddRemindActivity.this, "请选择提醒类型！");
+            show("请选择提醒类型！");
             return;
         }
         if (tvwenzhen.getText().toString().contains("用药")) {
@@ -188,7 +188,7 @@ public class AddRemindActivity extends BaseActivity implements TimePopWindows.On
                     org.json.JSONArray array = mySO
                             .getJSONArray("RemindInsert");
                     if (array.getJSONObject(0).getString("MessageCode").toString().equals("0")) {
-                        Toast.makeText(AddRemindActivity.this, array.getJSONObject(0).getString("MessageContent").toString(),
+                        Toast.makeText(AddRemindActivity.this, "保存成功！",
                                 Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         intent.putExtra("finish", "sucuss");

@@ -309,4 +309,37 @@ public class DateUtils {
         return now.getTime();
     }
 
+    public static Date str2Date(String str) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = format.parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+    public static int isYeaterday(Date oldTime,Date newTime) throws ParseException{
+        if(newTime==null){
+            newTime=new Date();
+        }
+        //将下面的 理解成  yyyy-MM-dd 00：00：00 更好理解点
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String todayStr = format.format(newTime);
+        Date today = format.parse(todayStr);
+        //昨天 86400000=24*60*60*1000 一天
+        if((today.getTime()-oldTime.getTime())>0 && (today.getTime()-oldTime.getTime())<=86400000) {
+            return 0;
+        }
+        else if((today.getTime()-oldTime.getTime())<=0){ //至少是今天
+            return -1;
+        }
+        else{ //至少是前天
+            return 1;
+        }
+
+    }
+
+
+
 }

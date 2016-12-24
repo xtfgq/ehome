@@ -1,5 +1,6 @@
 package com.zzu.ehome.db;
 
+import com.zzu.ehome.bean.CacheBean;
 import com.zzu.ehome.bean.RelationDes;
 import com.zzu.ehome.bean.StepBean;
 import com.zzu.ehome.bean.User;
@@ -41,6 +42,14 @@ public interface EHomeDao {
     public boolean findRsIsExist(String  rsid);
     public void updateResInfo(RelationDes rs, String rsid);
     public RelationDes findRelationInfoById(String rsid);
+
+
+    public void addCacheInfo(CacheBean cache);
+    public boolean findCacheIsExist(String  url);
+    public void updateCacheInfo(CacheBean chache, String url);
+    public CacheBean findCache(String url);
+
+
 
 
 

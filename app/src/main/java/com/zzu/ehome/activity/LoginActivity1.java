@@ -43,6 +43,7 @@ import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.HeadView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,6 +55,7 @@ import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.UserInfo;
 
+import static android.R.attr.type;
 import static io.rong.imlib.statistics.UserData.phone;
 
 /**
@@ -241,6 +243,8 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
 //
 //                            UserRefresh(list.get(0).getUserid(), list.get(0).getUsername(), imgHead);
                             if (!dao.findUserIsExist(list.get(0).getUserid())) {
+                                User user=list.get(0);
+                                user.setType(1);
                                 dao.addUserInfo(list.get(0));
                             } else {
                                 User dbUser = dao.findUserInfoById(list.get(0).getUserid());
@@ -305,7 +309,7 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                                 startActivity(i);
                                 finish();
                             }
-
+                            getBaseData();
 
                         }
                     } catch (Exception e) {
@@ -601,6 +605,48 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
             }
         } ));
 
+    }
+
+    /**
+     * type 2,空，3，更新
+     */
+    public void getBaseData(){
+        userid=SharePreferenceUtil.getInstance(LoginActivity1.this).getUserId();
+        requestMaker.BaseDataInquiry(userid, new JsonAsyncTask_Info(LoginActivity1.this, true, new JsonAsyncTaskOnComplete() {
+            @Override
+            public void processJsonObject(Object result) {
+                JSONObject mySO = (JSONObject) result;
+                Log.e("JSONObject",mySO.toString());
+                int type=0;
+
+                try {
+                    JSONArray json = mySO.getJSONArray("BaseDataInquiry");
+                    if (json.getJSONObject(0).has("MessageCode")) {
+                        String MessageCode = json.getJSONObject(0).getString("MessageCode");
+                        if ("2".equals(MessageCode)) {
+                            type=2;
+
+                            return;
+                        }
+                        if ("1".equals(MessageCode)) {
+                            type=1;
+
+                            return;
+                        }
+                    } else {
+                        type=3;
+
+                    }
+                    User user=dao.findUserInfoById(userid);
+                    user.setType(type);
+                    dao.updateUserInfo(user, userid);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }));
     }
 
 

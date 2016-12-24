@@ -26,18 +26,25 @@
     </ScrollView>
 
     <RelativeLayout
+
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="top">
+        <LinearLayout
+            android:id="@+id/llback"
+            android:layout_width="56dp"
+            android:layout_centerVertical="true"
+            android:layout_height="48dp">
 
         <ImageView
             android:id="@+id/ivback"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="7dp"
             android:src="@mipmap/icon_arrow_left" />
+        </LinearLayout>
     </RelativeLayout>
 
     <LinearLayout
@@ -85,7 +92,7 @@
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@mipmap/icon_zixun" />
+                android:src="@mipmap/icon_menzhen_yuyue" />
 
             <TextView
                 android:layout_width="wrap_content"

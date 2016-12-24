@@ -17,14 +17,14 @@ import android.widget.TextView;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.SelectDateAndTime;
 import com.zzu.ehome.application.Constants;
-import com.zzu.ehome.bean.HealteData;
 import com.zzu.ehome.bean.HealteTempData;
-import com.zzu.ehome.bean.HealthDataRes;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.TempRes;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -110,7 +110,7 @@ public class TempFragment extends BaseFragment {
         mHeight.setMinValue(35);
         mHeight.setMaxValue(45);
         DecimalFormat decimalFormat = new DecimalFormat(".0");
-        tvheight.setText(decimalFormat.format(tw));
+        tvheight.setText(decimalFormat.format(tw)+"℃");
 
     }
 
@@ -122,7 +122,7 @@ public class TempFragment extends BaseFragment {
             @Override
             public void onValueChanged(ScaleMarkView view, BigDecimal oldValue, BigDecimal newValue) {
                 tw = newValue.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
-                tvheight.setText(tw + "");
+                tvheight.setText(tw + "℃");
             }
         });
         rlchecktime.setOnClickListener(new View.OnClickListener() {
@@ -157,9 +157,10 @@ public class TempFragment extends BaseFragment {
 
                     if (array.getJSONObject(0).getString("MessageCode")
                             .equals("0")) {
-                        EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
+                        RxBus.getInstance().send(new EventType(Constants.HealthData));
+//                        EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
 
-                        ToastUtils.showMessage(getActivity(), array.getJSONObject(0).getString("MessageContent"));
+                        ToastUtils.showMessage(getActivity(), "保存成功！");
                         if (p == -1) {
                             EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_temp)));
                             getActivity().finish();
@@ -173,7 +174,7 @@ public class TempFragment extends BaseFragment {
                                 intentD.putExtra("msgContent", "Date");
                                 getActivity().sendBroadcast(intentD);
 
-                                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
+//                                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
                                 getActivity().finish();
                             }
                         }
@@ -233,6 +234,7 @@ public class TempFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Constants.REQUEST_CALENDAR && data != null) {
             String time = data.getStringExtra("time");
+
             if (!TextUtils.isEmpty(time)) {
                 tvcltime.setText(time);
                 checktime = time;

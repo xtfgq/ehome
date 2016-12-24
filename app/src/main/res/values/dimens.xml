@@ -23,4 +23,17 @@
     <dimen name="big_image_size">74dp</dimen>
     <dimen name="min_button_width">52dp</dimen>
     <dimen name="dim36dp">36dp</dimen>
+    <!-- padding -->
+    <dimen name="padding_svprogresshuddefault">15dp</dimen>
+    <!-- 窗口最小宽度 -->
+    <dimen name="size_minwidth_svprogresshuddefault">120dp</dimen>
+    <!-- 图片宽高 -->
+    <dimen name="size_image_bigloading">80dp</dimen>
+    <!-- 图片宽高 -->
+    <dimen name="size_image_smallloading">60dp</dimen>
+    <!-- 圆角 -->
+    <dimen name="radius_svprogresshuddefault">20px</dimen>
+    <!-- 提示的文字大小 -->
+    <dimen name="textSize_svprogresshuddefault_msg">15sp</dimen>
+    <dimen name="margintop_svprogresshuddefault_msg">10dp</dimen>
 </resources>

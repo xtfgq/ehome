@@ -92,42 +92,48 @@ public class AddUserInfoActivity extends BaseActivity implements View.OnClickLis
                 phone=edt_phone.getText().toString();
 
                 if(TextUtils.isEmpty(name.trim())){
-                    ToastUtils.showMessage(AddUserInfoActivity.this,"请填写姓名！");
-                    return;
-                }
-                if (TextUtils.isEmpty(userNo.trim())) {
-                    ToastUtils.showMessage(AddUserInfoActivity.this,"请填写身份证号码！");
-                    return;
-                }
-                if (TextUtils.isEmpty(age.trim())) {
-                    ToastUtils.showMessage(AddUserInfoActivity.this,"请填写年龄！");
-                    return;
-                }
-                if (TextUtils.isEmpty(phone.trim())) {
-                    ToastUtils.showMessage(AddUserInfoActivity.this,"请填写手机号号码！");
-                    return;
-                }
-                if (sex.trim().equals("请选择性别")) {
-                    ToastUtils.showMessage(AddUserInfoActivity.this,"请选择性别！");
+                    show("请填写姓名！");
                     return;
                 }
                 if(name.length()>4){
-                    ToastUtils.showMessage(AddUserInfoActivity.this, "姓名长度超长！");
+                    show("姓名长度超长！");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(userNo.trim())) {
+                    show("请填写身份证号码！");
                     return;
                 }
                 if (!IOUtils.isUserNO(userNo.trim())) {
-                    ToastUtils.showMessage(AddUserInfoActivity.this, "身份证号格式不正确！");
+                    show("身份证号格式不正确！");
+                    return;
+                }
+                if (TextUtils.isEmpty(phone.trim())) {
+                    show("请填写手机号号码！");
                     return;
                 }
                 if( !IOUtils.isMobileNO(phone.trim())){
-                    ToastUtils.showMessage(AddUserInfoActivity.this, "手机号码格式不正确！");
+                    show( "手机号码格式不正确！");
+                    return;
+                }
+                if (TextUtils.isEmpty(age.trim())) {
+                    show("请填写年龄！");
                     return;
                 }
                 int ageed=Integer.valueOf(edt_age.getText().toString());
                 if(ageed>150){
-                    ToastUtils.showMessage(AddUserInfoActivity.this, "年龄过长！");
+                    show( "年龄过长！");
                     return;
                 }
+
+                if (TextUtils.isEmpty(sex)) {
+                   show("请选择性别！");
+                    return;
+                }
+
+
+
+
                 userid= SharePreferenceUtil.getInstance(AddUserInfoActivity.this).getUserId();
                 requestMaker.UserContactorInsert(userid,name,userNo,age,sex,phone,"",  new JsonAsyncTask_ECGInfo(AddUserInfoActivity.this, true, new JsonAsyncTaskOnComplete() {
                     @Override
@@ -147,6 +153,7 @@ public class AddUserInfoActivity extends BaseActivity implements View.OnClickLis
                                 Intent data = new Intent();
                                 data.putExtra("NEW", "new");
                                 setResult(SelectPatientActivity.ADD_PATIENT, data);
+                                ToastUtils.showMessage(AddUserInfoActivity.this,"添加成功");
                                 finish();
                             }else{
                                 ToastUtils.showMessage(AddUserInfoActivity.this,array.getJSONObject(0).getJSONObject("MessageContent").toString());

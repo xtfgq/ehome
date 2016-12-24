@@ -43,8 +43,6 @@ import io.rong.imlib.RongIMClient;
  * Created by Administrator on 2016/4/9.
  */
 public class CommonUtils {
-
-
     private static long lastClickTime;
     public static final String TINY = "瘦如闪电";
     public static final String NORMAL = "完美身材";
@@ -55,9 +53,7 @@ public class CommonUtils {
 
     private static final String CHECK_OP_NO_THROW = "checkOpNoThrow";
     private static final String OP_POST_NOTIFICATION = "OP_POST_NOTIFICATION";
-    public  enum Type{
-        LOGIN, YELLOW, RED;
-    }
+
 
     public synchronized static boolean isFastClick() {
         long time = System.currentTimeMillis();
@@ -79,28 +75,36 @@ public class CommonUtils {
 
     public static int computeSsz(int ssz) {
         if (ssz < 140) {
-            return 1;
+            if(ssz<=89){
+                return -1;
+            }else {
+                return 0;
+            }
         } else if (ssz >= 140 && ssz < 160) {
-            return 2;
+            return 1;
         } else if (ssz >= 160 && ssz < 180) {
-            return 3;
+            return 2;
         } else {
-            return 4;
+            return 3;
         }
 
     }
 
     public static int computeSzy(int szy) {
         if (szy < 90) {
-            return 1;
+            if(szy<=59){
+                return -1;
+            }else {
+                return 0;
+            }
         } else if (szy >= 90 && szy < 100) {
-            return 2;
+            return 1;
 
         } else if (szy >= 100 && szy < 110) {
-            return 3;
+            return 2;
 
         } else {
-            return 4;
+            return 3;
 
         }
 
@@ -109,9 +113,17 @@ public class CommonUtils {
     public static int MaxInt(int lvssz, int lvszy) {
         if (lvssz != lvszy) {
             if (lvssz > lvszy) {
-                return lvssz;
+               if(lvssz==0&&lvszy==-1){
+                    return -1;
+                }else {
+                    return lvssz;
+                }
             } else {
-                return lvszy;
+                if(lvssz==-1&&lvszy==0){
+                    return -1;
+                }else {
+                    return lvszy;
+                }
             }
         } else {
             return lvssz;

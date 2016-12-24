@@ -91,7 +91,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
-                            android:text="0.0"
+                            android:text="0 "
                             android:textColor="@color/actionbar_color"
                             android:textSize="24sp" />
 
@@ -185,7 +185,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
-                            android:text="0.0"
+                            android:text="0 "
                             android:textColor="@color/actionbar_color"
                             android:textSize="24sp" />
 
@@ -247,7 +247,7 @@
                             android:layout_marginLeft="12dp"
                             android:layout_centerVertical="true"
                             android:gravity="center_vertical"
-                            android:text="(即身体质量指数，正常范围:18.5-24.99)"
+                            android:text="(即身体质量指数，正常范围:18.5-23.9)"
 
                             android:textColor="#666666"
                             android:textSize="12sp" />
@@ -264,10 +264,10 @@
                     android:src="@mipmap/icon_bim" />
             </LinearLayout>
 
-            <View
+          <!--  <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#cccccc" />
+                android:background="#cccccc" />-->
 
             <View
                 android:layout_width="match_parent"
@@ -297,7 +297,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
-                            android:text="0.0"
+                            android:text="0 "
                             android:textColor="@color/actionbar_color"
                             android:textSize="24sp" />
 
@@ -390,7 +390,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
-                            android:text="0.0"
+                            android:text="0"
                             android:textColor="@color/actionbar_color"
                             android:textSize="24sp" />
 
@@ -753,10 +753,10 @@
             </LinearLayout>
 
 
-            <View
+          <!--  <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#cccccc" />
+                android:background="#cccccc" />-->
 
             <LinearLayout
                 android:id="@+id/layout_yp"
@@ -882,6 +882,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
+                            android:text="暂无就诊数据"
 
                             android:textColor="#666666"
                             android:textSize="12sp" />

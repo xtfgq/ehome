@@ -2,10 +2,11 @@ package com.zzu.ehome.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zzu.ehome.R;
@@ -16,11 +17,13 @@ import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
 import com.zzu.ehome.utils.RequestMaker;
+import com.zzu.ehome.utils.ScreenUtils;
 import com.zzu.ehome.utils.ToastUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.List;
 
 /**
@@ -37,6 +40,7 @@ public class DoctorTimeActivity extends BaseActivity {
     private TextView tvname,tv_msg;
     private ImageView icon_user;
     private ImageLoader mImageLoader;
+    private RelativeLayout   rltop;
 
 
     @Override
@@ -65,12 +69,18 @@ public class DoctorTimeActivity extends BaseActivity {
         tv_title = (TextView) findViewById(R.id.tv_title);
         tvname=(TextView)findViewById(R.id.tv_name);
         tv_msg=(TextView)findViewById(R.id.tv_msg);
+        rltop=(RelativeLayout)findViewById(R.id.rltop);
         if(picUrl.contains("vine")){
             icon_user.setBackgroundResource(R.drawable.icon_doctor);
         }else {
             mImageLoader.displayImage(picUrl, icon_user);
         }
         tv_msg.setText(HospitalName);
+        ViewGroup.LayoutParams para;
+        para =  rltop.getLayoutParams();
+        para.width = ScreenUtils.getScreenWidth(DoctorTimeActivity.this);
+        para.height = para.width*20/75;
+        rltop.setLayoutParams(para);
     }
 
     public void initEvent() {

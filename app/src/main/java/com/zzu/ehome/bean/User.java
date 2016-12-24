@@ -2,6 +2,8 @@ package com.zzu.ehome.bean;
 
 import com.google.gson.annotations.SerializedName;
 
+import static android.R.attr.type;
+
 /**
  * Created by Administrator on 2016/4/6.
  */
@@ -24,6 +26,19 @@ public class User {
     private String age;
     @SerializedName("UserPassword")
     private String UserPassword;
+    private int type;
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+
+
+
+
     public String getUserPassword() {
         return UserPassword;
     }

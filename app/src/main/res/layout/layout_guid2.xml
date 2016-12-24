@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#88000000"
+    android:orientation="vertical"
+    >
+    <View
+        android:id="@+id/lltop"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"/>
+    <ImageView
+        android:layout_width="294dp"
+        android:layout_height="391dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/pic_font2"/>
+
+</LinearLayout>

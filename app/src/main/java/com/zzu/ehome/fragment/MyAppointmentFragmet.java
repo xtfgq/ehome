@@ -214,7 +214,7 @@ public class MyAppointmentFragmet extends BaseFragment {
                     JSONArray array = mySO
                             .getJSONArray("Result");
                     if (array.getJSONObject(0).has("MessageCode")) {
-                        Toast.makeText(getActivity(), array.getJSONObject(0).getString("MessageContent").toString(),
+                        Toast.makeText(getActivity(), "订单取消成功",
                                 Toast.LENGTH_SHORT).show();
                         if(Integer.valueOf(array.getJSONObject(0).getString("MessageCode"))==1) {
                             list.remove(position);

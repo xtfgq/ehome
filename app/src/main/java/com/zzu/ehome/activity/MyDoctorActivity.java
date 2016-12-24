@@ -2,6 +2,7 @@ package com.zzu.ehome.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -74,7 +75,7 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
     }
 
     public void initViews() {
-        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "预约就诊", new HeadView.OnLeftClickListener() {
+        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "预约视频就诊", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
                 finishActivity();
@@ -137,7 +138,8 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.layout_add_time:
                 if (TextUtils.isEmpty(doctor_id)) {
-                    ToastUtils.showMessage(MyDoctorActivity.this, "请选择医生");
+                    showDialog("请选择医生");
+
                     return;
                 }
                 Intent intenttime = new Intent(MyDoctorActivity.this, SelectDateActivity_1.class);
@@ -159,25 +161,25 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
         String time = tv_time.getText().toString();
         UserNo = dao.findUserInfoById(userid).getUserno();
         if (hosptial.equals("请选择医院")) {
-            ToastUtils.showMessage(MyDoctorActivity.this, "请选择医院");
+            showDialog("请选择医院");
             return;
         }
         if (office.equals("请选择科室")) {
-            ToastUtils.showMessage(MyDoctorActivity.this, "请选择科室");
+            showDialog( "请选择科室");
             return;
 
         }
         if (doctor.equals("请选择医生")) {
-            ToastUtils.showMessage(MyDoctorActivity.this, "请选择医生");
+            showDialog("请选择医生");
             return;
 
         }
-        if (time.equals("请选择时间")) {
-            ToastUtils.showMessage(MyDoctorActivity.this, "请选择时间");
+        if (time.equals("请选择就诊时间")) {
+            showDialog("请选择就诊时间");
             return;
         }
         if (TextUtils.isEmpty(UserNo)) {
-            ToastUtils.showMessage(MyDoctorActivity.this, "用户身份证不能为空，请先完善个人资料！");
+            completeInfoTips();
             return;
         }
         Intent i = new Intent(MyDoctorActivity.this, WebConfigAct.class);
@@ -193,7 +195,7 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
         tv_hosptial.setText("请选择医院");
         tv_office.setText("请选择科室");
         tv_doctor.setText("请选择医生");
-        tv_time.setText("请选择时间");
+        tv_time.setText("请选择就诊时间");
         hospital_id = "";
         department_id = "";
         doctor_id = "";
@@ -265,7 +267,7 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
 
                 tv_office.setText("请选择科室");
                 tv_doctor.setText("请选择医生");
-                tv_time.setText("请选择时间");
+                tv_time.setText("请选择就诊时间");
             }
         }
         if (requestCode == ADD_OFFICE && resultCode == ADD_OFFICE && data != null) {
@@ -276,7 +278,7 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
                 tv_office.setText(office);
                 doctor_id="";
                 tv_doctor.setText("请选择医生");
-                tv_time.setText("请选择时间");
+                tv_time.setText("请选择就诊时间");
 
             }
         }
@@ -287,7 +289,7 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
             if (!TextUtils.isEmpty(doctor)) {
                 tv_doctor.setVisibility(View.VISIBLE);
                 tv_doctor.setText(doctor);
-                tv_time.setText("请选择时间");
+                tv_time.setText("请选择就诊时间");
             }
         }
         if (requestCode == ADD_TIME && resultCode == ADD_TIME && data != null) {
@@ -327,7 +329,7 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
                     tv_office.setVisibility(View.VISIBLE);
                     tv_doctor.setVisibility(View.VISIBLE);
                     tv_doctor.setText(doctor);
-                    tv_time.setText("请选择时间");
+                    tv_time.setText("请选择就诊时间");
 
                 }
 
@@ -355,6 +357,21 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
         EventBus.getDefault().unregister(this);
+    }
+    /**
+     * 如果用户信息不完善，显示提示框
+     */
+    public void completeInfoTips() {
+        DialogTips dialog = new DialogTips(MyDoctorActivity.this, "", "用户信息缺失，请先完善信息",
+                "去完善", true, true);
+        dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int userId) {
+                startActivity(new Intent(MyDoctorActivity.this, PersonalCenterInfo.class));
+            }
+        });
+
+        dialog.show();
+        dialog = null;
     }
 
 

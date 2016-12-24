@@ -33,7 +33,7 @@ public class HealthFilesActivity extends BaseActivity {
     }
 
     public void initViews() {
-        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "健康档案", new HeadView.OnLeftClickListener() {
+        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "我的档案", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
                 finishActivity();

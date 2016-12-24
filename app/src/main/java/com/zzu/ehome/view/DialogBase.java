@@ -113,8 +113,8 @@ public abstract class DialogBase extends Dialog {
         }
 
 
-        setCanceledOnTouchOutside(true);
-        setCancelable(true);
+        setCanceledOnTouchOutside(false);
+        setCancelable(false);
 
 
         getWindow().setAttributes(params);

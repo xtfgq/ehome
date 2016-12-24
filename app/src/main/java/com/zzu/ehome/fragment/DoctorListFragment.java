@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,11 +21,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.DoctorDetialActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.MSDoctorBean;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
+import com.zzu.ehome.view.RefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,23 +56,33 @@ public class DoctorListFragment extends BaseFragment {
     private MyAdapter adapter;
     private LinearLayout layout_no_msg;
     private OnSearchResultListener listener;
+    private RefreshLayout refreshLayout;
+    private boolean isRefresh=false;
+    private SupperBaseActivity activity;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_doctor_list, null);
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mView = view;
+        mList = new ArrayList<>();
         initViews();
         initEvent();
         initDatas();
     }
 
     public void initViews() {
+        refreshLayout=(RefreshLayout) mView.findViewById(R.id.refreshLayout);
         requestMaker = RequestMaker.getInstance();
         layout_no_msg = (LinearLayout) mView.findViewById(R.id.layout_no_msg);
         hosptialId = getArguments().getString(HOSPTIALID) == null ? "" : getArguments().getString(HOSPTIALID);
@@ -88,8 +101,20 @@ public class DoctorListFragment extends BaseFragment {
                 i.putExtra("doctorid", mList.get(position).getDoctorID());
                 i.putExtra("doctorname", mList.get(position).getDoctorName());
                 startActivity(i);
-
-
+            }
+        });
+        refreshLayout.setOnRefreshListener(new RefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout pullToRefreshLayout) {
+                if(!activity.isNetWork){
+                    if(!activity.isNetWork){
+                        refreshLayout.refreshFinish(RefreshLayout.FAIL);
+                        return;
+                    }
+                    return;
+                }
+                isRefresh=true;
+                getDoctorListData(hosptialId, title, goodAt);
             }
         });
     }
@@ -217,7 +242,7 @@ public class DoctorListFragment extends BaseFragment {
                         layout_no_msg.setVisibility(View.VISIBLE);
                         mListView.setVisibility(View.GONE);
                     } else {
-                        mList = new ArrayList<>();
+
                         layout_no_msg.setVisibility(View.GONE);
                         mListView.setVisibility(View.VISIBLE);
                         for (int i = 0; i < array.length(); i++) {
@@ -230,8 +255,14 @@ public class DoctorListFragment extends BaseFragment {
                         adapter.notifyDataSetChanged();
 
                     }
-                } catch (JSONException e) {
+
+                } catch (Exception e) {
                     e.printStackTrace();
+                }finally {
+                    if(isRefresh){
+                        refreshLayout.refreshFinish(RefreshLayout.SUCCEED);
+                        isRefresh=false;
+                    }
                 }
             }
         }));

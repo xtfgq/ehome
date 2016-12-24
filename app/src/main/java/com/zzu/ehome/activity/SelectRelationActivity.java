@@ -1,6 +1,7 @@
 package com.zzu.ehome.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,6 +33,8 @@ public class SelectRelationActivity extends NetBaseActivity {
     private List<RelationshipInBean> mHList;
     //请求单例
     private RequestMaker requestMaker;
+    private SelectRelationAdapter mSelectRelationAdapter;
+
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -66,7 +69,16 @@ public class SelectRelationActivity extends NetBaseActivity {
                         bean.setValue(jsonObject.getString("Value"));
                         mHList.add(bean);
                     }
-                   listView.setAdapter(new SelectRelationAdapter(SelectRelationActivity.this, mHList));
+                    mSelectRelationAdapter=new SelectRelationAdapter(SelectRelationActivity.this, mHList);
+                   listView.setAdapter(mSelectRelationAdapter);
+                    listView.setSelection(0);
+//                    listView.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            listView.getChildAt(0).setBackgroundColor(Color.parseColor("#e0e0e0"));
+//                        }
+//                    });
+
                     stopProgressDialog();
 
                 } catch (JSONException e) {
@@ -80,12 +92,7 @@ public class SelectRelationActivity extends NetBaseActivity {
 
 
     public void initEvent() {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                index = position;
-            }
-        });
+
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +104,7 @@ public class SelectRelationActivity extends NetBaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
+                index=mSelectRelationAdapter.getIndex();
                 intent.putExtra("code", mHList.get(index).getCode());
                 intent.putExtra("value", mHList.get(index).getValue());
                 setResult(RelationActivity.ADD_RELATION, intent);

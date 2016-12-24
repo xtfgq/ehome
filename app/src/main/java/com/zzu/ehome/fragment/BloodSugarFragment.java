@@ -23,12 +23,12 @@ import com.zzu.ehome.activity.SuggarActivity;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.BloodSuggarBean;
 import com.zzu.ehome.bean.BloodSuggarDa;
-import com.zzu.ehome.bean.HealteData;
-import com.zzu.ehome.bean.HealthDataRes;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
@@ -264,6 +264,11 @@ public class BloodSugarFragment extends BaseFragment {
         });
         getBloodSuggar();
     }
+
+    /**
+     * 0,空腹；1，餐后；2，随机；
+     * @param typeBlood
+     */
     private void addBloodSugar(int typeBlood){
         requestMaker.BloodSugarInsert(cardNo,userid, mBloodSugarValue, typeBlood+"", mTime, String.valueOf(type), new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             public void processJsonObject(Object result) {
@@ -275,10 +280,10 @@ public class BloodSugarFragment extends BaseFragment {
                     JSONArray array = mySO.getJSONArray("BloodSugarInsert");
                     if (array.getJSONObject(0).getString("MessageCode")
                             .equals("0")) {
-
-                        ToastUtils.showMessage(getActivity(), array.getJSONObject(0).getString("MessageContent"));
+                        RxBus.getInstance().send(new EventType(Constants.HealthData));
+                        ToastUtils.showMessage(getActivity(), "保存成功!");
                         if (p == -1) {
-                            EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
+//                            EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
                             EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_suggar)));
                             getActivity().finish();
                         } else {
@@ -291,7 +296,7 @@ public class BloodSugarFragment extends BaseFragment {
                                 intentD.putExtra("msgContent", "Date");
                                 getActivity().sendBroadcast(intentD);
 
-                                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
+//                                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
                                 getActivity().finish();
                             }
                         }

@@ -30,7 +30,7 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.5">
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
                         android:layout_marginLeft="12dp"
                         android:text="婚姻状况"
                         android:textColor="#272031"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </RelativeLayout>
                 >
 
@@ -68,9 +68,8 @@
                             android:background="@null"
                             android:button="@null"
                             android:checked="true"
-                            android:layout_marginRight="4dp"
+                            android:layout_marginRight="2dp"
                             android:drawableLeft="@drawable/radio_check"
-                            android:drawablePadding="2dp"
                             android:text="未婚"
                             android:textColor="#272031"
                             android:textSize="12sp" />
@@ -83,8 +82,7 @@
                             android:background="@null"
                             android:button="@null"
                             android:drawableLeft="@drawable/radio_check"
-                            android:drawablePadding="2dp"
-                            android:layout_marginRight="4dp"
+                            android:layout_marginRight="2dp"
                             android:text="结婚"
                             android:textColor="#272031"
                             android:textSize="12sp" />
@@ -97,9 +95,8 @@
                             android:background="@null"
                             android:button="@null"
                             android:drawableLeft="@drawable/radio_check"
-                            android:drawablePadding="2dp"
                             android:text="离婚"
-                            android:layout_marginRight="4dp"
+                            android:layout_marginRight="2dp"
                             android:textColor="#272031"
                             android:textSize="12sp" />
 
@@ -111,8 +108,7 @@
                             android:background="@null"
                             android:button="@null"
                             android:drawableLeft="@drawable/radio_check"
-                            android:drawablePadding="2dp"
-                            android:layout_marginRight="4dp"
+                            android:layout_marginRight="2dp"
                             android:text="丧偶"
                             android:textColor="#272031"
                             android:textSize="12sp" />
@@ -138,7 +134,7 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="52dp"
-                    android:layout_weight="1.5">
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -147,7 +143,7 @@
                         android:layout_marginLeft="12dp"
                         android:text="药物过敏史"
                         android:textColor="#272031"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </RelativeLayout>
                 >
 
@@ -302,7 +298,7 @@
                                 android:hint="点此填写其他过敏物"
                                 android:text=""
                                 android:inputType="textMultiLine"
-                                android:textColor="@color/color_line_text"
+                                android:textColor="@color/text_color_black"
                                 android:textColorHint="@color/color_line_text"
                                 android:textSize="12sp"
 
@@ -325,7 +321,7 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="52dp"
-                    android:layout_weight="1.5">
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -334,7 +330,7 @@
                         android:layout_marginLeft="12dp"
                         android:text="既往病史"
                         android:textColor="#272031"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </RelativeLayout>
                 >
 
@@ -585,7 +581,7 @@
                                 android:hint="点此填写其他病史"
                                 android:text=""
                                 android:inputType="textMultiLine"
-                                android:textColor="@color/color_line_text"
+                                android:textColor="@color/text_color_black"
                                 android:textColorHint="@color/color_line_text"
                                 android:textSize="12sp"
 
@@ -608,7 +604,7 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_weight="1.5">
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -617,7 +613,7 @@
                         android:layout_marginLeft="12dp"
                         android:text="家族病史"
                         android:textColor="#272031"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -832,7 +828,7 @@
                                 android:hint="点此填写其他病史"
                                 android:text=""
                                 android:inputType="textMultiLine"
-                                android:textColor="@color/color_line_text"
+                                android:textColor="@color/text_color_black"
                                 android:textColorHint="@color/color_line_text"
                                 android:textSize="12sp"
 
@@ -1056,7 +1052,7 @@
                                 android:hint="点此填写其他病史"
                                 android:text=""
                                 android:inputType="textMultiLine"
-                                android:textColor="@color/color_line_text"
+                                android:textColor="@color/text_color_black"
                                 android:textColorHint="@color/color_line_text"
                                 android:textSize="12sp"
 
@@ -1279,7 +1275,7 @@
                                 android:hint="点此填写其他病史"
                                 android:text=""
                                 android:inputType="textMultiLine"
-                                android:textColor="@color/color_line_text"
+                                android:textColor="@color/text_color_black"
                                 android:textColorHint="@color/color_line_text"
                                 android:textSize="12sp"
 
@@ -1505,7 +1501,7 @@
                                 android:hint="点此填写其他病史"
                                 android:text=""
                                 android:inputType="textMultiLine"
-                                android:textColor="@color/color_line_text"
+                                android:textColor="@color/text_color_black"
                                 android:textColorHint="@color/color_line_text"
                                 android:textSize="12sp"
 
@@ -1528,7 +1524,7 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.5">
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -1537,7 +1533,7 @@
                         android:layout_marginLeft="12dp"
                         android:text="血型"
                         android:textColor="#272031"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </RelativeLayout>
                 >
 
@@ -1568,9 +1564,8 @@
                             android:button="@null"
                             android:checked="true"
                             android:drawableLeft="@drawable/radio_check"
-                            android:drawablePadding="2dp"
                             android:text="A型"
-                            android:layout_marginRight="4dp"
+                            android:layout_marginRight="2dp"
                             android:textColor="#272031"
                             android:textSize="12sp" />
 
@@ -1582,9 +1577,8 @@
                             android:background="@null"
                             android:button="@null"
                             android:drawableLeft="@drawable/radio_check"
-                            android:drawablePadding="2dp"
                             android:text="B型"
-                            android:layout_marginRight="4dp"
+                            android:layout_marginRight="2dp"
                             android:textColor="#272031"
                             android:textSize="12sp" />
 
@@ -1596,9 +1590,8 @@
                             android:background="@null"
                             android:button="@null"
                             android:drawableLeft="@drawable/radio_check"
-                            android:drawablePadding="2dp"
                             android:text="AB型"
-                            android:layout_marginRight="4dp"
+                            android:layout_marginRight="2dp"
                             android:textColor="#272031"
                             android:textSize="12sp" />
 
@@ -1610,9 +1603,8 @@
                             android:background="@null"
                             android:button="@null"
                             android:drawableLeft="@drawable/radio_check"
-                            android:drawablePadding="2dp"
                             android:text="O型"
-                            android:layout_marginRight="4dp"
+                            android:layout_marginRight="2dp"
                             android:textColor="#272031"
                             android:textSize="12sp" />
                     </RadioGroup>
@@ -1636,7 +1628,7 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="52dp"
-                    android:layout_weight="1.5">
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -1645,7 +1637,7 @@
                         android:layout_marginLeft="12dp"
                         android:text="遗传病史"
                         android:textColor="#272031"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </RelativeLayout>
                 >
 
@@ -1895,7 +1887,7 @@
                                 android:hint="点此填写其他病史"
                                 android:text=""
                                 android:inputType="textMultiLine"
-                                android:textColor="@color/color_line_text"
+                                android:textColor="@color/text_color_black"
                                 android:textColorHint="@color/color_line_text"
                                 android:textSize="12sp"
                                 />
@@ -1917,7 +1909,7 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="52dp"
-                    android:layout_weight="1.5">
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -1926,7 +1918,7 @@
                         android:layout_marginLeft="12dp"
                         android:text="吸烟情况"
                         android:textColor="#272031"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </RelativeLayout>
                 >
 
@@ -2119,7 +2111,7 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="52dp"
-                    android:layout_weight="1.5">
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -2128,7 +2120,7 @@
                         android:layout_marginLeft="12dp"
                         android:text="喝酒情况"
                         android:textColor="#272031"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </RelativeLayout>
                 >
 

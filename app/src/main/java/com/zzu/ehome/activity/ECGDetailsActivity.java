@@ -103,7 +103,13 @@ public class ECGDetailsActivity extends BaseActivity {
         if (downloadInfo != null) {
             if(downloadInfo.getState() == DownloadManager.FINISH){
                 circleProgressBar.setVisibility(View.GONE);
-                tvcontent.setText("打开文件");
+                File file=new File(DOWM_FOLDER + filename);
+                if(file.exists()) {
+                    tvcontent.setText("打开文件");
+
+                }else{
+                    tvcontent.setText("重新下载详细报告内容");
+                }
             }else if(downloadInfo.getState() == DownloadManager.PAUSE){
                 circleProgressBar.setVisibility(View.VISIBLE);
                 result=(int)(Math.round(downloadInfo.getProgress() * 10000) * 1.0f / 100);
@@ -149,22 +155,28 @@ public class ECGDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (downloadInfo != null) {
-                    if (downloadInfo.getState() == DownloadManager.FINISH) {
-                        tvcontent.setText("打开文件");
-                        circleProgressBar.setVisibility(View.GONE);
-                        openFolder(DOWM_FOLDER + filename);
-                    } else if (downloadInfo.getState() == DownloadManager.PAUSE) {
-                        downloadManager.startAllTask();
-                        circleProgressBar.setVisibility(View.VISIBLE);
-                        tvcontent.setText("正在下载详细报告内容...");
-                    } else if (downloadInfo.getState() == DownloadManager.DOWNLOADING) {
-                        circleProgressBar.setVisibility(View.VISIBLE);
-                        downloadManager.pauseTask(url);
-                        tvcontent.setText("继续下载详细报告内容");
-                    } else if (downloadInfo.getState() == DownloadManager.ERROR) {
+                    if(tvcontent.getText().toString().contains("重新下载详细报告内容")){
                         circleProgressBar.setVisibility(View.VISIBLE);
                         downloadManager.restartTask(url);
                         tvcontent.setText("正在下载详细报告内容...");
+                    }else {
+                        if (downloadInfo.getState() == DownloadManager.FINISH) {
+                            tvcontent.setText("打开文件");
+                            circleProgressBar.setVisibility(View.GONE);
+                            openFolder(DOWM_FOLDER + filename);
+                        } else if (downloadInfo.getState() == DownloadManager.PAUSE) {
+                            downloadManager.startAllTask();
+                            circleProgressBar.setVisibility(View.VISIBLE);
+                            tvcontent.setText("正在下载详细报告内容...");
+                        } else if (downloadInfo.getState() == DownloadManager.DOWNLOADING) {
+                            circleProgressBar.setVisibility(View.VISIBLE);
+                            downloadManager.pauseTask(url);
+                            tvcontent.setText("继续下载详细报告内容");
+                        } else if (downloadInfo.getState() == DownloadManager.ERROR) {
+                            circleProgressBar.setVisibility(View.VISIBLE);
+                            downloadManager.restartTask(url);
+                            tvcontent.setText("正在下载详细报告内容...");
+                        }
                     }
                 } else {
                     GetRequest request = OkGo.get(url);

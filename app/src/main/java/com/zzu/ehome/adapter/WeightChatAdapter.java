@@ -1,10 +1,8 @@
 package com.zzu.ehome.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
 import com.zzu.ehome.R;
-import com.zzu.ehome.bean.HealthDataRes;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.bean.WeightBeanRes;
 import com.zzu.ehome.db.EHomeDao;
@@ -27,8 +24,6 @@ import com.zzu.ehome.utils.SharePreferenceUtil;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.List;
-
-import static com.zzu.ehome.R.id.holder;
 
 /**
  * Created by Administrator on 2016/5/10.

@@ -1,6 +1,5 @@
 package com.zzu.ehome.fragment;
 
-import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,22 +14,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
-
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.BloodSuggarChatAdapter;
-import com.zzu.ehome.bean.BloodPressRes;
 import com.zzu.ehome.bean.BloodSuggarBean;
 import com.zzu.ehome.bean.BloodSuggarDa;
 import com.zzu.ehome.bean.BloodSuggarDate;
 import com.zzu.ehome.bean.BloodSuggarRes;
-import com.zzu.ehome.bean.HealteData;
-import com.zzu.ehome.bean.HealthDataRes;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.utils.CommonUtils;
-import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
@@ -42,7 +36,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.xclcharts.chart.PointD;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -114,10 +107,10 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
         listview = (StickyListHeadersListView) view.findViewById(R.id.lv_temp);
         heardchat = (LinearLayout) inflater.inflate(R.layout.new_suggar, null);
         mChart = (SuggarView) heardchat.findViewById(R.id.chart);
-        group = (RadioGroup) view.findViewById(R.id.radioGroup);
-        rbday = (RadioButton) view.findViewById(R.id.rb_day);
-        rbweek = (RadioButton) view.findViewById(R.id.rb_week);
-        rbmonth = (RadioButton) view.findViewById(R.id.rb_month);
+        group = (RadioGroup) heardchat.findViewById(R.id.radioGroup);
+        rbday = (RadioButton) heardchat.findViewById(R.id.rb_day);
+        rbweek = (RadioButton) heardchat.findViewById(R.id.rb_week);
+        rbmonth = (RadioButton) heardchat.findViewById(R.id.rb_month);
         tvnodata = (TextView) heardchat.findViewById(R.id.tvnodate);
         moredata = (RelativeLayout) inflater.inflate(R.layout.moredata, null);
         progressBarView = (View) moredata.findViewById(R.id.loadmore_foot_progressbar);

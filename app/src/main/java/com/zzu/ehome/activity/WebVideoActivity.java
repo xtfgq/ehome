@@ -17,7 +17,7 @@ import com.zzu.ehome.utils.SharePreferenceUtil;
  */
 public class WebVideoActivity extends BaseSimpleActivity implements View.OnClickListener{
     private ImageView ivhome,ivback;
-    private LinearLayout layout_mzwz,layout_yyjz;
+    private LinearLayout layout_mzwz,layout_yyjz,llback;
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -36,11 +36,12 @@ public class WebVideoActivity extends BaseSimpleActivity implements View.OnClick
         layout_mzwz=(LinearLayout)findViewById(R.id.layout_mzwz);
         layout_yyjz=(LinearLayout)findViewById(R.id.layout_yyjz);
         ivback=(ImageView)findViewById(R.id.ivback);
+        llback=(LinearLayout)findViewById(R.id.llback);
     }
     private void intiEvnents(){
         layout_mzwz.setOnClickListener(this);
         layout_yyjz.setOnClickListener(this);
-        ivback.setOnClickListener(this);
+        llback.setOnClickListener(this);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class WebVideoActivity extends BaseSimpleActivity implements View.OnClick
                 }else
                 startActivity(new Intent(WebVideoActivity.this,MyDoctorActivity.class));
                 break;
-            case R.id.ivback:
+            case R.id.llback:
                 finishActivity();
                 break;
         }

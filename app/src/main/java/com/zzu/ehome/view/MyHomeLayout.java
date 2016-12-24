@@ -158,8 +158,10 @@ public class MyHomeLayout extends LinearLayout {
             View item=inflater.inflate(home_relation,null);
             ImageView imageView=(ImageView)item.findViewById(R.id.ivpeople);
             String url="";
-            if(items.get(i).getRelationship().contains("Add")){
+            if(items.get(i).getRelationship().contains("添加亲人")){
                 imageView.setImageResource(R.drawable.icon_file1);
+                TextView tv_name = (TextView) item.findViewById(R.id.tvname);
+                tv_name.setText(items.get(i).getRelationship());
             }else {
                 if (TextUtils.isEmpty(items.get(i).getUser_Icon())||items.get(i).getUser_Icon().contains("vine.gif")) {
                     imageView.setImageResource(R.drawable.icon_user_tx1);
@@ -237,7 +239,7 @@ public class MyHomeLayout extends LinearLayout {
                 return;
             }
 
-            if(items.get(pos).getRelationship().contains("Add")){
+            if(items.get(pos).getRelationship().contains("添加亲人")){
                 Intent i = new Intent(context, LoginActivity1.class);
                 i.putExtra("relation", "rela");
                 context.startActivity(i);

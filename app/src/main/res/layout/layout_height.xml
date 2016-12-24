@@ -20,7 +20,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="48dp">
 
                 <TextView
                     android:id="@+id/tvheight"
@@ -33,20 +33,7 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="℃"
-                    android:textColor="@color/actionbar_color"
-                    android:textSize="12sp" />
-
-            </RelativeLayout>
 
             <com.zzu.ehome.view.ScaleMarkView
                 android:id="@+id/scale_mark1"

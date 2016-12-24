@@ -161,7 +161,7 @@ public class ChangePasswordActivity extends BaseActivity {
                                         .getString("MessageContent");
                                ToastUtils.showMessage(ChangePasswordActivity.this,chkcode+"");
 
-
+                                ToastUtils.showMessage(ChangePasswordActivity.this,"验证码已发送，请注意查收.");
 
                             }
                         }else{
@@ -182,57 +182,62 @@ public class ChangePasswordActivity extends BaseActivity {
         String newPsd = edt_new_Pass.getText().toString().trim();
         String newPsdAgain = edt_new_Pass_again.getText().toString().trim();
         if (TextUtils.isEmpty(oldPsd)) {
-            ToastUtils.showMessage(ChangePasswordActivity.this, "手机号码不能为空");
+            show("手机号码不能为空");
+
             return;
-        } else if (TextUtils.isEmpty(newPsd)) {
-            ToastUtils.showMessage(ChangePasswordActivity.this, "验证码不能为空");
+        } else if (!IOUtils.isMobileNO(oldPsd)) {
+            show("请输入正确的手机号码");
             return;
-        } else if (!user.getMobile().equals(oldPsd)) {
-            ToastUtils.showMessage(ChangePasswordActivity.this, R.string.checkmobile_register);
+        }
+        else if (TextUtils.isEmpty(newPsd)) {
+            show("请输入验证码");
             return;
-        }else if (!IOUtils.isMobileNO(oldPsd)) {
-            ToastUtils.showMessage(ChangePasswordActivity.this, R.string.checkmobile_register);
+        }  else if (!newPsd.equals(chkcode)) {
+            show("请输入正确的验证码！");
+            return;
+
+        }  else if (newPsdAgain.length() < 6) {
+            show("请输入6位以上新密码！");
+
+            return;
+        }
+        else if( newPsdAgain.equals("重新输入密码（6位以上）")){
+            show("请输入新密码！");
             return;
         }
 
-        else if (newPsdAgain.length() < 6||newPsdAgain.equals("设置新密码（6位以上）")) {
-            ToastUtils.showMessage(ChangePasswordActivity.this, "密码长度不能小于6位");
-            return;
-
-        } else if (!newPsd.equals(chkcode)) {
-            ToastUtils.showMessage(ChangePasswordActivity.this, R.string.erro_code_register);
-            return;
-
-        }
-
-        final String nPsd = newPsdAgain;
-        requestMaker.UserAuthChange(user.getMobile(), user.getPassword(), nPsd, new JsonAsyncTask_Info(ChangePasswordActivity.this, true, new JsonAsyncTaskOnComplete() {
-            @Override
-            public void processJsonObject(Object result) {
-                JSONObject mySO = (JSONObject) result;
-                Log.e("TAG", result.toString());
-                try {
-                    JSONArray array = mySO.getJSONArray("UserAuthChange");
-                    JSONObject jsonObject = (JSONObject) array.get(0);
-                    String msg = jsonObject.getString("MessageCode");
 
 
-                    if ("0".equals(msg)) {
-                        ToastUtils.showMessage(ChangePasswordActivity.this, jsonObject.getString("MessageContent"));
-                        User dbUser = dao.findUserInfoById(userid);
-                        dbUser.setPassword(nPsd);
-                        dao.updateUserInfo(dbUser, userid);
-                        UserClientBind();
 
-                    } else {
-                        ToastUtils.showMessage(ChangePasswordActivity.this, jsonObject.getString("MessageContent"));
+            final String nPsd = newPsdAgain;
+            requestMaker.UserAuthChange(user.getMobile(), user.getPassword(), nPsd, new JsonAsyncTask_Info(ChangePasswordActivity.this, true, new JsonAsyncTaskOnComplete() {
+                @Override
+                public void processJsonObject(Object result) {
+                    JSONObject mySO = (JSONObject) result;
+                    Log.e("TAG", result.toString());
+                    try {
+                        JSONArray array = mySO.getJSONArray("UserAuthChange");
+                        JSONObject jsonObject = (JSONObject) array.get(0);
+                        String msg = jsonObject.getString("MessageCode");
+
+
+                        if ("0".equals(msg)) {
+                            ToastUtils.showMessage(ChangePasswordActivity.this, jsonObject.getString("MessageContent"));
+                            User dbUser = dao.findUserInfoById(userid);
+                            dbUser.setPassword(nPsd);
+                            dao.updateUserInfo(dbUser, userid);
+                            UserClientBind();
+
+                        } else {
+                            ToastUtils.showMessage(ChangePasswordActivity.this, jsonObject.getString("MessageContent"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
-        }));
-    }
+            }));
+        }
+
 
 
         protected void onDestroy() {
@@ -259,7 +264,9 @@ public class ChangePasswordActivity extends BaseActivity {
 
                         SharePreferenceUtil.getInstance(ChangePasswordActivity.this).setUserId("");
                         SharePreferenceUtil.getInstance(ChangePasswordActivity.this).setHomeId("");
-                        startActivity(new Intent(ChangePasswordActivity.this,LoginActivity1.class));
+                        Intent i=new Intent(ChangePasswordActivity.this,LoginActivity1.class);
+                        i.putExtra("Home","Home");
+                        startActivity(i);
                         Intent intenthealth = new Intent("userrefresh");
                         sendBroadcast(intenthealth);
                         finishActivity();

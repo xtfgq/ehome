@@ -126,7 +126,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
                 break;
             case R.id.layout_qchc:
-                DialogTips dialog = new DialogTips(SettingActivity.this, "", "确定清除缓存?",
+                DialogTips dialog = new DialogTips(SettingActivity.this, "", "是否清理缓存?",
                         "确定", true, true);
                 dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int userId) {

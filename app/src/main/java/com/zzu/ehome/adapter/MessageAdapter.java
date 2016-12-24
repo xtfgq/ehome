@@ -76,7 +76,7 @@ public class MessageAdapter extends BaseAdapter {
             holder.ivmessage.setBackgroundResource(R.drawable.icon_sys_mes);
         }else{
             holder.tv_tips.setText("在线问诊记录");
-            holder.ivmessage.setBackgroundResource(R.drawable.icon_doctor);
+            holder.ivmessage.setBackgroundResource(R.mipmap.message);
         }
         holder.name.setText(item.getContent());
         if(item.getNum()>0) {

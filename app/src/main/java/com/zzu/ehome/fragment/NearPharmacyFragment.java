@@ -17,9 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.SearchResult;
@@ -31,13 +28,21 @@ import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.baidu.mapapi.search.poi.PoiSortType;
 import com.zzu.ehome.R;
+import com.zzu.ehome.activity.NearPharmacyActivity;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.PullToRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zzu.ehome.R.id.tvnodate;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
+
+import static com.zzu.ehome.activity.NearPharmacyActivity.mLocation;
 
 /**
  * Created by Mersens on 2016/8/17.
@@ -46,16 +51,13 @@ import static com.zzu.ehome.R.id.tvnodate;
 public class NearPharmacyFragment extends BaseFragment {
     private ListView mListView;
     private View mView;
-    public LocationClient mLocationClient;
-    public MyLocationListener mMyLocationListener;
-    private LocationClientOption.LocationMode tempMode = LocationClientOption.LocationMode.Hight_Accuracy;
-    private String tempcoor = "bd09ll";
+
     private PoiSearch mPoiSearch = null;
     int radius = 1000;
     private static String keyWorlds = "药店";
     private PoiNearbySearchOption nearbySearchOption = new PoiNearbySearchOption();
     private boolean isFirst = true;
-    private BDLocation mLocation;
+
     private List<PoiInfo> list=new ArrayList<>();
     private static final double EARTH_RADIUS = 6378137;
     private PullToRefreshLayout pulltorefreshlayout;
@@ -65,7 +67,7 @@ public class NearPharmacyFragment extends BaseFragment {
     private boolean isLoading=false;
     private LinearLayout layout_no_msg;
     private TextView tvnodate;
-
+    private CompositeSubscription compositeSubscription;
 
     @Nullable
     @Override
@@ -91,11 +93,40 @@ public class NearPharmacyFragment extends BaseFragment {
         mPoiSearch.setOnGetPoiSearchResultListener(poiSearchListener);
         layout_no_msg=(LinearLayout)mView.findViewById(R.id.layout_no_msg);
         pulltorefreshlayout = (PullToRefreshLayout) mView.findViewById(R.id.refresh_view);
+
         tvnodate=(TextView)mView.findViewById(R.id.tvnodate);
         tvnodate.setText("暂无数据");
+
     }
 
     public void initEvent() {
+        compositeSubscription = new CompositeSubscription();
+        //监听订阅事件
+        Subscription subscription = RxBus.getInstance().toObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object event) {
+                        if (event == null) {
+                            return;
+                        }
+
+                        if (event instanceof EventType){
+                            EventType type=(EventType)event;
+                            if("location".equals(type.getType())){
+                                if (isFirst) {
+
+                                    searchNearbyProcess(NearPharmacyActivity.getLocation());
+                                }
+                            }
+
+
+                        }
+
+                    }
+                });
+        //subscription交给compositeSubscription进行管理，防止内存溢出
+        compositeSubscription.add(subscription);
         pulltorefreshlayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
@@ -103,7 +134,7 @@ public class NearPharmacyFragment extends BaseFragment {
                 isFirst = true;
                 isReflash=true;
                 isLoading=false;
-                searchNearbyProcess(mLocation);
+                searchNearbyProcess(NearPharmacyActivity.getLocation());
 
             }
 
@@ -112,7 +143,7 @@ public class NearPharmacyFragment extends BaseFragment {
                 pageNum++;
                 isLoading=true;
                 isReflash=false;
-                searchNearbyProcess(mLocation);
+                searchNearbyProcess(NearPharmacyActivity.getLocation());
 
 
             }
@@ -147,7 +178,6 @@ public class NearPharmacyFragment extends BaseFragment {
         nearbySearchOption.sortType(PoiSortType.distance_from_near_to_far);
         nearbySearchOption.radius(radius);
 
-        location();
     }
 
     class MyAdapter extends BaseAdapter {
@@ -209,7 +239,7 @@ public class NearPharmacyFragment extends BaseFragment {
             double mLongitude = p.location.longitude;
             double mLatitude = p.location.latitude;
             int distance = getDistance(mLocation.getLongitude(), mLocation.getLatitude(), mLongitude, mLatitude);
-            holder.tv_distance.setText(distance + "米");
+            holder.tv_distance.setText(distance + "m");
             return convertView;
         }
     }
@@ -244,12 +274,13 @@ public class NearPharmacyFragment extends BaseFragment {
             if (poiResult == null || poiResult.error == SearchResult.ERRORNO.RESULT_NOT_FOUND) {
                 if(isReflash){
                     isReflash=false;
+
                     pulltorefreshlayout.refreshFinish(PullToRefreshLayout.SUCCEED);
                 }else if(isLoading){
                     isLoading=false;
                     pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
                 }
-                if(pageNum==1) {
+                if(pageNum==0) {
                     layout_no_msg.setVisibility(View.VISIBLE);
                 }
                 return;
@@ -258,6 +289,7 @@ public class NearPharmacyFragment extends BaseFragment {
                 isFirst = false;
                 if(isReflash){
                     list.clear();
+
                 }
                 List<PoiInfo> mList=poiResult.getAllPoi();
                 if(mList!=null && mList.size()>0){
@@ -272,6 +304,7 @@ public class NearPharmacyFragment extends BaseFragment {
                 }else if(isLoading){
                     isLoading=false;
                     pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+
                 }
             }
         }
@@ -295,50 +328,18 @@ public class NearPharmacyFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         mPoiSearch.destroy();
+        compositeSubscription.unsubscribe();
         super.onDestroy();
     }
 
-    private void location() {
-        mLocationClient = new LocationClient(getActivity());
-        mMyLocationListener = new MyLocationListener();
-        mLocationClient.registerLocationListener(mMyLocationListener);
-        initLocation();
-    }
-
-    // 初始化定位
-    private void initLocation() {
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(tempMode);// 设置定位模式
-        option.setCoorType(tempcoor);// 返回的定位结果是百度经纬度，默认值gcj02
-        option.setScanSpan(3000);// 设置发起定位请求的间隔时间,单位为3000ms
-        option.setIsNeedAddress(true);
-        option.setOpenGps(true);
-        mLocationClient.setLocOption(option);
-        mLocationClient.start();
-    }
 
 
-    /**
-     * 定位SDK监听函数
-     */
-    public class MyLocationListener implements BDLocationListener {
 
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            if (null != location) {
-                if (isFirst) {
-                    mLocation = location;
-                    searchNearbyProcess(location);
-                }
-            }
-        }
 
-        public void onReceivePoi(BDLocation poiLocation) {
-
-        }
-    }
 
     public void searchNearbyProcess(BDLocation location) {
+        if(location==null)
+            return;
         LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
         nearbySearchOption.location(l);
         nearbySearchOption.pageNum(pageNum);
@@ -349,5 +350,6 @@ public class NearPharmacyFragment extends BaseFragment {
 
         return new NearPharmacyFragment();
     }
+
 
 }

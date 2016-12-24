@@ -25,6 +25,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
+                    android:layout_marginTop="16dp"
                     android:layout_height="wrap_content">
 
                     <TextView
@@ -183,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@+id/img_part"
-                        android:text="测量时段"
+                        android:text="血糖类型"
                         android:textColor="#0f2536"
                         android:textSize="16sp" />
 
@@ -205,7 +206,7 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
                         android:layout_toLeftOf="@+id/img_part_right"
-                        android:text="空腹"
+                        android:text="空腹血糖"
                         android:textColor="#0f2536"
                         android:textSize="16sp" />
 

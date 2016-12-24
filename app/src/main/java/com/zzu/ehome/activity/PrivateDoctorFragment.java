@@ -64,7 +64,8 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
     private String goodAt = "";
     private TextView tv_yy, tv_zc, tv_mb;
     private boolean isNoData=false;
-
+    private boolean isFisrt=true;
+    private SupperBaseActivity activity;
 
     @Nullable
     @Override
@@ -72,6 +73,12 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
         return inflater.inflate(R.layout.layout_pmd, null);
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -120,7 +127,10 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
         layout_all_yiyuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 showPop(Type.HOSPTIAL);
                 type = Type.HOSPTIAL;
             }
@@ -128,6 +138,10 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
         layout_all_zhicheng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 showPop(Type.POSITIONAL_TITLES);
                 type = Type.POSITIONAL_TITLES;
             }
@@ -135,6 +149,10 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
         layout_all_manbing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 showPop(Type.DISEASE);
                 type = Type.DISEASE;
             }
@@ -263,6 +281,10 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if(!activity.isNetWork){
+                activity.showTitleDialog("网络连接已断开，请检查网络设置");
+                return;
+            }
             switch (t) {
                 case HOSPTIAL:
                     String value1=yyList.get(position).getValue();
@@ -450,8 +472,9 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
         if(hidden){
         }else{
             if(isNoData){
-                if (TextUtils.isEmpty(hosptialId) && TextUtils.isEmpty(title) && TextUtils.isEmpty(goodAt)) {
-                    show("近期上线，敬请期待！");
+                if (TextUtils.isEmpty(hosptialId) && TextUtils.isEmpty(title) && TextUtils.isEmpty(goodAt)&&isFisrt) {
+                    isFisrt=false;
+                    show("正在签约，敬请期待");
                 }
             }
         }

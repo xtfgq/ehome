@@ -41,12 +41,12 @@ public class NewsWebView extends BaseActivity {
         }
 
         String url = Constants.URLIMAGENEW + ID;
-        if (title.length() > 10) {
-            title = title.substring(0, 9) + "...";
-        }
+//        if (title.length() > 10) {
+//            title = title.substring(0, 9) + "...";
+//        }
 
 
-        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, title, new HeadView.OnLeftClickListener() {
+        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "健康资讯", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
                 finishActivity();

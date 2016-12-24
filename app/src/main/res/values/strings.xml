@@ -22,7 +22,7 @@
 
     <string name="reg_code">短信验证码</string>
     <string name="get_code">获取验证码</string>
-    <string name="set_pass">设置密码(6位以上)</string>
+    <string name="set_pass">输入密码(6位以上)</string>
     <string name="set_pass_again">重新设置密码(6位以上)</string>
     <string name="input_pass">输入密码</string>
     <string name="tv_home">首页</string>
@@ -58,6 +58,9 @@
     <string name="message_max_num">你最多可以选择%1$s张图片</string>
     <string name="save_ing">保存图片中…</string>
     <string name="no_photo">没有照片</string>
+
     <string name="record_desc"> 通过上方"拍报告"功能手动上传。&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</string>
 
+    //健康数据刷新
+    <string name="healthdata">healthdata</string>
 </resources>

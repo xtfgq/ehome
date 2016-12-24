@@ -1,11 +1,11 @@
 package com.zzu.ehome.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -15,11 +15,14 @@ import android.widget.TextView;
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.JibuAdapter;
+import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.StepBean;
 import com.zzu.ehome.bean.StepCounterBean;
 import com.zzu.ehome.bean.StepCounterDate;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.service.StepDetector;
 import com.zzu.ehome.service.StepService;
 import com.zzu.ehome.utils.DateUtils;
@@ -75,6 +78,8 @@ public class JibuDataActivity extends BaseActivity implements StickyListHeadersL
     private String timeCount;
     private EHomeDao dao;
     private String cardNo;
+    private Intent intent;
+
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -89,6 +94,9 @@ public class JibuDataActivity extends BaseActivity implements StickyListHeadersL
             weight = Float.parseFloat(SharePreferenceUtil.getInstance(this).getWeight());
         }
         mList = new ArrayList<StepCounterBean>();
+
+        intent = new Intent(this, StepService.class);
+        startService(intent);
         initViews();
         initEvent();
         initDatas();
@@ -291,6 +299,7 @@ public class JibuDataActivity extends BaseActivity implements StickyListHeadersL
                         JSONObject mySO = (JSONObject) result;
                         org.json.JSONArray array = mySO
                                 .getJSONArray("StepCounterInsert");
+                        RxBus.getInstance().send(new EventType(Constants.HealthData));
 //                        Log.e("TAG", mySO.toString());
 //                        EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager)));
                     } catch (Exception e) {

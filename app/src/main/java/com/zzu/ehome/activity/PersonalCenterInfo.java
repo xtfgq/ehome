@@ -3,6 +3,7 @@ package com.zzu.ehome.activity;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -42,6 +43,7 @@ import com.zzu.ehome.bean.User;
 import com.zzu.ehome.bean.UserInfoDate;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.main.ehome.MainActivity;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.IOUtils;
 import com.zzu.ehome.utils.ImageTools;
@@ -54,6 +56,7 @@ import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.AgePopWindow;
 import com.zzu.ehome.view.CircleImageView;
+import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.HeadView;
 import com.zzu.ehome.view.HeightPopWindow;
 import com.zzu.ehome.view.PicPopupWindows;
@@ -139,6 +142,16 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
         MobclickAgent.onPause(this);
     }
 
+    public void setTVEeable(boolean flag){
+        if(flag){
+            tv_save.setEnabled(true);
+            tv_save.setBackgroundResource(R.color.actionbar_color);
+        }else{
+            tv_save.setEnabled(flag);
+            tv_save.setBackgroundResource(R.color.bottom_text_color_normal);
+        }
+
+    }
     private void initViews() {
         layout_main=(LinearLayout)findViewById(R.id.layout_main);
         layout_height = (RelativeLayout) findViewById(R.id.layout_height);
@@ -153,10 +166,17 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
         edt_height = (TextView) findViewById(R.id.edt_height);
         tv_save = (TextView) findViewById(R.id.tv_save);
 
-        setDefaultTXViewMethod(R.mipmap.icon_arrow_left, "个人资料", "保存", new HeadView.OnLeftClickListener() {
+        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "个人资料",new HeadView.OnLeftClickListener(){
             @Override
             public void onClick() {
                 finishActivity();
+            }
+        });
+       /*
+        setDefaultTXViewMethod(R.mipmap.icon_arrow_left, "个人资料", "保存", new HeadView.OnLeftClickListener() {
+            @Override
+            public void onClick() {
+
 
             }
         }, new HeadView.OnRightClickListener() {
@@ -165,7 +185,7 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                 complate();
 
             }
-        });
+        });*/
         User user = dao.findUserInfoById(userid);
         setData(user);
 //        InputMethodManager imm = (InputMethodManager) getSystemService(PersonalCenterInfo.this.INPUT_METHOD_SERVICE);
@@ -242,20 +262,23 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
      */
 
     public void complate() {
-
+        setTVEeable(false);
         String name = edt_name.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
-            ToastUtils.showMessage(PersonalCenterInfo.this, "请输入姓名");
+            show("请输入姓名");
+            setTVEeable(true);
             return;
         }
 
         String userno = edt_card_num.getText().toString().trim();
         if (TextUtils.isEmpty(userno)) {
-            ToastUtils.showMessage(PersonalCenterInfo.this, "请输入身份证号");
+            show( "请输入身份证号");
+            setTVEeable(true);
             return;
         }
         if (!IOUtils.isUserNO(userno)) {
-            ToastUtils.showMessage(PersonalCenterInfo.this, "身份证号格式不正确");
+            show("身份证号格式不正确");
+            setTVEeable(true);
             return;
         }
 
@@ -264,51 +287,44 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
 //            ToastCompat.makeText(PersonalCenterInfo.this,"请输入年龄！", Toast.LENGTH_LONG);
 //            ToastUtils.showMessage(PersonalCenterInfo.this, "请输入年龄！");
             show("请输入年龄！");
+            setTVEeable(true);
             return;
         }
         if (name.length() > 4) {
 //            ToastUtils.showMessage(PersonalCenterInfo.this, "姓名长度超长！");
 //            ToastCompat.makeText(PersonalCenterInfo.this,"姓名长度超长！", Toast.LENGTH_LONG);
             show("姓名长度超长！");
+            setTVEeable(true);
             return;
         }
         if (!IOUtils.isName(name)) {
 //            ToastCompat.makeText(PersonalCenterInfo.this,"姓名需要输入汉字！", Toast.LENGTH_LONG);
 //           ToastUtils.showMessage(PersonalCenterInfo.this, "姓名需要输入汉字");
-            show("请输入两个字以上的姓名");
+            show("姓名需要输入两个以上汉字");
+            setTVEeable(true);
             return;
         }
         height = edt_height.getText().toString();
         if (TextUtils.isEmpty(height)) {
             show("请输入身高!");
+            setTVEeable(true);
 //            ToastUtils.showMessage(PersonalCenterInfo.this, "请输入身高");
             return;
         }
-        startProgressDialog();
-        requestMaker.userInfo(userid, name, sex, userno, age, height, new JsonAsyncTask_Info(PersonalCenterInfo.this, true, new JsonAsyncTaskOnComplete() {
-            @Override
-            public void processJsonObject(Object result) {
-                String returnvalue = result.toString();
-                try {
-                    JSONObject mySO = (JSONObject) result;
-                    JSONArray array = mySO.getJSONArray("UserInfoChange");
-                    stopProgressDialog();
-                    if (array.getJSONObject(0).getString("MessageCode")
-                            .equals("0")) {
-                        doInquery();
-
-                        getToken(array.getJSONObject(0).getString("UserID"),array.getJSONObject(0).getString("RealName"),Constants.JE_BASE_URL3 + array.getJSONObject(0).getString("PictureURL").replace("~", "").replace("\\", "/"));
-                    }
-                    CustomApplcation.getInstance().isRead=false;
-                    Intent intenthealth = new Intent("userrefresh");
-                    sendBroadcast(intenthealth);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
+        if(!TextUtils.isEmpty(dao.findUserInfoById(userid).getUserno())){
+            if(dao.findUserInfoById(userid).getUserno().equals(userno)){
+                doSave(userno,age,name);
+            }else{
+                confirmSave(userno,age,name);
             }
-        }));
+
+        }else{
+          doSave(userno,age,name);
+        }
+
+
+
+
     }
 
 
@@ -382,7 +398,7 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                         imgHead, iv_head);
                 Intent intenthealth = new Intent("userrefresh");
                 sendBroadcast(intenthealth);
-                Log.e("fff", imgHead);
+
 //                ToastUtils.showMessage(PersonalCenterInfo.this,"vvvvvvvvv");
                 EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
 
@@ -780,6 +796,35 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
             tvsex.setText("女");
         }
     }
+    private void doSave(String userno,String age,String name){
+        requestMaker.userInfo(userid, name, sex, userno, age, height, new JsonAsyncTask_Info(PersonalCenterInfo.this, true, new JsonAsyncTaskOnComplete() {
+            @Override
+            public void processJsonObject(Object result) {
+                String returnvalue = result.toString();
+                try {
+                    JSONObject mySO = (JSONObject) result;
+                    JSONArray array = mySO.getJSONArray("UserInfoChange");
+                    stopProgressDialog();
+                    if (array.getJSONObject(0).getString("MessageCode")
+                            .equals("0")) {
+                        doInquery();
+
+                        getToken(array.getJSONObject(0).getString("UserID"),array.getJSONObject(0).getString("RealName"),Constants.JE_BASE_URL3 + array.getJSONObject(0).getString("PictureURL").replace("~", "").replace("\\", "/"));
+                    }
+                    CustomApplcation.getInstance().isRead=false;
+                    Intent intenthealth = new Intent("userrefresh");
+                    sendBroadcast(intenthealth);
+                    finishActivity();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }finally {
+                    setTVEeable(true);
+                }
+
+            }
+        }));
+    }
 
     @Override
     public void onSelect(String select) {
@@ -834,5 +879,18 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
         }));
 
 
+    }
+    public void confirmSave(final String userno,final String age,final String name) {
+        DialogTips dialog = new DialogTips(PersonalCenterInfo.this, "", "修改身份证号，将导致原始数据丢失，请慎重？",
+                "确定", true, true);
+        dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int userId) {
+
+              doSave(userno,age,name);
+            }
+        });
+
+        dialog.show();
+        dialog = null;
     }
 }

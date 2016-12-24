@@ -18,7 +18,10 @@ import android.widget.TextView;
 import com.baidu.location.BDLocation;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.CooperationPharmacyActivity;
+import com.zzu.ehome.activity.NearPharmacyActivity;
 import com.zzu.ehome.bean.PharmacyBean;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -31,7 +34,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zzu.ehome.R.id.tvnodate;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
 
 
 /**
@@ -46,7 +52,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
     private static int pagesize=10;
     private int pageindex=1;
     private static final double EARTH_RADIUS = 6378137;
-    private BDLocation mLocation=HomeFragment1.getLocation();
+    private BDLocation mLocation= NearPharmacyActivity.mLocation;
     private List<PharmacyBean> list=new ArrayList<>();
     private MyAdapter adapter=null;
     private boolean isReflash=false;
@@ -54,7 +60,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
     public static String ID="id";
     private LinearLayout layout_no_msg;
     private TextView  tvnodate;
-
+    private CompositeSubscription compositeSubscription;
 
 
 
@@ -87,6 +93,34 @@ public class CooperationPharmacyFragment extends BaseFragment {
 
 
     public void initEvent(){
+        //监听订阅事件
+        compositeSubscription=new CompositeSubscription();
+        Subscription subscription = RxBus.getInstance().toObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object event) {
+                        if (event == null) {
+                            return;
+                        }
+                        if (event instanceof EventType){
+                            EventType type=(EventType)event;
+                            if("location".equals(type.getType())){
+                                if(pageindex==1) {
+                                    isReflash = true;
+                                    isLoading = false;
+                                    initDatas();
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                });
+        //subscription交给compositeSubscription进行管理，防止内存溢出
+        compositeSubscription.add(subscription);
         pulltorefreshlayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
@@ -187,7 +221,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
             double mLongitude = Double.valueOf(p.getLongitude());
             double mLatitude = Double.valueOf(p.getLatitude());
             int distance = getDistance(mLocation.getLongitude(), mLocation.getLatitude(), mLongitude, mLatitude);
-            holder.tv_distance.setText(distance + "米");
+            holder.tv_distance.setText(distance + "m");
             return convertView;
         }
     }
@@ -215,8 +249,13 @@ public class CooperationPharmacyFragment extends BaseFragment {
                 try {
                     JSONArray array = mySO.getJSONArray("PharmacyInquiry");
                     if (array.getJSONObject(0).has("MessageCode")) {
+                        if(pageindex==1) {
+
+                            layout_no_msg.setVisibility(View.VISIBLE);
+                        }
 
                     } else {
+
                         for(int i=0;i<array.length();i++){
                             JSONObject json=array.getJSONObject(i);
                             PharmacyBean pb=new PharmacyBean();
@@ -286,4 +325,9 @@ public class CooperationPharmacyFragment extends BaseFragment {
         return new CooperationPharmacyFragment();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeSubscription.unsubscribe();
+    }
 }

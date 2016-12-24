@@ -54,7 +54,7 @@ public class WebDatas {
         List<String> gxyList=new ArrayList<>();
         gxyList.add(BASEURL+"gxygaishu.html");
         gxyList.add(BASEURL+"gxybingyin.html");
-        gxyList.add(BASEURL+"gxybingyin.html");
+        gxyList.add(BASEURL+"gxyzhengzhuang.html");
         gxyList.add(BASEURL+"gxyzhenduan.html");
         gxyList.add(BASEURL+"gxyzhiliao.html");
         map.put(1,gxyList);

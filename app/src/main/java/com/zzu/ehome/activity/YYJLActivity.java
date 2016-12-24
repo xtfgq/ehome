@@ -27,7 +27,8 @@ import com.zzu.ehome.bean.Images;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
-import com.zzu.ehome.utils.CommonUtils;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.utils.ImageUtil;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -47,6 +48,8 @@ import java.util.Date;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+
+import static com.zzu.ehome.R.id.editText;
 
 /**
  * Created by Mersens on 2016/6/27.
@@ -84,7 +87,7 @@ public class YYJLActivity extends BaseActivity implements View.OnClickListener {
     }
 
     public void initViews() {
-        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "用药记录", new HeadView.OnLeftClickListener() {
+        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "添加用药记录", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
                 finishActivity();
@@ -94,7 +97,7 @@ public class YYJLActivity extends BaseActivity implements View.OnClickListener {
 
         layout_fysj = (RelativeLayout) findViewById(R.id.layout_fysj);
         layout_ypmc = (RelativeLayout) findViewById(R.id.layout_ypmc);
-        edit_num = (EditText) findViewById(R.id.editText);
+        edit_num = (EditText) findViewById(editText);
         editText_bz = (EditText) findViewById(R.id.editText_bz);
         imageView_add = (ImageView) findViewById(R.id.imageView_add);
         btn_save = (Button) findViewById(R.id.btn_save);
@@ -105,6 +108,7 @@ public class YYJLActivity extends BaseActivity implements View.OnClickListener {
         rlphoto = (RelativeLayout) findViewById(R.id.rlphoto);
         rlphoto.setVisibility(View.VISIBLE);
         resultRecyclerView.setVisibility(View.INVISIBLE);
+        
     }
 
     public void initEvent() {
@@ -319,27 +323,32 @@ public class YYJLActivity extends BaseActivity implements View.OnClickListener {
 
     //保存
     public void doSave() {
-        if (CommonUtils.isFastClick())
-            return;
+/*        if (CommonUtils.isFastClick())
+            return;*/
+        setEventEnable(false);
         String time = tv_fysj_time.getText().toString().trim();
         String ypmc = editText_ypmc_name.getText().toString().trim();
         String num = edit_num.getText().toString().trim();
         String bz = editText_bz.getText().toString().trim();
         if (TextUtils.isEmpty(time)) {
             ToastUtils.showMessage(YYJLActivity.this, "请选择服药时间！");
+            setEventEnable(true);
             return;
         }
         if (TextUtils.isEmpty(ypmc)) {
             ToastUtils.showMessage(YYJLActivity.this, "请输入药品名称！");
+            setEventEnable(true);
             return;
 
         }
-        if (TextUtils.isEmpty(num)) {
+        if (TextUtils.isEmpty(num)||"0".equals(num)) {
             ToastUtils.showMessage(YYJLActivity.this, "请输入服药剂量！");
+            setEventEnable(true);
             return;
         }
         if (ypmc.length() > 20) {
             ToastUtils.showMessage(YYJLActivity.this, "药品名称最长输入20个字符！");
+            setEventEnable(true);
             return;
         }
 
@@ -347,19 +356,20 @@ public class YYJLActivity extends BaseActivity implements View.OnClickListener {
         float numF = Float.valueOf(num);
         if (Float.compare(numF, 100f) >= 0) {
             ToastUtils.showMessage(YYJLActivity.this, "服药剂量过大！");
+            setEventEnable(true);
             return;
         }
         startProgressDialog();
         if (images != null && images.size() > 0) {
             if (images.size() > 9) {
                 ToastUtils.showMessage(YYJLActivity.this, "你最多可以选择9张");
+                setEventEnable(true);
                 return;
             }
-            List<String> imgs = new ArrayList<String>(images);
 
+            List<String> imgs = new ArrayList<String>(images);
             if (images.size() < 9) {
                 imgs.remove(imgs.size() - 1);
-
             }
 
             for (int i = 0; i < imgs.size(); i++) {
@@ -379,7 +389,9 @@ public class YYJLActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void processJsonObject(Object result) {
                 try {
+
                     stopProgressDialog();
+                    RxBus.getInstance().send(new EventType(Constants.HealthData));
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO
                             .getJSONArray("MedicationRecordInsert");
@@ -392,12 +404,15 @@ public class YYJLActivity extends BaseActivity implements View.OnClickListener {
                         mAdapter.setmList(images);
                         mAdapter.notifyDataSetChanged();
                     }
+
                     EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
-                    EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
-                    ToastUtils.showMessage(YYJLActivity.this, array.getJSONObject(0).getString("MessageContent").toString());
+//                    EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
+                    ToastUtils.showMessage(YYJLActivity.this, "保存成功!");
                     finishActivity();
                 } catch (Exception e) {
                     e.printStackTrace();
+                }finally {
+                    setEventEnable(true);
                 }
             }
 
@@ -405,6 +420,17 @@ public class YYJLActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+
+    public void setEventEnable(boolean flag){
+        if(flag){
+            btn_save.setEnabled(true);
+            btn_save.setBackgroundResource(R.color.actionbar_color);
+        }
+         else{
+            btn_save.setEnabled(false);
+            btn_save.setBackgroundResource(R.color.bottom_text_color_normal);
+        }
+    }
     private String getPhotoFileName(int i) {
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat(

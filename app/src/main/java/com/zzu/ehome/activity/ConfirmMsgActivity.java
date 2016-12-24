@@ -106,14 +106,9 @@ public class ConfirmMsgActivity extends BaseActivity {
                                         showDialog("对不起，不能重复预约同一医生同一号");
                                     }else if(code==-3){
                                         showDialog("对不起，爽约超过3次，不能挂号");
-                                    }else if(code==-4){
+                                    }else if(code==-4||code==-7){
                                             showDialog(array.getJSONObject(0).getString("MessageContent"));
-
-                                    }else if(code==-7){
-
-                                            showDialog(array.getJSONObject(0).getString("MessageContent"));
-
-                                    }else if(code==0){
+                                    } else if(code==0){
                                         showDialog("对不起，挂号失败请稍后再试");
                                     }
                                 } catch (Exception e) {

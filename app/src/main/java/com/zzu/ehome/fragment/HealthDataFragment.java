@@ -30,12 +30,14 @@ import com.zzu.ehome.activity.JibuDataActivity;
 import com.zzu.ehome.activity.LoginActivity1;
 import com.zzu.ehome.activity.MedicalRecordsActivity;
 import com.zzu.ehome.activity.PersonalCenterInfo;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.activity.TiwenDataActivity;
 import com.zzu.ehome.activity.TizhongDataActivity;
 import com.zzu.ehome.activity.UricacidActivity;
 import com.zzu.ehome.activity.XuetangDataActivity;
 import com.zzu.ehome.activity.XueyaDataActivity;
 import com.zzu.ehome.activity.YYJLDataActivity;
+import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.HealthBean;
 import com.zzu.ehome.bean.HealthDataSearchByDate;
 import com.zzu.ehome.bean.RefreshEvent;
@@ -45,6 +47,8 @@ import com.zzu.ehome.bean.StepCounterDate;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.service.StepDetector;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.DateUtils;
@@ -56,7 +60,6 @@ import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.DialogTips;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
@@ -70,6 +73,12 @@ import java.util.List;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
+
+import static com.zzu.ehome.R.id.textView;
 
 /**
  * Created by zzu on 2016/4/9.
@@ -102,6 +111,8 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
     private LinearLayout layout_ls;
     private LinearLayout layout_dgc;
     private TextView dgc_num,ls_num,textViewDgc2,textViewLs2;
+    private CompositeSubscription compositeSubscription;
+    private SupperBaseActivity activity;
     private BroadcastReceiver mRefrushBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -117,6 +128,13 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
             }
         }
     };
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
+
     private BroadcastReceiver mRefreshReciver=new BroadcastReceiver() {
 
         @Override
@@ -137,9 +155,9 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                     isChange = true;
                     initData();
                 }else{
-                    tz_num.setText("0.0");
-                    tw_num.setText("0.0");
-                    xt_num.setText("0.0");
+                    tz_num.setText("0");
+                    tw_num.setText("0");
+                    xt_num.setText("0");
                     xy_num.setText("0/0");
                     dgc_num.setText("0/0");
                     ls_num.setText("0/0");
@@ -152,12 +170,12 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                     tw_status.setVisibility(View.GONE);
                     tv3.setVisibility(View.GONE);
                     tv5.setVisibility(View.GONE);
-                    tvbmi.setText("BMI:0");
+                    tvbmi.setText("BMI: 0");
                     tv_bimstatus.setVisibility(View.GONE);
                     yp_num.setText(0 + "");
                     tv_yp.setText("药品名：");
                     jibu_num.setText("0");
-                    tv_time.setText("今天暂无就诊数据");
+                    tv_time.setText("暂无就诊数据");
                     tv_address.setText("");
                 }
             }
@@ -179,12 +197,13 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
         mPermissionsChecker = new PermissionsChecker(getActivity());
         initView();
         initEvent();
+        getData();
         return view;
     }
 
     public void initView() {
 
-        setOnlyTileViewMethod(view, "健康数据");
+        setOnlyTileViewMethod(view, "日常记录");
         tz_num = (TextView) view.findViewById(R.id.tz_num);
         tvbmi = (TextView) view.findViewById(R.id.tv_bim);
         tw_num = (TextView) view.findViewById(R.id.tw_num);
@@ -203,7 +222,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
         layout_yp = (LinearLayout) view.findViewById(R.id.layout_yp);
         imageView_lift = (ImageView) view.findViewById(R.id.imageView_lift);
         imageView_right = (ImageView) view.findViewById(R.id.imageView_right);
-        tvdate = (TextView) view.findViewById(R.id.textView);
+        tvdate = (TextView) view.findViewById(textView);
         jibu_num = (TextView) view.findViewById(R.id.jibu_num);
         textView9 = (TextView) view.findViewById(R.id.textView9);
         tw_status = (TextView) view.findViewById(R.id.textView2);
@@ -255,6 +274,44 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
         layout_jl.setOnClickListener(this);
         layout_ls.setOnClickListener(this);
         layout_dgc.setOnClickListener(this);
+        //创建compositeSubscription实例
+        compositeSubscription = new CompositeSubscription();
+
+        //监听订阅事件
+        Subscription subscription = RxBus.getInstance().toObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object event) {
+                        if (event == null) {
+                            return;
+                        }
+
+                        if (event instanceof EventType){
+                            EventType type=(EventType)event;
+                            if(Constants.HealthData.equals(type.getType())){
+                                getData();
+                            }
+                        }
+
+                    }
+                });
+        //subscription交给compositeSubscription进行管理，防止内存溢出
+        compositeSubscription.add(subscription);
+    }
+    private void getData(){
+        if(!TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            dbUser = dao.findUserInfoById(userid);
+            CurrnetDate = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
+            date = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
+            tvdate.setText(DateUtils.getDateDetail(date)+"  " + DateUtils.StringPattern(date, "yyyy-MM-dd", "MM月dd日"));
+            EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
+            imageView_lift.setVisibility(View.VISIBLE);
+            imageView_right.setVisibility(View.INVISIBLE);
+
+            initData();
+        }
     }
 
     public void initData() {
@@ -282,9 +339,9 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                     stopProgressDialog();
 
                     if (array.getJSONObject(0).has("MessageCode")) {
-                        tz_num.setText("0.0");
-                        tw_num.setText("0.0");
-                        xt_num.setText("0.0");
+                        tz_num.setText("0");
+                        tw_num.setText("0");
+                        xt_num.setText("0");
                         xy_num.setText("0/0");
                         dgc_num.setText("0/0");
                         ls_num.setText("0/0");
@@ -297,7 +354,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                         tw_status.setVisibility(View.GONE);
                         tv3.setVisibility(View.GONE);
                         tv5.setVisibility(View.GONE);
-                        tvbmi.setText("BMI:0");
+                        tvbmi.setText("BMI: 0");
                         tv_bimstatus.setVisibility(View.GONE);
                         yp_num.setText(0 + "");
                         tv_yp.setText("药品名：");
@@ -319,7 +376,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                                 BigDecimal b = new BigDecimal(bmi);
                                 tv_bimstatus.setText(CommonUtils.showBMIDetail(b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue()));
                                 DecimalFormat decimalFormat = new DecimalFormat("0.0");
-                                tvbmi.setText("BMI:" + decimalFormat.format(bmi));
+                                tvbmi.setText("BMI: " + decimalFormat.format(bmi));
                                 String showBmi = CommonUtils.showBMIDetail(bmi);
                                 if (showBmi.equals(CommonUtils.TINY)) {
                                     tv_bimstatus.setTextColor(getResources().getColor(R.color.normal_button));
@@ -341,10 +398,10 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                             pbStartAnima(pbweight, (int) (num * 100));
 
                         } else {
-                            tz_num.setText("0.0");
+                            tz_num.setText("0");
                             pbweight.setProgress(0);
                             pbStartAnima(pbweight, 0);
-                            tvbmi.setText("BMI:0");
+                            tvbmi.setText("BMI: 0");
                             tv_bimstatus.setVisibility(View.GONE);
                             tv_bimstatus.setText("");
 
@@ -382,7 +439,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                             }
 
                         } else {
-                            tw_num.setText("0.0");
+                            tw_num.setText("0");
                             tw_status.setVisibility(View.GONE);
                             pbStartAnima(pbtw, 0);
                         }
@@ -410,7 +467,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                             pbStartAnima(pbBloodSuggar, (int) (num * 100));
 
                         } else {
-                            xt_num.setText("0.0");
+                            xt_num.setText("0");
                             pbStartAnima(pbBloodSuggar, 0);
                             tv3.setVisibility(View.GONE);
 
@@ -501,7 +558,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                     org.json.JSONArray array = mySO
                             .getJSONArray("TreatmentInquiryLatest");
                     if (array.getJSONObject(0).has("MessageCode")) {
-                        tv_time.setText("今天暂无就诊数据");
+                        tv_time.setText("暂无就诊数据");
                         tv_address.setText("");
                     } else {
                         tv_time.setText(DateUtils.StringPattern(array.getJSONObject(0).getString("Treatment_AppointmentTime"), "yyyy/MM/dd HH:mm:ss", "yyyy/M/dd"));
@@ -511,7 +568,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    tv_time.setText("今天暂无就诊数据");
+                    tv_time.setText("暂无就诊数据");
                     tv_address.setText("");
                 }
             }
@@ -595,29 +652,37 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
         int lvszy = CommonUtils.computeSzy(szy);
         int lv = CommonUtils.MaxInt(lvssz, lvszy);
         switch (lv) {
-            case 1:
-
+            case -1:
+                tv.setText("低血压");
+                tv.setTextColor(getResources().getColor(R.color.dxy_color));
+                break;
+            case 0:
                 tv.setText("血压正常");
                 tv.setTextColor(getResources().getColor(R.color.actionbar_color));
-
                 break;
-            case 2:
+            case 1:
 
                 tv.setText("高血压一期");
                 tv.setTextColor(Color.parseColor("#fb7701"));
                 break;
-            case 3:
+            case 2:
 
                 tv.setText("高血压二期");
                 tv.setTextColor(Color.parseColor("#fa3b00"));
                 break;
-            case 4:
+            case 3:
 
                 tv.setText("高血压三期");
                 tv.setTextColor(Color.parseColor("#ea0b35"));
                 break;
 
         }
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
     }
 
@@ -689,6 +754,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
 
             mRefrushBroadcastReceiver = null;
             getActivity().unregisterReceiver(mRefreshReciver);
+            compositeSubscription.unsubscribe();
             mRefreshReciver = null;
         } catch (Exception e) {
 
@@ -698,6 +764,10 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         if (TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
             startActivity(new Intent(getActivity(), LoginActivity1.class));
             return;
@@ -844,32 +914,31 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
         startActivity(intent);
     }
     private Boolean  checkCardNo(){
-        User dbUser=dao.findUserInfoById(SharePreferenceUtil.getInstance(getActivity()).getUserId());
+        userid=SharePreferenceUtil.getInstance(getActivity()).getUserId();
+        User dbUser=dao.findUserInfoById(userid);
         if (TextUtils.isEmpty(dbUser.getUserno())) {
-            startActivity(new Intent(getActivity(), PersonalCenterInfo.class));
+            completeInfoTips();
             return false;
         }else{
             return true;
         }
     }
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if(hidden){
-        }else{
-            if(!TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                dbUser = dao.findUserInfoById(userid);
-                CurrnetDate = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
-                date = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
-                tvdate.setText(DateUtils.getDateDetail(date) + DateUtils.StringPattern(date, "yyyy-MM-dd", "MM月dd日"));
-                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
-                imageView_lift.setVisibility(View.VISIBLE);
-                imageView_right.setVisibility(View.INVISIBLE);
-
-                initData();
+    /**
+     * 如果用户信息不完善，显示提示框
+     */
+    public void completeInfoTips() {
+        DialogTips dialog = new DialogTips(getActivity(), "", "用户信息缺失，请先完善信息",
+                "去完善", true, true);
+        dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int userId) {
+                startActivity(new Intent(getActivity(), PersonalCenterInfo.class));
             }
-        }
+        });
+
+        dialog.show();
+        dialog = null;
     }
+
+
 
 }

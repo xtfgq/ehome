@@ -4,7 +4,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,10 +114,10 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
 
         mChart = (TempView) heardchat.findViewById(R.id.chart);
         lltmp = (LinearLayout) heardchat.findViewById(R.id.lltmp);
-        group = (RadioGroup) view.findViewById(R.id.radioGroup);
-        rbday = (RadioButton) view.findViewById(R.id.rb_day);
-        rbweek = (RadioButton) view.findViewById(R.id.rb_week);
-        rbmonth = (RadioButton) view.findViewById(R.id.rb_month);
+        group = (RadioGroup) heardchat.findViewById(R.id.radioGroup);
+        rbday = (RadioButton) heardchat.findViewById(R.id.rb_day);
+        rbweek = (RadioButton) heardchat.findViewById(R.id.rb_week);
+        rbmonth = (RadioButton) heardchat.findViewById(R.id.rb_month);
         tvnodata = (TextView) heardchat.findViewById(R.id.tvnodate);
 //        tvvalue = (TextView) heardchat.findViewById(R.id.tv_tempvalue);
 //        tvstatus = (TextView) heardchat.findViewById(R.id.tv_status);

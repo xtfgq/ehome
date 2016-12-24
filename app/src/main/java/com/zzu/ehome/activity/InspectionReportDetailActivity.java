@@ -14,7 +14,6 @@ import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.HeadView;
-import com.zzu.ehome.view.crop.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,16 +1,11 @@
 package com.zzu.ehome.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+import android.util.Log;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.DoctorListAdapter;
-import com.zzu.ehome.bean.DepDateTemp;
-import com.zzu.ehome.bean.DepTempBean;
 import com.zzu.ehome.bean.DoctorBeanDes;
 import com.zzu.ehome.bean.DortorlIst;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
@@ -23,7 +18,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,6 +64,7 @@ public class DoctorListActivity extends BaseActivity {
             @Override
             public void processJsonObject(Object result) {
                 String str = result.toString();
+                Log.d("DepertDoctorByTopmd", "processJsonObject() called with: result = [" + result.toString() + "]");
 
                 try {
                     JSONObject mySO = (JSONObject) result;

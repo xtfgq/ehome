@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.igexin.sdk.PushManager;
 import com.umeng.analytics.MobclickAgent;
-
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.BaseSimpleActivity;
 import com.zzu.ehome.activity.LoginActivity1;
@@ -35,7 +34,6 @@ import com.zzu.ehome.fragment.MessageFragment;
 import com.zzu.ehome.fragment.UserCenterFragment;
 import com.zzu.ehome.service.StepDetector;
 import com.zzu.ehome.service.StepService;
-import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.DialogTips;
@@ -192,6 +190,7 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
             step.setStartTime(time);
             dao.updateStep(step);
         }
+
     }
 
     @Override
@@ -207,7 +206,6 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         intent = new Intent(this, StepService.class);
-        startService(intent);
         dao = new EHomeDaoImpl(this);
         userid = SharePreferenceUtil.getInstance(this).getUserId();
         PushManager.getInstance().initialize(this.getApplicationContext());
@@ -230,9 +228,7 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
         }
         setTab(0);
         setStepData();
-        if(!CommonUtils.isNotificationEnabled(MainActivity.this)){
-            showTitleDialog("请打开通知中心");
-        }
+
 
     }
 
@@ -331,12 +327,15 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+        }
         mHomeFragment.hideFamily();
         switch (v.getId()) {
             case R.id.layout_home:
                 index = 0;
                 setTab(0);
-                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
+//                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
                 break;
             case R.id.layout_health:
 /*                if(TextUtils.isEmpty(SharePreferenceUtil.getInstance(MainActivity.this).getUserId())){
@@ -459,7 +458,10 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
                 "确定", true, true);
         dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int userId) {
+
                 CustomApplcation.getInstance().exit();
+                saveStepData();
+                stopService(intent);
                 finish();
             }
         });
@@ -471,7 +473,8 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        saveStepData();
+//        saveStepData();
+
         try {
             unregisterReceiver(mDateOrFileBroadcastReceiver);
             mDateOrFileBroadcastReceiver = null;

@@ -3,8 +3,6 @@ package com.zzu.ehome.utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
-
 
 import com.zzu.ehome.application.Constants;
 
@@ -48,6 +46,7 @@ public class JsonAsyncTask_Info extends AsyncTask<Object, Integer, JSONObject> {
         // TODO Auto-generated method stub
         super.onPreExecute();
     }
+
 
     @Override
     protected void onPostExecute(JSONObject result) {

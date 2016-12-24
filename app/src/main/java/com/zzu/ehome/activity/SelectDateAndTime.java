@@ -180,7 +180,10 @@ public class SelectDateAndTime extends Activity {
                 String time = mYear + "-" + mMos + "-" + mDos + " " + mH + ":" + mM;
                 Intent intent = new Intent();
                 intent.putExtra("time", time);
-                setResult(Constants.REQUEST_CALENDAR, intent);
+                if(!mDos.contains("00")){
+                    setResult(Constants.REQUEST_CALENDAR, intent);
+                }
+
                 finish();
             }
         });

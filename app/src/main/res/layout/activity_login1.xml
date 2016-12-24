@@ -41,7 +41,7 @@
             android:digits="0123456789"
             android:text=""
             android:hint="手机号/名医网账号"
-            android:textColor="#CECECE"
+            android:textColor="#0f2536"
             android:textColorHint="#CECECE" />
 
 
@@ -85,14 +85,14 @@
             android:layout_marginLeft="7dp"
             android:layout_marginRight="7dp"
             android:textSize="14sp"
-            android:maxLength="11"
+
             android:background="@null"
             android:singleLine="true"
 
             android:hint="密码"
             android:inputType="textPassword"
 
-            android:textColor="#CECECE"
+            android:textColor="#0f2536"
             android:textColorHint="#CECECE" />
 
         <TextView
@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="7dp"
             android:layout_centerVertical="true"
-            android:text="忘记密码"
+            android:text="忘记密码?"
             android:onClick="goForget"
             android:textColor="#00c07d"
 

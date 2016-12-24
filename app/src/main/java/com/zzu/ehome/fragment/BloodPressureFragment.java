@@ -20,12 +20,12 @@ import com.zzu.ehome.activity.SelectDateAndTime;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.BloodPressBean;
 import com.zzu.ehome.bean.BloodPressDate;
-import com.zzu.ehome.bean.HealteData;
-import com.zzu.ehome.bean.HealthDataRes;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -44,7 +44,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-
 import de.greenrobot.event.EventBus;
 
 
@@ -54,7 +53,7 @@ import de.greenrobot.event.EventBus;
  */
 public class BloodPressureFragment extends BaseFragment {
     private View view;
-    private TextView tv_ssy, tv_szy, tv_mb, tvcltime;
+    private TextView tv_ssy, tv_szy, tv_mb, tvcltime,tv_dxueya;
     private RelativeLayout rlchecktime;
     private TuneWheel wheel1, wheel2, wheel3;
     private RequestMaker requestMaker;
@@ -117,6 +116,7 @@ public class BloodPressureFragment extends BaseFragment {
     }
 
     public void initViews() {
+        tv_dxueya=(TextView)view.findViewById(R.id.tv_dxueya) ;
         wheel1 = (TuneWheel) view.findViewById(R.id.scale_mark1);
         wheel2 = (TuneWheel) view.findViewById(R.id.scale_mark2);
         wheel3 = (TuneWheel) view.findViewById(R.id.scale_mark3);
@@ -206,8 +206,9 @@ public class BloodPressureFragment extends BaseFragment {
                             JSONArray array = mySO.getJSONArray("BloodPressureInsert");
                             if (array.getJSONObject(0).getString("MessageCode")
                                     .equals("0")) {
-                                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
-                                ToastUtils.showMessage(getActivity(), array.getJSONObject(0).getString("MessageContent"));
+                                RxBus.getInstance().send(new EventType(Constants.HealthData));
+//                                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
+                                ToastUtils.showMessage(getActivity(), "保存成功!");
                                 if (p == -1) {
                                     EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_press)));
                                     getActivity().finish();
@@ -221,7 +222,7 @@ public class BloodPressureFragment extends BaseFragment {
                                         intentD.putExtra("msgContent", "Date");
                                         getActivity().sendBroadcast(intentD);
 
-                                        EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
+//                                        EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
                                         getActivity().finish();
                                     }
                                 }
@@ -311,19 +312,27 @@ public class BloodPressureFragment extends BaseFragment {
         int value = Integer.valueOf(textView.getText().toString());
         if (type == 1) {
             if (value < 140) {
-                textView.setTextColor(getResources().getColor(R.color.actionbar_color));
+                if(value<=89){
+                    textView.setTextColor(getResources().getColor(R.color.dxy_color));
+                }else{
+                    textView.setTextColor(getResources().getColor(R.color.actionbar_color));
+                }
+
             } else if (value >= 140 && value < 160) {
                 textView.setTextColor(Color.parseColor("#fb7701"));
             } else if (value >= 160 && value < 180) {
-
                 textView.setTextColor(Color.parseColor("#fa3b00"));
             } else {
-
                 textView.setTextColor(Color.parseColor("#ea0b35"));
             }
         } else if (type == 2) {
             if (value < 90) {
-                textView.setTextColor(getResources().getColor(R.color.actionbar_color));
+                if(value<=59){
+                    textView.setTextColor(getResources().getColor(R.color.dxy_color));
+                }else{
+                    textView.setTextColor(getResources().getColor(R.color.actionbar_color));
+                }
+
             } else if (value >= 90 && value < 100) {
                 textView.setTextColor(Color.parseColor("#fb7701"));
             } else if (value >= 100 && value < 110) {
@@ -341,23 +350,33 @@ public class BloodPressureFragment extends BaseFragment {
         int lvszy = CommonUtils.computeSzy(szy);
         int lv = CommonUtils.MaxInt(lvssz, lvszy);
         switch (lv) {
-            case 1:
+            case -1:
+                iv.setImageResource(R.drawable.pic_dixueya2);
+                tv.setTextColor(getResources().getColor(R.color.dxy_color));
+                tv.setText("低血压");
+                level=-1;
+            break ;
+            case 0:
                 iv.setImageResource(R.drawable.pic_circle_g_b);
+                tv.setTextColor(getResources().getColor(R.color.actionbar_color));
                 tv.setText("血压正常");
                 level=0;
                 break;
-            case 2:
+            case 1:
                 iv.setImageResource(R.drawable.pic_circle_g_y);
+                tv.setTextColor(Color.parseColor("#fb7701"));
                 tv.setText("高血压一期");
                 level=1;
                 break;
-            case 3:
+            case 2:
                 iv.setImageResource(R.drawable.pic_circle_org_b);
+                tv.setTextColor(Color.parseColor("#fa3b00"));
                 tv.setText("高血压二期");
                 level=2;
                 break;
-            case 4:
+            case 3:
                 iv.setImageResource(R.drawable.pic_circle_o_r);
+                tv.setTextColor(Color.parseColor("#ea0b35"));
                 tv.setText("高血压三期");
                 level=3;
                 break;

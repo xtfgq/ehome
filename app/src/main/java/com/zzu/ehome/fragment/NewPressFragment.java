@@ -1,11 +1,9 @@
 package com.zzu.ehome.fragment;
 
-import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,25 +14,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
-
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.BloodPressChatAdapter;
-import com.zzu.ehome.adapter.WeightChatAdapter;
 import com.zzu.ehome.bean.BloodPreessDate;
 import com.zzu.ehome.bean.BloodPressBean;
 import com.zzu.ehome.bean.BloodPressDate;
 import com.zzu.ehome.bean.BloodPressRes;
-import com.zzu.ehome.bean.HealteData;
-import com.zzu.ehome.bean.HealthDataRes;
 import com.zzu.ehome.bean.RefreshEvent;
-import com.zzu.ehome.bean.TempItemHistory;
 import com.zzu.ehome.bean.User;
-import com.zzu.ehome.bean.WeightDate;
-import com.zzu.ehome.bean.WeightRes;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.utils.CommonUtils;
-import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
@@ -43,11 +33,9 @@ import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.PressView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.xclcharts.chart.PointD;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -118,10 +106,10 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
         listview = (StickyListHeadersListView) view.findViewById(R.id.lv_temp);
         heardchat = (LinearLayout) inflater.inflate(R.layout.new_press_layout, null);
         mChart = (PressView) heardchat.findViewById(R.id.chart);
-        group = (RadioGroup) view.findViewById(R.id.radioGroup);
-        rbday = (RadioButton) view.findViewById(R.id.rb_day);
-        rbweek = (RadioButton) view.findViewById(R.id.rb_week);
-        rbmonth = (RadioButton) view.findViewById(R.id.rb_month);
+        group = (RadioGroup) heardchat.findViewById(R.id.radioGroup);
+        rbday = (RadioButton) heardchat.findViewById(R.id.rb_day);
+        rbweek = (RadioButton) heardchat.findViewById(R.id.rb_week);
+        rbmonth = (RadioButton) heardchat.findViewById(R.id.rb_month);
 
 //        tvvalue=(TextView)heardchat.findViewById(R.id.tv_tempvalue);
 //        tvstatus=(TextView)heardchat.findViewById(R.id.tv_status);

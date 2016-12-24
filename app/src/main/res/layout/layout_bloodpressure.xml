@@ -247,7 +247,6 @@
                     android:layout_height="78dp"
                     android:layout_marginTop="12dp"
                     android:orientation="horizontal">
-
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -261,28 +260,28 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:id="@+id/imageview1"
+                                android:id="@+id/image1"
                                 android:layout_width="15dp"
                                 android:layout_height="15dp"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="8dp"
                                 android:layout_marginRight="4dp"
+
                                 android:src="@mipmap/icon_circle_g" />
 
                             <TextView
-                                android:id="@+id/tv_xueya"
+                                android:id="@+id/tv_dxueya"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_toRightOf="@+id/imageview1"
-                                android:text="正常血压"
+                                android:layout_toRightOf="@+id/image1"
+                                android:text="低血压"
                                 android:textColor="#0f2536"
                                 android:textSize="14sp" />
 
 
                         </RelativeLayout>
-
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
@@ -313,6 +312,72 @@
 
 
                         </RelativeLayout>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+
+                            >
+                            <ImageView
+                                android:id="@+id/imageview1"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="4dp"
+                                android:src="@mipmap/icon_dxy1" />
+
+                            <TextView
+                                android:id="@+id/tv_xueya"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toRightOf="@+id/imageview1"
+                                android:text="正常血压"
+                                android:textColor="#0f2536"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+
+                            >
+                            <ImageView
+                                android:id="@+id/imageview4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="4dp"
+                                android:src="@mipmap/icon_circle_r" />
+
+                            <TextView
+                                android:id="@+id/tv_xuezhi"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toRightOf="@+id/imageview4"
+                                android:text="高血压三期"
+                                android:textColor="#0f2536"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
 
                     </LinearLayout>
 
@@ -351,35 +416,40 @@
                                 android:textSize="14sp" />
 
                         </RelativeLayout>
-
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:visibility="invisible"
+                            android:orientation="vertical"
+
+                            >
 
                             <ImageView
-                                android:id="@+id/imageview4"
+                                android:id="@+id/image3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="8dp"
                                 android:layout_marginRight="4dp"
-                                android:src="@mipmap/icon_circle_r" />
+                                android:src="@mipmap/icon_circle_y" />
 
                             <TextView
-                                android:id="@+id/tv_xuezhi"
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_toRightOf="@+id/imageview4"
-                                android:text="高血压三期"
+                                android:layout_toRightOf="@+id/image3"
+                                android:text="高血压一期"
                                 android:textColor="#0f2536"
                                 android:textSize="14sp" />
+
                         </RelativeLayout>
 
+
                     </LinearLayout>
+
 
 
                 </LinearLayout>

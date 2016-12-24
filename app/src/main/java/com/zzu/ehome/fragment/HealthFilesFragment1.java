@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,12 @@ import android.widget.RadioGroup;
 import android.widget.TableLayout;
 
 import com.zzu.ehome.R;
-import com.zzu.ehome.activity.AddSuccussAct;
 import com.zzu.ehome.activity.RegisterFinishAct;
 import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.bean.HealthFiles;
+import com.zzu.ehome.bean.User;
+import com.zzu.ehome.db.EHomeDao;
+import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.main.ehome.MainActivity;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -38,7 +41,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.lzy.okgo.utils.OkLogger.tag;
+import static android.R.attr.id;
+import static android.R.attr.type;
 
 /**
  * Created by Mersens on 2016/7/27.
@@ -153,7 +157,7 @@ public class HealthFilesFragment1 extends BaseFragment {
     private RequestMaker requestMaker;
     public static String stype = null;
     public  HealthFiles healthfiles = null;
-
+    private EHomeDao dao;
 
     @Nullable
     @Override
@@ -167,8 +171,10 @@ public class HealthFilesFragment1 extends BaseFragment {
         healthfiles=(HealthFiles)getArguments().getSerializable("healthfiles");
         userid = SharePreferenceUtil.getInstance(getActivity()).getUserId();
         requestMaker = RequestMaker.getInstance();
+        dao=new EHomeDaoImpl(getActivity());
         initViews();
         initEvent();
+        setInitData();
     }
 
 
@@ -312,7 +318,7 @@ public class HealthFilesFragment1 extends BaseFragment {
         edi_sister = (EditText) mView.findViewById(R.id.edi_sister);
         edt_children = (EditText) mView.findViewById(R.id.edt_children);
         edt_ycbs = (EditText) mView.findViewById(R.id.edt_ycbs);
-        setInitData();
+
     }
 
     public void setInitData() {
@@ -372,15 +378,18 @@ public class HealthFilesFragment1 extends BaseFragment {
         if (!TextUtils.isEmpty(maritalStatusNames)) {
             if ("未婚".equals(maritalStatusNames)) {
                 weiHunCheck.setChecked(true);
-                map.put(MARITALSTATUS+":"+"未婚","未婚");
+                maritalStatusNamesEdit="未婚";
             } else if ("结婚".equals(maritalStatusNames)) {
-                map.put(MARITALSTATUS+":"+"结婚","结婚");
+                maritalStatusNamesEdit="结婚";
+                //map.put(MARITALSTATUS+":"+"结婚","结婚");
                 jieHunCheck.setChecked(true);
             } else if ("离婚".equals(maritalStatusNames)) {
-                map.put(MARITALSTATUS+":"+"离婚","离婚");
+                maritalStatusNamesEdit="离婚";
+               // map.put(MARITALSTATUS+":"+"离婚","离婚");
                 liHunCheck.setChecked(true);
             } else if ("丧偶".equals(maritalStatusNames)) {
-                map.put(MARITALSTATUS+":"+"丧偶","丧偶");
+                maritalStatusNamesEdit="丧偶";
+              //  map.put(MARITALSTATUS+":"+"丧偶","丧偶");
                 sangOuCheck.setChecked(true);
             }
         }
@@ -389,16 +398,20 @@ public class HealthFilesFragment1 extends BaseFragment {
     public void setInitBloodType(){
         if (!TextUtils.isEmpty(bloodtype)) {
             if ("A型".equals(bloodtype)) {
-                map.put(BLOODTYPE+":"+"A型","A型");
+                bloodtypeEdit="A型";
+                //map.put(BLOODTYPE+":"+"A型","A型");
                 A_type_Check.setChecked(true);
             } else if ("B型".equals(bloodtype)) {
-                map.put(BLOODTYPE+":"+"B型","B型");
+                bloodtypeEdit="B型";
+               // map.put(BLOODTYPE+":"+"B型","B型");
                 B_type_Check.setChecked(true);
             } else if ("AB型".equals(bloodtype)) {
-                map.put(BLOODTYPE+":"+"AB型","AB型");
+                bloodtypeEdit="AB型";
+                //map.put(BLOODTYPE+":"+"AB型","AB型");
                 AB_type_Check.setChecked(true);
             } else if ("O型".equals(bloodtype)) {
-                map.put(BLOODTYPE+":"+"O型","O型");
+                bloodtypeEdit="A型";
+               // map.put(BLOODTYPE+":"+"O型","O型");
                 O_type_Check.setChecked(true);
             }
         }
@@ -790,13 +803,17 @@ public class HealthFilesFragment1 extends BaseFragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == weiHunCheck.getId()) {
-                    map.put(MARITALSTATUS + ":", weiHunCheck.getText().toString());
+                    maritalStatusNamesEdit=weiHunCheck.getText().toString();
+                   // map.put(MARITALSTATUS + ":"+weiHunCheck.getText().toString(), weiHunCheck.getText().toString());
                 } else if (checkedId == jieHunCheck.getId()) {
-                    map.put(MARITALSTATUS + ":", jieHunCheck.getText().toString());
+                    maritalStatusNamesEdit=jieHunCheck.getText().toString();
+                   // map.put(MARITALSTATUS + ":"+jieHunCheck.getText().toString(), jieHunCheck.getText().toString());
                 } else if (checkedId == liHunCheck.getId()) {
-                    map.put(MARITALSTATUS + ":", liHunCheck.getText().toString());
+                    maritalStatusNamesEdit=liHunCheck.getText().toString();
+                   // map.put(MARITALSTATUS + ":"+liHunCheck.getText().toString(), liHunCheck.getText().toString());
                 } else if (checkedId == sangOuCheck.getId()) {
-                    map.put(MARITALSTATUS + ":", sangOuCheck.getText().toString());
+                    maritalStatusNamesEdit=sangOuCheck.getText().toString();
+                   // map.put(MARITALSTATUS + ":"+sangOuCheck.getText().toString(), sangOuCheck.getText().toString());
                 }
             }
         });
@@ -804,13 +821,17 @@ public class HealthFilesFragment1 extends BaseFragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == A_type_Check.getId()) {
-                    map.put(BLOODTYPE + ":", A_type_Check.getText().toString());
+                    bloodtypeEdit=A_type_Check.getText().toString();
+                   // map.put(BLOODTYPE + ":"+A_type_Check.getText().toString(), A_type_Check.getText().toString());
                 } else if (checkedId == B_type_Check.getId()) {
-                    map.put(BLOODTYPE + ":", B_type_Check.getText().toString());
+                    bloodtypeEdit=B_type_Check.getText().toString();
+                    //map.put(BLOODTYPE + ":"+B_type_Check.getText().toString(), B_type_Check.getText().toString());
                 } else if (checkedId == AB_type_Check.getId()) {
-                    map.put(BLOODTYPE + ":", AB_type_Check.getText().toString());
+                    bloodtypeEdit=AB_type_Check.getText().toString();
+                    //map.put(BLOODTYPE + ":"+AB_type_Check.getText().toString(), AB_type_Check.getText().toString());
                 } else if (checkedId == O_type_Check.getId()) {
-                    map.put(BLOODTYPE + ":", O_type_Check.getText().toString());
+                    bloodtypeEdit=O_type_Check.getText().toString();
+                    //map.put(BLOODTYPE + ":"+O_type_Check.getText().toString(), O_type_Check.getText().toString());
                 }
             }
         });
@@ -1153,12 +1174,15 @@ public class HealthFilesFragment1 extends BaseFragment {
                 drinkStateNames = "";//喝酒状况
                 smokeStateNames = "";//吸烟状况
                 bloodtype = "";*/
+                StringBuffer sbf=new StringBuffer();
                 for (Map.Entry<String, String> entry : map.entrySet()) {
                     String key = entry.getKey();
+                    sbf.append(entry.getKey()+"===="+entry.getValue());
                     if (!TextUtils.isEmpty(key)) {
                         setDatas(key);
                     }
                 }
+                Log.d("TAG", "onClick() called with: v = [" + sbf.toString() + "]");
                 if (stype.equals("2")) {
                     add();
                 } else if (stype.equals("3")) {
@@ -1171,7 +1195,6 @@ public class HealthFilesFragment1 extends BaseFragment {
     }
 
     public void add() {
-
 
         if (edt_father.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_father))) {
             familyMedicalhistory_fatherNamesEdit = familyMedicalhistory_fatherNamesEdit + "父亲:" + getEdtValue(edt_father);
@@ -1256,8 +1279,12 @@ public class HealthFilesFragment1 extends BaseFragment {
                     if (array.getJSONObject(0).getString("MessageCode")
                             .equals("0")) {
                         if(TextUtils.isEmpty(tagfile)) {
-                            ToastUtils.showMessage(getActivity(), array.getJSONObject(0).getString("MessageContent"));
+                            ToastUtils.showMessage(getActivity(),"保存成功");
                             getActivity().finish();
+                            String id=SharePreferenceUtil.getInstance(getActivity()).getUserId();
+                            User user=dao.findUserInfoById(id);
+                            user.setType(3);
+                            dao.updateUserInfo(user, id);
                         }else{
                             CustomApplcation.getInstance().finishSingleActivityByClass(RegisterFinishAct.class);
                             Intent i=new Intent(getActivity(), MainActivity.class);
@@ -1339,6 +1366,7 @@ public class HealthFilesFragment1 extends BaseFragment {
         if(pastMedicalHistory_noCheck.isChecked()){
             pastMedicalHistoryNamesEdit="";
         }
+
         requestMaker.BaseDataUpdate(userid, maritalStatusNamesEdit, medicineAllergyNamesEdit, geneticHistoryNmaesEdit, pastMedicalHistoryNamesEdit, list, smokeStateNamesEdit, drinkStateNamesEdit, bloodtypeEdit, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
@@ -1349,7 +1377,7 @@ public class HealthFilesFragment1 extends BaseFragment {
                     JSONArray array = mySO.getJSONArray("BaseDataUpdate");
                     if (array.getJSONObject(0).getString("MessageCode")
                             .equals("0")) {
-                        ToastUtils.showMessage(getActivity(), array.getJSONObject(0).getString("MessageContent"));
+                        ToastUtils.showMessage(getActivity(), "保存成功");
                         getActivity().finish();
                     } else
                         ToastUtils.showMessage(getActivity(), array.getJSONObject(0).getString("MessageContent"));
@@ -1462,7 +1490,7 @@ public class HealthFilesFragment1 extends BaseFragment {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             switch (type) {
                 case MARITALSTATUS:
-                    // addData(MEDICINEALLERGY_CODE,buttonView,isChecked);
+                    addData(MEDICINEALLERGY_CODE,buttonView,isChecked);
                     break;
                 case MEDICINEALLERGY:
                     addData(MEDICINEALLERGY_CODE, buttonView, isChecked);

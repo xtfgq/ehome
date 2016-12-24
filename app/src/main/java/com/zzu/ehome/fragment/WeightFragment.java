@@ -14,16 +14,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zzu.ehome.R;
-import com.zzu.ehome.activity.InputHeightActivity;
 import com.zzu.ehome.activity.SelectDateAndTime;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.HealteData;
-import com.zzu.ehome.bean.HealthDataRes;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.bean.WeightBeanRes;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -104,7 +104,7 @@ public class WeightFragment extends BaseFragment {
         }
         mWeight.setDefaultValue(weight);
         tv_weight = (TextView) view.findViewById(R.id.tv_weight);
-        tv_weight.setText(weight + "");
+        tv_weight.setText(weight + "kg");
         tvcltime = (TextView) view.findViewById(R.id.tv_cl_time);
         rlchecktime = (RelativeLayout) view.findViewById(R.id.rl_weight_time);
         btnsave = (Button) view.findViewById(R.id.btn_saveweight);
@@ -126,7 +126,7 @@ public class WeightFragment extends BaseFragment {
             public void onValueChanged(ScaleMarkView view, BigDecimal oldValue, BigDecimal newValue) {
                 weight = newValue.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
 
-                tv_weight.setText(weight + "");
+                tv_weight.setText(weight + "kg");
             }
         });
 /*        weight_mark2.setOnValueChangedListener(new ScaleMarkView.OnValueChangedListener() {
@@ -165,8 +165,9 @@ public class WeightFragment extends BaseFragment {
                             JSONArray array = mySO.getJSONArray("WeightInsert");
                             if (array.getJSONObject(0).getString("MessageCode")
                                     .equals("0")) {
-                                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
-                                ToastUtils.showMessage(getActivity(), array.getJSONObject(0).getString("MessageContent"));
+//                                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_data)));
+                                RxBus.getInstance().send(new EventType("healthdata"));
+                                ToastUtils.showMessage(getActivity(), "保存成功！");
                                 if (p == -1) {
                                     EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_weight)));
                                     getActivity().finish();

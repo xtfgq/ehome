@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <ListView
-        android:id="@+id/listView"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:divider="@null" />
     <LinearLayout
         android:id="@+id/layout_no_msg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="128dp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        >
 
         <ImageView
             android:layout_width="100dp"
@@ -28,11 +23,26 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
-            android:text="数据为空"
+            android:text="正在签约，敬请期待"
             android:textColor="@color/base_color_text_black"
             android:textSize="@dimen/text_size_normal" />
 
 
     </LinearLayout>
+    <com.zzu.ehome.view.RefreshLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/refreshLayout"
+        >
+        <include layout="@layout/refresh_head" />
 
-</LinearLayout>
+        <com.zzu.ehome.view.PullableListView
+            android:id="@+id/listView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:divider="@null" />
+
+    </com.zzu.ehome.view.RefreshLayout>
+
+
+</FrameLayout>

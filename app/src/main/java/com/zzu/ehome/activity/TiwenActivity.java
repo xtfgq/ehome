@@ -1,7 +1,5 @@
 package com.zzu.ehome.activity;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.zzu.ehome.fragment.TempFragment;
@@ -18,7 +16,7 @@ public class TiwenActivity extends SingleFragmentActivity implements OnSelectIte
 
     @Override
     public String getHTitle() {
-        return "体温";
+        return "添加体温";
     }
 
     @Override

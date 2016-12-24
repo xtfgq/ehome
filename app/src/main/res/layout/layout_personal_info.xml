@@ -34,7 +34,7 @@
                     android:layout_alignParentLeft="true"
                     android:textSize="14sp"
                     android:textColor="@color/text_color2"
-                    android:text="头像" />
+                    android:text="头           像" />
 
                 <com.zzu.ehome.view.CircleImageView
                     android:id="@+id/iv_head"
@@ -73,16 +73,17 @@
                     android:layout_alignParentLeft="true"
                     android:textSize="14sp"
                     android:textColor="@color/text_color2"
-                    android:text="姓名" />
+                    android:text="姓           名" />
 
                 <EditText
                     android:id="@+id/edt_name"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:hint="请输入您的姓名"
+
                     android:layout_centerVertical="true"
                     android:textColorHint="#949395"
-                    android:textColor="#949395"
+                    android:textColor="@color/actionbar_color"
                     android:background="@null"
                     android:gravity="right"
 
@@ -118,7 +119,7 @@
                     android:layout_alignParentLeft="true"
                     android:textSize="14sp"
                     android:textColor="@color/text_color2"
-                    android:text="身份证号" />
+                    android:text="身 份 证 号" />
 
                 <EditText
                     android:id="@+id/edt_card_num"
@@ -128,7 +129,7 @@
                     android:background="@null"
                     android:layout_centerVertical="true"
                     android:textColorHint="#949395"
-                    android:textColor="#949395"
+                    android:textColor="@color/actionbar_color"
                     android:gravity="right"
                     android:layout_toLeftOf="@+id/img_right3"
                     android:layout_marginRight="4dp"
@@ -163,7 +164,7 @@
                     android:layout_alignParentLeft="true"
                     android:textSize="14sp"
                     android:textColor="@color/text_color2"
-                    android:text="年龄" />
+                    android:text="年           龄" />
 
                 <TextView
                     android:id="@+id/edt_age"
@@ -173,7 +174,7 @@
                     android:layout_centerVertical="true"
                     android:textColorHint="#949395"
                     android:background="@null"
-                    android:textColor="#949395"
+                    android:textColor="@color/actionbar_color"
                     android:gravity="right"
                     android:layout_toLeftOf="@+id/img_right4"
                     android:layout_marginRight="4dp"
@@ -208,15 +209,18 @@
                     android:layout_alignParentLeft="true"
                     android:textSize="14sp"
                     android:textColor="@color/text_color2"
-                    android:text="性别" />
+                    android:text="性           别" />
 
                 <TextView
                     android:id="@+id/tv_sex2"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="请选择性别"
+                    android:hint="请输入性别"
+                    android:gravity="right"
+                    android:textColor="@color/actionbar_color"
                     android:layout_centerVertical="true"
-                    android:textColor="#949395"
+                    android:textColorHint="#949395"
+                    android:background="@null"
                     android:layout_toLeftOf="@+id/img_right5"
                     android:layout_marginRight="4dp"
                     android:textSize="14sp"
@@ -250,7 +254,7 @@
                     android:layout_alignParentLeft="true"
                     android:textSize="14sp"
                     android:textColor="@color/text_color2"
-                    android:text="身高" />
+                    android:text="身           高" />
 
                 <TextView
                     android:id="@+id/edt_height"
@@ -258,7 +262,7 @@
                     android:layout_width="wrap_content"
                     android:hint="请输入身高"
                     android:gravity="right"
-                    android:textColor="#949395"
+                    android:textColor="@color/actionbar_color"
                     android:layout_centerVertical="true"
                     android:textColorHint="#949395"
                     android:background="@null"

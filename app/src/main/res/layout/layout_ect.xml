@@ -29,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
-            android:text="暂无心电的报告数据"
-            android:textColor="@color/base_color_text_black"
+            android:text="暂无您的心电报告"
+            android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_size_normal" />
 
         <LinearLayout
@@ -44,8 +44,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="请前往当地指定"
-                android:textColor="@color/base_color_text_black"
+                android:text="请前往当地"
+                android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_size_normal" />
 
             <TextView
@@ -61,8 +61,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="进行检测;"
-                android:textColor="@color/base_color_text_black"
+                android:text="进行检测"
+                android:textColor="@color/text_color_gray"
                 android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
 

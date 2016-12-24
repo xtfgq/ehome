@@ -218,7 +218,8 @@ public class FindPsdActivity extends BaseActivity implements View.OnClickListene
                             for (int i = 0; i < array.length(); i++) {
                                 chkcode = array.getJSONObject(i)
                                         .getString("MessageContent");
-                               ToastUtils.showMessage(FindPsdActivity.this,chkcode+"");
+                              ToastUtils.showMessage(FindPsdActivity.this,chkcode+"");
+                                ToastUtils.showMessage(FindPsdActivity.this,"验证码已发送，请注意查收.");
                             }
                         }else{
                             stopService(mIntent);

@@ -268,6 +268,8 @@ public class DownloadServiceForAPK extends Service {
                         lastRate = progress;
                     }
                     if (numread <= 0) {
+                        fos.close();
+                        is.close();
                         // 下载完成通知安装
                         mHandler.sendEmptyMessage(0);
                         // 下载完了，cancelled也要设置

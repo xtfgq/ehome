@@ -1,9 +1,11 @@
 package com.zzu.ehome.db;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.zzu.ehome.bean.CacheBean;
 import com.zzu.ehome.bean.RelationDes;
 import com.zzu.ehome.bean.StepBean;
 import com.zzu.ehome.bean.User;
@@ -11,9 +13,12 @@ import com.zzu.ehome.bean.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.type;
+
 /**
  * Created by zzu on 2016/4/6.
  */
+
 public class EHomeDaoImpl implements EHomeDao {
     private DBHelper helper;
     private Context context;
@@ -22,7 +27,28 @@ public class EHomeDaoImpl implements EHomeDao {
         helper = DBHelper.getInstance(context);
         this.context = context;
     }
+    @Override
+    public void delUserInfoById(String userid) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("delete from login_historytb where userid=?",
+                new Object[]{userid});
+        db.close();
+    }
 
+    @Override
+    public boolean findUserIsExist(String userid) {
+        boolean flag = false;
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "select * from login_historytb where userid=? ",
+                new String[]{userid});
+        while (cursor.moveToNext()) {
+            flag = true;
+        }
+        cursor.close();
+        db.close();
+        return flag;
+    }
     @Override
     public List<User> findAllUser() {
         List<User> list = new ArrayList<User>();
@@ -56,6 +82,8 @@ public class EHomeDaoImpl implements EHomeDao {
             user.setUserHeight(height);
             String order=cursor.getString(cursor.getColumnIndex("_order"));
             user.setOrder(order);
+            int type= Integer.valueOf(cursor.getString(cursor.getColumnIndex("type")));
+            user.setType(type);
             list.add(user);
         }
         cursor.close();
@@ -96,6 +124,8 @@ public class EHomeDaoImpl implements EHomeDao {
             user.setUserHeight(height);
             String order=cursor.getString(cursor.getColumnIndex("_order"));
             user.setOrder(order);
+            int type= Integer.valueOf(cursor.getString(cursor.getColumnIndex("type")));
+            user.setType(type);
             list.add(user);
         }
         cursor.close();
@@ -108,36 +138,15 @@ public class EHomeDaoImpl implements EHomeDao {
 
     }
 
-    @Override
-    public void delUserInfoById(String userid) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("delete from login_historytb where userid=?",
-                new Object[]{userid});
-        db.close();
-    }
 
-    @Override
-    public boolean findUserIsExist(String userid) {
-        boolean flag = false;
-        SQLiteDatabase db = helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery(
-                "select * from login_historytb where userid=? ",
-                new String[]{userid});
-        while (cursor.moveToNext()) {
-            flag = true;
-        }
-        cursor.close();
-        db.close();
-        return flag;
-    }
 
     @Override
     public void addUserInfo(User user) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL(
-                "insert into login_historytb(userid,username,nick,mobile,imgHead,password,sex,age,userno,patientId,height,_order) values(?,?,?,?,?,?,?,?,?,?,?,?)",
+                "insert into login_historytb(userid,username,nick,mobile,imgHead,password,sex,age,userno,patientId,height,_order,type) values(?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 new Object[]{user.getUserid(), user.getUsername(),
-                        user.getNick(), user.getMobile(), user.getImgHead(), user.getPassword(), user.getSex(), user.getAge(), user.getUserno(), user.getPatientId(), user.getUserHeight(),user.getOrder()});
+                        user.getNick(), user.getMobile(), user.getImgHead(), user.getPassword(), user.getSex(), user.getAge(), user.getUserno(), user.getPatientId(), user.getUserHeight(),user.getOrder(),user.getType()});
         db.close();
     }
     @Override
@@ -176,6 +185,7 @@ public class EHomeDaoImpl implements EHomeDao {
 
 
 
+
     @Override
     public boolean findRsIsExist(String rsid) {
         boolean flag = false;
@@ -195,8 +205,8 @@ public class EHomeDaoImpl implements EHomeDao {
     @Override
     public void updateUserInfo(User user, String userid) {
         SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("UPDATE login_historytb SET username=?,nick=?,mobile=?,password=?,imgHead=? ,sex=?,age=?,userno=?,patientId=?,height=?,_order=?  where userid=?", new Object[]{
-                user.getUsername(), user.getNick(), user.getMobile(), user.getPassword(), user.getImgHead(), user.getSex(), user.getAge(), user.getUserno(), user.getPatientId(), user.getUserHeight(),user.getOrder(), userid});
+        db.execSQL("UPDATE login_historytb SET username=?,nick=?,mobile=?,password=?,imgHead=? ,sex=?,age=?,userno=?,patientId=?,height=?,_order=?,type=?  where userid=?", new Object[]{
+                user.getUsername(), user.getNick(), user.getMobile(), user.getPassword(), user.getImgHead(), user.getSex(), user.getAge(), user.getUserno(), user.getPatientId(), user.getUserHeight(),user.getOrder(),user.getType(), userid});
         db.close();
     }
     @Override
@@ -251,6 +261,62 @@ public class EHomeDaoImpl implements EHomeDao {
             String uid = cursor.getString(cursor.getColumnIndex("userid"));
             step.setUserid(uid);
             list.add(step);
+        }
+        cursor.close();
+        db.close();
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
+    @Override
+    public void addCacheInfo(CacheBean cache) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL(
+                "insert into cache_tb(url,json) values(?,?)",
+                new Object[]{cache.getUrl(),cache.getJson()});
+        db.close();
+    }
+
+    @Override
+    public boolean findCacheIsExist(String url) {
+        boolean flag = false;
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "select * from cache_tb where url=? ",
+                new String[]{url});
+        while (cursor.moveToNext()) {
+            flag = true;
+        }
+        cursor.close();
+        db.close();
+        return flag;
+    }
+
+    @Override
+    public void updateCacheInfo(CacheBean chache, String url) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("UPDATE cache_tb SET url=?,json=? where url=?", new Object[]{
+                chache.getUrl(),chache.getJson(), url});
+        db.close();
+
+    }
+
+    @Override
+    public CacheBean findCache(String url) {
+        List<CacheBean> list = new ArrayList<CacheBean>();
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from cache_tb where url=?",
+                new String[]{url});
+        while (cursor.moveToNext()) {
+            CacheBean cache = new CacheBean();
+            String urldata = cursor.getString(cursor.getColumnIndex("url"));
+            cache.setUrl(urldata);
+            String json = cursor.getString(cursor.getColumnIndex("json"));
+            cache.setJson(json);
+
+            list.add(cache);
         }
         cursor.close();
         db.close();

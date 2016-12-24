@@ -77,10 +77,14 @@
             android:launchMode="singleTop" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.GuideActivity" />
+        <activity android:name=".activity.GuideActivity"
+            android:theme="@style/WelcomeTheme"
+            />
         <activity android:name=".activity.CompletInfoActivity" />
         <activity android:name=".activity.FindPsdActivity" />
-        <activity android:name=".activity.CreateillnessActivity" />
+        <activity android:name=".activity.CreateillnessActivity"
+            android:windowSoftInputMode="adjustResize|adjustPan"
+            android:configChanges="orientation|keyboardHidden"/>
         <activity android:name=".activity.AppointmentActivity" />
         <activity android:name=".activity.MyFocusActivity" />
         <activity android:name=".activity.MyRemindActivity" />
@@ -119,20 +123,20 @@
 
         <activity
             android:name=".activity.YYJLActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".activity.YYJLDataActivity" />
         <activity
             android:name=".activity.MedicineActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.FamilyHistoryActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.GeneticDiseaseActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.MedicalActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.SelectMarriageActivity"
             android:theme="@style/mydialog"
@@ -574,11 +578,11 @@
 
         <!-- imlib config begin -->
      <!-- &lt;!&ndash; 正式服务&ndash;&gt;-->
-   <meta-data
+<meta-data
             android:name="RONG_CLOUD_APP_KEY"
             android:value="x18ywvqf8xjpc" />
 <!--   &lt;!&ndash;&lt;!&ndash;  测试服务&ndash;&gt;&ndash;&gt;-->
-       <!--<meta-data
+    <!--  <meta-data
                     android:name="RONG_CLOUD_APP_KEY"
                     android:value="e0x9wycfxehzq" />-->
 

@@ -136,7 +136,7 @@ public class HeadView extends LinearLayout {
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         lp.rightMargin = 8;
         header_layout_rightview_container.addView(right_button_view, lp);
-        left_button.setOnClickListener(new OnClickListener() {
+        header_leftview_container.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 接口回调

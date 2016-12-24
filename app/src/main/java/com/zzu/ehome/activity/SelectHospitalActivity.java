@@ -33,6 +33,7 @@ public class SelectHospitalActivity extends NetBaseActivity {
     private List<HospitalBean> mHList;
     //请求单例
     private RequestMaker requestMaker;
+    private SelectHospitalAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -67,7 +68,9 @@ public class SelectHospitalActivity extends NetBaseActivity {
                         bean.setHospital_FullName(jsonObject.getString("Hospital_FullName"));
                         mHList.add(bean);
                     }
-                    listView.setAdapter(new SelectHospitalAdapter(SelectHospitalActivity.this, mHList));
+                    mAdapter=new SelectHospitalAdapter(SelectHospitalActivity.this, mHList);
+                    listView.setAdapter(mAdapter);
+                    listView.setSelection(0);
                     stopProgressDialog();
 
                 } catch (JSONException e) {
@@ -81,12 +84,7 @@ public class SelectHospitalActivity extends NetBaseActivity {
 
 
     public void initEvent() {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                index = position;
-            }
-        });
+
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +96,7 @@ public class SelectHospitalActivity extends NetBaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
+                index=mAdapter.getIndex();
                 intent.putExtra("hospital", mHList.get(index).getHospital_FullName());
                 intent.putExtra("hospital_id", mHList.get(index).getHospital_Id());
                 setResult(DoctorFragment.ADD_HOSPITAL, intent);

@@ -212,7 +212,7 @@ public class WebFragmet extends BaseFragment {
                     org.json.JSONArray array = mySO
                             .getJSONArray("TreatmentCancel");
                     if (array.getJSONObject(0).has("MessageCode")) {
-                        Toast.makeText(getActivity(), array.getJSONObject(0).getString("MessageContent").toString(),
+                        Toast.makeText(getActivity(), "订单取消成功",
                                 Toast.LENGTH_SHORT).show();
                         list.remove(position);
                         if (list.size() == 0) {

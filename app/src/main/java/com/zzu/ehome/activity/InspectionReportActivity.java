@@ -3,7 +3,6 @@ package com.zzu.ehome.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -57,8 +56,8 @@ public class InspectionReportActivity extends BaseActivity {
         dao = new EHomeDaoImpl(this);
         usrid = SharePreferenceUtil.getInstance(InspectionReportActivity.this).getUserId();
         initViews();
-        if(TextUtils.isEmpty(dao.findUserInfoById(usrid).getUserno()))
-        completeInfoTips();
+//        if(TextUtils.isEmpty(dao.findUserInfoById(usrid).getUserno()))
+//        completeInfoTips();
         initEvent();
         initDatas();
     }
@@ -75,7 +74,7 @@ public class InspectionReportActivity extends BaseActivity {
             }
         });
 
-//        setDefaultViewMethod(R.mipmap.icon_arrow_left, "检查报告", new HeadView.OnLeftClickListener() {
+//        setDefaultViewMethod(R.mipmap.icon_arrow_left, "检查报告", R.mipmap.icon_ocr,new HeadView.OnLeftClickListener() {
 //            @Override
 //            public void onClick() {
 //                finishActivity();
@@ -198,6 +197,7 @@ public class InspectionReportActivity extends BaseActivity {
                         if (isReflash) {
                             isReflash = false;
                             isFirst = false;
+                            mAdapter.notifyDataSetChanged();
                             pulltorefreshlayout.refreshFinish(PullToRefreshLayout.SUCCEED);
                         } else if (isLoading) {
                             isLoading = false;
@@ -263,19 +263,5 @@ public class InspectionReportActivity extends BaseActivity {
     }
 
 
-    /**
-     * 如果用户信息不完善，显示提示框
-     */
-    public void completeInfoTips() {
-        DialogTips dialog = new DialogTips(this, "", "就诊信息缺失，请先完善信息",
-                "去完善", true, true);
-        dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogInterface, int userId) {
-                startActivity(new Intent(InspectionReportActivity.this, PersonalCenterInfo.class));
-            }
-        });
 
-        dialog.show();
-        dialog = null;
-    }
 }

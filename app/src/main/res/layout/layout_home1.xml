@@ -3,6 +3,7 @@
     xmlns:panel="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/root_container"
     android:background="#e5e5ea"
 
     android:orientation="vertical">
@@ -10,7 +11,8 @@
 <View
         android:id="@+id/v_top"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+    />
 
     <com.zzu.ehome.view.PullToRefreshLayout
         android:id="@+id/refresh_view"
@@ -43,7 +45,7 @@
                         android:gravity="center"
                         android:layout_centerHorizontal="true"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="48dp"
+                        android:layout_marginBottom="36dp"
                         android:textColor="#7e7787"
                         android:textSize="10sp"
                         android:text="日常数据记录服务"/>
@@ -58,14 +60,14 @@
                             android:id="@+id/llrecord"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginBottom="6dp"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
                                 android:src="@mipmap/icon_data" />
 
                             <TextView
@@ -74,14 +76,14 @@
                                 android:layout_marginLeft="8dp"
                                 android:text="日常记录"
                                 android:textColor="#272031"
-                                android:textSize="@dimen/text_size_normal"
+                                android:textSize="@dimen/text_size_medium"
 
                                 />
                         </LinearLayout>
 
                         <View
                             android:layout_width="1dp"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="5dp"
                             android:layout_height="match_parent"
                             android:layout_marginBottom="8dp"
                             android:background="#e5e5ea" />
@@ -90,14 +92,14 @@
                             android:id="@+id/layout_add"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginBottom="6dp"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
                                 android:src="@mipmap/icon_zhidao" />
 
                             <TextView
@@ -106,7 +108,7 @@
                                 android:layout_marginLeft="8dp"
                                 android:text="健康指导"
                                 android:textColor="#272031"
-                                android:textSize="@dimen/text_size_normal" />
+                                android:textSize="@dimen/text_size_medium" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -115,7 +117,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:scrollbars="none">
 
                         <com.zzu.ehome.view.MyHomeLayout
@@ -128,17 +130,29 @@
                         </com.zzu.ehome.view.MyHomeLayout>
 
                     </HorizontalScrollView>
-
-                    <com.zzu.ehome.view.CircleImageView
+                    <LinearLayout
                         android:id="@+id/nologin"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/btn_home"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:visibility="gone"
                         android:layout_alignParentRight="true"
-                        android:src="@drawable/icon_file1" />
+                        android:orientation="vertical">
 
+                    <com.zzu.ehome.view.CircleImageView
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/btn_home"
+                        android:src="@drawable/icon_file1" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:textSize="8sp"
+                            android:text="添加亲人"/>
+                    </LinearLayout>
 
                 </RelativeLayout>
 
@@ -198,7 +212,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="2dp"
-                                android:text="郑州"
+                                android:text="郑州市"
                                 android:textColor="#7e7787"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -333,14 +347,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="4dp"
-                            android:text="预约挂号"
+                            android:text="网络门诊"
                             android:textColor="#272031"
                             android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="预约在线 视频问诊"
+                            android:text="预约在线视频问诊"
                             android:textColor="#BEB7C7"
                             android:textSize="12sp" />
 
@@ -362,12 +376,14 @@
                             android:id="@+id/layout_jcbg"
                             android:layout_width="match_parent"
                             android:layout_height="64dp"
-                            android:gravity="center"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="30dp"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -380,7 +396,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="智能健康 自助检查"
+                                    android:text="智能自助健康检查"
                                     android:textColor="#BEB7C7"
                                     android:textSize="11sp" />
 
@@ -390,6 +406,7 @@
                                 android:layout_width="36dp"
                                 android:layout_height="36dp"
                                 android:layout_marginLeft="8dp"
+                                android:layout_marginRight="10dp"
 
                                 android:src="@mipmap/icon_report_jc" />
 
@@ -433,7 +450,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="心电检查,在线分析"
+                                    android:text="心电检查、在线分析"
                                     android:textColor="#BEB7C7"
                                     android:textSize="11sp" />
                             </LinearLayout>
@@ -542,7 +559,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="三甲医院专家"
+                            android:text="三甲医院专家挂号"
                             android:textColor="#BEB7C7"
                             android:textSize="12sp" />
 

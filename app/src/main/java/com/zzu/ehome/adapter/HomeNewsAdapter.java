@@ -5,21 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.Constants;
-import com.zzu.ehome.application.MMloveConstants;
-import com.zzu.ehome.bean.HealthDataRes;
 import com.zzu.ehome.bean.News;
 import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.view.GlideRoundTransform;
-import com.zzu.ehome.view.crop.util.Log;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -82,7 +79,20 @@ public class HomeNewsAdapter extends BaseAdapter {
         }
         holder.tv_title.setText(item.getTitle());
         holder.tv_content.setText(item.getZhaiyao());
-        holder.tvtime.setText(DateUtils.StringPattern(item.getCreatedDate(),"yyyy/MM/dd HH:mm:ss","MM/dd HH:mm"));
+        Date date=DateUtils.str2Date(item.getCreatedDate());
+        try {
+            int t=DateUtils.isYeaterday(date,null);
+            if(t==-1){
+                holder.tvtime.setText("今天 "+DateUtils.StringPattern(item.getCreatedDate(),"yyyy/MM/dd HH:mm:ss","HH:mm"));
+            }else if(t==0){
+                holder.tvtime.setText("昨天 "+DateUtils.StringPattern(item.getCreatedDate(),"yyyy/MM/dd HH:mm:ss","HH:mm"));
+            }else if(t==1){
+                holder.tvtime.setText(DateUtils.StringPattern(item.getCreatedDate(),"yyyy/MM/dd HH:mm:ss","MM/dd HH:mm"));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         String url=Constants.EhomeURL + item.getPic().replace("~", "").replace("\\", "/");
         Glide.with(mContext)
                 .load(Constants.EhomeURL + item.getPic().replace("~", "").replace("\\", "/"))

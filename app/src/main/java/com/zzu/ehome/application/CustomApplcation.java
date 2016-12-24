@@ -3,7 +3,6 @@ package com.zzu.ehome.application;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Environment;
@@ -14,8 +13,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.cookie.store.PersistentCookieStore;
-import com.lzy.okgo.model.HttpHeaders;
-import com.lzy.okgo.model.HttpParams;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -23,7 +20,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.zzu.ehome.DemoContext;
 import com.zzu.ehome.reciver.NetReceiver;
-import com.zzu.ehome.view.crop.util.Log;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -72,6 +68,7 @@ public class CustomApplcation extends MultiDexApplication {
     public void onTerminate() {
         super.onTerminate();
 //        Log.e("app","onTerminate()======");
+
         unregisterReceiver(mReceiver);
     }
 

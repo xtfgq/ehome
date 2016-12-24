@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,13 +19,9 @@ import android.widget.TextView;
 
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.zzu.ehome.R;
-import com.zzu.ehome.adapter.TempChatAdapter;
 import com.zzu.ehome.adapter.WeightChatAdapter;
 import com.zzu.ehome.bean.HealteData;
-import com.zzu.ehome.bean.HealthDataRes;
 import com.zzu.ehome.bean.RefreshEvent;
-import com.zzu.ehome.bean.TempItemHistory;
-import com.zzu.ehome.bean.TemperatureDate;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.bean.WeightBeanRes;
 import com.zzu.ehome.bean.WeightDate;
@@ -39,7 +34,6 @@ import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
-import com.zzu.ehome.view.TempView;
 import com.zzu.ehome.view.WeightView;
 
 import org.json.JSONArray;
@@ -140,10 +134,10 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
 
         mChart = (WeightView) heardchat.findViewById(R.id.chart);
         lltmp = (LinearLayout) heardchat.findViewById(R.id.lltmp);
-        group = (RadioGroup) view.findViewById(R.id.radioGroup);
-        rbday = (RadioButton) view.findViewById(R.id.rb_day);
-        rbweek = (RadioButton) view.findViewById(R.id.rb_week);
-        rbmonth = (RadioButton) view.findViewById(R.id.rb_month);
+        group = (RadioGroup) heardchat.findViewById(R.id.radioGroup);
+        rbday = (RadioButton) heardchat.findViewById(R.id.rb_day);
+        rbweek = (RadioButton) heardchat.findViewById(R.id.rb_week);
+        rbmonth = (RadioButton) heardchat.findViewById(R.id.rb_month);
         tvnodata = (TextView) heardchat.findViewById(R.id.tvnodate);
 //        tvvalue = (TextView) heardchat.findViewById(R.id.tv_tempvalue);
 //        tvstatus = (TextView) heardchat.findViewById(R.id.tv_status);
@@ -418,6 +412,10 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
 
     }
 
+    @Override
+    public void setOnlyTileViewMethod(View v, String title) {
+        super.setOnlyTileViewMethod(v, title);
+    }
 
     private void getHistory() {
         requestMaker.HealthDataInquirywWithPageType(userid, cardNo,10 + "", page + "", "Weight", new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {

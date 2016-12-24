@@ -1,7 +1,6 @@
 package com.zzu.ehome.adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,14 +12,9 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.activity.LoginActivity1;
 import com.zzu.ehome.activity.SelectPatientActivity;
 import com.zzu.ehome.bean.DoctorSchemaByTopmdBean;
-import com.zzu.ehome.main.ehome.MainActivity;
 import com.zzu.ehome.utils.SharePreferenceUtil;
-import com.zzu.ehome.view.DialogTips;
 
 import java.util.List;
-
-import static com.zzu.ehome.R.color.actionbar_color;
-import static com.zzu.ehome.R.id.tv;
 
 /**
  * Created by Mersens on 2016/8/9.
@@ -51,10 +45,18 @@ public class DoctorTimeAdapter extends BaseListAdapter<DoctorSchemaByTopmdBean> 
         tvresidue.setText("剩余号源"+mList.get(position).getRegistNum());
        int status= Integer.valueOf(mList.get(position).getSchemaStatu());
         if(status==1){
-            tv_gh.setText("挂号");
-            tv_gh.setBackgroundColor(mContext.getResources().getColor(R.color.actionbar_color));
-            tv_gh.setEnabled(true);
-        }else if(status==0||Integer.valueOf(mList.get(position).getRegistNum())<0){
+            if(Integer.valueOf(mList.get(position).getRegistNum())==0){
+                tv_gh.setText("预约");
+                tv_gh.setBackgroundColor(mContext.getResources().getColor(R.color.bottom_text_color_normal));
+                tv_gh.setEnabled(false);
+            }else{
+                tv_gh.setText("预约");
+                tv_gh.setBackgroundColor(mContext.getResources().getColor(R.color.actionbar_color));
+                tv_gh.setEnabled(true);
+            }
+
+        }
+        else if(status==0||Integer.valueOf(mList.get(position).getRegistNum())<0){
             tv_gh.setText("停诊");
             tv_gh.setEnabled(false);
             tv_gh.setBackgroundColor(mContext.getResources().getColor(R.color.bottom_text_color_normal));
@@ -76,9 +78,7 @@ public class DoctorTimeAdapter extends BaseListAdapter<DoctorSchemaByTopmdBean> 
                 context.startActivity(new Intent(context, LoginActivity1.class));
                 return;
             }
-            if(Integer.parseInt(mList.get(pos).getRegistNum())==0){
-                shownDialog();
-            }else {
+
                 Intent intent = new Intent();
                 intent.setClass(mContext, SelectPatientActivity.class);
                 Bundle bundle = new Bundle();
@@ -89,22 +89,11 @@ public class DoctorTimeAdapter extends BaseListAdapter<DoctorSchemaByTopmdBean> 
                 bundle.putSerializable("DoctorTime", mList.get(pos));
                 intent.putExtras(bundle);
                 mContext.startActivity(intent);
-            }
+
 
         }
     }
-    private void shownDialog() {
-        DialogTips dialog = new DialogTips(context, "该时段暂无可预约号源",
-                "确定");
-        dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogInterface, int userId) {
-            }
-        });
 
-        dialog.show();
-        dialog = null;
-
-    }
 
 
 }

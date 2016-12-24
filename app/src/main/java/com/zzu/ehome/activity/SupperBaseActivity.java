@@ -36,6 +36,7 @@ import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.CustomProgressDialog;
 import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.HeadView;
+import com.zzu.ehome.view.SVProgressHUD;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -58,6 +59,7 @@ public abstract class SupperBaseActivity extends FragmentActivity {
     private HeadView mHeadView;
     private RequestMaker requestMaker;
     private EHomeDao dao;
+    public boolean isNetWork=true;
     public EHomeDao getDao() {
         return dao;
     }
@@ -87,10 +89,37 @@ public abstract class SupperBaseActivity extends FragmentActivity {
             String action = intent.getAction();
             if (action.equals("rongyun") && isVisible) {
                 confirmLogin();
+            }else if(action.equals(ConnectivityManager.CONNECTIVITY_ACTION)){
+                ConnectivityManager mConnectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo netInfo = mConnectivityManager.getActiveNetworkInfo();
+                if(netInfo != null && netInfo.isAvailable()) {
+                    isNetWork=true;
+                    if(netInfo.getType()==ConnectivityManager.TYPE_WIFI){
 
+                    }else if(netInfo.getType()==ConnectivityManager.TYPE_ETHERNET){
+
+                    }else if(netInfo.getType()==ConnectivityManager.TYPE_MOBILE){
+
+                    }
+                } else {
+                    isNetWork=false;
+                    //无网络状态
+                    if(isVisible){
+                        showNetWorkErrorDialog();
+                    }
+
+
+                }
             }
         }
     };
+
+
+    public void showNetWorkErrorDialog(){
+      SVProgressHUD.showErrorWithStatus(SupperBaseActivity.this, "网络异常,请稍候重试!", SVProgressHUD.SVProgressHUDMaskType.Gradient);
+    }
+
+
 
 
     @Override
@@ -113,6 +142,7 @@ public abstract class SupperBaseActivity extends FragmentActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("action.loginout");
         intentFilter.addAction("rongyun");
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(mBroadcastReceiver, intentFilter);
 
 
@@ -241,12 +271,22 @@ public abstract class SupperBaseActivity extends FragmentActivity {
         if( CustomApplcation.getInstance().isOnLine==0){
             confirmLogin();
         }
+
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SVProgressHUD.clean(this);
+    }
+
+
 
     @Override
     protected void onStop() {
         super.onStop();// ATTENTION: This was auto-generated to implement the App Indexing API.
         isVisible = false;
+
     }
 
     /**
@@ -460,9 +500,9 @@ public abstract class SupperBaseActivity extends FragmentActivity {
         tvCancle.setVisibility(View.GONE);
 
         TextView tvtitel = (TextView) layout.findViewById(R.id.dialog_default_click_text_title);
-        tvtitel.setText("温馨提示");
+        tvtitel.setText("提   示");
         TextView tvcontent = (TextView) layout.findViewById(R.id.dialog_default_click_text_msg);
-        tvcontent.setText("你的账号在其他设备上登陆？");
+        tvcontent.setText("您的账号在别的设备上登录，您被迫下线");
         tvok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -483,7 +523,6 @@ public abstract class SupperBaseActivity extends FragmentActivity {
     public  void showTitleDialog(String message) {
 
         DialogTips dialog = new DialogTips(SupperBaseActivity.this, message, "确定");
-
         dialog.show();
         dialog = null;
 
@@ -520,4 +559,6 @@ public abstract class SupperBaseActivity extends FragmentActivity {
         dialog = null;
 
     }
+
+
 }

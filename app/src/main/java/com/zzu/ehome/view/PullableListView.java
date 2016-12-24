@@ -28,11 +28,14 @@ public class PullableListView extends ListView implements Pullable {
 		{
 			// 没有item的时候也可以下拉刷新
 			return true;
-		} else if (getFirstVisiblePosition() == 0
-				&& getChildAt(0).getTop() >= 0)
+		} else if (getFirstVisiblePosition() == 0&&(getChildAt(0)!=null))
 		{
-			// 滑到ListView的顶部了
-			return true;
+			if(getChildAt(0).getTop() >= 0) {
+				return true;
+				// 滑到ListView的顶部了
+			}else {
+				return false;
+			}
 		} else
 			return false;
 	}

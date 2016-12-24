@@ -126,62 +126,70 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="onTabClicked">
-
-            <RelativeLayout
-                android:layout_width="60dp"
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:layout_centerHorizontal="true"
-                android:gravity="center">
-
+                >
                 <RelativeLayout
-                    android:id="@+id/rl_doctor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center">
 
-                    <FrameLayout
+
+                    <RelativeLayout
+                        android:id="@+id/rl_doctor"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true">
 
-                        <ImageView
-                            android:id="@+id/img_doctor"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerInParent="true"
-                            android:background="@color/base_color_text_white"
-                            android:focusable="false"
-                            android:scaleType="centerInside"
-                            android:src="@mipmap/icon_msg_normal" />
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/tv_dot"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:background="@mipmap/icon_online"
-                            android:text="10"
-                            android:textColor="@color/white"
-                            android:textSize="6sp"
-                            android:gravity="center"
-                            android:layout_gravity="right|top"
-                            android:visibility="gone" />
-                    </FrameLayout>
+                            <ImageView
+                                android:id="@+id/img_doctor"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:background="@color/base_color_text_white"
+                                android:focusable="false"
+                                android:scaleType="centerInside"
+                                android:src="@mipmap/icon_msg_normal" />
+                        </FrameLayout>
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tv_doctor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rl_doctor"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/tv_msg"
+
+                        android:textColor="@color/bottom_text_color_normal"
+                        android:textSize="12sp" />
 
                 </RelativeLayout>
-
                 <TextView
-                    android:id="@+id/tv_doctor"
+                    android:id="@+id/tv_dot"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl_doctor"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/tv_msg"
-
-                    android:textColor="@color/bottom_text_color_normal"
-                    android:textSize="12sp" />
-
-            </RelativeLayout>
+                    android:background="@mipmap/icon_online"
+                    android:text="10"
+                    android:layout_marginRight="4dp"
+                    android:padding="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="8sp"
+                    android:gravity="center"
+                    android:layout_gravity="right|top"
+                    android:visibility="gone" />
+            </FrameLayout>
         </RelativeLayout>
+
 
         <RelativeLayout
             android:id="@+id/layout_info"

@@ -19,6 +19,8 @@ import com.zzu.ehome.utils.DateUtils;
 
 import java.util.List;
 
+import static com.zzu.ehome.R.id.tv;
+
 /**
  * Created by Administrator on 2016/5/11.
  */
@@ -91,22 +93,27 @@ public class BloodPressChatAdapter extends BaseAdapter implements StickyListHead
         int szy = CommonUtils.computeSzy(Integer.valueOf(res.getLow()));
         int lv = CommonUtils.MaxInt(ssz, szy);
         switch (lv) {
-            case 1:
+            case -1:
+                holder.tv_status.setText("低血压");
+                holder.rl_status.setBackgroundResource(R.drawable.btn_yuyue_9);
+
+                break;
+            case 0:
                 holder.tv_status.setText("正常");
                 holder.rl_status.setBackgroundResource(R.drawable.btn_yuyue_4);
 
                 break;
-            case 2:
+            case 1:
                 holder.tv_status.setText("一期");
                 holder.rl_status.setBackgroundResource(R.drawable.btn_yuyue_1);
 
                 break;
-            case 3:
+            case 2:
                 holder.tv_status.setText("二期");
                 holder.rl_status.setBackgroundResource(R.drawable.btn_yuyue_5);
 
                 break;
-            case 4:
+            case 3:
                 holder.tv_status.setText("三期");
                 holder.rl_status.setBackgroundResource(R.drawable.btn_yuyue_6);
                 break;

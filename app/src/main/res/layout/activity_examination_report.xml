@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/base_color_text_white"
+    android:background="#f2f2f2"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -11,21 +11,27 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+
             android:orientation="vertical"
+
 
             >
 
             <RelativeLayout
                 android:id="@+id/layout_time"
                 android:layout_width="match_parent"
+
+                android:paddingRight="16dp"
+                android:background="@color/base_color_text_white"
+                android:paddingLeft="16dp"
+
                 android:layout_height="55dp">
 
                 <TextView
@@ -45,8 +51,10 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="8dp"
                     android:layout_toLeftOf="@+id/icon_lift_tixing"
-
-                    android:textColor="#949395"
+                    android:hint="请选择体检日期"
+                    android:textColorHint="#949395"
+                    android:gravity="right"
+                    android:textColor="#0f2536"
                     android:textSize="16sp" />
 
                 <ImageView
@@ -66,6 +74,9 @@
             <RelativeLayout
                 android:id="@+id/layout_jg"
                 android:layout_width="match_parent"
+                android:background="@color/base_color_text_white"
+                android:paddingRight="16dp"
+                android:paddingLeft="16dp"
                 android:layout_height="55dp">
 
                 <TextView
@@ -85,8 +96,10 @@
                     android:layout_marginRight="8dp"
                     android:layout_toLeftOf="@+id/icon_lift_chongfu"
                     android:hint="请输入体检机构"
+                    android:textColorHint="#949395"
                     android:gravity="right"
-                    android:textColor="#949395"
+                    android:textColor="#0f2536"
+                    android:inputType="text"
                     android:background="@null"
                     android:textSize="16sp" />
 
@@ -107,6 +120,9 @@
             <RelativeLayout
                 android:id="@+id/layout_person"
                 android:layout_width="match_parent"
+                android:background="@color/base_color_text_white"
+                android:paddingRight="16dp"
+                android:paddingLeft="16dp"
                 android:layout_height="55dp">
 
                 <TextView
@@ -127,8 +143,10 @@
                     android:layout_toLeftOf="@+id/icon_lift_leixing"
                     android:background="@null"
                     android:hint="请输入体检人姓名"
+                    android:textColorHint="#949395"
                     android:gravity="right"
-                    android:textColor="#949395"
+                    android:inputType="text"
+                    android:textColor="#0f2536"
                     android:textSize="16sp" />
 
                 <ImageView
@@ -147,14 +165,17 @@
 
             <RelativeLayout
                 android:id="@+id/rlphoto"
+                android:background="@color/base_color_text_white"
                 android:layout_width="match_parent"
                 android:layout_height="75dp">
 
                 <ImageView
                     android:id="@+id/icon_upload"
-                    android:layout_width="41dp"
-                    android:layout_height="41dp"
+                    android:layout_width="82dp"
+                    android:layout_height="82dp"
                     android:layout_alignParentLeft="true"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     android:layout_centerVertical="true"
                     android:src="@drawable/icon_upload"
 
@@ -197,7 +218,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@drawable/register_btn_bg"
-        android:text="保存"
+        android:text="确定"
         android:textColor="@color/base_color_text_white"
         android:textSize="20sp" />
 

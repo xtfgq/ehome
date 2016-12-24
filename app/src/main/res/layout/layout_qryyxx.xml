@@ -40,7 +40,50 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/tv_wzyy"
+                    android:layout_marginLeft="8dp"
                     android:text="郑州大学第五附属医院"
+                    android:textColor="#00c07d"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+
+
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="#e1e1e2" />
+
+            <RelativeLayout
+                android:id="@+id/layout_yyks"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+                <TextView
+                    android:id="@+id/tv_yyks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:textSize="16sp"
+
+                    android:text="预约科室:"
+                    android:layout_marginRight="4dp"
+                    android:textColor="#0f2536"/>
+
+                <TextView
+                    android:id="@+id/tv_ks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/tv_yyks"
+                    android:text="消化内科"
                     android:textColor="#00c07d"
                     android:textSize="16sp" />
 
@@ -52,7 +95,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:background="#e1e1e2" />
-
             <RelativeLayout
                 android:id="@+id/layout_yysj"
                 android:layout_width="match_parent"
@@ -76,54 +118,12 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/tv_yysj"
+                    android:layout_marginLeft="8dp"
                     android:text="2016-08-04 08:00-12:00"
                     android:textColor="#00c07d"
                     android:textSize="16sp" />
 
             </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#e1e1e2" />
-
-            <RelativeLayout
-                android:id="@+id/layout_yyks"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp">
-                <TextView
-                    android:id="@+id/tv_yyks"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:textSize="16sp"
-                    android:text="预约科室:"
-                    android:layout_marginRight="4dp"
-                    android:textColor="#0f2536"/>
-
-                <TextView
-                    android:id="@+id/tv_ks"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/tv_yyks"
-                    android:text="消化内科"
-                    android:textColor="#00c07d"
-                    android:textSize="16sp" />
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#e1e1e2" />
 
         </LinearLayout>
 

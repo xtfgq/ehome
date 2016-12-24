@@ -6,6 +6,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import com.zzu.ehome.utils.ImageOptions;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
+import com.zzu.ehome.utils.ScreenUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.CircleImageView;
@@ -38,6 +40,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import de.greenrobot.event.EventBus;
+
+import static com.zzu.ehome.R.id.lrtop;
+import static com.zzu.ehome.R.id.rlusertop;
 
 public class AppointmentDetailActivity extends BaseActivity implements View.OnClickListener {
     private String doctor_id = "";
@@ -62,7 +67,7 @@ public class AppointmentDetailActivity extends BaseActivity implements View.OnCl
     private static final int SPREAD_STATE = 2;// 展开状态
     private static int mState = SHRINK_UP_STATE;//默认收起状态
 
-    private RelativeLayout mShowMore;
+    private RelativeLayout lrtop;
     private ImageView mImageSpread;// 展开
     private ImageView mImageShrinkUp;// 收起
     String yuyue = "", MyFocus = "";
@@ -135,9 +140,15 @@ public class AppointmentDetailActivity extends BaseActivity implements View.OnCl
         iv_yy = (TextView) findViewById(R.id.iv_yy);
         icon_back=(ImageView)findViewById(R.id.icon_back);
         tvdepartment=(TextView)findViewById(R.id.tv_department);
+        lrtop=(RelativeLayout)findViewById(R.id.lrtop);
 //        mShowMore=(RelativeLayout) findViewById(R.id.more);
 //        mImageSpread = (ImageView) mShowMore.findViewById(R.id.spread);
 //        mImageShrinkUp = (ImageView) mShowMore.findViewById(R.id.shrink_up);
+        ViewGroup.LayoutParams para;
+        para =  lrtop.getLayoutParams();
+        para.width = ScreenUtils.getScreenWidth(AppointmentDetailActivity.this);
+        para.height = para.width*20/75;
+        lrtop.setLayoutParams(para);
     }
 
 

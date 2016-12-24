@@ -8,6 +8,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zzu.ehome.R;
+import com.zzu.ehome.adapter.StringHosAdapter;
 import com.zzu.ehome.adapter.SuggarAdapter;
 import com.zzu.ehome.fragment.BloodSugarFragment;
 
@@ -22,7 +23,7 @@ public class HosListActivity extends Activity {
     private TextView tv_ok;
     private int index = 0;
     private List<String> list;
-    private SuggarAdapter mAdapter;
+    private StringHosAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class HosListActivity extends Activity {
         list.add("郑州市红十字医院");
         list.add("郑州市儿童医院");
         list.add("河南省中医药研究院");
-        mAdapter = new SuggarAdapter(this, list);
+        mAdapter = new StringHosAdapter(this, list);
         listView.setAdapter(mAdapter);
     }
 

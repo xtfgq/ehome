@@ -13,14 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.CampaignActivity;
 import com.zzu.ehome.activity.ConversationListActivity;
 import com.zzu.ehome.activity.LoginActivity1;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.MessageAdapter;
 import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.bean.CapaingBean;
@@ -30,17 +29,12 @@ import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
-import com.zzu.ehome.view.PullToRefreshLayout;
-import com.zzu.ehome.view.crop.util.Log;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.zzu.ehome.application.CustomApplcation.mList;
 
 
 /**
@@ -52,6 +46,7 @@ public class MessageFragment extends BaseFragment {
     private View vTop;
     private MessageAdapter messageAdapter;
     private RequestMaker requestMaker;
+    private SupperBaseActivity activity;
     List<MessageBean> mList=new ArrayList<>();
     private BroadcastReceiver mDateOrFileBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -93,6 +88,11 @@ public class MessageFragment extends BaseFragment {
     };
     private String userid = "";
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -101,6 +101,7 @@ public class MessageFragment extends BaseFragment {
         intentFilter.addAction("NumRefresh");
         intentFilter.addAction("userrefresh");
         getActivity().registerReceiver(mDateOrFileBroadcastReceiver, intentFilter);
+
         return inflater.inflate(R.layout.layout_message, null);
     }
 
@@ -158,6 +159,10 @@ public class MessageFragment extends BaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 if (TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
                     startActivity(new Intent(getActivity(), LoginActivity1.class));
                     return;
@@ -221,34 +226,29 @@ public class MessageFragment extends BaseFragment {
                         listView.setAdapter(null);
                         messageAdapter = new MessageAdapter(getActivity(), mList);
                         listView.setAdapter(messageAdapter);
-
                     } else {
                         CapaingBean bean = new CapaingBean();
                         bean.setCreateDate(array.getJSONObject(0).getString("CreatedDate"));
                         bean.setName(array.getJSONObject(0).getString("Log_Content"));
                         bean.setLog_ID(array.getJSONObject(0).getString("Log_ID"));
                         bean2.setTips(bean.getCreateDate());
-                    }
-
-                    mList.add(bean2);
-                    MessageBean bean3 = new MessageBean();
-                    bean3.setContent("私人医生");
-                    if(CustomApplcation.getInstance().count>0){
-                        bean3.setNum(CustomApplcation.getInstance().count);
-                    }else{
-                        bean3.setNum(0);
-                    }
-
-                    bean3.setTips("在线问诊记录");
-                    mList.add(bean3);
-                    messageAdapter=null;
-                    listView.setAdapter(null);
+                        mList.add(bean2);
+                        MessageBean bean3 = new MessageBean();
+                        bean3.setContent("私人医生");
+                        if(CustomApplcation.getInstance().count>0){
+                            bean3.setNum(CustomApplcation.getInstance().count);
+                        }else{
+                            bean3.setNum(0);
+                        }
+                        bean3.setTips("在线问诊记录");
+                        mList.add(bean3);
+                        messageAdapter=null;
+                        listView.setAdapter(null);
                         messageAdapter = new MessageAdapter(getActivity(), mList);
                         listView.setAdapter(messageAdapter);
+                    }
 
-
-
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

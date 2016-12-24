@@ -81,11 +81,13 @@ public class AdviceActivity extends BaseActivity {
     private void doUploade() {
         String msg = editText.getText().toString().toString();
         if (TextUtils.isEmpty(msg)) {
-            ToastUtils.showMessage(AdviceActivity.this, "请输入内容");
+            show("请输入内容！");
+
             return;
         }
         if (msg.contains("<") || msg.contains(">") || msg.contains("&")) {
-            ToastUtils.showMessage(AdviceActivity.this, "不允许输入非法字符！");
+            show("不允许输入非法字符！");
+
             return;
         }
         requestMaker.FeedBackInsert(userid, msg, new JsonAsyncTask_Info(AdviceActivity.this, true, new JsonAsyncTaskOnComplete() {

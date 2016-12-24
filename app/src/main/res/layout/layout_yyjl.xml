@@ -10,27 +10,29 @@
 
     <include layout="@layout/layout_toolbar" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
 
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
+            android:scrollbars="none"
             android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
                 android:background="#ffffff"
                 android:orientation="vertical">
                 <RelativeLayout
                     android:id="@+id/layout_ypmc"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:gravity="center"
                    >
 
@@ -52,14 +54,17 @@
                         android:layout_toLeftOf="@+id/iv_right"
                         android:layout_marginRight="8dp"
                         android:hint="请输入药品名称"
-                        android:textColor="#949395"
+
+                        android:inputType="text"
+                        android:gravity="right"
+                        android:textColor="#0f2536"
                         android:textColorHint="#949395"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                     <ImageView
                         android:id="@+id/iv_right"
 
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="8dp"
+                        android:layout_height="16dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="4dp"
@@ -69,14 +74,14 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="#e1e1e2" />
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp">
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -101,7 +106,9 @@
                             android:layout_height="38dp"
                             android:layout_gravity="center"
                             android:inputType="numberDecimal"
-
+                            android:hint="0"
+                            android:textColorHint="#949395"
+                            android:textColor="#0f2536"
                             android:background="@mipmap/bg_input_number"
                             android:gravity="center" />
 
@@ -111,23 +118,23 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="8dp"
                             android:text="片/次"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="#e1e1e2" />
 
                 <RelativeLayout
                     android:id="@+id/layout_fysj"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                    >
 
                     <TextView
@@ -144,29 +151,29 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="8dp"
-                        android:hint="请设置服药时间"
+                        android:hint="请选择服药时间"
                         android:background="@null"
-                        android:textColor="#949395"
-                        android:textColorHint="#949395"
+                        android:textColor="@color/text_color_black"
+                        android:textColorHint="@color/text_color_gray"
+                        android:gravity="right"
                         android:layout_toLeftOf="@+id/imageView_right"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
 
                     <ImageView
                         android:id="@+id/imageView_right"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="8dp"
+                        android:layout_height="16dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="4dp"
                         android:src="@mipmap/icon_arr_gr" />
                 </RelativeLayout>
                 <View
+                    android:layout_height="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#e1e1e2" />
+                    android:background="#fafafc"
+                    />
              <!--   <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
@@ -190,30 +197,39 @@
                         app:kswTintColor="@color/actionbar_color" />
                 </RelativeLayout>-->
 
-                <TextView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:textSize="16sp"
-                    android:text="备注信息"/>
+                    android:layout_height="40dp"
+
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:textSize="16sp"
+
+                        android:text="备注信息"/>
+                    </RelativeLayout>>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
                     android:background="#e1e1e2" />
                 <EditText
                     android:id="@+id/editText_bz"
                     android:layout_width="match_parent"
-                    android:layout_height="126dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="126dp"
                     android:layout_marginBottom="24dp"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="8dp"
                     android:background="@null"
+                    android:inputType="textMultiLine"
                     android:gravity="top|left"
                     android:hint="请填写其他相关用药信息（0-500字）"
-                    android:maxLines="10"
+
                     android:textSize="14sp" />
                 <TextView
                     android:id="@+id/tvwordnumber"
@@ -223,6 +239,7 @@
                     android:textColor="#0f2536"
                     android:gravity="right"
                     android:layout_marginRight="12dp"
+                    android:layout_marginBottom="16dp"
                     android:text="还有500字"/>
 
                 <View
@@ -290,7 +307,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginLeft="6dp"
                         android:layout_toRightOf="@+id/imageView_add"
                         android:text="上传药品照片"
                         android:textSize="18sp" />
@@ -303,14 +320,15 @@
             </LinearLayout>
         </ScrollView>
 
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/actionbar_color"
-            android:text="保存"
-            android:textColor="@color/base_color_text_white"
-            android:textSize="20sp" />
-    </RelativeLayout>
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/actionbar_color"
+        android:text="保存"
+        android:textColor="@color/base_color_text_white"
+        android:textSize="20sp" />
 </LinearLayout>

@@ -1,27 +1,12 @@
 package com.zzu.ehome.activity;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-
 import android.view.Window;
 import android.view.WindowManager;
 
-
-
-
 import com.zzu.ehome.R;
-
 import com.zzu.ehome.utils.SystemStatusManager;
 
 

@@ -36,7 +36,8 @@ import com.zzu.ehome.bean.Images;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.TreatmentInquirywWithPage;
 import com.zzu.ehome.bean.TreatmentInquirywWithPageDate;
-import com.zzu.ehome.utils.CommonUtils;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.utils.ImageUtil;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -174,7 +175,8 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
     public void initEvent() {
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");//设置日期格式
-        edt_time.setText(df.format(new Date()));
+//        edt_time.setText(df.format(new Date()));
+//        edt_time.setTextColor(getResources().getColor(R.color.actionbar_color));
         lljzhen.setOnClickListener(this);
 
         btn_save.setOnClickListener(this);
@@ -247,7 +249,7 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
 
 
         });
-        requsetHos();
+//        requsetHos();
 
     }
 
@@ -268,7 +270,7 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
                         TreatmentInquirywWithPageDate date = JsonTools.getData(result.toString(), TreatmentInquirywWithPageDate.class);
                         List<TreatmentInquirywWithPage> list = date.getData();
                         edt_jzdw.setText(list.get(0).getHosname());
-
+                        edt_jzdw.setTextColor(getResources().getColor(R.color.actionbar_color));
 
                     }
                 } catch (Exception e) {
@@ -322,12 +324,12 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
                 public void onClick(View v) {
 
                     mList.remove(position);
-                    if(mList.size()==1){
+                    if (mList.size() == 1) {
                         rlphoto.setVisibility(View.VISIBLE);
                         resultRecyclerView.setVisibility(View.INVISIBLE);
 
                     }
-                    if (mList.size() == 4&&(!mList.get(mList.size()-1).equals(path))) {
+                    if (mList.size() == 4 && (!mList.get(mList.size() - 1).equals(path))) {
 
                         images.add(path);
                         setmList(images);
@@ -399,29 +401,36 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.btn_save:
                 //保存按钮
-                if (CommonUtils.isFastClick())
-                    return;
-
+/*                if (CommonUtils.isFastClick())
+                    return;*/
+                setEventEnable(false);
                 jzyy = edt_jzdw.getText().toString();
                 zdjg = edt_jzjg.getText().toString();
                 yyjy = edt_yyjy.getText().toString();
                 checktime = edt_time.getText().toString();
-               if (jzyy.equals("")) {
+                if (jzyy.equals("")) {
                     showMessage("请填写就诊医院!");
+                    setEventEnable(true);
                     return;
-                } else if(TextUtils.isEmpty(zdjg)||zdjg.length()<10){
-                   showMessage("诊断结果不能低于10个字!");
+                } else if (TextUtils.isEmpty(checktime)) {
+                    showMessage("请选择就诊时间!");
+                    setEventEnable(true);
+                    return;
+                } else if (TextUtils.isEmpty(zdjg) || zdjg.length() < 10) {
+                    showMessage("诊断结果不能低于10个字!");
+                    setEventEnable(true);
 
-                   return;
-               }
-               else if (TextUtils.isEmpty(yyjy)||yyjy.length()<10) {
-                   showMessage("用药建议不能低于10个字!");
-                   return;
-               }
+                    return;
+                } else if (TextUtils.isEmpty(yyjy) || yyjy.length() < 10) {
+                    showMessage("用药建议不能低于10个字!");
+                    setEventEnable(true);
+                    return;
+                }
                 startProgressDialog();
                 if (images != null && images.size() > 0) {
                     if (images.size() > 5) {
                         ToastUtils.showMessage(CreateillnessActivity.this, "你最多可以选择5张");
+                        setEventEnable(true);
                         return;
                     }
                     List<String> imgs = new ArrayList<String>(images);
@@ -463,10 +472,11 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
                                 mAdapter.setmList(images);
                                 mAdapter.notifyDataSetChanged();
                             }
+                            RxBus.getInstance().send(new EventType(Constants.HealthData));
 //                            EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager_file)));
 
 
-                            Toast.makeText(CreateillnessActivity.this, array.getJSONObject(0).getString("MessageContent").toString(),
+                            Toast.makeText(CreateillnessActivity.this, "保存成功!",
                                     Toast.LENGTH_SHORT).show();
                             EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
                             finishActivity();
@@ -474,6 +484,8 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
 
                         } catch (Exception e) {
                             e.printStackTrace();
+                        }finally {
+                            setEventEnable(true);
                         }
 
                     }
@@ -485,7 +497,16 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
 
         }
     }
-
+    public void setEventEnable(boolean flag){
+        if(flag){
+            btn_save.setEnabled(true);
+            btn_save.setBackgroundResource(R.color.actionbar_color);
+        }
+        else{
+            btn_save.setEnabled(false);
+            btn_save.setBackgroundResource(R.color.bottom_text_color_normal);
+        }
+    }
     private String getPhotoFileName(int i) {
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat(
@@ -530,6 +551,7 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
                     if (!TextUtils.isEmpty(time)) {
                         edt_time.setText(time);
                         checktime = time;
+                        edt_time.setTextColor(getResources().getColor(R.color.actionbar_color));
                     }
                 }
                 break;
@@ -538,7 +560,7 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
                     String times = data.getStringExtra("times");
                     if (!TextUtils.isEmpty(times)) {
                         edt_jzdw.setText(times);
-
+                        edt_jzdw.setTextColor(getResources().getColor(R.color.actionbar_color));
                     }
 
                 }
@@ -584,8 +606,9 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
         intent.setData(Uri.parse(PACKAGE_URL_SCHEME + getPackageName()));
         startActivity(intent);
     }
-    private void showMessage(String message){
-       DialogTips dialog = new DialogTips(CreateillnessActivity.this, "", message,
+
+    private void showMessage(String message) {
+        DialogTips dialog = new DialogTips(CreateillnessActivity.this, "", message,
                 "确定", true, true);
 
         dialog.show();

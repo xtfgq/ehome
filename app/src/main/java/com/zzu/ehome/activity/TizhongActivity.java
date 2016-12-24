@@ -19,7 +19,7 @@ public class TizhongActivity extends SingleFragmentActivity implements OnSelectI
 
     @Override
     public String getHTitle() {
-        return "体重";
+        return "添加体重";
     }
 
     @Override

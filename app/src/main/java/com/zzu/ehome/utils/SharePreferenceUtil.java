@@ -3,6 +3,8 @@ package com.zzu.ehome.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import static u.aly.au.H;
+
 /**
  * @author Mersens
  * @title SharePreferenceUtil
@@ -20,6 +22,7 @@ public class SharePreferenceUtil {
     private static final String WEIGHT = "WEIGHT";
     private static final String PARENT_ID = "parent_id";
     private static final String HOME_ID="home_id";
+    private static final String GUID_ID="guid_id";
 
 
     public static Boolean getIsRemeber() {
@@ -99,5 +102,13 @@ public class SharePreferenceUtil {
         editor.putString(HOME_ID, userid);
         editor.commit();
     }
+    public void setGUIDId(int id) {
+        editor.putInt(GUID_ID, id);
+        editor.commit();
+    }
+    public int getGUIDId() {
+        return mSharedPreferences.getInt(GUID_ID,0 );
+    }
+
 
 }

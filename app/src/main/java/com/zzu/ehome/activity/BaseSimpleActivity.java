@@ -1,51 +1,5 @@
 package com.zzu.ehome.activity;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.TextView;
-import android.widget.Toast;
-
-
-import com.zzu.ehome.R;
-import com.zzu.ehome.application.CustomApplcation;
-import com.zzu.ehome.bean.StepBean;
-import com.zzu.ehome.bean.User;
-import com.zzu.ehome.db.EHomeDao;
-import com.zzu.ehome.db.EHomeDaoImpl;
-import com.zzu.ehome.service.StepDetector;
-import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
-import com.zzu.ehome.utils.JsonAsyncTask_Info;
-import com.zzu.ehome.utils.RequestMaker;
-import com.zzu.ehome.utils.SharePreferenceUtil;
-import com.zzu.ehome.view.CustomProgressDialog;
-import com.zzu.ehome.view.DialogTips;
-import com.zzu.ehome.view.HeadView;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import io.rong.imkit.RongIM;
-
 /**
  * Created by Administrator on 2016/4/9.
  */

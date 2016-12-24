@@ -116,11 +116,9 @@ public class RequestMaker {
         str = String.format(str, new Object[]
                 {mobile, "001"});
         paramMap.put("str", str);
-
         // 必须是这5个参数，而且得按照顺序
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.SendAuthCode, Constants.SendAuthCode,
                 SOAP_URL, paramMap);
-
     }
     public void sendAuthCode(String mobile, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -995,7 +993,7 @@ public class RequestMaker {
                 "<DoctorName>%s</DoctorName><SchemaID>%s</SchemaID><DoctorID>%s</DoctorID><UserContactorID>%s</UserContactorID>" +
                 "<SchemaWeek>%s</SchemaWeek><NoonName>%s</NoonName>" +
                 "<BeginTime>%s</BeginTime><EndTime>%s</EndTime><RegistType>%s</RegistType>" +
-                "<RMB>%s</RMB><Gotime>%s</Gotime><RegistId>%s</RegistId></Request>";
+                "<RMB>%s</RMB><Gotime>%s</Gotime><RegistId>%s</RegistId><pAppDate></pAppDate><pAppOrg></pAppOrg><pNoon></pNoon></Request>";
         str = String.format(str, new Object[]
                 {userid,HospitalID,DepartmentID,DepartmentName,DoctorName,SchemaID,DoctorID,UserContactorID,SchemaWeek,NoonName,BeginTime,EndTime,RegistType,RMB,Gotime,RegistId});
         paramMap.put("str", str);
@@ -1330,9 +1328,14 @@ public class RequestMaker {
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.UserRelationshipExit, Constants.UserRelationshipExit,
                 SOAP_URL, paramMap);
     }
-
-
-
-
+    public void HealthAdviceSearchByDate(String cardNum, String date, JsonAsyncTask_Info task) {
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        String str = "<Request><CardNO>%s</CardNO><Date>%s</Date></Request>";
+        str = String.format(str, new Object[]
+                {cardNum,date});
+        paramMap.put("str", str);
+        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.HealthAdviceSearchByDate, Constants.HealthAdviceSearchByDate,
+                SOAP_URL, paramMap);
+    }
 
 }

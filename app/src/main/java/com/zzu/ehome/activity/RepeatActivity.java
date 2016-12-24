@@ -42,7 +42,12 @@ public class RepeatActivity extends BaseActivity {
 
     public void initViews() {
         listView = (ListView) findViewById(R.id.listView);
-        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "重复", new HeadView.OnLeftClickListener() {
+        setDefaultTXViewMethod(R.mipmap.icon_arrow_left, "重复", "保存", new HeadView.OnLeftClickListener() {
+            @Override
+            public void onClick() {
+                finishActivity();
+            }
+        }, new HeadView.OnRightClickListener() {
             @Override
             public void onClick() {
                 Intent intent = new Intent();
@@ -52,8 +57,10 @@ public class RepeatActivity extends BaseActivity {
                 intent.putExtras(bundle);
                 setResult(AddRemindActivity.ADD_WEEK, intent);
                 finish();
+
             }
         });
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -89,19 +96,19 @@ public class RepeatActivity extends BaseActivity {
 
 
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent intent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("WeekList", (Serializable) mList);
-            intent.setClass(RepeatActivity.this, AddRemindActivity.class);
-            intent.putExtras(bundle);
-            setResult(AddRemindActivity.ADD_WEEK, intent);
-            finish();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            Intent intent = new Intent();
+//            Bundle bundle = new Bundle();
+//            bundle.putSerializable("WeekList", (Serializable) mList);
+//            intent.setClass(RepeatActivity.this, AddRemindActivity.class);
+//            intent.putExtras(bundle);
+//            setResult(AddRemindActivity.ADD_WEEK, intent);
+//            finish();
+//            return true;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//
+//    }
 }

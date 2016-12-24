@@ -65,9 +65,7 @@ public class ECGActivity1 extends BaseActivity {
     public void initDatas() {
         unSelectColor = getResources().getColor(R.color.text_color2);
         selectColor = getResources().getColor(R.color.actionbar_color);
-        tv_d.setTextColor(selectColor);
-        tv_j.setTextColor(unSelectColor);
-        addFragment(Type.DYNAMIC);
+        addFragment(Type.STATIC_STATE);
     }
 
 

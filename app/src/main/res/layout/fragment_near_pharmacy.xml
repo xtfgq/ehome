@@ -50,8 +50,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
-            android:text="正在签约中..."
-            android:textColor="@color/base_color_text_black"
+            android:text="正在签约中"
+            android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_size_normal" />
 
     </LinearLayout>

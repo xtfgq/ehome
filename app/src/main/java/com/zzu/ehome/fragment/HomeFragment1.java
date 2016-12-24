@@ -1,9 +1,7 @@
 package com.zzu.ehome.fragment;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,7 +10,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,29 +36,25 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.igexin.sdk.PushManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
 import com.zzu.ehome.DemoContext;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.EcgDesActivity;
 import com.zzu.ehome.activity.ExaminationReportActivity;
 import com.zzu.ehome.activity.ExaminationTestActivity;
-import com.zzu.ehome.activity.HealthFilesActivity;
-import com.zzu.ehome.activity.HealthFilesActivity1;
 import com.zzu.ehome.activity.HealthInstructionActivity;
 import com.zzu.ehome.activity.HypertensionActivity;
-import com.zzu.ehome.activity.InspectionReportActivity;
 import com.zzu.ehome.activity.LoginActivity1;
-import com.zzu.ehome.activity.MedicalRecordsActivity;
 import com.zzu.ehome.activity.NearPharmacyActivity;
 import com.zzu.ehome.activity.NewsWebView;
 import com.zzu.ehome.activity.OrdinaryYuYueActivity;
 import com.zzu.ehome.activity.PersonalCenterInfo;
-import com.zzu.ehome.activity.RegisterActivity;
 import com.zzu.ehome.activity.StaticWebView;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.activity.WebVideoActivity;
 import com.zzu.ehome.adapter.HomeNewsAdapter;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.application.CustomApplcation;
+import com.zzu.ehome.bean.CacheBean;
 import com.zzu.ehome.bean.MSDoctorBean;
 import com.zzu.ehome.bean.News;
 import com.zzu.ehome.bean.NewsDate;
@@ -77,18 +70,15 @@ import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.service.DownloadServiceForAPK;
 import com.zzu.ehome.service.StepDetector;
 import com.zzu.ehome.utils.CommonUtils;
-import com.zzu.ehome.utils.DateUtils;
+import com.zzu.ehome.utils.DecorViewGuideHelper;
 import com.zzu.ehome.utils.DialogUtils;
 import com.zzu.ehome.utils.ImageOptions;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
-import com.zzu.ehome.utils.NetUtils;
-import com.zzu.ehome.utils.PermissionsChecker;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.ScreenUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
-import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.DialogEnsureCancelView;
 import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.ImageCycleView;
@@ -107,16 +97,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 
-import static com.zzu.ehome.R.id.imageView_lift;
-import static com.zzu.ehome.R.id.imageView_right;
-import static com.zzu.ehome.db.DBHelper.mContext;
-import static com.zzu.ehome.fragment.HealthDataFragment.PERMISSIONS;
+import static com.zzu.ehome.R.id.lltop;
 
 
 /**
@@ -124,7 +110,7 @@ import static com.zzu.ehome.fragment.HealthDataFragment.PERMISSIONS;
  */
 public class HomeFragment1 extends BaseFragment implements View.OnClickListener {
     private static final String PACKAGE_URL_SCHEME = "package:";
-//    private PermissionsChecker mPermissionsChecker; // 权限检测器
+    //    private PermissionsChecker mPermissionsChecker; // 权限检测器
 //    // 所需的全部权限
 //    static final String[] PERMISSIONS = new String[]{
 //
@@ -140,6 +126,8 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
     private String type=null;
     PackageManager pm ;
     boolean permission;
+    private List<View> guid;
+    private SupperBaseActivity activity;
 
 
     @Override
@@ -151,7 +139,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
     public LocationClient mLocationClient;
     public MyLocationListener mMyLocationListener;
     private LocationClientOption.LocationMode tempMode = LocationClientOption.LocationMode.Hight_Accuracy;
-    private String tempcoor = "gcj02";
+    private String tempcoor = "bd09ll";
     private BDLocation location;
     private TextView tvcity, tvweather, tvpm, tvcurrent,tv_pmlv;
     private String city = "郑州市";
@@ -187,7 +175,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
     RelationDes rsTemp = new RelationDes();
     RelationDes rsTarget = new RelationDes();
     private RelativeLayout rlhometitle;
-    private ImageView nologin;
+    private LinearLayout nologin;
     private BroadcastReceiver mRefreshReciver = new BroadcastReceiver() {
 
         @Override
@@ -201,7 +189,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                 if (!TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
                     nologin.setVisibility(View.GONE);
                     if (SharePreferenceUtil.getInstance(getActivity()).getUserId().equals(SharePreferenceUtil.getInstance(getActivity()).getHomeId())) {
-                       initHomeFamily();
+                        initHomeFamily();
                     } else {
                         if(CustomApplcation.getInstance().isRead){
                             readCache();
@@ -231,6 +219,8 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         dao = new EHomeDaoImpl(getActivity());
         location();
         initEvent();
+
+
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("userrefresh");
 
@@ -256,14 +246,59 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
             getPermission();
         }
         city = "郑州市";
+        if(!activity.isNetWork){
+
+        }
         getWeather(city);
         versioninquiry();
-
+        if(SharePreferenceUtil.getInstance(getActivity()).getGUIDId()!=4) {
+            initGuid(inflater);
+            showGuide();
+        }else{
+            if(!CommonUtils.isNotificationEnabled(getActivity())){
+                showTitleDialog("请打开通知中心");
+            }
+        }
+        mListView.setFocusable(false);
 
         return mView;
 
     }
+    private void initGuid(LayoutInflater inflater){
+        guid=new ArrayList<>();
+        guid.add(inflater.inflate(R.layout.layout_guid1, null));
+        View guid2=inflater.inflate(R.layout.layout_guid2, null);
+        View lltop2=guid2.findViewById(lltop);
+        ViewGroup.LayoutParams para2;
+        para2 =  lltop2.getLayoutParams();
+        para2.width = ScreenUtils.getScreenWidth(getActivity());
+        para2.height = para2.width*10/22;
+        lltop2.setLayoutParams(para2);
+        guid.add(guid2);
+        View guid3=inflater.inflate(R.layout.layout_guid3, null);
+        View lltop3=guid3.findViewById(lltop);
+        ViewGroup.LayoutParams para3;
+        para3 =  lltop3.getLayoutParams();
+        para3.width = ScreenUtils.getScreenWidth(getActivity());
+        para3.height = para3.width*6/22;
+        lltop3.setLayoutParams(para3);
+        guid.add(guid3);
+        View guid4=inflater.inflate(R.layout.layout_guid4, null);
+        View lltop4=guid4.findViewById(lltop);
+        ViewGroup.LayoutParams para4;
+        para4 =  lltop4.getLayoutParams();
+        para4.width = ScreenUtils.getScreenWidth(getActivity());
+        para4.height = para4.width*12/22;
+        lltop4.setLayoutParams(para4);
+        guid.add(guid4);
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.activity=(SupperBaseActivity)context;
+    }
 
     public void initViews() {
 
@@ -299,10 +334,10 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         ViewGroup.LayoutParams para;
         para =  rlhometitle.getLayoutParams();
         para.width = ScreenUtils.getScreenWidth(getActivity());
-        para.height = para.width*18/25;
+        para.height = para.width*12/22;
         rlhometitle.setLayoutParams(para);
 
-        nologin=(ImageView)mView.findViewById(R.id.nologin);
+        nologin=(LinearLayout) mView.findViewById(R.id.nologin);
         tv_pmlv=(TextView)mView.findViewById(R.id.tv_pmlv);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int h = CommonUtils.getStatusHeight(getActivity());
@@ -314,6 +349,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         } else {
             vTop.setVisibility(View.GONE);
         }
+
     }
 
     @Override
@@ -342,6 +378,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                 Map<String, Object> map;
                 try {
                     JSONArray array = mySO.getJSONArray("ADInquiry");
+                    myScrollView.smoothScrollTo(0, 0);
                     if (array.getJSONObject(0).has("MessageCode")) {
                         // Toast.makeText(Index.this, "数据为空", 1).show();
                         mViewPager.setVisibility(View.GONE);
@@ -422,59 +459,24 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
 
     }
 
-    public void onEventMainThread(RefreshEvent event) {
-
-        if (getResources().getInteger(R.integer.refresh_info) == event
-                .getRefreshWhere()) {
-
-        }
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-//        getBaseData();
+//    public void onEventMainThread(RefreshEvent event) {
+//
+//        if (getResources().getInteger(R.integer.refresh_info) == event
+//                .getRefreshWhere()) {
+//
+//        }
+//
+//    }
 
 
-    }
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
 
 
     }
-    public void getBaseData(){
-       String  userid=SharePreferenceUtil.getInstance(getActivity()).getUserId();
-        requestMaker.BaseDataInquiry(userid, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
-            @Override
-            public void processJsonObject(Object result) {
-                JSONObject mySO = (JSONObject) result;
-                try {
-                    JSONArray json = mySO.getJSONArray("BaseDataInquiry");
-                    if (json.getJSONObject(0).has("MessageCode")) {
-                        String MessageCode = json.getJSONObject(0).getString("MessageCode");
-                        if ("2".equals(MessageCode)) {
-                            type="2";
-                            return;
-                        }
-                        if ("1".equals(MessageCode)) {
-                            type="1";
-                            ToastUtils.showMessage(getActivity(), "查询失败！");
-                            return;
-                        }
-                    } else {
-                        type="3";
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
 
-            }
-        }));
-    }
     @Override
     public void onStop() {
         super.onStop();
@@ -513,6 +515,8 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
 //    }
 
 
+
+
     public void initEvent() {
 
         llrecord.setOnClickListener(this);
@@ -535,8 +539,11 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 String ID = mList.get(position).getID();
-
                 String title = mList.get(position).getTitle();
                 Intent i = new Intent(getActivity(),
                         NewsWebView.class);
@@ -545,10 +552,15 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                 startActivity(i);
             }
         });
-        ;
+
         pulltorefreshlayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+                if(!activity.isNetWork){
+                    pulltorefreshlayout.refreshFinish(PullToRefreshLayout.FAIL);
+                    return;
+                }
+
                 page = 1;
                 isFirst = true;
                 isReflash = true;
@@ -558,12 +570,17 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                 }
                 newsInqury();
                 showADs();
+                getWeather(city);
                 // 下拉刷新操作
 
             }
 
             @Override
             public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
+                if(!activity.isNetWork){
+                    pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.FAIL);
+                    return;
+                }
                 page++;
                 isLoading = true;
                 isReflash = false;
@@ -629,6 +646,10 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         hideFamily();
         switch (v.getId()) {
 
@@ -680,7 +701,15 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
 //                    getActivity().startActivity(new Intent(getActivity(), MedicalRecordsActivity.class));
 //                    return;
 //                }
-                startIntent(getActivity(), HealthInstructionActivity.class);
+                if (TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
+                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+                    return;
+                }
+                if(checkCardNo(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
+                    startIntent(getActivity(), HealthInstructionActivity.class);
+                    return;
+                }
+
                 break;
             case R.id.layout_fjyd:
 
@@ -758,6 +787,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         mMyLocationListener = new MyLocationListener();
         mLocationClient.registerLocationListener(mMyLocationListener);
         initLocation();
+
     }
 
     // 初始化定位
@@ -831,18 +861,20 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                 return;
 
             }
-                city = location.getCity();
-                mLocation = location;
+            city = location.getCity();
+            mLocation = location;
 
             if(Double.compare(location.getLatitude(),4.9e-324)==0){
                 permission=false;
                 return;
-          }
-
-                getWeather(city);
-            permission=true;
-
             }
+
+            getWeather(city);
+            permission=true;
+            mLocationClient.stop();
+            mLocationClient.unRegisterLocationListener(mMyLocationListener);
+
+        }
         public void onReceivePoi(BDLocation poiLocation) {
         }
     }
@@ -860,6 +892,16 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                     org.json.JSONArray array = mySO
                             .getJSONArray("WeatherInquiry");
                     String weather = array.getJSONObject(0).getString("weather");
+                    CacheBean cacheBean=new CacheBean();
+                    if(dao.findCacheIsExist("WeatherInquiry")){
+                        cacheBean.setJson(mySO.toString());
+                        cacheBean.setUrl("WeatherInquiry"+"_"+strCity);
+                        dao.updateCacheInfo(cacheBean,"WeatherInquiry");
+                    }else{
+                        cacheBean.setJson(mySO.toString());
+                        cacheBean.setUrl("WeatherInquiry"+"_"+strCity);
+                        dao.addCacheInfo(cacheBean);
+                    }
                     tvweather.setText(weather);
                     float pm2=Float.valueOf(array.getJSONObject(0).getString("pm"));
                     if (Float.compare(pm2, 300.5F) >=0) {
@@ -884,12 +926,15 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                         set(ivweather, weather);
                     }
                     tvcity.setText(strCity);
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }));
     }
+
 
     public static BDLocation getLocation() {
         return mLocation;
@@ -939,14 +984,19 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO
                             .getJSONArray("NewsInquiry");
+
                     if (isReflash) {
                         mList.clear();
                     }
                     if (array.getJSONObject(0).has("MessageCode")) {
+                        if(page>1){
+                            Toast.makeText(getActivity(), "全部加载完成！", Toast.LENGTH_SHORT).show();
+                        }
 
                         if (isFirst) {
                             isFirst = false;
                         }
+                        
 
                     } else {
                         NewsDate date = JsonTools.getData(result.toString(), NewsDate.class);
@@ -958,6 +1008,10 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                         mAadapter.notifyDataSetChanged();
 
                     }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }finally {
                     if (isReflash) {
                         isReflash = false;
                         isFirst = false;
@@ -967,11 +1021,10 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                         isLoading = false;
                         isFirst = false;
                         pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+
                     } else {
                         myScrollView.smoothScrollTo(0, 0);
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
 
             }
@@ -992,21 +1045,21 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                                 User dbUser = dao.findUserInfoById(SharePreferenceUtil.getInstance(getActivity()).getUserId());
 //                                RongIM.getInstance().refreshUserInfoCache(new UserInfo(dbUser.getUserid(), dbUser.getNick(), Uri.parse(dbUser.getImgHead())));
 
-                               RongIM.getInstance().setCurrentUserInfo(new UserInfo(dbUser.getUserid(), dbUser.getNick(), Uri.parse(dbUser.getImgHead())));
+                                RongIM.getInstance().setCurrentUserInfo(new UserInfo(dbUser.getUserid(), dbUser.getNick(), Uri.parse(dbUser.getImgHead())));
                                 RongIM.getInstance().setMessageAttachedUserInfo(true);
-                              RongIM.getInstance().getRongIMClient().setConnectionStatusListener(new MyConnectionStatusListener());
+                                RongIM.getInstance().getRongIMClient().setConnectionStatusListener(new MyConnectionStatusListener());
                                 initUnreadCountListener();
                             } catch (Exception e) {
                                 e.printStackTrace();
-                           }
-                       }
+                            }
+                        }
                     });
                 } else {
                     User dbUser = dao.findUserInfoById(SharePreferenceUtil.getInstance(getActivity()).getUserId());
                     RongIM.getInstance().setCurrentUserInfo(new UserInfo(dbUser.getUserid(), dbUser.getNick(), Uri.parse(dbUser.getImgHead())));
                     RongIM.getInstance().setMessageAttachedUserInfo(true);
                     RongIM.getInstance().getRongIMClient().setConnectionStatusListener(new MyConnectionStatusListener());
-                   initUnreadCountListener();
+                    initUnreadCountListener();
                 }
             }
 
@@ -1192,8 +1245,8 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         public void onMessageIncreased(int count) {
             CustomApplcation.getInstance().count = count;
 
-                Intent intenthealth = new Intent("NumRefresh");
-                getActivity().sendBroadcast(intenthealth);
+            Intent intenthealth = new Intent("NumRefresh");
+            getActivity().sendBroadcast(intenthealth);
 
         }
     };
@@ -1204,9 +1257,10 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         RelationDes rs = new RelationDes();
         rs.setUser_Name(dbUser.getUsername());
         rs.setUser_Icon(dbUser.getImgHead());
-        rs.setRelationship("我");
+        rs.setRelationship("自己");
         rs.setRUserID(userid);
         linearLayout.addMainItem(rs);
+        getToken(userid, dbUser.getUsername(), dbUser.getImgHead());
 
         requestMaker.UserRelationshipInquiry(userid, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
 
@@ -1220,7 +1274,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                     if (array.getJSONObject(0).has("MessageCode")) {
                         List<RelationDes> list = new ArrayList<RelationDes>();
                         RelationDes res = new RelationDes();
-                        res.setRelationship("Add");
+                        res.setRelationship("添加亲人");
                         list.add(res);
                         final List<RelationDes> templist = list;
                         linearLayout.addItem(templist, new MyHomeLayout.OnItemClickListener() {
@@ -1231,7 +1285,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                                 UserClientBindChange(rsTemp.getRUserID(), rsTarget.getRUserID(), pos);
                             }
                         });
-                        ReConnetRong();
+
                     } else {
                         RelationBean date = JsonTools.getData(result.toString(), RelationBean.class);
                         List<RelationDes> list = date.getData();
@@ -1242,7 +1296,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                                 dao.addRelationInfo(rs);
                         }
                         RelationDes res = new RelationDes();
-                        res.setRelationship("Add");
+                        res.setRelationship("添加亲人");
                         list.add(res);
                         final List<RelationDes> templist = list;
                         linearLayout.addItem(list, new MyHomeLayout.OnItemClickListener() {
@@ -1254,8 +1308,6 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                                 UserClientBindChange(rsTemp.getRUserID(), rsTarget.getRUserID(), pos);
                             }
                         });
-                        ReConnetRong();
-
 
                     }
 
@@ -1263,6 +1315,20 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    List<RelationDes> list = new ArrayList<RelationDes>();
+                    RelationDes res = new RelationDes();
+                    res.setRelationship("Add");
+                    list.add(res);
+                    final List<RelationDes> templist = list;
+                    linearLayout.addItem(templist, new MyHomeLayout.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(int pos) {
+                            rsTemp = linearLayout.getMainItem();
+                            rsTarget = templist.get(pos);
+                            UserClientBindChange(rsTemp.getRUserID(), rsTarget.getRUserID(), pos);
+                        }
+                    });
+                    ReConnetRong();
                 }
             }
         }));
@@ -1390,6 +1456,8 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
 
 
                             if (!dao.findUserIsExist(list.get(0).getUserid())) {
+                                User user=list.get(0);
+                                user.setType(1);
                                 dao.addUserInfo(list.get(0));
                             } else {
                                 User dbUser = dao.findUserInfoById(list.get(0).getUserid());
@@ -1425,6 +1493,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                             Intent intenthealth = new Intent("userrefresh");
                             getActivity().sendBroadcast(intenthealth);
                             stopProgressDialog();
+                            getBaseData();
                         }
 
                     } catch (Exception e) {
@@ -1437,7 +1506,47 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
             }
         }));
     }
+    /**
+     * type 2,空，3，更新
+     */
+    public void getBaseData(){
+        final String id=SharePreferenceUtil.getInstance(getActivity()).getUserId();
+        requestMaker.BaseDataInquiry(id, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
+            @Override
+            public void processJsonObject(Object result) {
+                JSONObject mySO = (JSONObject) result;
+                Log.e("JSONObject",mySO.toString());
+                int type=0;
 
+                try {
+                    JSONArray json = mySO.getJSONArray("BaseDataInquiry");
+                    if (json.getJSONObject(0).has("MessageCode")) {
+                        String MessageCode = json.getJSONObject(0).getString("MessageCode");
+                        if ("2".equals(MessageCode)) {
+                            type=2;
+
+                            return;
+                        }
+                        if ("1".equals(MessageCode)) {
+                            type=1;
+
+                            return;
+                        }
+                    } else {
+                        type=3;
+
+                    }
+                    User user=dao.findUserInfoById(id);
+                    user.setType(type);
+                    dao.updateUserInfo(user, id);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }));
+    }
     /**
      * 获得token
      */
@@ -1462,6 +1571,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                             RongIM.getInstance().setCurrentUserInfo(new UserInfo(userid, name, Uri.parse(head)));
                         }
                         CustomApplcation.getInstance().isOnLine=1;
+                        ReConnetRong();
                     } else {
                         Toast.makeText(getActivity(), array.getJSONObject(0).getString("MessageContent").toString(),
                                 Toast.LENGTH_SHORT).show();
@@ -1489,7 +1599,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         rsme.setUser_Name(dbUser.getUsername());
         rsme.setUser_Icon(dbUser.getImgHead());
         rsme.setRUserID(homeid);
-        rsme.setRelationship("我");
+        rsme.setRelationship("自己");
         String userid=SharePreferenceUtil.getInstance(getActivity()).getUserId();
         RelationDes rs=dao.findRelationInfoById(userid);
         linearLayout.addMainItem(rs);
@@ -1567,14 +1677,41 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
     private Boolean  checkCardNo(String  userid){
         User dbUser=dao.findUserInfoById(userid);
         if (TextUtils.isEmpty(dbUser.getUserno())) {
-            startActivity(new Intent(getActivity(), PersonalCenterInfo.class));
+            completeInfoTips();
             return false;
         }else{
             return true;
         }
     }
+    private void showGuide() {
 
+        DecorViewGuideHelper helper = new DecorViewGuideHelper(getActivity(),guid);
+        helper.display();
+    }
+    /**
+     * 如果用户信息不完善，显示提示框
+     */
+    public void completeInfoTips() {
+        DialogTips dialog = new DialogTips(getActivity(), "", "用户信息缺失，请先完善信息",
+                "去完善", true, true);
+        dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int userId) {
+                startActivity(new Intent(getActivity(), PersonalCenterInfo.class));
+            }
+        });
 
+        dialog.show();
+        dialog = null;
+    }
+
+    public  void showTitleDialog(String message) {
+
+        DialogTips dialog = new DialogTips(getActivity(), message, "确定");
+
+        dialog.show();
+        dialog = null;
+
+    }
 
 
 }

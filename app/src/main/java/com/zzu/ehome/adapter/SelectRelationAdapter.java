@@ -1,8 +1,10 @@
 package com.zzu.ehome.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zzu.ehome.R;
@@ -16,6 +18,16 @@ import java.util.List;
  */
 public class SelectRelationAdapter extends BaseListAdapter<RelationshipInBean> {
     private List<RelationshipInBean> list;
+    private int index=0;
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+
 
     public SelectRelationAdapter(Context context, List<RelationshipInBean> objects) {
         super(context, objects);
@@ -23,21 +35,38 @@ public class SelectRelationAdapter extends BaseListAdapter<RelationshipInBean> {
     }
 
     @Override
-    public View getGqView(int position, View convertView, ViewGroup parent) {
+    public View getGqView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = getInflater().inflate(R.layout.listview_select_hospital_item, null);
+            holder.llitem=(LinearLayout) convertView.findViewById(R.id.llitem);
+
             holder.hosptial_name = (TextView) convertView.findViewById(R.id.hosptial_name);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.hosptial_name.setText(list.get(position).getValue());
+        if(position==index){
+            convertView.setBackgroundColor(Color.parseColor("#e0e0e0"));
+        }else{
+            convertView.setBackgroundColor(Color.WHITE);
+        }
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                index=position;
+                notifyDataSetChanged();
+            }
+        });
+
+
         return convertView;
     }
 
     public static class ViewHolder {
         private TextView hosptial_name;
+        private LinearLayout llitem;
     }
 }

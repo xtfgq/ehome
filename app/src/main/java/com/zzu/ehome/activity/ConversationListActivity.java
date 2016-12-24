@@ -59,7 +59,7 @@ public class ConversationListActivity extends BaseActivity {
      * 设置 actionbar 事件
      */
     private void setActionBarTitle() {
-        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "会话列表", new HeadView.OnLeftClickListener() {
+        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "咨询记录", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
                 finishActivity();

@@ -27,7 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="提醒时间"
-                android:textColor="@color/text_color2"
+                android:textColorHint="@color/text_color_gray"
+                android:textColor="@color/text_color_black"
                 android:textSize="16sp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true" />
@@ -37,7 +38,8 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text=""
-                android:textColor="#949395"
+                android:textColorHint="@color/text_color_gray"
+                android:textColor="@color/text_color_black"
                 android:textSize="16sp"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/icon_lift_tixing"
@@ -148,7 +150,7 @@
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/register_btn_bg"
-        android:text="保存"
+        android:text="确定"
         android:textColor="@color/base_color_text_white"
         android:textSize="20sp" />
 </LinearLayout>

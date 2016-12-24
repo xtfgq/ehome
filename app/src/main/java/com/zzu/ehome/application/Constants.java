@@ -2,8 +2,6 @@ package com.zzu.ehome.application;
 
 import android.os.Environment;
 
-import java.net.URL;
-
 
 /**
  * Created by Dell on 2016/3/14.
@@ -18,14 +16,14 @@ public class Constants {
 //    public static final String Download = "http://file.staging.topmd.cn/upload/";
 //    public static String PlatformURL = EhomeURL;
 
-//    正式服务器
-    public static String EhomeURL = "http://ehome.topmd.cn";
-    public static final String ICON = "http://p2d.topmd.cn/Images/headImg/";
-    public static final String URL002Topmd = "http://www.topmd.cn/android/TopMD.asmx";
-    public static final String JE_BASE_URL = "http://www.topmd.cn/";
-    public static final String JE_BASE_URL3 = "http://www.topmd.cn";
-    public static final String Download = "http://file.topmd.cn/upload/";
-    public static String PlatformURL= "http://healthdata.topmd.cn";
+    //    正式服务器
+    public static String EhomeURL = "https://ehome.topmd.cn";
+    public static final String ICON = "https://p2d.topmd.cn/Images/headImg/";
+    public static final String URL002Topmd = "https://www.topmd.cn/android/TopMD.asmx";
+    public static final String JE_BASE_URL = "https://www.topmd.cn/";
+    public static final String JE_BASE_URL3 = "https://www.topmd.cn";
+    public static final String Download = "https://file.topmd.cn/upload/";
+    public static String PlatformURL= "https://healthdata.topmd.cn";
     //相机常量
     public static final String ACCOUNT_DIR = Environment.getExternalStorageDirectory().getPath();
     public static final int REQUEST_CODE_CAPTURE_CAMEIA = 1458;
@@ -181,5 +179,11 @@ public class Constants {
     public static final String RelationshipInquiry = "RelationshipInquiry";
     public static final String UserRelationshipExit = "UserRelationshipExit";
 
+    //健康指导
+    public static final String HealthAdviceSearchByDate = "HealthAdviceSearchByDate";
+
+    //刷新常量
+
+    public static final String HealthData= "healthdata";
 
 }

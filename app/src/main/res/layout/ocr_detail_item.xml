@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:tool="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_height="32dp"
         android:layout_width="match_parent"
@@ -19,24 +21,38 @@
             android:gravity="center|left"
             android:textColor="#949395"
             android:layout_weight="4.5"/>
-        <TextView
-            android:id="@+id/ednum"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text=""
 
-            android:gravity="center"
-            android:textColor="#949395"
-            android:layout_weight="1.75"/>
-        <TextView
-            android:id="@+id/tvAtoB"
+        <LinearLayout
             android:layout_width="0dp"
-            android:paddingLeft="7dp"
             android:layout_height="match_parent"
-            android:text="g/l"
-            android:gravity="left|center_vertical"
-            android:textColor="#949395"
-            android:layout_weight="1.75"/>
+            android:layout_weight="3.5"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            >
+            <TextView
+                android:id="@+id/ednum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tool:text="ednum"
+                android:gravity="center"
+
+                android:textColor="#949395"
+                />
+
+            <TextView
+                android:id="@+id/tvAtoB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tool:text="g/l"
+                android:layout_marginLeft="5dp"
+
+                android:textColor="#949395"
+                />
+            </LinearLayout>
+
+
         <TextView
             android:id="@+id/tvRange"
             android:layout_width="0dp"
