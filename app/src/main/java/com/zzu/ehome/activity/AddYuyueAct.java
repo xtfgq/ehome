@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.main.ehome.MainActivity;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 
@@ -28,23 +29,37 @@ public class AddYuyueAct extends BaseSimpleActivity implements View.OnClickListe
         setContentView(R.layout.layout_yycg);
         initViews();
         initEvent();
+        if(!CommonUtils.isNotificationEnabled(AddYuyueAct.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         switch (v.getId()) {
             case R.id.tv_continue:
+
                 CustomApplcation.getInstance().finishSingleActivityByClass(MyDoctorActivity.class);
+                CustomApplcation.getInstance().finishSingleActivityByClass(AppointmentActivity.class);
+                CustomApplcation.getInstance().finishSingleActivityByClass(AppointmentDetailActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(WebConfigAct.class);
                 startActivity(new Intent(AddYuyueAct.this,MyDoctorActivity.class));
-
+                finish();
                 break;
             case R.id.btnext:
                 CustomApplcation.getInstance().finishSingleActivityByClass(MyDoctorActivity.class);
+                CustomApplcation.getInstance().finishSingleActivityByClass(AppointmentActivity.class);
+                CustomApplcation.getInstance().finishSingleActivityByClass(AppointmentDetailActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(WebConfigAct.class);
+
                 Intent i=new Intent(AddYuyueAct.this, MainActivity.class);
                 i.putExtra("Home","Home");
                 startActivity(i);
+                finish();
                 break;
 
         }

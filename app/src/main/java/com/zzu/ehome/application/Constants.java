@@ -8,22 +8,22 @@ import android.os.Environment;
  */
 public class Constants {
     //测试服务器地址
-//    public static String EhomeURL = "http://ehome.staging.topmd.cn:81";
-//    public static final String ICON = "http://p2d.staging.topmd.cn/Images/headImg/";
-//    public static final String URL002Topmd = "http://staging.topmd.cn/android/TopMD.asmx";
-//    public static final String JE_BASE_URL = "http://staging.topmd.cn/";
-//    public static final String JE_BASE_URL3 = "http://staging.topmd.cn";
-//    public static final String Download = "http://file.staging.topmd.cn/upload/";
-//    public static String PlatformURL = EhomeURL;
+    public static String EhomeURL = "http://ehome.staging.topmd.cn:81";
+    public static final String ICON = "http://p2d.staging.topmd.cn/Images/headImg/";
+    public static final String URL002Topmd = "http://staging.topmd.cn/android/TopMD.asmx";
+    public static final String JE_BASE_URL = "http://staging.topmd.cn/";
+    public static final String JE_BASE_URL3 = "http://staging.topmd.cn";
+    public static final String Download = "http://file.staging.topmd.cn/upload/";
+    public static String PlatformURL = EhomeURL;
 
     //    正式服务器
-    public static String EhomeURL = "https://ehome.topmd.cn";
-    public static final String ICON = "https://p2d.topmd.cn/Images/headImg/";
-    public static final String URL002Topmd = "https://www.topmd.cn/android/TopMD.asmx";
-    public static final String JE_BASE_URL = "https://www.topmd.cn/";
-    public static final String JE_BASE_URL3 = "https://www.topmd.cn";
-    public static final String Download = "https://file.topmd.cn/upload/";
-    public static String PlatformURL= "https://healthdata.topmd.cn";
+//    public static String EhomeURL = "https://ehome.topmd.cn";
+//    public static final String ICON = "https://p2d.topmd.cn/Images/headImg/";
+//    public static final String URL002Topmd = "https://www.topmd.cn/android/TopMD.asmx";
+//    public static final String JE_BASE_URL = "https://www.topmd.cn/";
+//    public static final String JE_BASE_URL3 = "https://www.topmd.cn";
+//    public static final String Download = "https://file.topmd.cn/upload/";
+//    public static String PlatformURL= "https://healthdata.topmd.cn";
     //相机常量
     public static final String ACCOUNT_DIR = Environment.getExternalStorageDirectory().getPath();
     public static final int REQUEST_CODE_CAPTURE_CAMEIA = 1458;

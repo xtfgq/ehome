@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.SwitchAdapter;
 import com.zzu.ehome.bean.DiseaseBean;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.IOUtils;
 import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.ContainsEmojiEditText;
@@ -38,6 +39,9 @@ public class MedicalActivity extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(MedicalActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {

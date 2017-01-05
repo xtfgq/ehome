@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.zzu.ehome.R;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.view.HeadView;
 
 import io.rong.imkit.RongContext;
@@ -47,6 +48,9 @@ public class SubConversationListActivtiy extends BaseActivity {
         if (type == null )
             return;
         getActionBarTitle();
+        if (!CommonUtils.isNotificationEnabled(SubConversationListActivtiy.this)) {
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     /**

@@ -125,6 +125,9 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
 
         initViews();
         initEvents();
+        if(!CommonUtils.isNotificationEnabled(PersonalCenterInfo.this)){
+            showTitleDialog("请打开通知中心");
+        }
 
     }
 
@@ -147,7 +150,7 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
             tv_save.setEnabled(true);
             tv_save.setBackgroundResource(R.color.actionbar_color);
         }else{
-            tv_save.setEnabled(flag);
+            tv_save.setEnabled(false);
             tv_save.setBackgroundResource(R.color.bottom_text_color_normal);
         }
 
@@ -197,7 +200,10 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
         iv_head.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 doAddHeadImage();
 
             }
@@ -206,6 +212,10 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
         rlsex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 clear();
                 doSex();
 
@@ -214,6 +224,10 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
         tv_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 complate();
 
             }
@@ -221,6 +235,10 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
         layout_height.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 clear();
                 showHeightPop();
 
@@ -229,6 +247,10 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
         layout_age.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 clear();
                 showAgePop();
             }
@@ -312,9 +334,11 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
             return;
         }
         if(!TextUtils.isEmpty(dao.findUserInfoById(userid).getUserno())){
+
             if(dao.findUserInfoById(userid).getUserno().equals(userno)){
                 doSave(userno,age,name);
             }else{
+                setTVEeable(true);
                 confirmSave(userno,age,name);
             }
 
@@ -881,7 +905,7 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
 
     }
     public void confirmSave(final String userno,final String age,final String name) {
-        DialogTips dialog = new DialogTips(PersonalCenterInfo.this, "", "修改身份证号，将导致原始数据丢失，请慎重？",
+        DialogTips dialog = new DialogTips(PersonalCenterInfo.this, "", "修改身份证号，将导致原始数据丢失，请慎重",
                 "确定", true, true);
         dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int userId) {

@@ -1,17 +1,28 @@
 package com.zzu.ehome.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Mersens on 2016/9/2.
  */
-public class TitleInquiryBean {
+public class TitleInquiryBean implements Serializable {
     private String Id;
     private String CommCode;
     private String Code;
     private String Description;
 
 
+    public String getImg() {
+        return img;
+    }
 
-    private String IsOcR;
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    private String img;
+
+
 
     public String getValue() {
         return Value;
@@ -53,11 +64,5 @@ public class TitleInquiryBean {
     public void setId(String id) {
         Id = id;
     }
-    public String getIsOcR() {
-        return IsOcR;
-    }
 
-    public void setIsOcR(String isOcR) {
-        IsOcR = isOcR;
-    }
 }

@@ -58,7 +58,11 @@ public class ConversationActivity extends BaseActivity implements RongIM.Locatio
         setActionBar();
         RongIM.setLocationProvider(this);
         RongIM.setConversationBehaviorListener(this);
+
         isReconnect(intent);
+        if(!CommonUtils.isNotificationEnabled(ConversationActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     /**

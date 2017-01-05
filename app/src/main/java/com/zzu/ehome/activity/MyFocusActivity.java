@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.MSDoctorBean;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -61,17 +62,24 @@ public class MyFocusActivity extends BaseActivity {
         userid = SharePreferenceUtil.getInstance(MyFocusActivity.this).getUserId();
         initViews();
         initEvent();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         isFirst = true;
         isReflash=false;
         isLoading=false;
         mList.clear();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(MyFocusActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        isFirst = true;
+//        isReflash=false;
+//        isLoading=false;
+//        mList.clear();
+//        initDatas();
     }
 
     public void initViews() {
@@ -90,6 +98,10 @@ public class MyFocusActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 Intent i=new Intent(MyFocusActivity.this, DoctorDetialActivity.class);
                 i.putExtra("doctorid",mList.get(position).getDoctorID());
                 i.putExtra("doctorname",mList.get(position).getDoctorName());
@@ -99,6 +111,11 @@ public class MyFocusActivity extends BaseActivity {
         pulltorefreshlayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    pulltorefreshlayout.refreshFinish(PullToRefreshLayout.FAIL);
+                    return;
+                }
                 page=1;
                 isFirst = true;
                 isReflash=true;
@@ -108,6 +125,11 @@ public class MyFocusActivity extends BaseActivity {
 
             @Override
             public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.FAIL);
+                    return;
+                }
                 page++;
                 isLoading=true;
                 isReflash=false;

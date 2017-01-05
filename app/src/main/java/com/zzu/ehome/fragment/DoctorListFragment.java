@@ -97,6 +97,10 @@ public class DoctorListFragment extends BaseFragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 Intent i = new Intent(getActivity(), DoctorDetialActivity.class);
                 i.putExtra("doctorid", mList.get(position).getDoctorID());
                 i.putExtra("doctorname", mList.get(position).getDoctorName());

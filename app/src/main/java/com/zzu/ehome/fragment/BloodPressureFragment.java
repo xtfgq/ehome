@@ -1,6 +1,7 @@
 package com.zzu.ehome.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.SelectDateAndTime;
+import com.zzu.ehome.activity.SupperBaseActivity;
+import com.zzu.ehome.activity.YYJLDesActivity;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.BloodPressBean;
 import com.zzu.ehome.bean.BloodPressDate;
@@ -71,6 +74,13 @@ public class BloodPressureFragment extends BaseFragment {
     private EHomeDao dao;
     private User dbUser;
     int level=0;
+    private SupperBaseActivity activity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -87,6 +97,9 @@ public class BloodPressureFragment extends BaseFragment {
 //        progressBar1.setProgress(100);
 //        HandlerInit();
 //        handler.post(runnable);
+        if (!CommonUtils.isNotificationEnabled(getActivity())) {
+            activity.showTitleDialog("请打开通知中心");
+        }
         return view;
     }
 //    private void HandlerInit() {
@@ -191,6 +204,11 @@ public class BloodPressureFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if (CommonUtils.isFastClick()) return;
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
+
                 if (tvlv.getText().equals("请滑动刻度尺")) {
                     ToastUtils.showMessage(getActivity(), "请滑动刻度尺");
                     return;

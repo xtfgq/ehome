@@ -195,6 +195,10 @@ public class MessageFragment extends BaseFragment {
     }
 
     public void initDatas() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         startProgressDialog();
         userid = SharePreferenceUtil.getInstance(getActivity()).getUserId();
         requestMaker.APPLogInquiry(userid, "01", 1 + "", 1 + "", new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {

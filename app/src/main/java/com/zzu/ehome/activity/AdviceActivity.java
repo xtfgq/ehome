@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.R;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -38,6 +39,9 @@ public class AdviceActivity extends BaseActivity {
         requestMaker = RequestMaker.getInstance();
         initViews();
         initEvent();
+        if(!CommonUtils.isNotificationEnabled(AdviceActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -79,6 +83,10 @@ public class AdviceActivity extends BaseActivity {
     }
 
     private void doUploade() {
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         String msg = editText.getText().toString().toString();
         if (TextUtils.isEmpty(msg)) {
             show("请输入内容！");

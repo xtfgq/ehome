@@ -16,6 +16,7 @@ import com.zzu.ehome.bean.User;
 import com.zzu.ehome.bean.UserInfoDate;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
@@ -71,10 +72,17 @@ public class WeightAndHeightAct extends BaseSimpleActivity implements View.OnCli
         initViews();
 
         initEvent();
+        if (!CommonUtils.isNotificationEnabled(WeightAndHeightAct.this)) {
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         switch (v.getId()) {
             case R.id.btnext:
                 if(TextUtils.isEmpty(tag)) {

@@ -33,6 +33,9 @@ public class ConversationListActivity extends BaseActivity {
         setContentView(R.layout.conversationlist);
         setActionBarTitle();
         isReconnect();
+        if(!CommonUtils.isNotificationEnabled(ConversationListActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     /**

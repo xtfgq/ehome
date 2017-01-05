@@ -1,6 +1,7 @@
 package com.zzu.ehome.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.zzu.ehome.activity.MyFocusActivity;
 import com.zzu.ehome.activity.MyRemindActivity;
 import com.zzu.ehome.activity.PersonalCenterInfo;
 import com.zzu.ehome.activity.SettingActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.ShareModel;
 import com.zzu.ehome.bean.User;
@@ -55,6 +57,14 @@ public class MyInfoFragment extends BaseFragment implements View.OnClickListener
     User user;
     private ImageView ivsetting;
     private SharePopupWindow share;
+    private SupperBaseActivity activity;
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -136,6 +146,10 @@ public class MyInfoFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         switch (v.getId()) {
             case R.id.layout_add_friends:
                 ToastUtils.showMessage(getActivity(), "添加朋友");

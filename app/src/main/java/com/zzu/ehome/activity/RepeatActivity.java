@@ -16,6 +16,7 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.RepeatAdapter;
 import com.zzu.ehome.bean.RepatBean;
 import com.zzu.ehome.fragment.DoctorFragment;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.view.HeadView;
 
 import java.io.Serializable;
@@ -38,6 +39,9 @@ public class RepeatActivity extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(RepeatActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {

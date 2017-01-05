@@ -288,7 +288,7 @@
 
                         <TableRow android:layout_marginBottom="8dp">
 
-                            <EditText
+                            <com.zzu.ehome.view.ContainsEmojiEditText
                                 android:visibility="gone"
                                 android:id="@+id/edt_ywgms"
                                 android:layout_width="0dp"
@@ -571,7 +571,7 @@
 
                         <TableRow android:layout_marginBottom="8dp">
 
-                            <EditText
+                            <com.zzu.ehome.view.ContainsEmojiEditText
                                 android:visibility="gone"
                                 android:id="@+id/edt_jwbs"
                                 android:layout_width="0dp"
@@ -818,7 +818,7 @@
 
                         <TableRow android:layout_marginBottom="8dp">
 
-                            <EditText
+                            <com.zzu.ehome.view.ContainsEmojiEditText
                                 android:visibility="gone"
                                 android:id="@+id/edt_father"
                                 android:layout_width="0dp"
@@ -1042,7 +1042,7 @@
 
                         <TableRow android:layout_marginBottom="8dp">
 
-                            <EditText
+                            <com.zzu.ehome.view.ContainsEmojiEditText
                                 android:visibility="gone"
                                 android:id="@+id/edt_mother"
                                 android:layout_width="0dp"
@@ -1265,7 +1265,7 @@
 
                         <TableRow android:layout_marginBottom="8dp">
 
-                            <EditText
+                            <com.zzu.ehome.view.ContainsEmojiEditText
                                 android:visibility="gone"
                                 android:id="@+id/edi_sister"
                                 android:layout_width="0dp"
@@ -1491,7 +1491,7 @@
 
                         <TableRow android:layout_marginBottom="8dp">
 
-                            <EditText
+                            <com.zzu.ehome.view.ContainsEmojiEditText
                                 android:visibility="gone"
                                 android:id="@+id/edt_children"
                                 android:layout_width="0dp"
@@ -1877,7 +1877,7 @@
 
                         <TableRow android:layout_marginBottom="8dp">
 
-                            <EditText
+                            <com.zzu.ehome.view.ContainsEmojiEditText
                                 android:visibility="gone"
                                 android:id="@+id/edt_ycbs"
                                 android:layout_width="0dp"

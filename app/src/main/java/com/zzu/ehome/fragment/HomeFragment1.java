@@ -41,6 +41,7 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.activity.EcgDesActivity;
 import com.zzu.ehome.activity.ExaminationReportActivity;
 import com.zzu.ehome.activity.ExaminationTestActivity;
+import com.zzu.ehome.activity.FatherTestActivity;
 import com.zzu.ehome.activity.HealthInstructionActivity;
 import com.zzu.ehome.activity.HypertensionActivity;
 import com.zzu.ehome.activity.LoginActivity1;
@@ -246,18 +247,12 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
             getPermission();
         }
         city = "郑州市";
-        if(!activity.isNetWork){
 
-        }
         getWeather(city);
         versioninquiry();
         if(SharePreferenceUtil.getInstance(getActivity()).getGUIDId()!=4) {
             initGuid(inflater);
             showGuide();
-        }else{
-            if(!CommonUtils.isNotificationEnabled(getActivity())){
-                showTitleDialog("请打开通知中心");
-            }
         }
         mListView.setFocusable(false);
 
@@ -737,7 +732,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                 if (TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
                     startActivity(new Intent(getActivity(), LoginActivity1.class));
                 } else {
-                    startIntent(getActivity(), ExaminationReportActivity.class);
+                    startIntent(getActivity(), FatherTestActivity.class);
                 }
                 break;
             case R.id.layout_xdbg:
@@ -1524,13 +1519,9 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                         String MessageCode = json.getJSONObject(0).getString("MessageCode");
                         if ("2".equals(MessageCode)) {
                             type=2;
-
-                            return;
                         }
                         if ("1".equals(MessageCode)) {
                             type=1;
-
-                            return;
                         }
                     } else {
                         type=3;
@@ -1539,7 +1530,6 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                     User user=dao.findUserInfoById(id);
                     user.setType(type);
                     dao.updateUserInfo(user, id);
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1615,7 +1605,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
             }
         }
         RelationDes res = new RelationDes();
-        res.setRelationship("Add");
+        res.setRelationship("添加亲人");
         listTemp.add(res);
         final List<RelationDes> listfinaltmp = listTemp;
         linearLayout.addItem(listfinaltmp, new MyHomeLayout.OnItemClickListener() {

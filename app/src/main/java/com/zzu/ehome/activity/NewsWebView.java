@@ -9,6 +9,7 @@ import android.webkit.WebViewClient;
 import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.Constants;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.view.HeadView;
 
 /**
@@ -34,10 +35,16 @@ public class NewsWebView extends BaseActivity {
         webSettings.setSaveFormData(false);
         webSettings.setJavaScriptEnabled(true);
         webSettings.setSupportZoom(false);
+        webSettings.setBlockNetworkImage(false);
+
         mIntent = this.getIntent();
         if (mIntent != null && mIntent.getStringExtra("ID") != null) {
             ID = mIntent.getStringExtra("ID");
             title = mIntent.getStringExtra("Title");
+        }
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
         }
 
         String url = Constants.URLIMAGENEW + ID;
@@ -53,20 +60,22 @@ public class NewsWebView extends BaseActivity {
 
             }
         });
-
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         mWebView.loadUrl(url);
+        if(!CommonUtils.isNotificationEnabled(NewsWebView.this)){
+            showTitleDialog("请打开通知中心");
+        }
 
 
     }
 
     class MyWebViewClient extends WebViewClient {
-        // 重写shouldOverrideUrlLoading方法，使点击链接后不使用其他的浏览器打开。
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-
             view.loadUrl(url);
-
             return true;
 
         }

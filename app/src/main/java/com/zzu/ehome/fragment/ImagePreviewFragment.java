@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.ImagePreviewActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 
 import java.io.File;
 
@@ -24,6 +26,14 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  */
 public class ImagePreviewFragment extends Fragment {
     public static final String PATH = "path";
+    private SupperBaseActivity activity;
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     public static ImagePreviewFragment getInstance(String path) {
         ImagePreviewFragment fragment = new ImagePreviewFragment();
@@ -52,6 +62,10 @@ public class ImagePreviewFragment extends Fragment {
         mAttacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
             @Override
             public void onViewTap(View view, float x, float y) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return ;
+                }
                 ImagePreviewActivity activity = (ImagePreviewActivity) getActivity();
                 activity.switchBarVisibility();
             }

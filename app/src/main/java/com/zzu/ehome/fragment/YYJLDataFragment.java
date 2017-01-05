@@ -1,54 +1,37 @@
 package com.zzu.ehome.fragment;
 
-import android.content.Intent;
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.zzu.ehome.R;
-import com.zzu.ehome.activity.CompletInfoActivity;
-import com.zzu.ehome.activity.CreateillnessActivity;
-import com.zzu.ehome.activity.GuideActivity;
-import com.zzu.ehome.activity.LoginActivity;
-import com.zzu.ehome.adapter.HealteFilesAdapter;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.MedicinalRecordAdapter;
-import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.MedicationDate;
 import com.zzu.ehome.bean.MedicationRecord;
-import com.zzu.ehome.bean.RefreshEvent;
-import com.zzu.ehome.bean.TreatmentInquirywWithPage;
-import com.zzu.ehome.bean.TreatmentInquirywWithPageDate;
-import com.zzu.ehome.bean.User;
-import com.zzu.ehome.bean.UserDate;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
-import com.zzu.ehome.main.ehome.MainActivity;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by Mersens on 2016/6/28.
@@ -70,8 +53,15 @@ public class YYJLDataFragment extends BaseFragment implements StickyListHeadersL
     private boolean isLoading = false;
     private AnimationDrawable loadingAnimation; //加载更多，动画
     private List<MedicationRecord> mlist = new ArrayList<MedicationRecord>();
-
+    private SupperBaseActivity activity;
     private EHomeDao dao;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -93,6 +83,11 @@ public class YYJLDataFragment extends BaseFragment implements StickyListHeadersL
     }
 
     private void initDate() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+
+        }
         startProgressDialog();
         requestMaker.MedicationRecordInquiry(userid,dao.findUserInfoById(userid).getUserno(), 5 + "", page + "", new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
@@ -190,6 +185,13 @@ public class YYJLDataFragment extends BaseFragment implements StickyListHeadersL
 
     @Override
     public void OnLoadingMore() {
+
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            loadingFinished();
+            return;
+
+        }
         progressBarView.setVisibility(View.VISIBLE);
         progressBarTextView.setVisibility(View.VISIBLE);
 

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.CustomApplcation;
+import com.zzu.ehome.utils.CommonUtils;
 
 /**
  * Created by Mersens on 2016/8/10.
@@ -23,6 +24,9 @@ public class YuYueSuccessActivity extends BaseSimpleActivity implements View.OnC
         initViews();
         initEvent();
         initDatas();
+        if (!CommonUtils.isNotificationEnabled(YuYueSuccessActivity.this)) {
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -49,7 +53,15 @@ public class YuYueSuccessActivity extends BaseSimpleActivity implements View.OnC
                CustomApplcation.getInstance().finishSingleActivityByClass(OfficeListActivity.class);
                CustomApplcation.getInstance().finishSingleActivityByClass(DoctorListActivity.class);
                CustomApplcation.getInstance().finishSingleActivityByClass(OrdinaryYuYueActivity.class);
-               finishActivity();
+
+               //从网络预约跳过来
+
+
+
+
+
+
+               finish();
                break;
            case R.id.tv_continue:
                CustomApplcation.getInstance().finishSingleActivityByClass(ConfirmMsgActivity.class);
@@ -58,8 +70,9 @@ public class YuYueSuccessActivity extends BaseSimpleActivity implements View.OnC
                CustomApplcation.getInstance().finishSingleActivityByClass(OfficeListActivity.class);
                CustomApplcation.getInstance().finishSingleActivityByClass(DoctorListActivity.class);
                CustomApplcation.getInstance().finishSingleActivityByClass(OrdinaryYuYueActivity.class);
-               finishActivity();
+
                startActivity(new Intent(YuYueSuccessActivity.this,OrdinaryYuYueActivity.class));
+               finish();
                break;
        }
     }

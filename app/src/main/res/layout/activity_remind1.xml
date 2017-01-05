@@ -36,7 +36,7 @@
             android:layout_marginTop="15dp"
             android:text="暂无发现您的提醒"
             android:textColor="@color/base_color_text_black"
-            android:textSize="@dimen/text_size_normal" />
+            android:textSize="@dimen/text_size_medium" />
 
 
         </LinearLayout>

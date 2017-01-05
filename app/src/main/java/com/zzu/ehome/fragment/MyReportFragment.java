@@ -12,8 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.zzu.ehome.R;
-import com.zzu.ehome.bean.AdressInterface;
-import com.zzu.ehome.utils.RequestMaker;
 
 import java.util.ArrayList;
 import java.util.List;

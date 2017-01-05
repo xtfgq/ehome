@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zzu.ehome.R;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.IOUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_ECGInfo;
@@ -45,6 +46,9 @@ public class AddUserInfoActivity extends BaseActivity implements View.OnClickLis
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(AddUserInfoActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews(){
@@ -84,6 +88,10 @@ public class AddUserInfoActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         switch (v.getId()){
             case R.id.btn_save:
                 name=edt_name.getText().toString();
@@ -109,7 +117,7 @@ public class AddUserInfoActivity extends BaseActivity implements View.OnClickLis
                     return;
                 }
                 if (TextUtils.isEmpty(phone.trim())) {
-                    show("请填写手机号号码！");
+                    show("请填写手机号码！");
                     return;
                 }
                 if( !IOUtils.isMobileNO(phone.trim())){
@@ -130,9 +138,6 @@ public class AddUserInfoActivity extends BaseActivity implements View.OnClickLis
                    show("请选择性别！");
                     return;
                 }
-
-
-
 
                 userid= SharePreferenceUtil.getInstance(AddUserInfoActivity.this).getUserId();
                 requestMaker.UserContactorInsert(userid,name,userNo,age,sex,phone,"",  new JsonAsyncTask_ECGInfo(AddUserInfoActivity.this, true, new JsonAsyncTaskOnComplete() {

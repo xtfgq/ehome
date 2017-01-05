@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.InternetHospitalActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.ECGReportAdapter;
 import com.zzu.ehome.bean.ECGDate;
 import com.zzu.ehome.bean.ECGDynamicBean;
@@ -39,7 +41,14 @@ public class DynamicFragment extends BaseFragment {
     private RequestMaker requestMaker;
     private String userid;
     private LinearLayout heardchat;
+    private SupperBaseActivity activity;
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity) context;
+    }
 
     @Nullable
     @Override
@@ -65,6 +74,10 @@ public class DynamicFragment extends BaseFragment {
         tv_hlwyy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 Intent intent = new Intent(getActivity(), InternetHospitalActivity.class);
                 startActivity(intent);
             }
@@ -78,7 +91,10 @@ public class DynamicFragment extends BaseFragment {
 
         startProgressDialog();
 //      userid = "51223";
-
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         requestMaker.HolterPDFInquiry(userid, starttime, endtime, new JsonAsyncTask_ECGInfo(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {

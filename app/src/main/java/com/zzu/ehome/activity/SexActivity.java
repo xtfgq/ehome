@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zzu.ehome.R;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -50,6 +51,9 @@ public class SexActivity extends BaseSimpleActivity implements View.OnClickListe
         initViews();
 
         initEvent();
+        if (!CommonUtils.isNotificationEnabled(SexActivity.this)) {
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     private void initEvent() {
@@ -68,6 +72,13 @@ public class SexActivity extends BaseSimpleActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
+        if (!CommonUtils.isNotificationEnabled(SexActivity.this)) {
+            showTitleDialog("请打开通知中心");
+        }
         switch (v.getId()) {
             case R.id.iv_man:
                 if(TextUtils.isEmpty(tag)) {

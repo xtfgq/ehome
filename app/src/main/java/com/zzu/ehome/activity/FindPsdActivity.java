@@ -54,6 +54,9 @@ public class FindPsdActivity extends BaseActivity implements View.OnClickListene
         mIntent = new Intent(FindPsdActivity.this,
                 RegisterCodeTimerService.class);
         initEvent();
+        if(!CommonUtils.isNotificationEnabled(FindPsdActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -118,17 +121,26 @@ public class FindPsdActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
+        if(!CommonUtils.isNotificationEnabled(FindPsdActivity.this)){
+            showTitleDialog("请打开通知中心");
+
+        }
         switch (v.getId()) {
             case R.id.tv_getCode:
                 if (CommonUtils.isFastClick()) {
                     return;
                 }
+
                 if (TextUtils.isEmpty(editPhone.getText().toString().trim())) {
-                    ToastUtils.showMessage(FindPsdActivity.this, "请输入手机号！");
+                   show("请输入手机号！");
                     return;
                 }
                 if (!IOUtils.isMobileNO(editPhone.getText().toString().trim())) {
-                    ToastUtils.showMessage(FindPsdActivity.this, R.string.checkmobile_register);
+                    show("请输入正确的手机号码!");
                     return;
                 }
                 if (isNetworkAvailable()) {
@@ -145,34 +157,40 @@ public class FindPsdActivity extends BaseActivity implements View.OnClickListene
 
                 usrpwd = editPass_again.getText().toString().trim();
                 if (TextUtils.isEmpty(usermobile)) {
-                    ToastUtils.showMessage(FindPsdActivity.this, R.string.mobile_register);
+                    show("请输入手机号！");
                     return;
                 } else if (usermobile.length() != 11) {
-                    ToastUtils.showMessage(FindPsdActivity.this, R.string.checkmobile_register);
+                    show("请输入正确的手机号码!");
+
                     return;
                 } else if (!IOUtils.isMobileNO(editPhone.getText().toString().trim())) {
-                    ToastUtils.showMessage(FindPsdActivity.this, R.string.checkmobile_register);
+                    show("请输入正确的手机号码!");
+
                     return;
                 } else if (!usermobile.equals(editPhone.getText().toString().trim())) {
-                    ToastUtils.showMessage(FindPsdActivity.this, R.string.checkmobile_register);
+                    show("请输入正确的手机号码!");
+
                     return;
-                } else if (TextUtils.isEmpty(usrpwd)) {
-                    ToastUtils.showMessage(FindPsdActivity.this, R.string.pass_register);
+                } else if(TextUtils.isEmpty(edCode.getText().toString().trim())){
+                    show("请输入验证码");
                     return;
-                } else if(editPass_again.length()<6){
-                    ToastUtils.showMessage(FindPsdActivity.this, "密码长度不能小于6位");
-                    return;
-                }else if(TextUtils.isEmpty(edCode.getText().toString().trim())){
-                    ToastUtils.showMessage(FindPsdActivity.this, "请输入验证码");
-                    return;
-                }else if(!usermobileold.equals(usermobile)){
-                    ToastUtils.showMessage(FindPsdActivity.this, "手机号与验证码不匹配");
+                }
+                else if(!usermobileold.equals(usermobile)){
+                    show("手机号与验证码不匹配");
                     return;
                 }
                 else if (!chkcode.equals(edCode.getText().toString().trim())) {
-                    ToastUtils.showMessage(FindPsdActivity.this, "验证码不正确");
+                    show("验证码不正确");
                     return;
-                } else if (isNetworkAvailable()) {
+                }
+                else if (TextUtils.isEmpty(usrpwd)) {
+                    show("请输入密码");
+                    return;
+                } else if(editPass_again.length()<6){
+                    show( "密码长度不能小于6位");
+                    return;
+                }
+               else if (isNetworkAvailable()) {
                     doFindPwd();
                 } else {
                     ToastUtils.showMessage(FindPsdActivity.this, R.string.msgUninternet);
@@ -218,7 +236,7 @@ public class FindPsdActivity extends BaseActivity implements View.OnClickListene
                             for (int i = 0; i < array.length(); i++) {
                                 chkcode = array.getJSONObject(i)
                                         .getString("MessageContent");
-                              ToastUtils.showMessage(FindPsdActivity.this,chkcode+"");
+//                              ToastUtils.showMessage(FindPsdActivity.this,chkcode+"");
                                 ToastUtils.showMessage(FindPsdActivity.this,"验证码已发送，请注意查收.");
                             }
                         }else{

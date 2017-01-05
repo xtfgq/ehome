@@ -25,6 +25,7 @@ import com.zzu.ehome.reciver.EventType;
 import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.service.StepDetector;
 import com.zzu.ehome.service.StepService;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -101,6 +102,9 @@ public class JibuDataActivity extends BaseActivity implements StickyListHeadersL
         initEvent();
         initDatas();
         mThread();
+        if(!CommonUtils.isNotificationEnabled(JibuDataActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -132,6 +136,10 @@ public class JibuDataActivity extends BaseActivity implements StickyListHeadersL
     }
 
     public void initDatas() {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         String time = DateUtils.getTodayTime();
         StepBean step = dao.loadSteps(userid, time.substring(0, 10));
         if (step == null) {

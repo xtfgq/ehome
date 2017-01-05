@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zzu.ehome.R;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.view.HeadView;
 
@@ -34,6 +35,9 @@ public class StaticECGDetailActivity extends BaseActivity {
         PatientName = mIntent.getStringExtra("PatientName");
         CollectTime = mIntent.getStringExtra("CollectTime");
         initEvent();
+        if (!CommonUtils.isNotificationEnabled(StaticECGDetailActivity.this)) {
+            showTitleDialog("请打开通知中心");
+        }
 
     }
 

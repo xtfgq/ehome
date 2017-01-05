@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.zzu.ehome.R;
+import com.zzu.ehome.activity.SupperBaseActivity;
 
 /**
  * Created by Mersens on 2016/8/29.
@@ -22,6 +24,7 @@ public class HypertensionFragment extends BaseFragment {
     public static final String PATH="path";
     private String path=null;
     private WebView webView;
+    private SupperBaseActivity activity;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -35,6 +38,12 @@ public class HypertensionFragment extends BaseFragment {
         path=getArguments().getString(PATH);
         isPrepared=true;
         lazyLoad();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
     }
 
     @Override
@@ -89,6 +98,11 @@ public class HypertensionFragment extends BaseFragment {
     }
 
     public void initDatas(){
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
+
         webView.loadUrl(path);
     }
     public  static Fragment getInstance(String path){

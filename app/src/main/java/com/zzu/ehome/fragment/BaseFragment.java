@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.zzu.ehome.R;
-import com.zzu.ehome.activity.BaseActivity;
 import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.view.CustomProgressDialog;
 import com.zzu.ehome.view.DialogTips;

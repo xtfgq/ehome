@@ -1,6 +1,6 @@
 package com.zzu.ehome.fragment;
 
-import android.content.Intent;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -19,11 +18,8 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.zzu.ehome.R;
-import com.zzu.ehome.activity.AppointmentDetailActivity;
-import com.zzu.ehome.adapter.MyAppointmetAdapter;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.WebAdapter;
-import com.zzu.ehome.bean.OrderInquiryByTopmd;
-import com.zzu.ehome.bean.OrderInquiryByTopmdDate;
 import com.zzu.ehome.bean.TreatmentSearch;
 import com.zzu.ehome.bean.TreatmentSearchDate;
 import com.zzu.ehome.db.EHomeDao;
@@ -36,7 +32,6 @@ import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.ScreenUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -55,6 +50,14 @@ public class WebFragmet extends BaseFragment {
     private EHomeDao dao;
     private String parentid;
     List<TreatmentSearch> list;
+    private SupperBaseActivity activity;
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -96,6 +99,11 @@ public class WebFragmet extends BaseFragment {
     }
 
     public void initDatas() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+
+        }
         requestMaker.TreatmentSearch(parentid, 1 + "", 10000 + "", new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
@@ -170,6 +178,11 @@ public class WebFragmet extends BaseFragment {
                         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
                             @Override
                             public void onMenuItemClick(int position, SwipeMenu menu, int index) {
+                                if(!activity.isNetWork){
+                                    activity.showNetWorkErrorDialog();
+                                    return;
+
+                                }
                                 TreatmentSearch item = list.get(position);
                                 switch (index) {
                                     case 0:

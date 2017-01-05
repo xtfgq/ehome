@@ -71,17 +71,8 @@ public class MedicalExaminationAdapter extends BaseAdapter {
 
         holder.tvtime.setText(itme.getCheckTime().split(" ")[0]);
         holder.name.setText(itme.getInstituteName());
-        final String id = itme.getID();
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(mContext, MedicalExaminationDesActivity.class);
 
-                i.putExtra("ID", id);
-                mContext.startActivity(i);
-//                mContext.startActivity(new Intent(mContext,ExaminationReportDetailActivity.class));
-            }
-        });
+
         return convertView;
     }
 

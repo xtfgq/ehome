@@ -1,6 +1,7 @@
 package com.zzu.ehome.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.SelectDateAndTime;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.HealteData;
 import com.zzu.ehome.bean.RefreshEvent;
@@ -62,7 +64,13 @@ public class WeightFragment extends BaseFragment {
     public static int p = -1;
     User dbUser;
     private EHomeDao dao;
+    private SupperBaseActivity activity;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -81,6 +89,9 @@ public class WeightFragment extends BaseFragment {
 //            startActivity(new Intent(getActivity(), InputHeightActivity.class));
 //        }
         initEvents();
+        if (!CommonUtils.isNotificationEnabled(getActivity())) {
+            activity.showTitleDialog("请打开通知中心");
+        }
         return view;
     }
 
@@ -141,6 +152,11 @@ public class WeightFragment extends BaseFragment {
         rlchecktime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+
+                }
                 Intent intenttime = new Intent(getActivity(), SelectDateAndTime.class);
                 startActivityForResult(intenttime, Constants.ADDTTIME);
 
@@ -149,6 +165,11 @@ public class WeightFragment extends BaseFragment {
         btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+
+                }
                 if (CommonUtils.isFastClick()) return;
                 btnsave.setEnabled(false);
                 float w = Float.valueOf(weight);
@@ -226,6 +247,11 @@ public class WeightFragment extends BaseFragment {
     }
 
     private void getWeight() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+
+        }
         requestMaker.HealthDataInquirywWithPageType(userid,cardNo, "1", "1", "Weight", new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {

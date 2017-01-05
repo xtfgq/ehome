@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import com.zzu.ehome.R;
 
 import com.zzu.ehome.fragment.CapaingFragmet;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.view.HeadView;
 
 
@@ -21,7 +22,9 @@ public class CampaignActivity extends BaseActivity{
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragment_container, CapaingFragmet.getInstance()).commit();
-
+        if(!CommonUtils.isNotificationEnabled(CampaignActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
     private void initView(){
         setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "系统消息", new HeadView.OnLeftClickListener() {

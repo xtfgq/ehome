@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -29,6 +30,7 @@ import com.baidu.mapapi.search.poi.PoiSearch;
 import com.baidu.mapapi.search.poi.PoiSortType;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.NearPharmacyActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.reciver.EventType;
 import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.view.DialogTips;
@@ -68,6 +70,13 @@ public class NearPharmacyFragment extends BaseFragment {
     private LinearLayout layout_no_msg;
     private TextView tvnodate;
     private CompositeSubscription compositeSubscription;
+    private SupperBaseActivity activity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity) context;
+    }
 
     @Nullable
     @Override
@@ -130,6 +139,11 @@ public class NearPharmacyFragment extends BaseFragment {
         pulltorefreshlayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    pulltorefreshlayout.refreshFinish(PullToRefreshLayout.FAIL);
+                    return;
+                }
                 pageNum=0;
                 isFirst = true;
                 isReflash=true;
@@ -140,6 +154,11 @@ public class NearPharmacyFragment extends BaseFragment {
 
             @Override
             public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.FAIL);
+                    return;
+                }
                 pageNum++;
                 isLoading=true;
                 isReflash=false;
@@ -151,6 +170,10 @@ public class NearPharmacyFragment extends BaseFragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 PoiInfo p = list.get(position);
                 final double mLatitude = p.location.latitude;
                 final double mLongitude = p.location.longitude;

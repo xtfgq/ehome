@@ -29,6 +29,7 @@ import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.reciver.EventType;
 import com.zzu.ehome.reciver.RxBus;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.ImageUtil;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -46,6 +47,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import de.greenrobot.event.EventBus;
 
@@ -84,6 +88,9 @@ public class YYJLActivity extends BaseActivity implements View.OnClickListener {
         initViews();
         initEvent();
         initDatas();
+        if (!CommonUtils.isNotificationEnabled(YYJLActivity.this)) {
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -163,6 +170,11 @@ public class YYJLActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+        showNetWorkErrorDialog();
+            return;
+        }
+
         switch (v.getId()) {
             case R.id.layout_fysj:
 
@@ -327,9 +339,9 @@ public class YYJLActivity extends BaseActivity implements View.OnClickListener {
             return;*/
         setEventEnable(false);
         String time = tv_fysj_time.getText().toString().trim();
-        String ypmc = editText_ypmc_name.getText().toString().trim();
+        String ypmc =StringFilter(editText_ypmc_name.getText().toString().trim()) ;
         String num = edit_num.getText().toString().trim();
-        String bz = editText_bz.getText().toString().trim();
+        String bz =StringFilter( editText_bz.getText().toString().trim());
         if (TextUtils.isEmpty(time)) {
             ToastUtils.showMessage(YYJLActivity.this, "请选择服药时间！");
             setEventEnable(true);
@@ -437,4 +449,11 @@ public class YYJLActivity extends BaseActivity implements View.OnClickListener {
                 "yyyyMMddHHmmss");
         return dateFormat.format(date) + i + "_" + ".jpg";
     }
+    public static String StringFilter(String str) throws PatternSyntaxException {
+        String regEx = "[`~!@#$%^&*()+=|{}''\\[\\].<>~！@#￥%……&*（）——+|{}【】‘”“’？]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.replaceAll("").trim();
+    }
+
 }

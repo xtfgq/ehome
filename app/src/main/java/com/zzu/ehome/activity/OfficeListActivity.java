@@ -8,17 +8,21 @@ import com.zzu.ehome.adapter.OfficeListAdapter;
 import com.zzu.ehome.bean.DepDateTemp;
 import com.zzu.ehome.bean.DepTempBean;
 import com.zzu.ehome.bean.DepartmentPart;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.view.HeadView;
+import com.zzu.ehome.view.RefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.zzu.ehome.R.id.refreshLayout;
 
 /**
  * Created by Mersens on 2016/8/9.
@@ -32,6 +36,8 @@ public class OfficeListActivity extends BaseActivity {
     private List<DepTempBean> depNOlist = new ArrayList<DepTempBean>();
     private List<DepTempBean> depPartList = new ArrayList<DepTempBean>();
     private List<DepartmentPart> depAllList = new ArrayList<DepartmentPart>();
+    private RefreshLayout refreshLayout;
+    private boolean isRefresh=false;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -41,12 +47,21 @@ public class OfficeListActivity extends BaseActivity {
         title = this.getIntent().getStringExtra("hosName");
         initViews();
         sid = this.getIntent().getStringExtra("id");
-
         initEvent();
+
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
+
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(OfficeListActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
+        refreshLayout=(RefreshLayout) findViewById(R.id.refreshLayout);
         listView = (ListView) findViewById(R.id.listView);
         setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, title, new HeadView.OnLeftClickListener() {
             @Override
@@ -58,7 +73,21 @@ public class OfficeListActivity extends BaseActivity {
     }
 
     public void initEvent() {
+        refreshLayout.setOnRefreshListener(new RefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout pullToRefreshLayout) {
 
+                    if(!isNetWork){
+                        refreshLayout.refreshFinish(RefreshLayout.FAIL);
+                        return;
+                    }
+
+                depNOlist.clear();
+                depPartList.clear();
+                isRefresh=true;
+                getSub(sid);
+            }
+        });
     }
 
     private void getSub(String id) {
@@ -82,6 +111,7 @@ public class OfficeListActivity extends BaseActivity {
                         stopProgressDialog();
                         DepDateTemp date = JsonTools.getData(result.toString(), DepDateTemp.class);
                         List<DepTempBean> mList = date.getData();
+
                         for (DepTempBean bean : mList) {
                             if (bean.getParentDeprtID().equals("0")) {
                                 depNOlist.add(bean);
@@ -126,12 +156,19 @@ public class OfficeListActivity extends BaseActivity {
                     show("暂无数据");
                     e.printStackTrace();
                 }
+                finally {
+                    if(isRefresh){
+                        refreshLayout.refreshFinish(RefreshLayout.SUCCEED);
+                        isRefresh=false;
+                    }
+                }
 
             }
         }));
     }
 
     public void initDatas() {
+
         getSub(sid);
 
 

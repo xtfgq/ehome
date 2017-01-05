@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.zzu.ehome.R;
 import com.zzu.ehome.fragment.DynamicFragment;
 import com.zzu.ehome.fragment.StaticFragment;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.view.HeadView;
 
 /**
@@ -28,6 +29,9 @@ public class ECGActivity1 extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(ECGActivity1.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
 
@@ -48,6 +52,10 @@ public class ECGActivity1 extends BaseActivity {
         layout_d.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 setColor(Type.DYNAMIC);
                 addFragment(Type.DYNAMIC);
 
@@ -56,6 +64,10 @@ public class ECGActivity1 extends BaseActivity {
         layout_j.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 setColor(Type.STATIC_STATE);
                 addFragment(Type.STATIC_STATE);
             }

@@ -19,6 +19,7 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.DoctorSchemaByTopmdBean;
 import com.zzu.ehome.bean.TreatmentInquirywWithPage;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.view.HeadView;
 
@@ -46,6 +47,9 @@ public class MedicalRecordsDesActivity extends BaseActivity{
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(MedicalRecordsDesActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
     public void initViews() {
         tv_name=(TextView)findViewById(R.id.tv_name);

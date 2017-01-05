@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.zzu.ehome.R;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.WeightChatAdapter;
 import com.zzu.ehome.bean.HealteData;
 import com.zzu.ehome.bean.RefreshEvent;
@@ -81,6 +82,15 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
     private List<String> months = new ArrayList<>();
     private TextView tvnodata;
     private EHomeDao dao;
+
+    private SupperBaseActivity activity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
+
     private BroadcastReceiver mRefrushBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -206,6 +216,11 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
     }
 
     private void setMonth() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         startTime = sdf.format(CommonUtils.changeDate(-29).getTime());
         endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
@@ -277,6 +292,11 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
     }
 
     private void setDay() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         startTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
         endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
@@ -338,7 +358,11 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
     }
 
     private void setWeek() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
 
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 
@@ -418,6 +442,11 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
     }
 
     private void getHistory() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+
+        }
         requestMaker.HealthDataInquirywWithPageType(userid, cardNo,10 + "", page + "", "Weight", new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
@@ -493,6 +522,12 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
 
     @Override
     public void OnLoadingMore() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            loadingFinished();
+            return;
+
+        }
         progressBarView.setVisibility(View.VISIBLE);
         progressBarTextView.setVisibility(View.VISIBLE);
 

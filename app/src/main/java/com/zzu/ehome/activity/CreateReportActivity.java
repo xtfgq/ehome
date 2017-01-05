@@ -28,6 +28,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.Images;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.ImageUtil;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -47,6 +48,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 
 /**
@@ -280,6 +284,11 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
+
         switch (v.getId()) {
 
 //            case R.id.rl_pic:
@@ -298,9 +307,8 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
 /*                if (CommonUtils.isFastClick())
                     return;*/
                 setEventEnable(false);
-                jzyy = edt_jzdw.getText().toString();
-                zdjg = edt_jzjg.getText().toString();
-
+                jzyy = StringFilter(edt_jzdw.getText().toString());
+                zdjg = StringFilter(edt_jzjg.getText().toString());
                 checktime = edt_time.getText().toString();
                 if (checktime.equals("")) {
                     setEventEnable(true);
@@ -309,12 +317,10 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
                 } else if (jzyy.equals("")) {
                     setEventEnable(true);
                     show("请输入体检机构！");
-
                     return;
                 } else if (zdjg.equals("")) {
                     setEventEnable(true);
                     show("请填写体检人姓名!");
-
                     return;
                 } else if (zdjg.length() > 5) {
                     setEventEnable(true);
@@ -475,6 +481,12 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
 
     }
 
+    public static String StringFilter(String str) throws PatternSyntaxException {
+        String regEx = "[`~!@#$%^&*()+=|{}''\\[\\].<>~！@#￥%……&*（）——+|{}【】‘”“’？]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.replaceAll("").trim();
+    }
 
 
 }

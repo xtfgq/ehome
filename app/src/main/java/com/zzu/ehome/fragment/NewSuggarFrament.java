@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.zzu.ehome.R;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.BloodSuggarChatAdapter;
 import com.zzu.ehome.bean.BloodSuggarBean;
 import com.zzu.ehome.bean.BloodSuggarDa;
@@ -73,6 +75,13 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
     private TextView tvnodata;
     private User dbUser;
     private EHomeDao dao;
+    private SupperBaseActivity activity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -204,6 +213,10 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
     }
 
     private void getHistory() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
 //        ToastUtils.showMessage(getActivity(),"vvvhhhhBolloess");
         requestMaker.HealthDataInquirywWithPageType(userid, cardNo,10 + "", page + "", "BloodSugar", new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
@@ -249,6 +262,10 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
     }
 
     private void setDay() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         startTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
         endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
@@ -327,6 +344,10 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
     }
 
     private void setMonth() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         startTime = sdf.format(CommonUtils.changeDate(-29).getTime());
         endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
@@ -416,6 +437,10 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
     }
 
     private void setWeek() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 
@@ -506,6 +531,11 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
 
     @Override
     public void OnLoadingMore() {
+        if(!activity.isNetWork){
+            loadingFinished();
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         progressBarView.setVisibility(View.VISIBLE);
         progressBarTextView.setVisibility(View.VISIBLE);
 

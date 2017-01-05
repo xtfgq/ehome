@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.zzu.ehome.R;
 
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -39,7 +40,9 @@ public class WebConfigAct extends BaseActivity {
         setContentView(R.layout.layout_qryyxx);
         mIntent=this.getIntent();
         initViews();
-
+        if (!CommonUtils.isNotificationEnabled(WebConfigAct.this)) {
+            showTitleDialog("请打开通知中心");
+        }
 
     }
     public void initViews() {
@@ -64,6 +67,10 @@ public class WebConfigAct extends BaseActivity {
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 startProgressDialog();
                 requestMaker.TreatmentInsert(doctor_id, PatientId, DateStr, TimeSpanStr, PerTime, new JsonAsyncTask_Info(WebConfigAct.this, true, new JsonAsyncTaskOnComplete() {
                     @Override

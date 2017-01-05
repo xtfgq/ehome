@@ -8,6 +8,7 @@ import android.widget.ListView;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.NetHospitalAreaAdapter;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -42,6 +43,9 @@ public class NetHospitalAreaActivity extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(NetHospitalAreaActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -60,6 +64,10 @@ public class NetHospitalAreaActivity extends BaseActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 String subname = mList.get(position).get("Name").toString();
                 String LngAndLat=mList.get(position).get("LngAndLat").toString();
                 double Longitude,Latitude;

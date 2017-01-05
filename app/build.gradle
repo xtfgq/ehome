@@ -8,10 +8,9 @@ android {
         applicationId "com.zzu.ehome.main.ehome"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 14
-        versionName "2.0.3"
+        versionCode 16
+        versionName "2.1.1"
         multiDexEnabled true
-
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
         }

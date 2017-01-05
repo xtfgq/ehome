@@ -23,6 +23,7 @@ import com.zzu.ehome.bean.UaDate;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
@@ -77,7 +78,14 @@ public class CholesterolActivity extends BaseActivity implements StickyListHeade
         dbUser = dao.findUserInfoById(userid);
         cardNo = dbUser.getUserno();
         page = 1;
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         initEvents();
+        if(!CommonUtils.isNotificationEnabled(CholesterolActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     private void initViews() {

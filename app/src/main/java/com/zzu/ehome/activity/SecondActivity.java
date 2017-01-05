@@ -31,6 +31,7 @@ import com.zzu.ehome.bean.UserInfoDate;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.main.ehome.MainActivity;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.IOUtils;
 import com.zzu.ehome.utils.ImageTools;
 import com.zzu.ehome.utils.ImageUtil;
@@ -96,6 +97,9 @@ public class SecondActivity extends BaseSimpleActivity implements View.OnClickLi
         initViews();
 
         initEvent();
+        if(!CommonUtils.isNotificationEnabled(SecondActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     private void initEvent() {
@@ -108,6 +112,13 @@ public class SecondActivity extends BaseSimpleActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
+        if(!CommonUtils.isNotificationEnabled(SecondActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
         switch (v.getId()) {
             case R.id.iv_head:
                 doAddHeadImage();

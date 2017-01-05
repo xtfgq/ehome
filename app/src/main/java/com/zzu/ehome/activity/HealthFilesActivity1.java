@@ -12,6 +12,7 @@ import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.bean.HealthFiles;
 import com.zzu.ehome.fragment.HealthFilesFragment2;
 import com.zzu.ehome.main.ehome.MainActivity;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.HeadView;
 
@@ -37,6 +38,10 @@ public class HealthFilesActivity1 extends BaseActivity implements HealthFilesFra
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(HealthFilesActivity1.this)){
+            showTitleDialog("请打开通知中心");
+
+        }
     }
 
     public void initViews() {

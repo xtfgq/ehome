@@ -22,6 +22,7 @@ import com.zzu.ehome.bean.ScheduleBean;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.fragment.DoctorFragment;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.ImageOptions;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -112,6 +113,9 @@ public class AppointmentDetailActivity extends BaseActivity implements View.OnCl
         tvdepartment.setText(Department_FullName);
         initEvent();
         initData();
+        if(!CommonUtils.isNotificationEnabled(AppointmentDetailActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
 
     }
 
@@ -229,6 +233,10 @@ public class AppointmentDetailActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         switch (v.getId()) {
             case R.id.tv_focus:
                 String focus = tv_focus.getText().toString();

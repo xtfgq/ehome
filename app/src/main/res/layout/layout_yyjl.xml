@@ -54,9 +54,9 @@
                         android:layout_toLeftOf="@+id/iv_right"
                         android:layout_marginRight="8dp"
                         android:hint="请输入药品名称"
-
                         android:inputType="text"
                         android:gravity="right"
+                        android:textCursorDrawable="@null"
                         android:textColor="#0f2536"
                         android:textColorHint="#949395"
                         android:textSize="14sp" />
@@ -88,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="服药剂量"
+                        android:text="用药剂量"
                         android:textSize="16sp" />
 
 

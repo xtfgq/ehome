@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.baidu.location.BDLocation;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.CooperationPharmacyActivity;
 import com.zzu.ehome.activity.NearPharmacyActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.bean.PharmacyBean;
 import com.zzu.ehome.reciver.EventType;
 import com.zzu.ehome.reciver.RxBus;
@@ -61,8 +63,14 @@ public class CooperationPharmacyFragment extends BaseFragment {
     private LinearLayout layout_no_msg;
     private TextView  tvnodate;
     private CompositeSubscription compositeSubscription;
+    private SupperBaseActivity activity;
 
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -87,7 +95,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
         layout_no_msg=(LinearLayout)mView.findViewById(R.id.layout_no_msg);
         pulltorefreshlayout = (PullToRefreshLayout) mView.findViewById(R.id.refresh_view);
         tvnodate=(TextView)mView.findViewById(R.id.tvnodate);
-        tvnodate.setText("正在签约中...");
+        tvnodate.setText("正在签约中");
         mListView.setAdapter(adapter);
     }
 
@@ -124,6 +132,11 @@ public class CooperationPharmacyFragment extends BaseFragment {
         pulltorefreshlayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+                if(!activity.isNetWork){
+                    pulltorefreshlayout.refreshFinish(PullToRefreshLayout.FAIL);
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 pageindex=1;
                 isReflash=true;
                 isLoading=false;
@@ -132,6 +145,11 @@ public class CooperationPharmacyFragment extends BaseFragment {
 
             @Override
             public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
+                if(!activity.isNetWork){
+                    pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.FAIL);
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 pageindex++;
                 isReflash=false;
                 isLoading=true;
@@ -141,6 +159,10 @@ public class CooperationPharmacyFragment extends BaseFragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 Intent intent=   new Intent(getActivity(), CooperationPharmacyActivity.class);
                 intent.putExtra(ID,list.get(position).getId());
                 startActivity(intent);
@@ -241,6 +263,10 @@ public class CooperationPharmacyFragment extends BaseFragment {
     }
 
     public void initDatas(){
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         requestMaker.PharmacyInquiry(pagesize+"",pageindex+"", new JsonAsyncTask_Info(
                 getActivity(), true, new JsonAsyncTaskOnComplete() {
             public void processJsonObject(Object result) {

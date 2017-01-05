@@ -348,7 +348,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
-                            android:text="正常体温（腋下:36-37℃）"
+                            android:text="正常体温（腋下: 36-37℃）"
                             android:textColor="#666666"
                             android:textSize="12sp" />
                     </RelativeLayout>

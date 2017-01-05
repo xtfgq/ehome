@@ -4,18 +4,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.view.View.OnClickListener;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.Constants;
-import com.zzu.ehome.utils.CommonUtils;
+import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.MonthDateView;
 import com.zzu.ehome.view.wheel.wheelview.OnWheelScrollListener;
 import com.zzu.ehome.view.wheel.wheelview.WheelView;
 import com.zzu.ehome.view.wheel.wheelview.adapter.NumericWheelAdapter;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -180,11 +181,30 @@ public class SelectDateAndTime extends Activity {
                 String time = mYear + "-" + mMos + "-" + mDos + " " + mH + ":" + mM;
                 Intent intent = new Intent();
                 intent.putExtra("time", time);
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
                 if(!mDos.contains("00")){
-                    setResult(Constants.REQUEST_CALENDAR, intent);
+
+                        try {
+                            Date dtNow= df.parse(df.format(new Date()));
+                            Date dt = df.parse(time);
+                            if(dtNow.getTime()>=dt.getTime())//比较时间大小,dt1小于dt2
+                            {
+                                setResult(Constants.REQUEST_CALENDAR, intent);
+                            }
+                            else
+                            {
+                                ToastUtils.showMessage(SelectDateAndTime.this,"请输入正确的时间！");
+
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
                 }
 
                 finish();
+
             }
         });
     }

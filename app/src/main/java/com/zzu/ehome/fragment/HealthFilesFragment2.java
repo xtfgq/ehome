@@ -57,6 +57,8 @@ public class HealthFilesFragment2 extends BaseFragment {
     private HealthFilesActivity1 mActivity=null;
     private TextView tv_blood_type;
 
+
+
     public interface MyListener{
         void getType(String type);
         void getHealthFiles(HealthFiles hf);
@@ -112,6 +114,11 @@ public class HealthFilesFragment2 extends BaseFragment {
     }
 
     public void initDatas() {
+        if(!mActivity.isNetWork){
+            mActivity.showNetWorkErrorDialog();
+            return;
+
+        }
       requestMaker.BaseDataInquiry(userid, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
@@ -154,6 +161,27 @@ public class HealthFilesFragment2 extends BaseFragment {
     }
 
     public  void buildHealthFiles(){
+
+        if(familyNames.contains("&lt;")||familyNames.contains("&gt;")||familyNames.contains("&amp;")){
+            familyNames.replaceAll("&lt;","<");
+            familyNames.replaceAll("&gt;",">");
+            familyNames.replaceAll("&amp;","&");
+        }
+        if(geneticHistoryNmaes.contains("&lt;")||geneticHistoryNmaes.contains("&gt;")||geneticHistoryNmaes.contains("&amp;")){
+            geneticHistoryNmaes.replaceAll("&lt;","<");
+            geneticHistoryNmaes.replaceAll("&gt;",">");
+            geneticHistoryNmaes.replaceAll("&amp;","&");
+        }
+        if(medicineAllergyNames.contains("&lt;")||medicineAllergyNames.contains("&gt;")||medicineAllergyNames.contains("&amp;")){
+            medicineAllergyNames.replaceAll("&lt;","<");
+            medicineAllergyNames.replaceAll("&gt;",">");
+            medicineAllergyNames.replaceAll("&amp;","&");
+        }
+        if(pastMedicalHistoryNames.contains("&lt;")||pastMedicalHistoryNames.contains("&gt;")||pastMedicalHistoryNames.contains("&amp;")){
+            pastMedicalHistoryNames.replaceAll("&lt;","<");
+            pastMedicalHistoryNames.replaceAll("&gt;",">");
+            pastMedicalHistoryNames.replaceAll("&amp;","&");
+        }
         HealthFiles healthFiles=new HealthFiles.Builder()
                 .addBloodtype(bloodtype)
                 .addDrinkStateNames(drinkStateNames)
@@ -177,14 +205,17 @@ public class HealthFilesFragment2 extends BaseFragment {
         }
 
         if (!TextUtils.isEmpty(medicineAllergyNames)) {
-            String names[] = medicineAllergyNames.split(",");
+            String names[] = medicineAllergyNames.split(" ");
             for (int i = 0; i < names.length; i++) {
                 if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
                     if(names[i].contains("-")){
                         String others[]=names[i].split("-");
                         if(others.length>=2) {
                             if (!TextUtils.isEmpty(others[1])) {
-                                flowMedicineAllergy.addView(getTextView(others[1]), lp);
+
+                                    flowMedicineAllergy.addView(getTextView(others[1]), lp);
+
+
                             }
                         }
                     }else {
@@ -196,14 +227,16 @@ public class HealthFilesFragment2 extends BaseFragment {
             flowMedicineAllergy.addView(getTextView("无"), lp);
         }
         if (!TextUtils.isEmpty(pastMedicalHistoryNames)) {
-            String names[] = pastMedicalHistoryNames.split(",");
+            String names[] = pastMedicalHistoryNames.split(" ");
             for (int i = 0; i < names.length; i++) {
                 if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
                     if(names[i].contains("-")) {
                         String others[] = names[i].split("-");
                         if(others.length>=2){
                             if(!TextUtils.isEmpty(others[1])) {
-                                flowPastMedicalHistory.addView(getTextView(others[1]), lp);
+
+                                    flowPastMedicalHistory.addView(getTextView(others[1]), lp);
+
                             }
                         }
                     }else{
@@ -230,7 +263,6 @@ public class HealthFilesFragment2 extends BaseFragment {
                     familyMedicalhistory_childrenNames = familyMedicalhistory_childrenNames + names[1] + ",";
                 }
             }
-
         }
         if (!TextUtils.isEmpty(familyMedicalhistory_fatherNames)) {
             String names[] = familyMedicalhistory_fatherNames.split(",");
@@ -240,7 +272,9 @@ public class HealthFilesFragment2 extends BaseFragment {
                         String others[] = names[i].split("-");
                         if(others.length>=2) {
                             if (!TextUtils.isEmpty(others[1])) {
-                                flowFamilyMedicalhistory_Father.addView(getTextView(others[1]), lp);
+
+                                    flowFamilyMedicalhistory_Father.addView(getTextView(others[1]), lp);
+
                             }
                         }
                     }else{
@@ -260,7 +294,9 @@ public class HealthFilesFragment2 extends BaseFragment {
                         String others[] = names[i].split("-");
                         if(others.length>=2) {
                             if (!TextUtils.isEmpty(others[1])) {
-                                flowFamilyMedicalhistory_Mother.addView(getTextView(others[1]), lp);
+
+                                    flowFamilyMedicalhistory_Mother.addView(getTextView(others[1]), lp);
+
                             }
                         }
                     }else{
@@ -280,7 +316,9 @@ public class HealthFilesFragment2 extends BaseFragment {
                         String others[] = names[i].split("-");
                         if(others.length>=2) {
                             if (!TextUtils.isEmpty(others[1])) {
-                                flowFamilyMedicalhistory_Sister.addView(getTextView(others[1]), lp);
+
+                                    flowFamilyMedicalhistory_Sister.addView(getTextView(others[1]), lp);
+
                             }
                         }
                     }else{
@@ -300,7 +338,10 @@ public class HealthFilesFragment2 extends BaseFragment {
                         String others[] = names[i].split("-");
                         if(others.length>=2) {
                             if (!TextUtils.isEmpty(others[1])) {
-                                flowFamilyMedicalhistory_Children.addView(getTextView(others[1]), lp);
+
+                                    flowFamilyMedicalhistory_Children.addView(getTextView(others[1]), lp);
+
+
                             }
                         }
                     }else{
@@ -313,15 +354,17 @@ public class HealthFilesFragment2 extends BaseFragment {
         }
 
         if (!TextUtils.isEmpty(geneticHistoryNmaes)) {
-            String names[] = geneticHistoryNmaes.split(",");
+            String names[] = geneticHistoryNmaes.split(" ");
             for (int i = 0; i < names.length; i++) {
                 if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
                     if(names[i].contains("-")) {
                         String others[] = names[i].split("-");
                         if(others.length>=2) {
-                            if (!TextUtils.isEmpty(others[1])) {
-                                flow_GeneticHistory.addView(getTextView(others[1]), lp);
-                            }
+
+                                if(!"无".equals(others[1])) {
+                                    flow_GeneticHistory.addView(getTextView(others[1]), lp);
+                                }
+
                         }
                     }else{
                         flow_GeneticHistory.addView(getTextView(names[i]), lp);

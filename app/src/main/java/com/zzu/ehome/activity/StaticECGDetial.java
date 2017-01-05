@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zzu.ehome.R;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.view.HeadView;
 
 /**
@@ -29,7 +30,9 @@ public class StaticECGDetial extends BaseActivity {
         mIntent = this.getIntent();
         imurl = mIntent.getStringExtra("imurl");
         initViews();
-
+        if (!CommonUtils.isNotificationEnabled(StaticECGDetial.this)) {
+            showTitleDialog("请打开通知中心");
+        }
     }
 
 

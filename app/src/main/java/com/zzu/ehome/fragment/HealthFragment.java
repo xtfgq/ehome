@@ -24,6 +24,7 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.activity.BaseFilesActivity;
 import com.zzu.ehome.activity.CreateillnessActivity;
 import com.zzu.ehome.activity.DataChatActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.utils.CommonUtils;
 
@@ -49,6 +50,7 @@ public class HealthFragment extends BaseFragment implements View.OnClickListener
     private Boolean isFile;
     private boolean isPrepared;
     private View vTop;
+    private SupperBaseActivity activity;
     private BroadcastReceiver mDateOrFileBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -64,6 +66,13 @@ public class HealthFragment extends BaseFragment implements View.OnClickListener
 
         }
     };
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -170,6 +179,10 @@ public class HealthFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         switch (v.getId()) {
             case R.id.layout_data:
 

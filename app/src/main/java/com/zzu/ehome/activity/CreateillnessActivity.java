@@ -38,6 +38,7 @@ import com.zzu.ehome.bean.TreatmentInquirywWithPage;
 import com.zzu.ehome.bean.TreatmentInquirywWithPageDate;
 import com.zzu.ehome.reciver.EventType;
 import com.zzu.ehome.reciver.RxBus;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.ImageUtil;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -59,8 +60,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import de.greenrobot.event.EventBus;
+
+import static u.aly.au.S;
 
 
 /**
@@ -131,7 +137,9 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
         mPermissionsChecker = new PermissionsChecker(CreateillnessActivity.this);
         resultRecyclerView = (RecyclerView) findViewById(R.id.result_recycler);
         initEvent();
-
+        if(!CommonUtils.isNotificationEnabled(CreateillnessActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
 
@@ -385,6 +393,13 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
+        if(!CommonUtils.isNotificationEnabled(CreateillnessActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
         switch (v.getId()) {
             case R.id.rlphoto:
                 ImageSelectorActivity.start(CreateillnessActivity.this, 5, ImageSelectorActivity.MODE_MULTIPLE, true, false, false, images.size() - 1);
@@ -401,12 +416,12 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.btn_save:
                 //保存按钮
-/*                if (CommonUtils.isFastClick())
+             /*  if (CommonUtils.isFastClick())
                     return;*/
                 setEventEnable(false);
                 jzyy = edt_jzdw.getText().toString();
-                zdjg = edt_jzjg.getText().toString();
-                yyjy = edt_yyjy.getText().toString();
+                zdjg = StringFilter(edt_jzjg.getText().toString()) ;
+                yyjy =StringFilter(edt_yyjy.getText().toString()) ;
                 checktime = edt_time.getText().toString();
                 if (jzyy.equals("")) {
                     showMessage("请填写就诊医院!");
@@ -568,6 +583,12 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
                 break;
 
         }
+    }
+    public static String StringFilter(String str) throws PatternSyntaxException {
+        String regEx = "[`~!@#$%^&*()+=|{}''\\[\\].<>~！@#￥%……&*（）——+|{}【】‘”“’？]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.replaceAll("").trim();
     }
 
 

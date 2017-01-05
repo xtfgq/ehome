@@ -151,11 +151,22 @@
         <activity
             android:name=".activity.SmokeStateActivity"
             android:theme="@style/mydialog" />
+        <activity android:name=".activity.FatherTestActivity" />
+        <activity android:name=".activity.PlatformTestActivity" />
+        <activity android:name=".activity.SmartSearchActivity" />
+        <activity android:name=".activity.DeclarationWebActivity" />
+        <activity android:name=".activity.WebPlatmActivity" />
+
 
         <activity
             android:name=".activity.SelectHospitalActivity"
             android:theme="@style/mydialog" />
+        <activity
+            android:name=".activity.SelectPlatmHospitalActivity"
+            android:theme="@style/mydialog" />
+
         <activity android:name=".view.crop.CropImageActivity" />
+
         <activity android:name=".activity.EcgDesActivity" />
         <activity
             android:name=".activity.SelectItemActivity"
@@ -578,13 +589,13 @@
 
         <!-- imlib config begin -->
      <!-- &lt;!&ndash; 正式服务&ndash;&gt;-->
-<meta-data
+<!--<meta-data
             android:name="RONG_CLOUD_APP_KEY"
-            android:value="x18ywvqf8xjpc" />
+            android:value="x18ywvqf8xjpc" />-->
 <!--   &lt;!&ndash;&lt;!&ndash;  测试服务&ndash;&gt;&ndash;&gt;-->
-    <!--  <meta-data
+   <meta-data
                     android:name="RONG_CLOUD_APP_KEY"
-                    android:value="e0x9wycfxehzq" />-->
+                    android:value="e0x9wycfxehzq" />
 
         <service
             android:name="io.rong.imlib.ipc.RongService"

@@ -52,7 +52,10 @@ public class SmartWebView extends BaseSimpleActivity {
 
 //url="http://ehome.staging.topmd.cn/chaxun/select.html";
 
-
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         url=Constants.EhomeURL+"/LaiKang/HealthDataList.aspx?CardNo="+user.getUserno();
 //        url="http://wxsdk.lkang.cn/LoginZ.aspx?cardno=410322198708063857&mobile=15986816294";
 

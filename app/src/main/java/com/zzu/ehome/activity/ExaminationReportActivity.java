@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -19,6 +20,7 @@ import com.zzu.ehome.bean.MedicalDate;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
@@ -31,6 +33,10 @@ import com.zzu.ehome.view.HeadView;
 import org.json.JSONObject;
 
 import java.util.List;
+
+import static android.R.attr.data;
+import static android.R.attr.id;
+import static com.zzu.ehome.db.DBHelper.mContext;
 
 /**
  * Created by Mersens on 2016/8/20.
@@ -64,6 +70,9 @@ public class ExaminationReportActivity extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(ExaminationReportActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -72,7 +81,7 @@ public class ExaminationReportActivity extends BaseActivity {
         layout_none.setVisibility(View.GONE);
         layout_search=(RelativeLayout)findViewById(R.id.layout_search);
         layout_add=(RelativeLayout) findViewById(R.id.layout_add);
-        setDefaultViewMethod(R.mipmap.icon_arrow_left, "体检报告", R.mipmap.icon_add_zoushi, new HeadView.OnLeftClickListener() {
+        setDefaultViewMethod(R.mipmap.icon_arrow_left, "手动添加报告", R.mipmap.icon_add_zoushi, new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
                 finishActivity();
@@ -80,6 +89,10 @@ public class ExaminationReportActivity extends BaseActivity {
         }, new HeadView.OnRightClickListener() {
             @Override
             public void onClick() {
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
                         showMissingPermissionDialog();
@@ -170,7 +183,6 @@ public class ExaminationReportActivity extends BaseActivity {
                         MedicalDate date = JsonTools.getData(result.toString(), MedicalDate.class);
                         mList = date.getData();
                         if (adapter == null) {
-
                             adapter = new MedicalExaminationAdapter(ExaminationReportActivity.this, mList);
                             listView.setAdapter(adapter);
                         } else {
@@ -188,8 +200,18 @@ public class ExaminationReportActivity extends BaseActivity {
             }
 
         }));
-
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
+                Intent i = new Intent(ExaminationReportActivity.this, MedicalExaminationDesActivity.class);
+                i.putExtra("ID", mList.get(position).getID());
+              startActivity(i);
+            }
+        });
 
     }
     @Override

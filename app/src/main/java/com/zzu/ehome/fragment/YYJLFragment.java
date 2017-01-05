@@ -23,6 +23,7 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.activity.ImageAlbumManager;
 import com.zzu.ehome.activity.ImageSelectorActivity;
 import com.zzu.ehome.activity.SelectDateAct;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.Images;
 import com.zzu.ehome.utils.ImageUtil;
@@ -49,6 +50,13 @@ public class YYJLFragment extends BaseFragment implements View.OnClickListener {
     public static final String EXTRA_IMAGES = "extraImages";
     private GridAdapter mAdapter;
     private String path;
+    private SupperBaseActivity activity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -96,6 +104,11 @@ public class YYJLFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+
+        }
         switch (v.getId()) {
             case R.id.layout_fysj:
                 Intent intenttime = new Intent(getActivity(), SelectDateAct.class);

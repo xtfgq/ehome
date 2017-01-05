@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.zzu.ehome.R;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.BloodPressChatAdapter;
 import com.zzu.ehome.bean.BloodPreessDate;
 import com.zzu.ehome.bean.BloodPressBean;
@@ -73,6 +75,13 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
     private LinkedList<String> weeks = new LinkedList<>();
     private List<String> months = new ArrayList<>();
     private TextView tvnodata;
+    private SupperBaseActivity activity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -184,6 +193,10 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
     }
 
     private void getHistory() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         requestMaker.HealthDataInquirywWithPageType(userid,cardNo, 10 + "", page + "", "BloodPressure", new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
@@ -228,6 +241,10 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
     }
 
     private void setDay() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         startTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
         endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
@@ -336,6 +353,10 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
         }
 
         mChart.setX(labels, 30);
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         requestMaker.BloodPressureInquiryType(cardNo,userid, startTime, endTime, "D", new JsonAsyncTask_Info(
                 getActivity(), true, new JsonAsyncTaskOnComplete() {
             public void processJsonObject(Object result) {
@@ -429,6 +450,10 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
             labels.add(day.split("-")[2]);
         }
         mChart.setX(labels, 6);
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         requestMaker.BloodPressureInquiryType(cardNo,userid, startTime, endTime, "D", new JsonAsyncTask_Info(
                 getActivity(), true, new JsonAsyncTaskOnComplete() {
             public void processJsonObject(Object result) {
@@ -533,6 +558,11 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
 
     @Override
     public void OnLoadingMore() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            loadingFinished();
+            return;
+        }
         progressBarView.setVisibility(View.VISIBLE);
         progressBarTextView.setVisibility(View.VISIBLE);
 

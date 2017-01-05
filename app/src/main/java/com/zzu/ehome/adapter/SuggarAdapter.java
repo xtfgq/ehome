@@ -26,7 +26,7 @@ public class SuggarAdapter extends BaseListAdapter<String> {
         this.current = current;
     }
 
-    private int current = -1;
+    private int current = 0;
 
     public SuggarAdapter(Context context, List<String> objects) {
         super(context, objects);

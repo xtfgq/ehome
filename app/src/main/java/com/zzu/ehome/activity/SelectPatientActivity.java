@@ -17,6 +17,7 @@ import com.zzu.ehome.bean.UserContactor;
 import com.zzu.ehome.bean.UserContactorData;
 import com.zzu.ehome.bean.UserDate;
 import com.zzu.ehome.main.ehome.MainActivity;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_ECGInfo;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -60,6 +61,9 @@ public class SelectPatientActivity extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if (!CommonUtils.isNotificationEnabled(SelectPatientActivity.this)) {
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -85,7 +89,10 @@ public class SelectPatientActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 Intent intent = new Intent();
                 intent.setClass(SelectPatientActivity.this, ConfirmMsgActivity.class);
                 Bundle bundle = new Bundle();

@@ -12,6 +12,7 @@ import com.zzu.ehome.adapter.RemindTypeAdapter;
 import com.zzu.ehome.adapter.RepeatAdapter;
 import com.zzu.ehome.bean.RepatBean;
 import com.zzu.ehome.fragment.DoctorFragment;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.view.HeadView;
 import com.zzu.ehome.view.crop.util.Log;
 
@@ -35,6 +36,9 @@ public class RemindTypeActivity extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(RemindTypeActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {

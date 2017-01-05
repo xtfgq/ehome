@@ -70,7 +70,7 @@ public abstract class SupperBaseActivity extends FragmentActivity {
 
 
     private CustomProgressDialog progressDialog = null;
-    private Boolean isVisible;
+    private boolean isVisible;
     private Handler mHandler = new Handler() {
 
         @Override
@@ -94,6 +94,9 @@ public abstract class SupperBaseActivity extends FragmentActivity {
                 NetworkInfo netInfo = mConnectivityManager.getActiveNetworkInfo();
                 if(netInfo != null && netInfo.isAvailable()) {
                     isNetWork=true;
+                    if(isVisible){
+                        SVProgressHUD.clean(SupperBaseActivity.this);
+                    }
                     if(netInfo.getType()==ConnectivityManager.TYPE_WIFI){
 
                     }else if(netInfo.getType()==ConnectivityManager.TYPE_ETHERNET){
@@ -108,7 +111,6 @@ public abstract class SupperBaseActivity extends FragmentActivity {
                         showNetWorkErrorDialog();
                     }
 
-
                 }
             }
         }
@@ -118,6 +120,8 @@ public abstract class SupperBaseActivity extends FragmentActivity {
     public void showNetWorkErrorDialog(){
       SVProgressHUD.showErrorWithStatus(SupperBaseActivity.this, "网络异常,请稍候重试!", SVProgressHUD.SVProgressHUDMaskType.Gradient);
     }
+
+
 
 
 
@@ -144,7 +148,7 @@ public abstract class SupperBaseActivity extends FragmentActivity {
         intentFilter.addAction("rongyun");
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(mBroadcastReceiver, intentFilter);
-
+        isVisible=true;
 
     }
 
@@ -521,10 +525,12 @@ public abstract class SupperBaseActivity extends FragmentActivity {
 
     }
     public  void showTitleDialog(String message) {
+        if(isVisible){
+            DialogTips dialog = new DialogTips(SupperBaseActivity.this, message, "确定");
+            dialog.show();
+            dialog = null;
+        }
 
-        DialogTips dialog = new DialogTips(SupperBaseActivity.this, message, "确定");
-        dialog.show();
-        dialog = null;
 
     }
     public String getRightText() {

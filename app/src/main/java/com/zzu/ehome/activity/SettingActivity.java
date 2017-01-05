@@ -75,6 +75,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             weight = Float.parseFloat(SharePreferenceUtil.getInstance(SettingActivity.this).getWeight());
         }
         initEvent();
+        if(!CommonUtils.isNotificationEnabled(SettingActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -113,6 +116,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         switch (v.getId()) {
 //            case R.id.layout_about:
 //                intentAction(SettingActivity.this,AboutEhomeActivity.class);

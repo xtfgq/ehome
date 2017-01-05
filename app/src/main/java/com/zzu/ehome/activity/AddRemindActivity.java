@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.igexin.sdk.PushManager;
 import com.zzu.ehome.R;
 import com.zzu.ehome.bean.RepatBean;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -55,6 +56,9 @@ public class AddRemindActivity extends BaseActivity implements TimePopWindows.On
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(AddRemindActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -79,6 +83,10 @@ public class AddRemindActivity extends BaseActivity implements TimePopWindows.On
         layout_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
 
                 tp = new TimePopWindows(AddRemindActivity.this, llremind);
                 tp.setmOnGetData(AddRemindActivity.this);
@@ -88,6 +96,10 @@ public class AddRemindActivity extends BaseActivity implements TimePopWindows.On
         layout_repeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 Intent intent = new Intent(AddRemindActivity.this, RepeatActivity.class);
                 startActivityForResult(intent, ADD_WEEK);
 
@@ -97,6 +109,10 @@ public class AddRemindActivity extends BaseActivity implements TimePopWindows.On
         layout_type.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 Intent intent = new Intent(AddRemindActivity.this, RemindTypeActivity.class);
                 startActivityForResult(intent, ADD_TYPE);
 

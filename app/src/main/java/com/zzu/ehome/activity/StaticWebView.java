@@ -60,7 +60,10 @@ public class StaticWebView extends BaseActivity {
 
             }
         });
-
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         mWebView.loadUrl(url);
 
 

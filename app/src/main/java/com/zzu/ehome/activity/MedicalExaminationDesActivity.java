@@ -28,6 +28,7 @@ import com.zzu.ehome.adapter.MedicalExaminationAdapter;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.MedicalBean;
 import com.zzu.ehome.bean.MedicalDate;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -67,9 +68,16 @@ public class MedicalExaminationDesActivity extends BaseActivity implements View.
         id = mIntent.getStringExtra("ID");
         initViews();
         initEnent();
+        if(!CommonUtils.isNotificationEnabled(MedicalExaminationDesActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     private void initEnent() {
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         startProgressDialog();
         requestMaker.MeidicalReportInquiry(userid, id, new JsonAsyncTask_Info(MedicalExaminationDesActivity.this, true, new JsonAsyncTaskOnComplete() {
             @Override

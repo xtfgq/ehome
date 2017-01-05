@@ -1,12 +1,16 @@
 package com.zzu.ehome.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.YuYueAdapter;
 import com.zzu.ehome.bean.HospitalBean;
 import com.zzu.ehome.bean.HospitalInquiryByTopmd;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
@@ -17,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
+
+import static com.zzu.ehome.db.DBHelper.mContext;
 
 /**
  * Created by Mersens on 2016/8/9.
@@ -33,8 +39,15 @@ public class OrdinaryYuYueActivity extends BaseActivity {
         setContentView(R.layout.activity_ordinary_yy);
         requestMaker = RequestMaker.getInstance();
         initViews();
-        initEvent();
+        if(!isNetWork){
+           showNetWorkErrorDialog();
+            return;
+        }
         initDatas();
+        initEvent();
+        if(!CommonUtils.isNotificationEnabled(OrdinaryYuYueActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -46,11 +59,24 @@ public class OrdinaryYuYueActivity extends BaseActivity {
             }
         });
 
+
     }
 
     public void initEvent() {
 
-
+listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if(!isNetWork){
+           showNetWorkErrorDialog();
+            return;
+        }
+        Intent i = new Intent(OrdinaryYuYueActivity.this, OfficeListActivity.class);
+        i.putExtra("id", mList.get(position).getHospital_Id());
+        i.putExtra("hosName", mList.get(position).getHospital_FullName());
+      startActivity(i);
+    }
+});
     }
 
     public void initDatas() {

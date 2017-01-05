@@ -54,6 +54,10 @@ public class EcgDesActivity extends BaseSimpleActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         switch (v.getId()){
             case R.id.btn_des:
                 startActivity(new Intent(EcgDesActivity.this,ECGActivity1.class));

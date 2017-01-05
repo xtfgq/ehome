@@ -1,6 +1,7 @@
 package com.zzu.ehome.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.SelectDateAndTime;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.HealteTempData;
 import com.zzu.ehome.bean.RefreshEvent;
@@ -65,8 +67,16 @@ public class TempFragment extends BaseFragment {
     public static String postion = "";
     private EHomeDao dao;
     private User dbUser;
+    private SupperBaseActivity activity;
 
     public static int p = -1;
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -81,7 +91,9 @@ public class TempFragment extends BaseFragment {
         initViews();
         initEvents();
         getTemperature();
-
+        if (!CommonUtils.isNotificationEnabled(getActivity())) {
+            activity.showTitleDialog("请打开通知中心");
+        }
         return view;
     }
 
@@ -128,6 +140,11 @@ public class TempFragment extends BaseFragment {
         rlchecktime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+
+                }
                 Intent intenttime = new Intent(getActivity(), SelectDateAndTime.class);
                 startActivityForResult(intenttime, Constants.ADDTTIME);
 
@@ -136,6 +153,11 @@ public class TempFragment extends BaseFragment {
         btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+
+                }
                 if (CommonUtils.isFastClick()) return;
                 btnsave.setEnabled(false);
                 addTemperature();
@@ -192,6 +214,11 @@ public class TempFragment extends BaseFragment {
     }
 
     private void getTemperature() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+
+        }
         requestMaker.HealthDataInquirywWithPageType(userid,cardNo, "1", "1", "Temperature", new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {

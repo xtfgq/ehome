@@ -9,11 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.zzu.ehome.R;
-import com.zzu.ehome.activity.LoginActivity1;
 import com.zzu.ehome.main.ehome.MainActivity;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 

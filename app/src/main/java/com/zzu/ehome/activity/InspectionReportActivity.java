@@ -15,6 +15,7 @@ import com.zzu.ehome.bean.ResultContent;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -60,6 +61,10 @@ public class InspectionReportActivity extends BaseActivity {
 //        completeInfoTips();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(InspectionReportActivity.this)){
+            showTitleDialog("请打开通知中心");
+
+        }
     }
 
 
@@ -118,6 +123,10 @@ public class InspectionReportActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 Intent i = new Intent(InspectionReportActivity.this, InspectionReportDetailActivity.class);
                 i.putExtra("Type", mList.get(position).getOCRType());
                 i.putExtra("RecordID", mList.get(position).getID());

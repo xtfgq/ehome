@@ -82,6 +82,9 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
         tv_title.setText(title);
         initEvent();
         dao = new EHomeDaoImpl(this);
+        if(!CommonUtils.isNotificationEnabled(DoctorDetialActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -141,6 +144,7 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
      * 没有登录状态查询详情
      */
     private void noUsrid(){
+
         startProgressDialog();
         requestMaker.MSDoctorDetailInquiry(doctorid, new JsonAsyncTask_Info(DoctorDetialActivity.this, true, new JsonAsyncTaskOnComplete() {
             @Override
@@ -197,6 +201,7 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
      * 登录状态下详情
      */
     private void serchDoc(){
+
         startProgressDialog();
         requestMaker.MSDoctorDetailInquiry(doctorid, SharePreferenceUtil.getInstance(DoctorDetialActivity.this).getUserId(), new JsonAsyncTask_Info(DoctorDetialActivity.this, true, new JsonAsyncTaskOnComplete() {
             @Override
@@ -263,6 +268,10 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         switch (v.getId()) {
             case R.id.icon_share:
                 ToastUtils.showMessage(this, "点击分享");

@@ -11,6 +11,7 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.fragment.AppointmentFragment;
 import com.zzu.ehome.fragment.MyAppointmentFragmet;
 import com.zzu.ehome.fragment.WebFragmet;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.view.HeadView;
 
 /**
@@ -27,6 +28,9 @@ public class AppointmentActivity1 extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(AppointmentActivity1.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -44,6 +48,10 @@ public class AppointmentActivity1 extends BaseActivity {
         tv_normal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 setColor(Type.NORMAL);
                 addFragment(Type.NORMAL);
             }
@@ -51,6 +59,10 @@ public class AppointmentActivity1 extends BaseActivity {
         tv_net.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 setColor(Type.NET);
                 addFragment(Type.NET);
             }

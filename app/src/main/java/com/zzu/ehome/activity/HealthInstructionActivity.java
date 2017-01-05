@@ -48,6 +48,10 @@ public class HealthInstructionActivity extends BaseActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         date=sdf.format(new Date());
         initViews();
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         initData();
     }
 

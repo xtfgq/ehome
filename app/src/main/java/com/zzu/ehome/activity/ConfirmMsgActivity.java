@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.bean.DoctorSchemaByTopmdBean;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_ECGInfo;
 import com.zzu.ehome.utils.RequestMaker;
@@ -48,7 +49,14 @@ public class ConfirmMsgActivity extends BaseActivity {
         userid= SharePreferenceUtil.getInstance(ConfirmMsgActivity.this).getUserId();
         initViews();
         initEvent();
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(ConfirmMsgActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
 
@@ -78,6 +86,10 @@ public class ConfirmMsgActivity extends BaseActivity {
         btn_yuyue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 startProgressDialog();
                 btn_yuyue.setEnabled(false);
                 requestMaker.GuahaoOrderInsert(userid,HospitalID,DepartmentID,DepartmentName,doctortime.getRealName(),doctortime.getSchemaID(),DoctorID,UserContactorID,doctortime.getSchemaWeek(),

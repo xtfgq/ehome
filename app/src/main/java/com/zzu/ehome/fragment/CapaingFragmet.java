@@ -1,22 +1,18 @@
 package com.zzu.ehome.fragment;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.ListView;
 import android.widget.Toast;
 
-
 import com.zzu.ehome.R;
-
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.CapaingAdapter;
-
 import com.zzu.ehome.bean.CapaingBean;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -47,7 +43,14 @@ public class CapaingFragmet extends BaseFragment{
     private int page;
     private PullToRefreshLayout pulltorefreshlayout;
     private List<CapaingBean> list=new ArrayList<>();
+    private SupperBaseActivity activity;
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity) context;
+    }
 
     @Nullable
     @Override
@@ -72,6 +75,12 @@ public class CapaingFragmet extends BaseFragment{
         pulltorefreshlayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    pulltorefreshlayout.refreshFinish(PullToRefreshLayout.FAIL);
+                    return;
+
+                }
                 page=1;
                 isFirst = true;
                 isReflash=true;
@@ -82,6 +91,12 @@ public class CapaingFragmet extends BaseFragment{
 
             @Override
             public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.FAIL);
+                    return;
+
+                }
                 page++;
                 isLoading=true;
                 isReflash=false;
@@ -95,6 +110,11 @@ public class CapaingFragmet extends BaseFragment{
     }
 
     public void initDatas() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+
+        }
         userid= SharePreferenceUtil.getInstance(getActivity()).getUserId();
         requestMaker.APPLogInquiry(userid,"01",page+"",10+"",new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override

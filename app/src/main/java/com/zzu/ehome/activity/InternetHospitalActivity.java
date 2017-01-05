@@ -50,6 +50,10 @@ public class InternetHospitalActivity extends BaseActivity {
         }
         initViews();
         initEvent();
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         initDatas();
     }
 

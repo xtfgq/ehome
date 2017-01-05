@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.zzu.ehome.R;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.TempChatAdapter;
 import com.zzu.ehome.bean.HealteTempData;
 import com.zzu.ehome.bean.RefreshEvent;
@@ -78,6 +80,13 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
     private TextView tvnodata;
     private EHomeDao dao;
     private User dbUser;
+    private SupperBaseActivity activity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -186,6 +195,10 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
     }
 
     private void setMonth() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         startTime = sdf.format(CommonUtils.changeDate(-29).getTime());
         endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
@@ -279,6 +292,10 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
     }
 
     private void setDay() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         startTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
         endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
@@ -338,7 +355,10 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
     }
 
     private void setWeek() {
-
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 
@@ -410,6 +430,10 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
 
 
     private void getHistory() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
 //    ToastUtils.showMessage(getActivity(),"vvvhhhhTemp");
         requestMaker.HealthDataInquirywWithPageType(userid, cardNo,10 + "", page + "", "Temperature", new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
@@ -466,6 +490,11 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
 
     @Override
     public void OnLoadingMore() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            loadingFinished();
+            return;
+        }
         progressBarView.setVisibility(View.VISIBLE);
         progressBarTextView.setVisibility(View.VISIBLE);
         loadingAnimation.start();

@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import com.zzu.ehome.activity.RegisterActivity;
 import com.zzu.ehome.activity.RelationActivity;
 import com.zzu.ehome.activity.SecondActivity;
 import com.zzu.ehome.activity.SexActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.activity.WeightAndHeightAct;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.application.CustomApplcation;
@@ -38,7 +40,13 @@ public class MyHomeFragment extends BaseFragment {
     private ImageView iv_head;
     private TextView tv_rl, tv_phone;
     RelationDes res;
+    private SupperBaseActivity activity;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -69,6 +77,10 @@ public class MyHomeFragment extends BaseFragment {
             btnadd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(!activity.isNetWork){
+                        activity.showNetWorkErrorDialog();
+                        return;
+                    }
                     CustomApplcation.getInstance().finishSingleActivityByClass(AddSuccussAct.class);
                     CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
                     CustomApplcation.getInstance().finishSingleActivityByClass(RegisterActivity.class);
@@ -76,7 +88,6 @@ public class MyHomeFragment extends BaseFragment {
                     CustomApplcation.getInstance().finishSingleActivityByClass(SexActivity.class);
                     CustomApplcation.getInstance().finishSingleActivityByClass(RelationActivity.class);
                     CustomApplcation.getInstance().finishSingleActivityByClass(SecondActivity.class);
-
                     Intent i = new Intent(getActivity(), LoginActivity1.class);
                     i.putExtra("relation", "rela");
                     startActivity(i);
@@ -103,6 +114,10 @@ public class MyHomeFragment extends BaseFragment {
              iv_head.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
+                     if(!activity.isNetWork){
+                         activity.showNetWorkErrorDialog();
+                         return;
+                     }
                      CustomApplcation.getInstance().finishSingleActivityByClass(AddSuccussAct.class);
                      Intent i = new Intent(getActivity(), LoginActivity1.class);
                      i.putExtra("relation", "rela");

@@ -1,12 +1,10 @@
 package com.zzu.ehome.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +20,9 @@ import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.service.StepDetector;
 import com.zzu.ehome.service.StepService;
 import com.zzu.ehome.utils.DateUtils;
-import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
-import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.CircleBar;
-
-import org.json.JSONObject;
 
 /**
  * Created by Mersens on 2016/7/6.

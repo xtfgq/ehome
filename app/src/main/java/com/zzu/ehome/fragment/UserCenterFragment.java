@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zzu.ehome.R;
@@ -40,18 +40,10 @@ import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.ImageUtil;
-import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
-import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.ScreenUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
-import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.SharePopupWindow;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import de.greenrobot.event.EventBus;
 
@@ -260,6 +252,10 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
             case R.id.layout_wdda:
                 //我的档案
                 userid=SharePreferenceUtil.getInstance(getActivity()).getUserId();
+                if(TextUtils.isEmpty(userid)){
+                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+                    return;
+                }
                 type=dao.findUserInfoById(userid).getType()+"";
                 if (!TextUtils.isEmpty(userid) && type!=null) {
                     if(type.equals("2")){

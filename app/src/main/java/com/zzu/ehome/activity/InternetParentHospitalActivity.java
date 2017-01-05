@@ -64,6 +64,10 @@ public class InternetParentHospitalActivity extends BaseActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 String name = mList.get(position).get("Name").toString();
                 String Id = mList.get(position).get("ID").toString();
                 int type=Integer.valueOf(mList.get(position).get("HaveChild").toString());

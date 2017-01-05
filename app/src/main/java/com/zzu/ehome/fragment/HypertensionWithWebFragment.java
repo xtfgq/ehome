@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.DoctorDetialActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.MSDoctorBean;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
@@ -51,6 +53,14 @@ public class HypertensionWithWebFragment extends BaseFragment {
     private String goodAt = null;
     private List<MSDoctorBean> mList = null;
     private MyAdapter adapter;
+    private SupperBaseActivity activity;
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -100,6 +110,10 @@ public class HypertensionWithWebFragment extends BaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();;
+                    return;
+                }
                 Intent i = new Intent(getActivity(), DoctorDetialActivity.class);
                 i.putExtra("doctorid", mList.get(position).getDoctorID());
                 i.putExtra("doctorname", mList.get(position).getDoctorName());
@@ -142,6 +156,10 @@ public class HypertensionWithWebFragment extends BaseFragment {
     }
 
     public void initDatas() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         webView.loadUrl(path);
 /*        requestMaker.CommonDiseaseInquiry(new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
@@ -166,6 +184,10 @@ public class HypertensionWithWebFragment extends BaseFragment {
     }
 
     public void getDoctorListData(String hosptialId, String title, String goodAt) {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         requestMaker.MSDoctorInquiry(hosptialId, title, goodAt, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {

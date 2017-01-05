@@ -20,6 +20,7 @@ import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.zzu.ehome.R;
 import com.zzu.ehome.fragment.DynamicFragment;
 import com.zzu.ehome.fragment.StaticFragment;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.view.HeadView;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -56,6 +57,9 @@ public class InternetMap extends BaseActivity {
         Latitude = mIntent.getDoubleExtra("Latitude", 0);
         Longitude = mIntent.getDoubleExtra("Longitude", 0);
         initViews();
+        if(!CommonUtils.isNotificationEnabled(InternetMap.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {

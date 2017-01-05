@@ -20,6 +20,7 @@ import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.main.ehome.MainActivity;
 import com.zzu.ehome.service.RegisterCodeTimerService;
 import com.zzu.ehome.service.StepDetector;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.IOUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -65,6 +66,9 @@ public class ChangePasswordActivity extends BaseActivity {
         edt_old_Pass.setEnabled(false);
         initEvent();
         RegisterCodeTimerService.setHandler(mCodeHandler);
+        if(!CommonUtils.isNotificationEnabled(ChangePasswordActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
     Handler mCodeHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -115,6 +119,10 @@ public class ChangePasswordActivity extends BaseActivity {
         tvgetcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 if(TextUtils.isEmpty(edt_old_Pass.getText().toString().trim())){
                     ToastUtils.showMessage(ChangePasswordActivity.this,"请输入手机号！");
                     return;
@@ -133,6 +141,11 @@ public class ChangePasswordActivity extends BaseActivity {
      * 获取验证码
      */
     public void doGetCode() {
+
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         CHKCodeSend();
 
 
@@ -143,6 +156,7 @@ public class ChangePasswordActivity extends BaseActivity {
 
 
         if (IOUtils.isMobileNO(usermobile)) {
+            startService(mIntent);
             requestMaker.sendAuthCode(usermobile, new JsonAsyncTask_Info(ChangePasswordActivity.this, true, new JsonAsyncTaskOnComplete() {
                 @Override
                 public void processJsonObject(Object result) {
@@ -155,11 +169,11 @@ public class ChangePasswordActivity extends BaseActivity {
                                 .getJSONArray("SendAuthCode");
                         if(Integer.valueOf(array.getJSONObject(0)
                                 .getString("MessageCode"))==0) {
-                            startService(mIntent);
+
                             for (int i = 0; i < array.length(); i++) {
                                 chkcode = array.getJSONObject(i)
                                         .getString("MessageContent");
-                               ToastUtils.showMessage(ChangePasswordActivity.this,chkcode+"");
+//                               ToastUtils.showMessage(ChangePasswordActivity.this,chkcode+"");
 
                                 ToastUtils.showMessage(ChangePasswordActivity.this,"验证码已发送，请注意查收.");
 
@@ -167,6 +181,7 @@ public class ChangePasswordActivity extends BaseActivity {
                         }else{
                             ToastUtils.showMessage(ChangePasswordActivity.this,array.getJSONObject(0)
                                     .getString("MessageContent"));
+                            stopService(mIntent);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -239,10 +254,15 @@ public class ChangePasswordActivity extends BaseActivity {
         }
 
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopService(mIntent);
+    }
 
-        protected void onDestroy() {
+    protected void onDestroy() {
             super.onDestroy();
-            stopService(mIntent);
+
         }
     private void UserClientBind() {
         startProgressDialog();

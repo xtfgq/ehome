@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.InternetHospitalActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.ECGStaticAadapter;
 import com.zzu.ehome.bean.StaticBean;
 import com.zzu.ehome.bean.StaticDate;
@@ -39,6 +41,13 @@ public class StaticFragment extends BaseFragment {
     private String userid;
     private ECGStaticAadapter adapter;
     private LinearLayout heardchat;
+    private SupperBaseActivity activity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -65,6 +74,10 @@ public class StaticFragment extends BaseFragment {
         tv_hlwyy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 Intent intent = new Intent(getActivity(), InternetHospitalActivity.class);
                 startActivity(intent);
             }
@@ -81,6 +94,10 @@ public class StaticFragment extends BaseFragment {
     }
 
     public void initDatas() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         String starttime = "";
         String endtime = "";
         startProgressDialog();

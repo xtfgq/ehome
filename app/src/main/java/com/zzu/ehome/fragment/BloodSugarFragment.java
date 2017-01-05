@@ -1,6 +1,7 @@
 package com.zzu.ehome.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.SelectDateAndTime;
 import com.zzu.ehome.activity.SuggarActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.BloodSuggarBean;
 import com.zzu.ehome.bean.BloodSuggarDa;
@@ -29,6 +31,7 @@ import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.reciver.EventType;
 import com.zzu.ehome.reciver.RxBus;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
@@ -77,6 +80,8 @@ public class BloodSugarFragment extends BaseFragment {
     private EHomeDao dao;
     private User dbUser;
     private OnSelectItemListener mListener;
+    private SupperBaseActivity activity;
+
 
 
     @Nullable
@@ -91,8 +96,17 @@ public class BloodSugarFragment extends BaseFragment {
         initViews();
         initEvents();
 
-
+        if (!CommonUtils.isNotificationEnabled(getActivity())) {
+            activity.showTitleDialog("请打开通知中心");
+        }
         return view;
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
     }
 
     @Override
@@ -177,6 +191,10 @@ public class BloodSugarFragment extends BaseFragment {
         rlchecktime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 Intent intenttime = new Intent(getActivity(), SelectDateAndTime.class);
                 startActivityForResult(intenttime, Constants.ADDTTIME);
 
@@ -218,6 +236,10 @@ public class BloodSugarFragment extends BaseFragment {
         rltimes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 Intent intenttimes = new Intent(getActivity(), SuggarActivity.class);
                 startActivityForResult(intenttimes, ADD_TIMES);
             }
@@ -225,6 +247,10 @@ public class BloodSugarFragment extends BaseFragment {
         btnSuggar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 if (cbgl.isChecked()) {
                     mBloodSugarValue = tvmg + "";
                     type = 2;
@@ -255,6 +281,10 @@ public class BloodSugarFragment extends BaseFragment {
         tvxcheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 if (cbgl.isChecked()) {
                     cbgl.setChecked(false);
                 } else {

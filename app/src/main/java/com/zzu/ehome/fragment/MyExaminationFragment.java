@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.zzu.ehome.R;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.MedicalExaminationAdapter;
 import com.zzu.ehome.bean.MedicalBean;
 import com.zzu.ehome.bean.MedicalDate;
@@ -35,6 +37,13 @@ public class MyExaminationFragment extends BaseFragment{
     private List<MedicalBean> mList;
     private MedicalExaminationAdapter adapter;
     private LinearLayout layout_none;
+    private SupperBaseActivity activity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -74,6 +83,11 @@ public class MyExaminationFragment extends BaseFragment{
     }
 
     public void initDatas() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+
+        }
         requestMaker.MeidicalReportInquiry(userid, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {

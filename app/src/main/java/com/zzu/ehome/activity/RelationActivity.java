@@ -22,6 +22,7 @@ import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.fragment.DoctorFragment;
 import com.zzu.ehome.main.ehome.MainActivity;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -98,6 +99,13 @@ private String code,value;
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
+        if (!CommonUtils.isNotificationEnabled(RelationActivity.this)) {
+            showTitleDialog("请打开通知中心");
+        }
         switch (v.getId()) {
             case R.id.iv_back:
 

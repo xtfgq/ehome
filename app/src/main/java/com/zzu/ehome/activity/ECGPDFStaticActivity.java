@@ -18,6 +18,7 @@ import com.lzy.okserver.download.DownloadManager;
 import com.lzy.okserver.download.DownloadService;
 import com.lzy.okserver.listener.DownloadListener;
 import com.zzu.ehome.R;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.view.HeadView;
 
 import java.io.File;
@@ -101,6 +102,9 @@ public class ECGPDFStaticActivity extends BaseActivity{
             getPermission();
         }
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(ECGPDFStaticActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -125,6 +129,10 @@ public class ECGPDFStaticActivity extends BaseActivity{
         rl_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 if (downloadInfo != null) {
                     if(tvcontent.getText().toString().contains("重新下载详细报告内容")){
                         circleProgressBar.setVisibility(View.VISIBLE);

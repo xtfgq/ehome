@@ -15,6 +15,7 @@ import com.zzu.ehome.bean.MedicationRecord;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
@@ -62,13 +63,24 @@ public class YYJLDataActivity extends BaseActivity {
         dao=new EHomeDaoImpl(this);
         EventBus.getDefault().register(this);
         initEvent();
+        if(!isNetWork){
+           showNetWorkErrorDialog();
+            return;
+        }
         initDate();
+        if (!CommonUtils.isNotificationEnabled(YYJLDataActivity.this)) {
+            showTitleDialog("请打开通知中心");
+        }
 
     }
     public void initEvent() {
         pulltorefreshlayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+                if(!isNetWork){
+                    pulltorefreshlayout.refreshFinish(PullToRefreshLayout.FAIL);
+                    return;
+                }
                 page = 1;
                 isFirst = true;
                 isReflash = true;
@@ -78,6 +90,10 @@ public class YYJLDataActivity extends BaseActivity {
 
             @Override
             public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
+                if(!isNetWork){
+                    pulltorefreshlayout.refreshFinish(PullToRefreshLayout.FAIL);
+                    return;
+                }
                 page++;
                 isFirst = false;
                 isLoading = true;

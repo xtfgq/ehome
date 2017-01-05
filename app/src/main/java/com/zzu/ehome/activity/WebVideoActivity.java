@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.zzu.ehome.R;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.ScreenUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 
@@ -46,6 +47,13 @@ public class WebVideoActivity extends BaseSimpleActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
+        if (!CommonUtils.isNotificationEnabled(WebVideoActivity.this)) {
+            showTitleDialog("请打开通知中心");
+        }
         switch (v.getId()){
             case R.id.layout_mzwz:
                 Intent i=new Intent(WebVideoActivity.this,InternetHospitalActivity.class);

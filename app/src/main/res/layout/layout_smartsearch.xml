@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+    <include layout="@layout/layout_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white">
+
+            <RelativeLayout
+                android:id="@+id/layout_add_hosptial"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+                <TextView
+                    android:id="@+id/tv_hospital"
+                    android:textColorHint="@color/text_color_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:hint="请选择医院"
+                    android:text=""
+                    android:textSize="14sp"
+                    android:textColor="#0f2536"/>
+
+
+
+
+                <ImageView
+                    android:id="@+id/icon_lift_cardid"
+                    android:layout_width="8dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+
+                    android:src="@drawable/icon_arrow_r" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="#e1e1e2" />
+
+            <RelativeLayout
+                android:id="@+id/layout_input_name"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+                <EditText
+                    android:id="@+id/ed_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="#0f2536"
+                    android:hint="请输入姓名"
+                    android:background="@null"
+                    android:textSize="14sp"
+                    android:textCursorDrawable="@null"
+                    android:textColorHint="@color/text_color_gray"
+                    android:layout_centerVertical="true"
+                    />
+
+
+
+
+                <ImageView
+                    android:id="@+id/icon_lift_keshi"
+                    android:layout_width="8dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/icon_arrow_r" />
+
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="#e1e1e2" />
+
+            <RelativeLayout
+                android:id="@+id/layout_add_doctor"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+                <EditText
+                    android:id="@+id/edt_card_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="#0f2536"
+                    android:textColorHint="@color/text_color_gray"
+                    android:hint="请输入身份证号"
+                    android:textSize="14sp"
+                    android:background="@null"
+                    android:textCursorDrawable="@null"
+                    android:inputType="number"
+                    android:digits="0123456789xX"
+                    android:layout_centerVertical="true"
+                    />
+
+
+
+                <ImageView
+                    android:id="@+id/icon_lift_ys"
+                    android:layout_width="8dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/icon_arrow_r" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="#e1e1e2" />
+
+            <RelativeLayout
+                android:id="@+id/layout_add_time"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="#0f2536"
+                    android:textSize="14sp"
+                    android:background="@null"
+                    android:textCursorDrawable="@null"
+                    android:textColorHint="@color/text_color_gray"
+                    android:layout_centerVertical="true"
+                    android:hint="请输入体检编号"
+                    />
+
+
+
+
+                <TextView
+                    android:id="@+id/tv_tips"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/text_color_black"
+                    android:text="查看示例"
+                    android:layout_marginRight="8dp"
+                   />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"/>
+
+    <TextView
+        android:id="@+id/tv_shengming"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/actionbar_color"
+            android:layout_marginBottom="16dp"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:text="免责声明"/>
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/register_btn_bg"
+            android:text="查询"
+            android:layout_weight="1"
+            android:textColor="@color/base_color_text_white"
+            android:textSize="@dimen/button_size" />
+    </LinearLayout>
+
+
+</LinearLayout>
+
+

@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.MedicationRecord;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.view.HeadView;
 
 import java.util.ArrayList;
@@ -52,8 +53,11 @@ public class YYJLDesActivity extends BaseActivity {
         setContentView(R.layout.actvity_yyjl_des);
         mIntent = this.getIntent();
         initViews();
-        initEvent();
 
+        initEvent();
+        if (!CommonUtils.isNotificationEnabled(YYJLDesActivity.this)) {
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     private void initViews() {

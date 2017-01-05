@@ -31,6 +31,10 @@ public class IntroduceActivity extends BaseActivity {
         webSettings.setSaveFormData(false);
         webSettings.setJavaScriptEnabled(true);
         webSettings.setSupportZoom(false);
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         String url = Constants.EhomeURL + "/help/about.html";
 
         setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "中心简介", new HeadView.OnLeftClickListener() {

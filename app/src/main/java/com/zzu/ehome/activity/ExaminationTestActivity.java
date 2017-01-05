@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.ExaminationTestAadpter;
 import com.zzu.ehome.bean.User;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.HeadView;
@@ -31,6 +32,9 @@ public class ExaminationTestActivity extends BaseActivity{
         super.onCreate(arg0);
         setContentView(R.layout.activity_examination_test);
         initViews();
+        if(!CommonUtils.isNotificationEnabled(ExaminationTestActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -54,6 +58,10 @@ public class ExaminationTestActivity extends BaseActivity{
                 switch (position)
                 {
                     case 0:
+                       if(!isNetWork){
+                            showNetWorkErrorDialog();
+                            return;
+                        }
                         User dbUser = getDao().findUserInfoById(SharePreferenceUtil.getInstance(ExaminationTestActivity.this).getUserId());
                         if(dbUser.getUserno()==null|| TextUtils.isEmpty(dbUser.getUserno())){
                             completeInfoTips();
@@ -62,6 +70,10 @@ public class ExaminationTestActivity extends BaseActivity{
                         startActivity(new Intent(ExaminationTestActivity.this, SmartWebView.class));
                         break;
                     case 1:
+                       if(!isNetWork){
+                            showNetWorkErrorDialog();
+                            return;
+                        }
                         User dbUser2 = getDao().findUserInfoById(SharePreferenceUtil.getInstance(ExaminationTestActivity.this).getUserId());
                         if(dbUser2.getUserno()==null|| TextUtils.isEmpty(dbUser2.getUserno())){
                             completeInfoTips();

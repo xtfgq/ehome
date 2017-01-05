@@ -27,6 +27,7 @@ import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.network.DownloadProgressListener;
 import com.zzu.ehome.network.FileDownloader;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.PermissionsChecker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.utils.ToastUtils;
@@ -126,6 +127,9 @@ public class ECGDetailsActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getPermission();
         }
+        if(!CommonUtils.isNotificationEnabled(ECGDetailsActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
 
     }
 
@@ -154,6 +158,10 @@ public class ECGDetailsActivity extends BaseActivity {
         rl_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 if (downloadInfo != null) {
                     if(tvcontent.getText().toString().contains("重新下载详细报告内容")){
                         circleProgressBar.setVisibility(View.VISIBLE);

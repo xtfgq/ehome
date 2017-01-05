@@ -13,6 +13,7 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.DoctorTimeAdapter;
 import com.zzu.ehome.bean.DoctorSchemaByTopmdBean;
 import com.zzu.ehome.bean.DoctorSchemaByTopmdDate;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
@@ -59,6 +60,9 @@ public class DoctorTimeActivity extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(DoctorTimeActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -102,6 +106,10 @@ public class DoctorTimeActivity extends BaseActivity {
     }
 
     public void initDatas() {
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         requestMaker.DoctorSchemaByTopmd(hosid,depid,doctorid,new JsonAsyncTask_Info(
                 DoctorTimeActivity.this, true, new JsonAsyncTaskOnComplete() {
             @Override

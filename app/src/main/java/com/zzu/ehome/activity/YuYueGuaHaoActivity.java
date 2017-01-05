@@ -49,6 +49,10 @@ public class YuYueGuaHaoActivity extends BaseActivity {
         layout_yygh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 startActivity(new Intent(YuYueGuaHaoActivity.this, OrdinaryYuYueActivity.class));
 
             }
@@ -56,6 +60,10 @@ public class YuYueGuaHaoActivity extends BaseActivity {
         layout_spwz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 startActivity(new Intent(YuYueGuaHaoActivity.this, YuYueShiPinActivity.class));
 
             }

@@ -18,6 +18,7 @@ import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.fragment.DoctorFragment;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.utils.ToastUtils;
@@ -71,6 +72,9 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
         PatientId = dao.findUserInfoById(userid).getPatientId();
         initViews();
         initEvent();
+        if(!CommonUtils.isNotificationEnabled(MyDoctorActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
 
     }
 
@@ -110,6 +114,10 @@ public class MyDoctorActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         switch (v.getId()) {
             case R.id.layout_add_hosptial:
                 Intent intent1 = new Intent(MyDoctorActivity.this, SelectHospitalActivity.class);

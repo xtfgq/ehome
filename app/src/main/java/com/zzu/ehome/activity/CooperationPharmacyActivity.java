@@ -20,6 +20,7 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.PharmacyBean;
 import com.zzu.ehome.fragment.CooperationPharmacyFragment;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -57,6 +58,9 @@ public class CooperationPharmacyActivity extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(CooperationPharmacyActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
 

@@ -15,6 +15,7 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.MyRemindAdapter;
 import com.zzu.ehome.bean.MyRemindBean;
 import com.zzu.ehome.bean.MyRemindDate;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
@@ -22,6 +23,7 @@ import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.ScreenUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.HeadView;
+import com.zzu.ehome.view.PullToRefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +51,14 @@ public class MyRemindActivity1 extends BaseActivity {
         setContentView(R.layout.activity_remind1);
         initViews();
         initEvent();
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(MyRemindActivity1.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -136,6 +145,10 @@ public class MyRemindActivity1 extends BaseActivity {
                                 MyRemindBean item = list.get(position);
                                 switch (index) {
                                     case 0:
+                                        if(!isNetWork){
+                                          showNetWorkErrorDialog();
+                                            return;
+                                        }
                                         deleteRecent(item, position);
                                         break;
 
@@ -171,6 +184,10 @@ public class MyRemindActivity1 extends BaseActivity {
                     if (Integer.valueOf(array.getJSONObject(0).getString("MessageCode")) == 0) {
                         list.remove(position);
                         myRemindAdapter.notifyDataSetChanged();
+                        if(list.size()==0){
+                            layout_no_msg.setVisibility(View.VISIBLE);
+                            listView.setVisibility(View.GONE);
+                        }
                     }
 
                 } catch (JSONException e) {
@@ -184,6 +201,8 @@ public class MyRemindActivity1 extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_REMIND && data != null) {
+            layout_no_msg.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
             initDatas();
         }
     }

@@ -22,6 +22,7 @@ import com.zzu.ehome.activity.AppointmentActivity;
 import com.zzu.ehome.activity.SelectDateActivity_1;
 import com.zzu.ehome.activity.SelectHospitalActivity;
 import com.zzu.ehome.activity.SelectOfficeActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
@@ -71,7 +72,14 @@ public class DoctorFragment extends BaseFragment implements View.OnClickListener
     String userid, PatientId;
     private boolean isPrepared;
     private View vTop;
+    private SupperBaseActivity activity;
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -130,6 +138,10 @@ public class DoctorFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         switch (v.getId()) {
             case R.id.layout_add_hosptial:
                 Intent intent1 = new Intent(getActivity(), SelectHospitalActivity.class);
@@ -173,6 +185,10 @@ public class DoctorFragment extends BaseFragment implements View.OnClickListener
     }
 
     public void confirmSave() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         String hosptial = tv_hosptial.getText().toString();
         String office = tv_office.getText().toString();
         String doctor = tv_doctor.getText().toString();

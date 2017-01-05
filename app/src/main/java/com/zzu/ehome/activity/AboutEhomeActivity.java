@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.R;
 import com.zzu.ehome.service.DownloadServiceForAPK;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.DialogUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -51,6 +52,9 @@ public class AboutEhomeActivity extends BaseActivity {
         }
         initViews();
         initEvents();
+        if(!CommonUtils.isNotificationEnabled(AboutEhomeActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     @Override

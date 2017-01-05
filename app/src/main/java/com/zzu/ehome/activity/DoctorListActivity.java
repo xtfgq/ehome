@@ -8,6 +8,7 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.DoctorListAdapter;
 import com.zzu.ehome.bean.DoctorBeanDes;
 import com.zzu.ehome.bean.DortorlIst;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
@@ -40,7 +41,14 @@ public class DoctorListActivity extends BaseActivity {
         DepartmentName = this.getIntent().getStringExtra("DepartmentName");
         initViews();
         initEvent();
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(DoctorListActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {

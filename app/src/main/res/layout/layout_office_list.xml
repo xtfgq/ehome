@@ -6,12 +6,20 @@
     android:fitsSystemWindows="true">
 
     <include layout="@layout/layout_toolbar" />
-
-    <ListView
-        android:id="@+id/listView"
-        android:layout_height="0dp"
+    <com.zzu.ehome.view.RefreshLayout
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:divider="@null"
-        android:scrollbars="none" />
+        android:id="@+id/refreshLayout"
+        >
+        <include layout="@layout/refresh_head" />
+
+        <com.zzu.ehome.view.PullableListView
+            android:id="@+id/listView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:divider="@null" />
+
+    </com.zzu.ehome.view.RefreshLayout>
+
+
 </LinearLayout>

@@ -18,6 +18,7 @@ import com.zzu.ehome.fragment.CooperationPharmacyFragment;
 import com.zzu.ehome.fragment.NearPharmacyFragment;
 import com.zzu.ehome.reciver.EventType;
 import com.zzu.ehome.reciver.RxBus;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.view.HeadView;
 
 /**
@@ -52,6 +53,9 @@ public class NearPharmacyActivity extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(NearPharmacyActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
 
     }
 
@@ -75,6 +79,13 @@ public class NearPharmacyActivity extends BaseActivity {
         layout_near.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
+                if(!CommonUtils.isNotificationEnabled(NearPharmacyActivity.this)){
+                    showTitleDialog("请打开通知中心");
+                }
                 index=0;
                 setColor(Type.NEAR);
                 addFragment(Type.NEAR);
@@ -83,6 +94,13 @@ public class NearPharmacyActivity extends BaseActivity {
         layout_cooperation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
+                if(!CommonUtils.isNotificationEnabled(NearPharmacyActivity.this)){
+                    showTitleDialog("请打开通知中心");
+                }
                 index=1;
                 setColor(Type.COOPERATION);
                 addFragment(Type.COOPERATION);

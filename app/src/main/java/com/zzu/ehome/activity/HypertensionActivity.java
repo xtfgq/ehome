@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.MyFragmentPagerAdapter;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.WebDatas;
 import com.zzu.ehome.view.HeadView;
 
@@ -33,6 +34,10 @@ public class HypertensionActivity extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(HypertensionActivity.this)){
+            showTitleDialog("请打开通知中心");
+
+        }
     }
 
     public void initViews(){

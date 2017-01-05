@@ -173,7 +173,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                     tvbmi.setText("BMI: 0");
                     tv_bimstatus.setVisibility(View.GONE);
                     yp_num.setText(0 + "");
-                    tv_yp.setText("药品名：");
+                    tv_yp.setText("药品名");
                     jibu_num.setText("0");
                     tv_time.setText("暂无就诊数据");
                     tv_address.setText("");
@@ -315,6 +315,10 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
     }
 
     public void initData() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         userid = SharePreferenceUtil.getInstance(getActivity()).getUserId();
         if(!TextUtils.isEmpty(userid)) {
             dbUser = dao.findUserInfoById(userid);
@@ -357,7 +361,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                         tvbmi.setText("BMI: 0");
                         tv_bimstatus.setVisibility(View.GONE);
                         yp_num.setText(0 + "");
-                        tv_yp.setText("药品名：");
+                        tv_yp.setText("药品名");
 
                     } else {
                         HealthDataSearchByDate date = JsonTools.getData(result.toString(), HealthDataSearchByDate.class);
@@ -492,7 +496,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                             tv_yp.setText("药品名：" + map.get("MedicationRecord").getValue1());
                         } else {
                             yp_num.setText(0 + "");
-                            tv_yp.setText("药品名：");
+                            tv_yp.setText("药品名 ");
                         }
                         if (map.get("Cholestenone") != null) {
 

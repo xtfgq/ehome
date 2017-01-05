@@ -11,6 +11,7 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.MedicalRecordsAdapter;
 import com.zzu.ehome.bean.TreatmentInquirywWithPage;
 import com.zzu.ehome.bean.TreatmentInquirywWithPageDate;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
@@ -50,6 +51,9 @@ public class MedicalRecordsActivity extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(MedicalRecordsActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {
@@ -99,6 +103,10 @@ public class MedicalRecordsActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               if(!isNetWork){
+                    showNetWorkErrorDialog();
+                    return;
+                }
                 Intent intent = new Intent();
                 intent.setClass(MedicalRecordsActivity.this, MedicalRecordsDesActivity.class);
                 Bundle bundle = new Bundle();

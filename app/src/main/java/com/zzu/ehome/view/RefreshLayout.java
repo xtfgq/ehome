@@ -440,12 +440,13 @@ public class RefreshLayout extends RelativeLayout {
                     // 刷新操作
                     if (mListener != null)
                         mListener.onRefresh(this);
-                } else if (state == RELEASE_TO_LOAD) {
-                    changeState(LOADING);
+                }
+//                else if (state == RELEASE_TO_LOAD) {
+//                    changeState(LOADING);
                     // 加载操作
 
 
-                }
+//                }
                 hide();
             default:
                 break;

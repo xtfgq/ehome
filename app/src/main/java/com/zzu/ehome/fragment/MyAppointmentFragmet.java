@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -9,9 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -19,13 +18,10 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.zzu.ehome.R;
-import com.zzu.ehome.activity.DoctorDetialActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.MyAppointmetAdapter;
-import com.zzu.ehome.bean.MSDoctorDetailBean;
-import com.zzu.ehome.bean.MSDoctorDetailInquiry;
 import com.zzu.ehome.bean.OrderInquiryByTopmd;
 import com.zzu.ehome.bean.OrderInquiryByTopmdDate;
-import com.zzu.ehome.bean.TreatmentSearch;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_ECGInfo;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -33,7 +29,6 @@ import com.zzu.ehome.utils.JsonTools;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.ScreenUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
-import com.zzu.ehome.view.crop.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,6 +50,14 @@ public class MyAppointmentFragmet extends BaseFragment {
     private RequestMaker requestMaker;
     private MyAppointmetAdapter adapter;
     List<OrderInquiryByTopmd> list=new ArrayList<OrderInquiryByTopmd>();
+    private SupperBaseActivity activity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+
+    }
 
     @Nullable
     @Override
@@ -93,6 +96,10 @@ public class MyAppointmentFragmet extends BaseFragment {
     }
 
     public void initDatas() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         requestMaker.OrderInquiryByTopmd(userid, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
@@ -172,6 +179,10 @@ public class MyAppointmentFragmet extends BaseFragment {
                         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
                             @Override
                             public void onMenuItemClick(int position, SwipeMenu menu, int index) {
+                                if(!activity.isNetWork){
+                                    activity.showNetWorkErrorDialog();
+                                    return;
+                                }
                                 OrderInquiryByTopmd item = list.get(position);
                                 switch (index) {
                                     case 0:

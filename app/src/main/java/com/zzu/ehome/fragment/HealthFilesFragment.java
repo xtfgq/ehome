@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -10,14 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.CreateillnessActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.HealteFilesAdapter;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.TreatmentInquirywWithPage;
@@ -57,6 +57,14 @@ public class HealthFilesFragment extends BaseFragment implements StickyListHeade
     private AnimationDrawable loadingAnimation; //加载更多，动画
     private List<TreatmentInquirywWithPage> mlist = new ArrayList<TreatmentInquirywWithPage>();
     private TextView tvcopyright;
+    private SupperBaseActivity activity;
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -77,18 +85,30 @@ public class HealthFilesFragment extends BaseFragment implements StickyListHeade
         rlup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 startActivity(new Intent(getActivity(), CreateillnessActivity.class));
             }
         });
         ivupload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+                }
                 startActivity(new Intent(getActivity(), CreateillnessActivity.class));
             }
         });
     }
 
     private void initDate() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         startProgressDialog();
         requestMaker.TreatmentInquirywWithPage(userid, 5 + "", page + "", new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
@@ -186,6 +206,10 @@ public class HealthFilesFragment extends BaseFragment implements StickyListHeade
 
     @Override
     public void OnLoadingMore() {
+        if(!activity.isNetWork){
+            activity.showNetWorkErrorDialog();
+            return;
+        }
         progressBarView.setVisibility(View.VISIBLE);
         progressBarTextView.setVisibility(View.VISIBLE);
 

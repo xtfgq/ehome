@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.main.ehome.MainActivity;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.RegisterCodeTimer;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
@@ -37,10 +38,18 @@ public class AddSuccussAct extends BaseSimpleActivity implements View.OnClickLis
         initViews();
         parentId = SharePreferenceUtil.getInstance(AddSuccussAct.this).getPARENTID();
         initEvent();
+        if(!CommonUtils.isNotificationEnabled(AddSuccussAct.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
+
         switch (v.getId()) {
             case R.id.tv_continue:
                 CustomApplcation.getInstance().finishSingleActivityByClass(RelationActivity.class);

@@ -69,6 +69,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         mIntent = new Intent(RegisterActivity.this,
                 RegisterCodeTimerService.class);
         ClientID = PushManager.getInstance().getClientid(RegisterActivity.this);
+        if(!CommonUtils.isNotificationEnabled(RegisterActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     Handler mCodeHandler = new Handler() {
@@ -126,6 +129,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
+        if(!CommonUtils.isNotificationEnabled(RegisterActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
         switch (v.getId()) {
             case R.id.tv_getCode:
                 if (CommonUtils.isFastClick()) {
@@ -183,15 +193,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      */
     public void doGetCode() {
         CHKCodeSend();
-        startService(mIntent);
+
 
     }
 
     private void CHKCodeSend() {
         usermobile = editPhone.getText().toString().trim();
-
-
         if (IOUtils.isMobileNO(usermobile)) {
+            startService(mIntent);
             requestMaker.sendCode(usermobile, new JsonAsyncTask_Info(RegisterActivity.this, true, new JsonAsyncTaskOnComplete() {
                 @Override
                 public void processJsonObject(Object result) {
@@ -206,7 +215,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                                 .getString("MessageCode")) == 0) {
                             chkcode = array.getJSONObject(0)
                                     .getString("MessageContent");
-                           ToastUtils.showMessage(RegisterActivity.this,chkcode+"");
+                          // ToastUtils.showMessage(RegisterActivity.this,chkcode+"");
                             ToastUtils.showMessage(RegisterActivity.this,"验证码已发送，请注意查收.");
                         } else {
                             showDialog(array.getJSONObject(0)
@@ -291,7 +300,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             user.setPassword(pwd);
                             user.setUsername(array.getJSONObject(0).getString("RealName"));
                             user.setImgHead("");
-                            user.setType(1);
+                            user.setType(2);
                             dao.addUserInfo(user);
                             SharePreferenceUtil.getInstance(RegisterActivity.this).setIsFirst(true);
                             if (TextUtils.isEmpty(tag)) {
@@ -336,8 +345,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         stopService(mIntent);
     }
 }

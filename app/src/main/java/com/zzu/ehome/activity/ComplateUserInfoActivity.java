@@ -3,6 +3,7 @@ package com.zzu.ehome.activity;
 import android.os.Bundle;
 
 import com.zzu.ehome.R;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.view.HeadView;
 
 /**
@@ -16,6 +17,9 @@ public class ComplateUserInfoActivity extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(ComplateUserInfoActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     public void initViews() {

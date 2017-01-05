@@ -516,7 +516,7 @@ public class CommonUtils {
 
         int uid = appInfo.uid;
 
-        Class appOpsClass = null; /* Context.APP_OPS_MANAGER */
+        Class appOpsClass = null;
 
         try {
 

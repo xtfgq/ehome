@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.main.ehome.MainActivity;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.wheel.wheelview.WheelView;
@@ -45,10 +46,20 @@ public class RegisterFinishAct extends BaseSimpleActivity implements View.OnClic
         initViews();
         parentId = SharePreferenceUtil.getInstance(RegisterFinishAct.this).getPARENTID();
         initEvent();
+        if(!CommonUtils.isNotificationEnabled(RegisterFinishAct.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
+        if(!CommonUtils.isNotificationEnabled(RegisterFinishAct.this)){
+            showTitleDialog("请打开通知中心");
+        }
         switch (v.getId()) {
             case R.id.btnext:
                 Intent i=new Intent(RegisterFinishAct.this,HealthFilesActivity.class);

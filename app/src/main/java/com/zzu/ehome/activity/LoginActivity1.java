@@ -130,10 +130,20 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
         login.setOnClickListener(this);
         tvselect.setOnClickListener(this);
         tvnewReg.setOnClickListener(this);
+        if(!CommonUtils.isNotificationEnabled(LoginActivity1.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
+        if(!CommonUtils.isNotificationEnabled(LoginActivity1.this)){
+            showTitleDialog("请打开通知中心");
+        }
         switch (v.getId()) {
             case R.id.btnlogin:
                 if (NetUtils.isNetworkConnected(LoginActivity1.this)) {
@@ -625,13 +635,9 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                         String MessageCode = json.getJSONObject(0).getString("MessageCode");
                         if ("2".equals(MessageCode)) {
                             type=2;
-
-                            return;
                         }
                         if ("1".equals(MessageCode)) {
                             type=1;
-
-                            return;
                         }
                     } else {
                         type=3;

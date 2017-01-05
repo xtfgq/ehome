@@ -29,6 +29,7 @@ import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.TreatmentSearch;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.bean.UserDate;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
@@ -77,6 +78,9 @@ public class MedicalExaminationActivity extends BaseActivity implements View.OnC
         usrid = SharePreferenceUtil.getInstance(MedicalExaminationActivity.this).getUserId();
         initViews();
         initEnent();
+        if(!CommonUtils.isNotificationEnabled(MedicalExaminationActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
     private void initEnent() {
@@ -89,6 +93,10 @@ public class MedicalExaminationActivity extends BaseActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
+       if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         switch (v.getId()) {
             case R.id.tvget:
                 break;

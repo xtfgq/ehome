@@ -22,6 +22,8 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.activity.BaseSimpleActivity;
 import com.zzu.ehome.activity.LoginActivity1;
 import com.zzu.ehome.activity.PrivateDoctorFragment;
+import com.zzu.ehome.activity.SecondActivity;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.StepBean;
@@ -34,6 +36,7 @@ import com.zzu.ehome.fragment.MessageFragment;
 import com.zzu.ehome.fragment.UserCenterFragment;
 import com.zzu.ehome.service.StepDetector;
 import com.zzu.ehome.service.StepService;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.DialogTips;
@@ -76,6 +79,7 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
     private int unSelectColor;
     private String file="";
     private TextView tv_dot;
+    private boolean isShow=false;
 
     private BroadcastReceiver mDateOrFileBroadcastReceiver=new BroadcastReceiver() {
         @Override
@@ -228,7 +232,11 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
         }
         setTab(0);
         setStepData();
-
+        if(SharePreferenceUtil.getInstance(MainActivity.this).getGUIDId()==4) {
+            if (!CommonUtils.isNotificationEnabled(MainActivity.this)&&!isShow) {
+                showDialog();
+            }
+        }
 
     }
 
@@ -331,8 +339,15 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
             showNetWorkErrorDialog();
         }
         mHomeFragment.hideFamily();
+        if(SharePreferenceUtil.getInstance(MainActivity.this).getGUIDId()==4) {
+            if (!CommonUtils.isNotificationEnabled(MainActivity.this)&&!isShow) {
+                isShow=true;
+                showDialog();
+            }
+        }
         switch (v.getId()) {
             case R.id.layout_home:
+
                 index = 0;
                 setTab(0);
 //                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
@@ -342,6 +357,7 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
                     startActivity(new Intent(MainActivity.this, LoginActivity1.class));
                     return;
                 }*/
+
                 index = 1;
                 setTab(1);
                 break;
@@ -498,6 +514,17 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
         outState.putInt("index",index);
         String inde=index+"";
         super.onSaveInstanceState(outState);
+    }
+    private void showDialog(){
+        DialogTips dialog =new DialogTips(MainActivity.this, "请打开通知中心", "确定");
+        dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int userId) {
+            isShow=false;
+            }
+        });
+
+        dialog.show();
+        dialog = null;
     }
 
 }

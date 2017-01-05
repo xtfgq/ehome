@@ -1,5 +1,6 @@
 package com.zzu.ehome.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import android.widget.TableLayout;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.RegisterFinishAct;
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.bean.HealthFiles;
 import com.zzu.ehome.bean.User;
@@ -40,9 +42,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.R.attr.id;
-import static android.R.attr.type;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Created by Mersens on 2016/7/27.
@@ -158,6 +160,13 @@ public class HealthFilesFragment1 extends BaseFragment {
     public static String stype = null;
     public  HealthFiles healthfiles = null;
     private EHomeDao dao;
+    private SupperBaseActivity activity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity=(SupperBaseActivity)context;
+    }
 
     @Nullable
     @Override
@@ -464,7 +473,7 @@ public class HealthFilesFragment1 extends BaseFragment {
     }
 
     public void setFathers(){
-        if(!TextUtils.isEmpty(familyMedicalhistory_fatherNames)){
+        if(!TextUtils.isEmpty(familyMedicalhistory_fatherNames)  ){
             familyMedicalhistory_father_yesCheck.setChecked(true);
             familyMedicalhistory_father_type.setVisibility(View.VISIBLE);
             String names[] = familyMedicalhistory_fatherNames.split(",");
@@ -475,9 +484,11 @@ public class HealthFilesFragment1 extends BaseFragment {
                         String others[]=vals[1].split("-");
                         if(others.length>=2){
                         if(!TextUtils.isEmpty(others[1]) && others[0].equals("其他")){
-                            edt_father.setVisibility(View.VISIBLE);
-                            edt_father.setText(others[1]);
-                            fmh_father_checkbox_qt.setChecked(true);
+                            if(!others[1].equals("无")) {
+                                edt_father.setVisibility(View.VISIBLE);
+                                edt_father.setText(others[1]);
+                                fmh_father_checkbox_qt.setChecked(true);
+                            }
                         }
                         }
                     }else {
@@ -510,9 +521,11 @@ public class HealthFilesFragment1 extends BaseFragment {
                 }
             }
         }
+
     }
 
     public void setMothers(){
+
         if(!TextUtils.isEmpty(familyMedicalhistory_motherNames)){
             familyMedicalhistory_mother_yesCheck.setChecked(true);
             familyMedicalhistory_mother_type.setVisibility(View.VISIBLE);
@@ -524,9 +537,11 @@ public class HealthFilesFragment1 extends BaseFragment {
                         String others[]=vals[1].split("-");
                         if(others.length>=2) {
                             if (!TextUtils.isEmpty(others[1]) && others[0].equals("其他")) {
-                                edt_mother.setVisibility(View.VISIBLE);
-                                edt_mother.setText(others[1]);
-                                fmh_mother_checkbox_qt.setChecked(true);
+                                if(!others[1].equals("无")) {
+                                    edt_mother.setVisibility(View.VISIBLE);
+                                    edt_mother.setText(others[1]);
+                                    fmh_mother_checkbox_qt.setChecked(true);
+                                }
                             }
                         }
                     }else {
@@ -562,7 +577,7 @@ public class HealthFilesFragment1 extends BaseFragment {
     }
 
     public void setSister(){
-        if(!TextUtils.isEmpty(familyMedicalhistory_sisterNames)){
+        if(!TextUtils.isEmpty(familyMedicalhistory_sisterNames) ){
             familyMedicalhistory_sister_yesCheck.setChecked(true);
             familyMedicalhistory_sister_type.setVisibility(View.VISIBLE);
             String names[] = familyMedicalhistory_sisterNames.split(",");
@@ -573,9 +588,11 @@ public class HealthFilesFragment1 extends BaseFragment {
                         String others[]=vals[1].split("-");
                         if(others.length>=2) {
                             if (!TextUtils.isEmpty(others[1]) && others[0].equals("其他")) {
-                                edi_sister.setVisibility(View.VISIBLE);
-                                edi_sister.setText(others[1]);
-                                fmh_sister_checkbox_qt.setChecked(true);
+                                if(!others[1].equals("无")) {
+                                    edi_sister.setVisibility(View.VISIBLE);
+                                    edi_sister.setText(others[1]);
+                                    fmh_sister_checkbox_qt.setChecked(true);
+                                }
                             }
                         }
                     }else {
@@ -621,9 +638,12 @@ public class HealthFilesFragment1 extends BaseFragment {
                         String others[]=vals[1].split("-");
                         if(others.length>=2) {
                             if (!TextUtils.isEmpty(others[1]) && others[0].equals("其他")) {
-                                edt_children.setVisibility(View.VISIBLE);
-                                edt_children.setText(others[1]);
-                                fmh_children_checkbox_qt.setChecked(true);
+                                if(!others[1].equals("无")) {
+
+                                    edt_children.setVisibility(View.VISIBLE);
+                                    edt_children.setText(others[1]);
+                                    fmh_children_checkbox_qt.setChecked(true);
+                                }
                             }
                         }
                     }else {
@@ -659,19 +679,22 @@ public class HealthFilesFragment1 extends BaseFragment {
     }
 
     public void setInitMedicineAllergy(){
-        if(!TextUtils.isEmpty(medicineAllergyNames)){
+        if(!TextUtils.isEmpty(medicineAllergyNames) &&!"其他-无".equals(medicineAllergyNames)){
             medicineAllergy_yesCheck.setChecked(true);
             medicineAllergy_type.setVisibility(View.VISIBLE);
-            String names[] = medicineAllergyNames.split(",");
+            String names[] = medicineAllergyNames.split(" ");
             for (int i = 0; i < names.length; i++) {
                 if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
                     if(names[i].contains("-")){
                         String others[]=names[i].split("-");
                         if(others.length>=2) {
                             if (!TextUtils.isEmpty(others[1]) && others[0].equals("其他")) {
-                                edt_ywgms.setVisibility(View.VISIBLE);
-                                edt_ywgms.setText(others[1]);
-                                medicineAllergy_checkbox_qita.setChecked(true);
+                                if(!others[1].equals("无")){
+                                    edt_ywgms.setVisibility(View.VISIBLE);
+                                    edt_ywgms.setText(others[1]);
+                                    medicineAllergy_checkbox_qita.setChecked(true);
+                                }
+
                             }
                         }
                     }else {
@@ -692,19 +715,21 @@ public class HealthFilesFragment1 extends BaseFragment {
     }
 
     public void setInitPastMedicalHistory(){
-        if(!TextUtils.isEmpty(pastMedicalHistoryNames)){
+        if(!TextUtils.isEmpty(pastMedicalHistoryNames)&&!"其他-无".equals(pastMedicalHistoryNames) ){
             pastMedicalHistory_yesCheck.setChecked(true);
             pastMedicalHistory_type.setVisibility(View.VISIBLE);
-            String names[] = pastMedicalHistoryNames.split(",");
+            String names[] = pastMedicalHistoryNames.split(" ");
             for (int i = 0; i < names.length; i++) {
                 if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
                     if(names[i].contains("-")) {
                         String others[] = names[i].split("-");
                         if(others.length>=2) {
                             if (!TextUtils.isEmpty(others[1]) && others[0].equals("其他")) {
-                                edt_jwbs.setVisibility(View.VISIBLE);
-                                edt_jwbs.setText(others[1]);
-                                pastMedicalHistory_checkbox_qita.setChecked(true);
+                                if(!others[1].equals("无")) {
+                                    edt_jwbs.setVisibility(View.VISIBLE);
+                                    edt_jwbs.setText(others[1]);
+                                    pastMedicalHistory_checkbox_qita.setChecked(true);
+                                }
                             }
                         }
                     }else{
@@ -746,19 +771,21 @@ public class HealthFilesFragment1 extends BaseFragment {
     }
 
     public void setInitGeneticHistory(){
-        if(!TextUtils.isEmpty(geneticHistoryNmaes)){
+        if(!TextUtils.isEmpty(geneticHistoryNmaes) &&!"其他-无".equals(geneticHistoryNmaes) ){
             geneticHistory_yesCheck.setChecked(true);
             geneticHistory_type.setVisibility(View.VISIBLE);
-            String names[] = geneticHistoryNmaes.split(",");
+            String names[] = geneticHistoryNmaes.split(" ");
             for (int i = 0; i < names.length; i++) {
                 if (!TextUtils.isEmpty(names[i]) && !" ".equals(names[i])) {
                     if(names[i].contains("-")) {
                         String others[] = names[i].split("-");
                         if(others.length>=2) {
                             if (!TextUtils.isEmpty(others[1]) && others[0].equals("其他")) {
-                                edt_ycbs.setVisibility(View.VISIBLE);
-                                edt_ycbs.setText(others[1]);
-                                gh_checkbox_qt.setChecked(true);
+                                if(!others[1].equals("无")) {
+                                    edt_ycbs.setVisibility(View.VISIBLE);
+                                    edt_ycbs.setText(others[1]);
+                                    gh_checkbox_qt.setChecked(true);
+                                }
                             }
                         }
                     }else{
@@ -979,8 +1006,6 @@ public class HealthFilesFragment1 extends BaseFragment {
                     gh_checkbox_qt .setChecked(false);
                     edt_ycbs.setText("");
                     edt_ycbs.setVisibility(View.GONE);
-
-
                 }
             }
         });
@@ -999,6 +1024,7 @@ public class HealthFilesFragment1 extends BaseFragment {
                 }
             }
         });
+
         drink_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -1163,6 +1189,11 @@ public class HealthFilesFragment1 extends BaseFragment {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!activity.isNetWork){
+                    activity.showNetWorkErrorDialog();
+                    return;
+
+                }
 /*                maritalStatusNames = "";//婚姻状况
                 medicineAllergyNames = "";//药物过敏
                 pastMedicalHistoryNames = "";//既往病史
@@ -1196,6 +1227,7 @@ public class HealthFilesFragment1 extends BaseFragment {
 
     public void add() {
 
+
         if (edt_father.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_father))) {
             familyMedicalhistory_fatherNamesEdit = familyMedicalhistory_fatherNamesEdit + "父亲:" + getEdtValue(edt_father);
         }
@@ -1208,6 +1240,10 @@ public class HealthFilesFragment1 extends BaseFragment {
         if (edt_children.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_children))) {
             familyMedicalhistory_childrenNamesEdit = familyMedicalhistory_childrenNamesEdit + "子女:" + getEdtValue(edt_children);
         }
+
+
+
+
         if(familyMedicalhistory_father_noCheck.isChecked()){
             familyMedicalhistory_fatherNamesEdit="";
         }
@@ -1246,18 +1282,21 @@ public class HealthFilesFragment1 extends BaseFragment {
             drinkStateNamesEdit = "无";
         }
 
-        if (edt_ywgms.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_ywgms))) {
-            medicineAllergyNamesEdit = medicineAllergyNamesEdit + getEdtValue(edt_ywgms);
+
+        if (edt_ywgms.getVisibility() == View.VISIBLE  && !TextUtils.isEmpty(medicineAllergyNamesEdit)) {
+            medicineAllergyNamesEdit = medicineAllergyNamesEdit + getEdtValueOther(edt_ywgms);
         }
 
 
-        if (edt_jwbs.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_jwbs))) {
-            pastMedicalHistoryNamesEdit = pastMedicalHistoryNamesEdit + getEdtValue(edt_jwbs);
+        if (edt_jwbs.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValueOther(edt_jwbs))) {
+            pastMedicalHistoryNamesEdit = pastMedicalHistoryNamesEdit + getEdtValueOther(edt_jwbs);
         }
 
-        if (edt_ycbs.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_ycbs))) {
-            geneticHistoryNmaesEdit = geneticHistoryNmaesEdit + getEdtValue(edt_ycbs);
+        if (edt_ycbs.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValueOther(edt_ycbs))) {
+            geneticHistoryNmaesEdit = geneticHistoryNmaesEdit + getEdtValueOther(edt_ycbs);
         }
+
+
         if(medicineAllergy_noCheck.isChecked()){
             medicineAllergyNamesEdit="";
         }
@@ -1268,6 +1307,12 @@ public class HealthFilesFragment1 extends BaseFragment {
             pastMedicalHistoryNamesEdit="";
         }
 
+        if(TextUtils.isEmpty(bloodtypeEdit)){
+            bloodtypeEdit="A型";
+        }
+        if(TextUtils.isEmpty(maritalStatusNamesEdit)){
+            maritalStatusNamesEdit="未婚";
+        }
         requestMaker.BaseDataInsertInsert(userid, maritalStatusNamesEdit, medicineAllergyNamesEdit, geneticHistoryNmaesEdit, pastMedicalHistoryNamesEdit, list, smokeStateNamesEdit, drinkStateNamesEdit, bloodtypeEdit, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
@@ -1290,6 +1335,14 @@ public class HealthFilesFragment1 extends BaseFragment {
                             Intent i=new Intent(getActivity(), MainActivity.class);
                             i.putExtra("Home","Home");
                             getActivity().startActivity(i);
+
+                            if(tagfile.equals("TagFile")) {
+                                ToastUtils.showMessage(getActivity(),"保存成功");
+                                String id = SharePreferenceUtil.getInstance(getActivity()).getUserId();
+                                User user = dao.findUserInfoById(id);
+                                user.setType(3);
+                                dao.updateUserInfo(user, id);
+                            }
                         }
                     } else
                         ToastUtils.showMessage(getActivity(), array.getJSONObject(0).getString("MessageContent"));
@@ -1301,6 +1354,7 @@ public class HealthFilesFragment1 extends BaseFragment {
     }
 
     public void upload() {
+
         if (edt_father.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_father))) {
             familyMedicalhistory_fatherNamesEdit = familyMedicalhistory_fatherNamesEdit + "父亲:" + getEdtValue(edt_father);
         }
@@ -1348,14 +1402,15 @@ public class HealthFilesFragment1 extends BaseFragment {
         if(drinkState_noCheck.isChecked()){
             drinkStateNamesEdit = "无";
         }
-        if (edt_ywgms.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_ywgms))) {
-            medicineAllergyNamesEdit = medicineAllergyNamesEdit + getEdtValue(edt_ywgms);
+
+        if (edt_ywgms.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValueOther(edt_ywgms))) {
+            medicineAllergyNamesEdit = medicineAllergyNamesEdit + getEdtValueOther(edt_ywgms);
         }
-        if (edt_jwbs.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_jwbs))) {
-            pastMedicalHistoryNamesEdit = pastMedicalHistoryNamesEdit + getEdtValue(edt_jwbs);
+        if (edt_jwbs.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValueOther(edt_jwbs))) {
+            pastMedicalHistoryNamesEdit = pastMedicalHistoryNamesEdit + getEdtValueOther(edt_jwbs);
         }
-        if (edt_ycbs.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValue(edt_ycbs))) {
-            geneticHistoryNmaesEdit = geneticHistoryNmaesEdit + getEdtValue(edt_ycbs);
+        if (edt_ycbs.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(getEdtValueOther(edt_ycbs))) {
+            geneticHistoryNmaesEdit = geneticHistoryNmaesEdit + getEdtValueOther(edt_ycbs);
         }
         if(medicineAllergy_noCheck.isChecked()){
             medicineAllergyNamesEdit="";
@@ -1366,7 +1421,12 @@ public class HealthFilesFragment1 extends BaseFragment {
         if(pastMedicalHistory_noCheck.isChecked()){
             pastMedicalHistoryNamesEdit="";
         }
-
+        if(TextUtils.isEmpty(bloodtypeEdit)){
+            bloodtypeEdit="A型";
+        }
+        if(TextUtils.isEmpty(maritalStatusNamesEdit)){
+            maritalStatusNamesEdit="未婚";
+        }
         requestMaker.BaseDataUpdate(userid, maritalStatusNamesEdit, medicineAllergyNamesEdit, geneticHistoryNmaesEdit, pastMedicalHistoryNamesEdit, list, smokeStateNamesEdit, drinkStateNamesEdit, bloodtypeEdit, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
@@ -1393,10 +1453,10 @@ public class HealthFilesFragment1 extends BaseFragment {
         int code = Integer.parseInt(str[0]);
         switch (code) {
             case MEDICINEALLERGY_CODE:
-                medicineAllergyNamesEdit = medicineAllergyNamesEdit + str[1] + ",";
+                medicineAllergyNamesEdit = medicineAllergyNamesEdit + str[1] + " ";
                 break;
             case PASTMEDICALHISTORY_CODE:
-                pastMedicalHistoryNamesEdit = pastMedicalHistoryNamesEdit + str[1] + ",";
+                pastMedicalHistoryNamesEdit = pastMedicalHistoryNamesEdit + str[1] + " ";
                 break;
             case FAMILYMEDICALHISTORY_FATHER_CODE:
                 familyMedicalhistory_fatherNamesEdit = familyMedicalhistory_fatherNamesEdit + "父亲:" + str[1] + ",";
@@ -1411,7 +1471,7 @@ public class HealthFilesFragment1 extends BaseFragment {
                 familyMedicalhistory_childrenNamesEdit = familyMedicalhistory_childrenNamesEdit + "子女:" + str[1] + ",";
                 break;
             case GENETICHISTORY_CODE:
-                geneticHistoryNmaesEdit = geneticHistoryNmaesEdit + str[1] + ",";
+                geneticHistoryNmaesEdit = geneticHistoryNmaesEdit + str[1] + " ";
                 break;
             case SMOKESTATE_CODE:
                 smokeStateNamesEdit = str[1];
@@ -1625,13 +1685,53 @@ public class HealthFilesFragment1 extends BaseFragment {
         fragment.setArguments(bundle);
         return fragment;
     }
+    public String getEdtValueOther(EditText edt) {
+        String str=edt.getText().toString().trim();
+        if(!TextUtils.isEmpty(str) ) {
+            String regEx=StringFilter(str);
+            if (regEx.contains(",")){
+                regEx.replaceAll(",", "，");
+            }
 
+            return "其他-" +regEx ;
+        }else {
+            return "";
+        }
+    }
     public String getEdtValue(EditText edt) {
         String str=edt.getText().toString().trim();
-        if(!TextUtils.isEmpty(str)){
-            return "其他-" + str+",";
+        if(!TextUtils.isEmpty(str) ) {
+            String regEx=StringFilter(str);
+            if (regEx.contains(",")){
+                regEx.replaceAll(",", "，");
+            }
+
+            return "其他-" +regEx+"," ;
+        }else {
+            return "" ;
         }
-        return "其他-" +"," ;
+    }
+    public static String StringFilter(String str) throws PatternSyntaxException {
+        String regEx = "[`~!@#$%^&*()+=|{}''\\[\\].<>~！@#￥%……&*（）——+|{}【】‘”“’？]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.replaceAll("").trim();
+    }
+    public static boolean containsEmoji(String source) {
+        int len = source.length();
+        for (int i = 0; i < len; i++) {
+            char codePoint = source.charAt(i);
+            if (!isEmojiCharacter(codePoint)) { //如果不能匹配,则该字符是Emoji表情
+                return true;
+            }
+        }
+        return false;
+    }
+    private static boolean isEmojiCharacter(char codePoint) {
+        return (codePoint == 0x0) || (codePoint == 0x9) || (codePoint == 0xA) ||
+                (codePoint == 0xD) || ((codePoint >= 0x20) && (codePoint <= 0xD7FF)) ||
+                ((codePoint >= 0xE000) && (codePoint <= 0xFFFD)) || ((codePoint >= 0x10000)
+                && (codePoint <= 0x10FFFF));
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 
 import com.zzu.ehome.R;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.view.HeadView;
 
 import java.util.ArrayList;
@@ -27,6 +28,9 @@ public class ExaminationReportDetailActivity extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
+        if(!CommonUtils.isNotificationEnabled(ExaminationReportDetailActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
     }
 
 
