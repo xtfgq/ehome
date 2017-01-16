@@ -20,11 +20,14 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.application.Constants;
 
 import com.zzu.ehome.bean.TitleInquiryBean;
+import com.zzu.ehome.db.EHomeDao;
+import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.IOUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
+import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.GlideRoundTransform;
 import com.zzu.ehome.view.HeadView;
@@ -37,6 +40,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zzu.ehome.R.attr.position;
+import static com.zzu.ehome.activity.ImageOCRSelectorActivity.hosid;
 
 
 /**
@@ -54,7 +59,11 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
     private String hosptial, hospital_id;
     private TextView tv_hospital;
     private int index = 0;
-    private EditText ed_name,edt_card_num;
+    private TextView ed_name,edt_card_num;
+    private EditText ed_code;
+    private String userid;
+    private String name,userno;
+    private EHomeDao dao;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -62,6 +71,9 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.layout_smartsearch);
         mList = new ArrayList<TitleInquiryBean>();
         requestMaker = RequestMaker.getInstance();
+        dao = new EHomeDaoImpl(SmartSearchActivity.this);
+        userid= SharePreferenceUtil.getInstance(SmartSearchActivity.this).getUserId();
+
         initViews();
         if (!CommonUtils.isNotificationEnabled(SmartSearchActivity.this)) {
             showTitleDialog("请打开通知中心");
@@ -85,8 +97,13 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
         btn_ok = (Button) findViewById(R.id.btn_ok);
         layout_add_hosptial = (RelativeLayout) findViewById(R.id.layout_add_hosptial);
         tv_hospital = (TextView) findViewById(R.id.tv_hospital);
-        ed_name=(EditText)findViewById(R.id.ed_name);
-        edt_card_num=(EditText)findViewById(R.id.edt_card_num);
+        ed_name=(TextView)findViewById(R.id.ed_name);
+        edt_card_num=(TextView)findViewById(R.id.edt_card_num);
+        name=dao.findUserInfoById(userid).getUsername();
+        userno=dao.findUserInfoById(userid).getUserno();
+        ed_name.setText(name);
+        edt_card_num.setText(userno);
+        ed_code=(EditText)findViewById(R.id.ed_code);
     }
 
     private void initEvnets() {
@@ -97,10 +114,9 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
     }
 
     /**
-     * 提示
+     * 提示示例
      */
     private void showTips() {
-
         LayoutInflater inflater = LayoutInflater.from(SmartSearchActivity.this);
         View layout = inflater.inflate(R.layout.dialog_tips, null);
         final AlertDialog.Builder builder = new AlertDialog.Builder(SmartSearchActivity.this);
@@ -120,7 +136,6 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
                 dialog.dismiss();
             }
         });
-
     }
 
     @Override
@@ -130,38 +145,22 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
                 if (mList.size() > 0) {
                     showTips();
                 }
-
                 break;
             case R.id.tv_shengming:
                 startActivity(new Intent(SmartSearchActivity.this, DeclarationWebActivity.class));
                 break;
             case R.id.btn_ok:
-                String name=ed_name.getText().toString().trim();
-                if (TextUtils.isEmpty(name)) {
-                    show("请输入姓名");
-                    setTVEeable(true);
-                    return;
-                }
-                if (!IOUtils.isName(name)){
-                    show("姓名需要输入汉字");
-                    setTVEeable(true);
-                    return;
-                }
 
-                String userno = edt_card_num.getText().toString().trim();
-                if (TextUtils.isEmpty(userno)) {
-                    show( "请输入身份证号");
+                String code=ed_code.getText().toString();
+                if(TextUtils.isEmpty(code)){
+                    show("请输入体检编号");
                     setTVEeable(true);
                     return;
                 }
-                if (!IOUtils.isUserNO(userno)) {
-                    show("身份证号格式不正确");
-                    setTVEeable(true);
-                    return;
-                }
-                Intent i = new Intent(SmartSearchActivity.this, WebPlatmActivity.class);
-                i.putExtra("flag", "add");
-                startActivity(i);
+//                name="张三";
+//                userno="410322198608051234";
+//                code="0000000000";
+                doSave(name,userno,code);
                 break;
             case R.id.layout_add_hosptial:
                 if (mList.size() > 0) {
@@ -218,7 +217,6 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
                                 tb.setImg(img);
                                 mList.add(tb);
                             }
-
                         }
                         if (mList.size() > 0) {
                             hosptial = mList.get(0).getValue();
@@ -228,7 +226,7 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
                         }
 
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -246,6 +244,53 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
             btn_ok.setEnabled(false);
             btn_ok.setBackgroundResource(R.color.bottom_text_color_normal);
         }
+
+    }
+
+    /**
+     * 查询相关平台数据
+     * MessageCode:1，失败，2查不到数据含有表示已经保存过
+     * 没有，在我们的平台上没有该数据
+     */
+    private void doSave(final String name,final String userno,final String code){
+        requestMaker.ZDWFYUserRecordJudgeInquiry(code,userno,name,new JsonAsyncTask_Info(SmartSearchActivity.this, true, new JsonAsyncTaskOnComplete() {
+            @Override
+            public void processJsonObject(Object result) {
+                JSONObject mySO = (JSONObject) result;
+                try {
+                    JSONArray array = mySO.getJSONArray("ZDWFYUserRecordJudgeInquiry");
+                    if (array.getJSONObject(0).has("MessageCode")) {
+                        int flag=Integer.valueOf(array.getJSONObject(0).getString("MessageCode"));
+                        if(flag==3){
+                            Intent i=new Intent(SmartSearchActivity.this,WebPlatmActivity.class);
+                            i.putExtra("flag","info");
+                            i.putExtra("name",name);
+                            i.putExtra("UserNo",userno);
+                            i.putExtra("code",code);
+                            i.putExtra("time",array.getJSONObject(0).getString("RecordTime"));
+                            i.putExtra("hosname",hosptial);
+                            startActivity(i);
+                        }else {
+                            show(array.getJSONObject(0).getString("MessageContent"));
+                        }
+                    }else {
+                        String time= array.getJSONObject(0).getString("RecordTime");
+                        Intent i = new Intent(SmartSearchActivity.this, WebPlatmActivity.class);
+                        i.putExtra("flag", "add");
+                        i.putExtra("name", name);
+                        i.putExtra("code", code);
+                        i.putExtra("UserNo", userno);
+                        i.putExtra("time", time);
+                        i.putExtra("hosname",hosptial);
+                        i.putExtra("hospital_id",hospital_id);
+                        setTVEeable(true);
+                        startActivity(i);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }));
 
     }
 

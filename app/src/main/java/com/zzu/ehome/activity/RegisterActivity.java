@@ -192,6 +192,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      * 获取验证码
      */
     public void doGetCode() {
+        tv_getCode.setEnabled(false);
         CHKCodeSend();
 
 
@@ -286,11 +287,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             return;
         } else {
             btn_register.setEnabled(false);
+            startProgressDialog();
             requestMaker.userRegister(usermobile, pwd, ClientID, new JsonAsyncTask_Info(RegisterActivity.this, true, new JsonAsyncTaskOnComplete() {
                 @Override
                 public void processJsonObject(Object result) {
                     JSONObject mySO = (JSONObject) result;
                     try {
+                        stopProgressDialog();
                         JSONArray array = mySO.getJSONArray("UserRegister");
                         btn_register.setEnabled(true);
                         if (array.getJSONObject(0).has("UserID")) {
@@ -310,20 +313,18 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                                 SharePreferenceUtil.getInstance(RegisterActivity.this).setUserId(array.getJSONObject(0).getString("UserID"));
                                 CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
                                 startActivity(new Intent(RegisterActivity.this, SecondActivity.class));
-
                                 finish();
                             } else {
                                 SharePreferenceUtil.getInstance(RegisterActivity.this).setPARENTID(array.getJSONObject(0).getString("UserID"));
-
                                 startActivity(new Intent(RegisterActivity.this, RelationActivity.class));
                             }
-
-
                         } else {
                             showDialog(array.getJSONObject(0).getString("MessageContent").toString());
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                    }finally {
+                        stopProgressDialog();
                     }
 
 

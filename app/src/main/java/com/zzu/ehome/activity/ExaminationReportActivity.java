@@ -29,6 +29,7 @@ import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.HeadView;
+import com.zzu.ehome.view.RefreshLayout;
 
 import org.json.JSONObject;
 
@@ -36,6 +37,7 @@ import java.util.List;
 
 import static android.R.attr.data;
 import static android.R.attr.id;
+import static com.zzu.ehome.R.id.refreshLayout;
 import static com.zzu.ehome.db.DBHelper.mContext;
 
 /**
@@ -59,7 +61,8 @@ public class ExaminationReportActivity extends BaseActivity {
     private List<MedicalBean> mList;
     private MedicalExaminationAdapter adapter;
     public static final int ADD= 0x25;
-
+    private RefreshLayout refreshLayout;
+    private boolean isRefresh=false;
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -81,7 +84,8 @@ public class ExaminationReportActivity extends BaseActivity {
         layout_none.setVisibility(View.GONE);
         layout_search=(RelativeLayout)findViewById(R.id.layout_search);
         layout_add=(RelativeLayout) findViewById(R.id.layout_add);
-        setDefaultViewMethod(R.mipmap.icon_arrow_left, "手动添加报告", R.mipmap.icon_add_zoushi, new HeadView.OnLeftClickListener() {
+        refreshLayout=(RefreshLayout) findViewById(R.id.refreshLayout);
+        setDefaultViewMethod(R.mipmap.icon_arrow_left, "体检报告", R.mipmap.icon_add_zoushi, new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
                 finishActivity();
@@ -136,6 +140,21 @@ public class ExaminationReportActivity extends BaseActivity {
 //
 //            }
 //        });
+        refreshLayout.setOnRefreshListener(new RefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout pullToRefreshLayout) {
+                if(!isNetWork){
+                    if(!isNetWork){
+                        refreshLayout.refreshFinish(RefreshLayout.FAIL);
+                        return;
+                    }
+                    return;
+                }
+                isRefresh=true;
+
+                initDatas();
+            }
+        });
 
     }
 
@@ -196,6 +215,12 @@ public class ExaminationReportActivity extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                finally {
+                    if(isRefresh){
+                        refreshLayout.refreshFinish(RefreshLayout.SUCCEED);
+                        isRefresh=false;
+                    }
+                }
 
             }
 
@@ -209,6 +234,7 @@ public class ExaminationReportActivity extends BaseActivity {
                 }
                 Intent i = new Intent(ExaminationReportActivity.this, MedicalExaminationDesActivity.class);
                 i.putExtra("ID", mList.get(position).getID());
+                i.putExtra("time", mList.get(position).getCheckTime());
               startActivity(i);
             }
         });
@@ -221,6 +247,7 @@ public class ExaminationReportActivity extends BaseActivity {
 
 
         if (resultCode == ADD&& data != null) {
+            isRefresh=true;
             initDatas();
         }
     }

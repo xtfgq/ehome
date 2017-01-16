@@ -134,7 +134,7 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
         btn_save = (Button) findViewById(R.id.btn_save);
 //        lljzhen=(LinearLayout) findViewById(R.id.lljzhen);
 
-        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "添加报告", new HeadView.OnLeftClickListener() {
+        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "手动添加报告", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
                 finishActivity();

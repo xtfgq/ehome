@@ -1,0 +1,231 @@
+﻿<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/toup.css" />
+    <script src="js/jquery-1.11.3.js"></script>
+
+
+</head>
+
+<body>
+    <!-- 题目 -->
+    <!--<section class="toup" id="t1">
+        <div class="swipers" style=" margin:0;">
+            <div class="swiper-container">
+                <div> <div style=" width:100%; height:45px; background-color:#00c07d"><img src="imgs/back.png" style=" height:25px; position:absolute; top:10px; left:8px;" >               <h2 class="app-title" style=" width:100%; float:right; background:none; color:#fff; font-size:0.35rem; text-align:center; margin-top:7.5px;">高血压发生风险评估</h2></div> </div>
+            </div>
+        </div>
+    </section>-->
+ <div><div class="subtitle"></div></div>
+    <section class="toup" id="t2">
+        <div class="swipers">
+            <div class="swiper-container">
+                <div class="no-input">
+                    <!--<div class="no-input-title">请先完成以下问题:</div>-->
+                </div>
+                <div class="swiper-wrapper swiper-no-swiping">
+                    <div class="swiper-slide">
+                        <div class="scores">
+                            <div class="f">1.您的性别？</div>
+                            <div class="choose">
+                                <div class="input"><input type="radio" class="radio" name="score1" value="0" checked="checked"/><label>女性</label></div>
+                                <div class="input"><input type="radio" class="radio" name="score1" value="1" /><label>男性</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="scores">
+                            <div class="f">2.您的年龄？</div>
+                            <div class="choose">
+                                <div class="input" style=" width:33.3333%; float:left;"><input type="radio" class="radio" name="score2" value="0" /><label>≤35岁</label></div>
+                                <div class="input" style=" width:33.3333%; float:left;"><input type="radio" class="radio" name="score2" value="1" /><label>35~44岁</label></div>
+                                <div class="input" style=" width:33.3333%; float:left;"><input type="radio" class="radio" name="score2" value="2" /><label>45~54岁</label></div>
+                                <div class="input" style=" width:33.3333%; float:left;"><input type="radio" class="radio" name="score2" value="3" /><label>55~64岁</label></div>
+                                <div class="input" style=" width:33.3333%; float:left;"><input type="radio" class="radio" name="score2" value="4" /><label>≥65岁</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="scores">
+                            <div class="f">3.您的父母、兄弟姐妹是否有人被诊断为糖尿病？</div>
+                            <div class="choose">
+                                <div class="input"><input type="radio" class="radio" name="score3" value="3" /><label>是</label></div>
+                                <div class="input"><input type="radio" class="radio" name="score3" value="0" /><label>否</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="scores">
+                            <div class="f">4.您是否经常食用油腻食物？</div>
+                            <div class="choose">
+                                <div class="input"><input type="radio" class="radio" name="score4" value="1" /><label>是</label></div>
+                                <div class="input"><input type="radio" class="radio" name="score4" value="0" /><label>否</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="scores">
+                            <div class="f">5.您每天食用的蔬菜和水果总量是否大于等于500g？</div>
+                            <div class="choose">
+                                <div class="input"><input type="radio" class="radio" name="score5" value="0" /><label>是</label></div>
+                                <div class="input"><input type="radio" class="radio" name="score5" value="1" /><label>否</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="scores">
+                            <div class="f">6.您现在是否吸烟？<font>（吸烟：指连续或累积吸烟6个月及以上，每日至少吸1支烟）</font></div>
+                            <div class="choose">
+                                <div class="input"><input type="radio" class="radio" name="score6" value="2" /><label>是 </label></div>
+                                <div class="input"><input type="radio" class="radio" name="score6" value="0" /><label>否 </label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="scores">
+                            <div class="f">7.是否曾经发现血糖偏高？<font>（6.1&lt=空腹血糖&lt7.0mmol/L或者7.8&lt=餐后血糖&lt11.1mmol/L） </font></div>
+                            <div class="choose">
+                                <div class="input"><input type="radio" class="radio" name="score7" value="6" /><label>是</label></div>
+                                <div class="input"><input type="radio" class="radio" name="score7" value="0" /><label>否</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="scores">
+                            <div class="f">8.您最近两周是否服用降血压药？</div>
+                            <div class="choose">
+                                <div class="input"><input type="radio" class="radio" name="score8" value="2" /><label>是</label></div>
+                                <div class="input"><input type="radio" class="radio" name="score8" value="0" /><label>否</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="scores">
+                            <div class="f">9.您是否经常进行体力活动？<font>（“每周3天或3天以上，每天剧烈体力活动超过20分钟”或“每周5天或5天以上，每天适度体力活动或者走路超过30分钟”）</font></div>
+                            <div class="choose">
+                                <div class="input"><input type="radio" class="radio" name="score9" value="0" /><label>是</label></div>
+                                <div class="input"><input type="radio" class="radio" name="score9" value="2" /><label>否</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide" style=" border-bottom:0;">
+                        <div class="scores">
+                            <div class="f">10.您的腰围是？</div>
+                            <div class="choose" id="waidiv" style=" margin-left:0;">
+                                <div class="input" style=" width:33.3333%; float:left;"><input type="radio" class="radio" name="score10" value="0" /><label>&lt80cm</label></div>
+                                <div class="input" style=" width:33.3333%; float:left;"><input type="radio" class="radio" name="score10" value="1" /><label>80~90cm</label></div>
+                                <div class="input" style=" width:33.3333%; float:left;"><input type="radio" class="radio" name="score10" value="2" /><label>&gt90cm</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="preNexts">
+         <div class="swiper-button-prev">开始评估</div>
+         <!--<div class="swiper-button-next">重新评估</div>-->
+    </div>
+    <script>
+        // 定义基准字体
+        new function () {
+            var _self = this;
+            _self.width = 640;//设置默认最大宽度
+            _self.fontSize = 100;//默认字体大小
+            _self.widthProportion = function () {
+                var p = (document.body && document.body.clientWidth || document.getElementsByTagName("html")[0].offsetWidth) / _self.width;
+                return p > 1 ? 1 : p < 0.5 ? 0.5 : p;
+            };
+            _self.changePage = function () {
+                document.getElementsByTagName("html")[0].setAttribute("style", "font-size:" + _self.widthProportion() * _self.fontSize + "px");
+            }
+            _self.changePage();
+            window.addEventListener('resize', function () {
+                _self.changePage();
+            }, false);
+        };
+
+        var totalScore = 0;
+        var sex = "";
+		var femaleWai="<div class=\"input\"onclick=\"changBg(this)\"style=\" width:33.3333%; float:left;\"><input type=\"radio\"class=\"radio\"name=\"score10\"value=\"0\"/><label>&lt80cm</label></div><div class=\"input\"onclick=\"changBg(this)\"style=\" width:33.3333%; float:left;\"><input type=\"radio\"class=\"radio\"name=\"score10\"value=\"1\"/><label>80~90cm</label></div><div class=\"input\"onclick=\"changBg(this)\"style=\" width:33.3333%; float:left;\"><input type=\"radio\"class=\"radio\"name=\"score10\"value=\"2\"/><label>&gt90cm</label></div>";
+		var maleWai="<div class=\"input\"onclick=\"changBg(this)\"style=\" width:33.3333%; float:left;\"><input type=\"radio\"class=\"radio\"name=\"score10\"value=\"0\"/><label>&lt90cm</label></div><div class=\"input\"onclick=\"changBg(this)\"style=\" width:33.3333%; float:left;\"><input type=\"radio\"class=\"radio\"name=\"score10\"value=\"1\"/><label>90~100cm</label></div><div class=\"input\"onclick=\"changBg(this)\"style=\" width:33.3333%; float:left;\"><input type=\"radio\"class=\"radio\"name=\"score10\"value=\"2\"/><label>&gt100cm</label></div>";
+        $(function () {
+			$("input[name=score1]").eq(0).parent(".input").addClass("on");
+            totalScore = 0;
+            //评估
+            $(".swiper-button-prev").click(function () {
+                var scoreItems = $(".swiper-wrapper input:checked");
+                if (scoreItems.length < 10) {    //未完全答题
+                    scroll(0, 0);
+                    var noInputHtml = "<div class='no-input-item'>";
+                    for (var j = 1; j < 11; j++) {
+						var nameItem = "score" + j;
+						if ($("input[name=" + nameItem + "]:checked").val() == undefined) {
+							//$("input[name=" + nameItem + "]").parents(".swiper-slide").css("background-color", "red");
+							noInputHtml += "题目" + j + ",";
+						}
+                    }
+                    if (noInputHtml != null && noInputHtml.length > 0 && noInputHtml.substr(noInputHtml.length - 1, 1) == ",") {
+                        noInputHtml = noInputHtml.substr(0, noInputHtml.length - 1) + "</div>";
+                    }
+                    $(".no-input").html("<div class=\"no-input-title\">请先完成以下问题:</div>" + noInputHtml).show();
+                } else {  //完全答题
+                    for (var i = 0; i < scoreItems.length; i++) {
+					    if(i==9){
+							totalScore += GetWaistlineScore(sex, scoreItems[i].value);
+						}else{
+							totalScore += Number(scoreItems[i].value);
+						}
+                    }
+                    ShowResult(totalScore);
+                }
+            });
+
+        });
+
+		//腰围
+		function GetWaistlineScore(sex, waistCode) {
+			return waistCode == 0 ? 0 : (waistCode == 2 ? 4 : 2);
+		}
+		//腰围选择
+		function changBg(obj){
+			 //$(obj).parents(".swiper-slide").css("background-color", "#e4e6e9");
+			 $(obj).addClass("on").siblings().removeClass("on");
+			 $(obj).find("input").attr("checked","checked");
+		}
+		 //显示得分结果
+		function ShowResult(score) {
+			var score4 = $("input[name=score4]:checked").val();
+			var score5 = $("input[name=score5]:checked").val();
+			var score6 = $("input[name=score6]:checked").val();
+			var score7 = $("input[name=score7]:checked").val();
+			var score8 = $("input[name=score8]:checked").val();
+			var score9 = $("input[name=score9]:checked").val();
+			var score10 = $("input[name=score10]:checked").val();
+			//评估
+			window.location.href="DiabetesResult.html?score="+score+"&score4="+score4+"&score5="+score5+"&score6="+score6+"&score7="+score7+"&score8="+score8+"&score9="+score9+"&score10="+score10;
+		}
+		//选择
+		$(".input").on("click",function(){
+			$(this).addClass("on").siblings().removeClass("on");
+			$(this).find("input").attr("checked","checked");
+			var maleValue = $(this).find("label").text();
+			if (maleValue == "男性") {
+				sex = "male";
+				$("#waidiv").html(maleWai);
+			} else if (maleValue == "女性") {
+				sex = "female";
+				$("#waidiv").html(femaleWai);
+			}
+		 });
+
+    </script>
+</body>
+
+</html>

@@ -8,8 +8,8 @@ android {
         applicationId "com.zzu.ehome.main.ehome"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 16
-        versionName "2.1.1"
+        versionCode 17
+        versionName "2.1.2"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
@@ -51,7 +51,6 @@ dependencies {
     compile files('libs/umeng-analytics-v6.0.0.jar')
     compile 'com.kyleduo.switchbutton:library:1.4.0'
     compile files('libs/xcl.jar')
-    compile files('libs/swipe.jar')
     compile 'com.dinuscxj:circleprogressbar:1.1.0'
     compile files('libs/BaiduLBS_Android.jar')
     compile 'com.github.devlight:infinitecycleviewpager:1.0.0'

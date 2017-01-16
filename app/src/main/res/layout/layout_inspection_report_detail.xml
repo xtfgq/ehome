@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
 
     >
 
@@ -14,21 +14,30 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-       >
+        android:layout_height="wrap_content"
+        android:background="@color/base_color_text_white">
 
         <LinearLayout
             android:layout_width="match_parent"
-
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f2f2f2"
+                android:paddingBottom="7dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="7dp"
+                 />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
-                android:orientation="horizontal"
-
-                >
+                android:background="@color/base_color_text_white"
+                android:orientation="horizontal">
 
                 <TextView
 
@@ -80,24 +89,49 @@
             <com.zzu.ehome.view.MyScrollListView
                 android:id="@+id/lilstView"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/base_color_text_white"
                 android:divider="@null"
-                android:scrollbars="none"
-                android:layout_height="wrap_content" />
+                android:scrollbars="none" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/actionbar_color" />
+
             <TextView
-                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
-                android:gravity="center"
-                android:textColor="#949395"
+                android:layout_height="24dp"
                 android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/base_color_text_white"
+                android:gravity="center"
                 android:text="本报告只对送检结果负责，结果仅供医生参考"
-                android:layout_height="24dp"/>
+                android:textColor="#949395" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f2f2f2"
+                android:id="@+id/llad"
+                android:orientation="vertical">
 
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="7dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:text="健康指导" />
+
+                <com.zzu.ehome.view.MyScrollListView
+                    android:id="@+id/lilstView2"
+                    android:layout_width="match_parent"
+                    android:divider="@null"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

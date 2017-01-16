@@ -30,7 +30,11 @@ public class DeclarationWebActivity extends BaseActivity {
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setSaveFormData(false);
         webSettings.setJavaScriptEnabled(true);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         webSettings.setSupportZoom(false);
         mWebView.loadUrl(" file:///android_asset/shengming.html ");
+
     }
 }

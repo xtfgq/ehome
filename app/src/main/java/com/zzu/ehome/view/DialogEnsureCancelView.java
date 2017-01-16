@@ -95,12 +95,7 @@ public class DialogEnsureCancelView extends MyDialogView {
      */
     public DialogEnsureCancelView setOnClickListenerCancle(OnClickListener clickListener) {
         mClickListenerCancle = clickListener;
-		/*if(mClickListener != null) {
-			mLayoutEnsure.setVisibility(View.VISIBLE);
-		}
-		else {
-			mLayoutEnsure.setVisibility(View.GONE);
-		}*/
+
         return this;
     }
 

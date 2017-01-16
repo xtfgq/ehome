@@ -42,6 +42,9 @@ public class StaticWebView extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setSupportZoom(false);
         mIntent = this.getIntent();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         if (mIntent != null && mIntent.getStringExtra("ID") != null) {
             ID = mIntent.getStringExtra("ID");
             title = mIntent.getStringExtra("Title");

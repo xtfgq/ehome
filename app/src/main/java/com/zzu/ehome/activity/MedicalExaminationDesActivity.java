@@ -66,6 +66,7 @@ public class MedicalExaminationDesActivity extends BaseActivity implements View.
         mIntent = this.getIntent();
 
         id = mIntent.getStringExtra("ID");
+        title=DateUtils.StringPattern(mIntent.getStringExtra("time"), "yyyy/MM/dd", "yyyy年MM月")+"体检报告";
         initViews();
         initEnent();
         if(!CommonUtils.isNotificationEnabled(MedicalExaminationDesActivity.this)){
@@ -143,7 +144,7 @@ public class MedicalExaminationDesActivity extends BaseActivity implements View.
     }
 
     private void initViews() {
-        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "体检报告", new HeadView.OnLeftClickListener() {
+        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, title, new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
                 finishActivity();

@@ -211,6 +211,7 @@ public class FindPsdActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void CHKCodeSend() {
+        tv_getCode.setEnabled(false);
         usermobile = editPhone.getText().toString().trim();
         if (TextUtils.isEmpty(usermobile)) {
             ToastUtils.showMessage(FindPsdActivity.this, R.string.mobile_register);
@@ -219,20 +220,20 @@ public class FindPsdActivity extends BaseActivity implements View.OnClickListene
         }
 
         if (IOUtils.isMobileNO(usermobile)) {
+            startService(mIntent);
             requestMaker.sendAuthCode(usermobile, new JsonAsyncTask_Info(FindPsdActivity.this, true, new JsonAsyncTaskOnComplete() {
                 @Override
                 public void processJsonObject(Object result) {
                     String value = result.toString();
                     usermobileold=usermobile;
-
                     try {
                         JSONObject mySO = (JSONObject) result;
                         JSONArray array = mySO
                                 .getJSONArray("SendAuthCode");
-                        startService(mIntent);
+
                         if(Integer.valueOf(array.getJSONObject(0)
                                 .getString("MessageCode"))==0) {
-                            startService(mIntent);
+
                             for (int i = 0; i < array.length(); i++) {
                                 chkcode = array.getJSONObject(i)
                                         .getString("MessageContent");

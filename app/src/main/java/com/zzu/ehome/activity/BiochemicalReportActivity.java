@@ -8,23 +8,30 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.InspectionReportAdapter;
 import com.zzu.ehome.bean.ResultContent;
 
+import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.DateUtils;
 
+import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
+import com.zzu.ehome.utils.JsonAsyncTask_Info;
+import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 
 import com.zzu.ehome.view.HeadView;
 import com.zzu.ehome.view.PullToRefreshLayout;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,12 +54,15 @@ public class BiochemicalReportActivity extends BaseActivity{
     private boolean isReflash = false;
     private boolean isLoading = false;
     private int page = 1;
+    private User dbUser;
+    private RequestMaker requestMaker;
 
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         setContentView(R.layout.layout_biochemical_report);
         dao = new EHomeDaoImpl(this);
+        requestMaker= RequestMaker.getInstance();
         usrid = SharePreferenceUtil.getInstance(BiochemicalReportActivity.this).getUserId();
         initViews();
 
@@ -68,14 +78,10 @@ public class BiochemicalReportActivity extends BaseActivity{
         setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "生化检查报告", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
-
-
                 finishActivity();
 
             }
         });
-
-
         pulltorefreshlayout = (PullToRefreshLayout) findViewById(R.id.refresh_view);
 
         listView = (ListView) findViewById(R.id.listView);
@@ -102,6 +108,7 @@ public class BiochemicalReportActivity extends BaseActivity{
                 Intent i = new Intent(BiochemicalReportActivity.this, InspectionReportDetailActivity.class);
                 i.putExtra("Type", mList.get(position).getOCRType());
                 i.putExtra("RecordID", mList.get(position).getID());
+                i.putExtra("TypeTitle","生化");
                 i.putExtra("Title", DateUtils.StringPattern(mList.get(position).getCreatedDate(), "yyyy/MM/dd HH:mm:ss", "yyyy-MM-dd"));
                 startActivity(i);
             }
@@ -137,12 +144,74 @@ public class BiochemicalReportActivity extends BaseActivity{
             isFirst = true;
             isReflash = true;
             isLoading = false;
-            mList.clear();
             initDatas();
         }
     }
 
     public void initDatas() {
+        dbUser = dao.findUserInfoById(usrid);
+        requestMaker.OCRRecordInquiry(dbUser.getUserno(), "04","02",page + "", 10 + "", new JsonAsyncTask_Info(BiochemicalReportActivity.this, true, new JsonAsyncTaskOnComplete() {
+            @Override
+            public void processJsonObject(Object result) {
+                try {
+                    JSONObject mySO = (JSONObject) result;
+                    org.json.JSONArray array = mySO
+                            .getJSONArray("OCRRecordInquiry");
+                    int code = Integer.valueOf(array.getJSONObject(0).getString("MessageCode"));
+                    if (isReflash) {
+                        mList.clear();
+                    }
+                    if (code == 0) {
+                        layout_none.setVisibility(View.GONE);
+                        org.json.JSONArray arraySub =
+                                array.getJSONObject(0).getJSONArray("ResultContent");
+                        for (int i = 0; i < arraySub.length(); i++) {
+                            ResultContent rc = new ResultContent();
+                            rc.setCreatedDate(arraySub.getJSONObject(i).getString("CreatedDate"));
+                            rc.setID(arraySub.getJSONObject(i).getString("ID"));
+                            rc.setOCRType(arraySub.getJSONObject(i).getString("OCRType"));
+                            rc.setOCRTypeName(arraySub.getJSONObject(i).getString("OCRTypeName"));
+                            rc.setRownumber(arraySub.getJSONObject(i).getString("rownumber"));
+//                            rc.setFromto(arraySub.getJSONObject(i).getString("Fromto"));
+                            mList.add(rc);
+                        }
+                        if (isFirst) {
+                            mAdapter = new InspectionReportAdapter(BiochemicalReportActivity.this, mList);
+                            listView.setAdapter(mAdapter);
+                            isFirst=false;
+                        }
+
+                        if (isReflash) {
+                            isReflash = false;
+                            isFirst = false;
+                            mAdapter.notifyDataSetChanged();
+                            pulltorefreshlayout.refreshFinish(PullToRefreshLayout.SUCCEED);
+                        } else if (isLoading) {
+                            isLoading = false;
+                            isFirst = false;
+                            mAdapter.notifyDataSetChanged();
+                            pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                        }
+
+
+                    } else if (code == 2 && isLoading) {
+                        isLoading = false;
+                        isFirst = false;
+                        mAdapter.notifyDataSetChanged();
+                        pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                        Toast.makeText(BiochemicalReportActivity.this, "已经没有更多数据了",
+                                Toast.LENGTH_SHORT).show();
+                    }else{
+                        layout_none.setVisibility(View.VISIBLE);
+                        isFirst = false;
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }));
 
 
 

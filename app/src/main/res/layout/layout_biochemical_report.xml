@@ -24,7 +24,6 @@
                 android:id="@+id/listView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
                 android:divider="@null" />
             <include layout="@layout/load_more" />
         </com.zzu.ehome.view.PullToRefreshLayout>
@@ -34,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="107dp"
             android:gravity="center"
-            android:visibility="visible"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <ImageView

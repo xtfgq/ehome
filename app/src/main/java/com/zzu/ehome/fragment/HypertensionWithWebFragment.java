@@ -135,7 +135,9 @@ public class HypertensionWithWebFragment extends BaseFragment {
         webSettings.setTextSize(WebSettings.TextSize.NORMAL);
         webSettings.setJavaScriptEnabled(true);
         webView.requestFocusFromTouch();
-
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         webView.setWebViewClient(new WebViewClient() {
 
             @Override

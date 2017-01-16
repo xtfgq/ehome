@@ -320,8 +320,7 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
             return;
         }
         if (!IOUtils.isName(name)) {
-//            ToastCompat.makeText(PersonalCenterInfo.this,"姓名需要输入汉字！", Toast.LENGTH_LONG);
-//           ToastUtils.showMessage(PersonalCenterInfo.this, "姓名需要输入汉字");
+
             show("姓名需要输入两个以上汉字");
             setTVEeable(true);
             return;

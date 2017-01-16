@@ -19,7 +19,7 @@ import com.zzu.ehome.activity.SupperBaseActivity;
 public class WebPlatmFramet extends BaseFragment{
     private View mView;
     private SupperBaseActivity activity;
-    private    String url;
+    private String url;
     private WebView mWebView;
     @Override
     public void onAttach(Context context) {
@@ -37,7 +37,6 @@ public class WebPlatmFramet extends BaseFragment{
         url=getArguments().getString("url");
         mView = view;
         initViews();
-
     }
     private void initViews(){
         mWebView = (WebView) mView.findViewById(R.id.webview);
@@ -45,6 +44,9 @@ public class WebPlatmFramet extends BaseFragment{
         webSettings.setSaveFormData(false);
         webSettings.setJavaScriptEnabled(true);
         webSettings.setSupportZoom(false);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         mWebView.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

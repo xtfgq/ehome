@@ -30,11 +30,6 @@ public abstract class MyDialogView extends LinearLayout {
         this.context = context;
     }
 
-    public boolean ensureInfo() {
-        return false;
-    }
-
-    ;
 
     public abstract DialogInterface.OnClickListener getPositiveButtonListener();
 

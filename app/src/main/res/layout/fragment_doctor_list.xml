@@ -38,6 +38,7 @@
 
         <com.zzu.ehome.view.PullableListView
             android:id="@+id/listView"
+            android:scrollbars="none"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:divider="@null" />

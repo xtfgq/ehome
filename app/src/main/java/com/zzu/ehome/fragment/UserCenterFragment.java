@@ -31,6 +31,7 @@ import com.zzu.ehome.activity.MyHome;
 import com.zzu.ehome.activity.MyRemindActivity1;
 import com.zzu.ehome.activity.MyReportActivity;
 import com.zzu.ehome.activity.PersonalCenterInfo;
+import com.zzu.ehome.activity.PingguTestActivity;
 import com.zzu.ehome.activity.SettingActivity;
 import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.bean.RefreshEvent;
@@ -60,7 +61,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     private SupperBaseActivity activity;
     private RelativeLayout layout_msg, layout_wdda, layout_wdbg,
             layout_wdyy, layout_wdtx,  layout_yqhy,
-            layout_yjfk, layout_about, layout_setting;
+            layout_yjfk, layout_about, layout_setting,layout_wdpg;
     private EHomeDao dao;
     private TextView tv_msg,tv_edit;
     private View vTop;
@@ -127,6 +128,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         layout_yjfk = (RelativeLayout) mView.findViewById(R.id.layout_yjfk);
         layout_about = (RelativeLayout) mView.findViewById(R.id.layout_about);
         layout_setting = (RelativeLayout) mView.findViewById(R.id.layout_setting);
+        layout_wdpg=(RelativeLayout)mView.findViewById(R.id.layout_wdpg);
         tv_name = (TextView) mView.findViewById(R.id.tv_name);
         layout_msg = (RelativeLayout) mView.findViewById(R.id.layout_msg);
         tvGoMyFaimily = (TextView) mView.findViewById(R.id.tvGoMyFaimily);
@@ -172,6 +174,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         tv_mydoctor.setOnClickListener(this);
         tv_edit.setOnClickListener(this);
         layout_wdys.setOnClickListener(this);
+        layout_wdpg.setOnClickListener(this);
     }
 
 
@@ -246,6 +249,10 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
             return;
         }
         switch (v.getId()) {
+            case R.id.layout_wdpg:
+
+                startActivity(new Intent(getActivity(), PingguTestActivity.class));
+                break;
             case R.id.tvGoMyFaimily:
                 doGoFamily();
                 break;

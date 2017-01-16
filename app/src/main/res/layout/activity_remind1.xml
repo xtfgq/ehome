@@ -9,12 +9,7 @@
     >
 
     <include layout="@layout/layout_toolbar" />
-    <com.baoyz.swipemenulistview.SwipeMenuListView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:divider="@null"
-        android:dividerHeight="10dp"
-        android:id="@+id/listView" />
+
     <LinearLayout
         android:id="@+id/layout_no_msg"
         android:layout_width="match_parent"
@@ -38,9 +33,14 @@
             android:textColor="@color/base_color_text_black"
             android:textSize="@dimen/text_size_medium" />
 
-
         </LinearLayout>
 
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:divider="@null"
+        android:dividerHeight="10dp"
+        android:id="@+id/listView" />
 
 
 </LinearLayout>

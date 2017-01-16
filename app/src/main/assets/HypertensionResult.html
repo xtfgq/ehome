@@ -1,0 +1,240 @@
+ <!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/toup.css" />
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery-1.11.3.js"></script>
+    <title>高血压发生风险评估结果</title>
+</head>
+<body style=" background:#f1f1f1;">
+ <!-- 结果 -->
+ <section class="toup" id="t1" style="background:#fff;">
+        <div class="swipers" style=" margin:10% 0 0 0; height:110px;">
+            <div class="swiper-container" style="width:110px; margin:0 auto;">
+               <img src="imgs/bg_cirle_g.png" style="width: 110px;;vertical-align:middle;position:absolute; top:22%;">
+               <p style=" width:110px;; text-align:center; position:absolute; top:22%; font-size:2rem; color:#00c07d">得分</br><span style=" font-size:2.5rem" id="resore"> </span></p>
+            </div>
+        </div>
+    </section>
+    <section class="toup" id="t1" style="background:#fff;">
+    <div class="preNexts" style=" width:50%; margin: 30px auto; height:2.88rem;">
+             <div class="swiper-button-prev" style=" height:2.88rem; line-height:2.88rem; font-size:1.29rem;">重新评估</div>
+         <!--<div class="swiper-button-next">重新评估</div>-->
+           </div>
+    </section>
+    <section class="toup" id="t3">
+	 <p style="padding: 0 5%;font-size: 1.2rem;margin: 5px 0; font-weight:bold;" id="result">结果：</p>
+    </section>
+    <section class="toup" id="t4" style="background:#fff;">
+       <div class="swipers" style="margin:0;">
+		    <ul class="report-detail" style=" border-bottom:1px solid #f1f1f1; width: 90%; margin: 0 auto;">
+                <p style="font-size: 1rem;margin: 5px 0; font-weight:bold;">建议</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">合理膳食、适量运动、戒烟限酒、心理平衡</p>
+            </ul>
+            <ul class="report-detail" style=" border-bottom:1px solid #f1f1f1; width: 90%; margin: 0 auto;">
+                <p style="font-size: 1rem;margin: 5px 0; font-weight:bold;">建议</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">戒烟</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">目标</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">彻底戒烟&nbsp&nbsp避免被动吸烟</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">措施</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（1）吸烟是心血管疾病和癌症的主要危险因素之一，被动吸烟也会明显增加心血管疾病危险。戒烟的益处十分肯定，而且任何年龄戒烟均能获益。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（2）向医生咨询戒烟方法并寻求帮助，确定戒烟日期，制定计划。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（3）戒烟咨询与戒烟药物结合，避免复吸。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（4）公共场所避免被动吸烟。</p>
+            </ul>
+            <ul class="report-detail" style=" border-bottom:1px solid #f1f1f1; width: 90%; margin: 0 auto;">
+                <p style="font-size: 1rem;margin: 5px 0; font-weight:bold;">建议</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">限制饮酒</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">目标</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">每天白酒&lt50ml&nbsp或葡萄酒&lt100ml&nbsp或啤酒&lt300ml</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">措施</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（1）过量饮酒易患高血压。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（2）高血压患者不提倡饮酒。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（3）酗酒者逐渐减量；酒瘾严重者，可借助药物。</p>
+            </ul>
+            <ul class="report-detail" style=" border-bottom:1px solid #e1e1e2; width: 90%; margin: 0 auto;">
+                <p style="font-size: 1rem;margin: 5px 0; font-weight:bold;">建议</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">减少钠盐摄入</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">目标</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">每人钠盐摄入量逐步降至&lt6g/d</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">措施</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（1）日常生活中钠盐主要来源为腌制、卤制、泡制的食品以及烹饪用盐，应尽量少用上述食品。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（2）建议在烹调时尽可能用量具（如盐勺）称量加用的钠盐。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（3）用替代产品，如代用盐、食醋等。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（4）减少味精、酱油等含钠盐的调味品用量</p>
+            </ul>
+            <ul class="report-detail" style=" border-bottom:1px solid #e1e1e2; width: 90%; margin: 0 auto;">
+                <p style="font-size: 1rem;margin: 5px 0; font-weight:bold;">建议</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">合理膳食</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">目标</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">营养均衡</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">措施</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（1）食用油，包括植物油（素油）每人&lt25g/d。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（2）少吃或不吃肥肉和动物内脏。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（3）多吃蔬菜（400~500g/d）、水果（100g/d）。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（4）每人每周最多可吃蛋类5个。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（5）适量豆制品或鱼类，奶类250g/d。</p>
+            </ul>
+            <ul class="report-detail" style=" border-bottom:1px solid #f1f1f1; width: 90%; margin: 0 auto;">
+                <p style="font-size: 1rem;margin: 5px 0; font-weight:bold;">建议</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">定期测量血压</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">目标</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">收缩压&lt120mmHg&nbsp&nbsp舒张压&lt80mmHg</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">措施</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（1）饮食清淡，限制盐的摄入，合理膳食，多吃蔬菜水果。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（2）定期测量血压，关注血压变化。</p>
+            </ul>
+            <ul class="report-detail" style=" border-bottom:1px solid #e1e1e2; width: 90%; margin: 0 auto;">
+                <p style="font-size: 1rem;margin: 5px 0; font-weight:bold;">建议</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">合理膳食</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">目标</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">营养均衡</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">措施</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（1）食用油，包括植物油（素油）每人&lt25g/d。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（2）少吃或不吃肥肉和动物内脏。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（3）多吃蔬菜（400~500g/d）、水果（100g/d）。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（4）每人每周最多可吃蛋类5个。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（5）适量豆制品或鱼类，奶类250g/d。</p>
+            </ul>
+            <ul class="report-detail" style=" border-bottom:1px solid #f1f1f1; width: 90%; margin: 0 auto;">
+                <p style="font-size: 1rem;margin: 5px 0; font-weight:bold;">建议</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">减轻精神压力</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">目标</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">保持心理平衡</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">措施</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（1）应采取各种措施，缓解精神压力。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（2）及时纠正和治疗病态心理，必要时建议寻求专业心理辅导或治疗。</p>
+            </ul>
+            <ul class="report-detail" style=" border-bottom:1px solid #e1e1e2; width: 90%; margin: 0 auto;">
+                <p style="font-size: 1rem;margin: 5px 0; font-weight:bold;">建议</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">加强体育锻炼</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">目标</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">强度：中等量，每周3~5次，每次持续30分钟左右</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">措施</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（1）运动的形式可以根据自己的爱好灵活选择，步行、快走、慢跑、游泳、太极拳等均可。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（2）应注意量力而行，循序渐进。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（3）①5~10min的轻度热身活动；②20~30min的耐力活动或有氧运动；③放松阶段，约5min，逐渐减少用力，使心脑血管系统的反应和身体产热功能逐渐稳定下来。</p>
+            </ul>
+            <ul class="report-detail" style=" border-bottom:1px solid #f1f1f1; width: 90%; margin: 0 auto;">
+                <p style="font-size: 1rem;margin: 5px 0; font-weight:bold;">建议</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">控制体重</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">目标</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">腰围&lt90cm（男性）&nbsp&nbsp&lt85cm（女性）</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0; font-weight:bold;"">措施</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（1）减少能量摄入，尤其是高热量食物（高脂食物、含糖饮料及酒类等）的摄入，适当控制主食用量。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（2）增加足够的活动量。</p>
+                <p style="padding: 0 0.8em;font-size: 1rem;margin: 5px 0;">（3）肥胖者若非药物治疗效果不理想，可考虑去正规医院就诊，听从医生建议辅助用减肥药物。</p>
+                
+            </ul>
+
+
+        </div>
+    </section>
+    <script>
+	$(function(){
+		var totalScore=GetQueryString("score");
+		var score4=GetQueryString("score4");
+		var score5=GetQueryString("score5");
+		var score6=GetQueryString("score6");
+		var score7=GetQueryString("score7");
+		var score8=GetQueryString("score8");
+		var score9=GetQueryString("score9");
+		var score10=GetQueryString("score10");
+		var score11=GetQueryString("score11");
+		var score12=GetQueryString("score12");
+		if(totalScore!=null&&totalScore.toString().length>0){
+			$("#resore").html(totalScore);
+		}
+		$("#t3,#t4").show();
+		var resultStr="结果：";
+		if (totalScore == 0 || (score4 == 0 && score5 == 0 && score6 == 0 && score7 == 0 && score8 == 0 && score9 == 0 && score10 == 0 && score11 == 0 && score12==0)) {
+			$(".report-detail:eq(0)").show();
+			resultStr+="低危险度，平均每50人中有1人五年后可能发展为高血压";
+		} else if (totalScore > 0 && totalScore < 3) {
+			resultStr += "低危险度，平均每50人中有1人五年后可能发展为高血压";
+		} else if (totalScore >= 3 && totalScore <= 5) {
+			resultStr += "低危险度，平均每25人中有1人五年后可能发展为高血压";
+		} else if (totalScore >= 6 && totalScore <= 8) {
+			resultStr += "中危险度，平均每15人中有1人五年后可能发展为高血压";
+		} else if (totalScore >= 9 && totalScore <= 11) {
+			resultStr += "中危险度，平均每10人中有1人五年后可能发展为高血压";
+		} else if (totalScore >= 12 && totalScore <= 14) {
+			resultStr += "高危险度，平均每7人中有1人五年后可能发展为高血压";
+		} else if (totalScore >= 15 && totalScore <= 17) {
+			resultStr += "高危险度，平均每5人中有1人五年后可能发展为高血压";
+		} else if (totalScore >= 18 && totalScore <= 32) {
+			resultStr += "高危险度，平均每3人中有1人五年后可能发展为高血压";
+		} else {	
+		}
+		$("#result").html(resultStr);
+		
+		var recoIndex=0;
+		if (score4 != null && score4 == 1) {
+			$(".report-detail:eq(1)").show();
+			recoIndex++;
+			$(".report-detail:eq(1)").find("p").eq(0).html(recoIndex+".建议");
+		}
+		if (score5 != null && score5 == 2) {
+			$(".report-detail:eq(2)").show();
+			recoIndex++;
+			$(".report-detail:eq(2)").find("p").eq(0).html(recoIndex+".建议");
+		}
+		if (score6 != null && score6 == 2) {
+			$(".report-detail:eq(3)").show();
+			recoIndex++;
+			$(".report-detail:eq(3)").find("p").eq(0).html(recoIndex+".建议");
+		}
+		if (score7 != null && score7 == 1) {
+			$(".report-detail:eq(4)").show();
+			recoIndex++;
+			$(".report-detail:eq(4)").find("p").eq(0).html(recoIndex+".建议");
+		}
+		if (score8 != null && score8 == 6) {
+			$(".report-detail:eq(5)").show();
+			recoIndex++;
+			$(".report-detail:eq(5)").find("p").eq(0).html(recoIndex+".建议");
+		}
+		if (score9 != null && score9 == 2) {
+			if($(".report-detail:eq(4)").css("display")=="none"){
+				$(".report-detail:eq(6)").show();
+				recoIndex++;
+				$(".report-detail:eq(6)").find("p").eq(0).html(recoIndex+".建议");
+			}
+		}
+		if (score10 != null && score10 == 2) {
+			$(".report-detail:eq(7)").show();
+			recoIndex++;
+			$(".report-detail:eq(7)").find("p").eq(0).html(recoIndex+".建议");
+		}
+		if (score11 != null && score11 == 2) {
+			$(".report-detail:eq(8)").show();
+			recoIndex++;
+			$(".report-detail:eq(8)").find("p").eq(0).html(recoIndex+".建议");
+		}
+		if (score12 != null && score12 >0) {
+			$(".report-detail:eq(9)").show();
+			recoIndex++;
+			$(".report-detail:eq(9)").find("p").eq(0).html(recoIndex+".建议");
+		}
+	});
+	
+    //重新评估
+	$(".swiper-button-prev").click(function () {
+		window.location.href="Hypertension.html";
+	});
+	//获取url参数值
+	function GetQueryString(name){
+		 var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		 var r = window.location.search.substr(1).match(reg);
+		 if(r!=null)return  unescape(r[2]); return null;
+	}
+    </script>
+</body>
+
+</html>

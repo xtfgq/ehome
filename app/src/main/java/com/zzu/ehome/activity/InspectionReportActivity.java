@@ -130,6 +130,7 @@ public class InspectionReportActivity extends BaseActivity {
                 Intent i = new Intent(InspectionReportActivity.this, InspectionReportDetailActivity.class);
                 i.putExtra("Type", mList.get(position).getOCRType());
                 i.putExtra("RecordID", mList.get(position).getID());
+                i.putExtra("TypeTitle","血常规");
                 i.putExtra("Title", DateUtils.StringPattern(mList.get(position).getCreatedDate(), "yyyy/MM/dd HH:mm:ss", "yyyy-MM-dd"));
                 startActivity(i);
             }
@@ -165,14 +166,14 @@ public class InspectionReportActivity extends BaseActivity {
             isFirst = true;
             isReflash = true;
             isLoading = false;
-            mList.clear();
+
             initDatas();
         }
     }
 
     public void initDatas() {
         dbUser = dao.findUserInfoById(usrid);
-        requestMaker.OCRRecordInquiry(dbUser.getUserno(), "04",page + "", 10 + "", new JsonAsyncTask_Info(InspectionReportActivity.this, true, new JsonAsyncTaskOnComplete() {
+        requestMaker.OCRRecordInquiry(dbUser.getUserno(), "04","01",page + "", 10 + "", new JsonAsyncTask_Info(InspectionReportActivity.this, true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
                 try {

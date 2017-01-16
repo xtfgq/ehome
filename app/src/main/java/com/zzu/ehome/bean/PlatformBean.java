@@ -9,6 +9,7 @@ import static io.rong.imlib.statistics.UserData.name;
 public class PlatformBean {
     String time;
     String name;
+    String CHKCODE;
     public String getTime() {
         return time;
     }
@@ -25,5 +26,11 @@ public class PlatformBean {
         this.name = name;
     }
 
+    public String getCHKCODE() {
+        return CHKCODE;
+    }
 
+    public void setCHKCODE(String CHKCODE) {
+        this.CHKCODE = CHKCODE;
+    }
 }

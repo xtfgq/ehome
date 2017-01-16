@@ -12,6 +12,7 @@
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:scrollbars="none"
         android:background="@color/white"
         android:layout_weight="1"
 

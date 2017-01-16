@@ -44,6 +44,9 @@ public class SmartWebView extends BaseSimpleActivity {
         webSettings.setSaveFormData(false);
         webSettings.setJavaScriptEnabled(true);
         webSettings.setSupportZoom(false);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         mIntent = this.getIntent();
         dao = new EHomeDaoImpl(this);
         userid= SharePreferenceUtil.getInstance(SmartWebView.this).getUserId();

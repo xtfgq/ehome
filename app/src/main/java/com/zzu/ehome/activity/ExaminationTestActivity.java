@@ -49,7 +49,7 @@ public class ExaminationTestActivity extends BaseActivity{
         mList=new ArrayList<String>();
         mList.add("自助体检报告");
         mList.add("血常规检查报告");
-//        mList.add("生化检查体检报告");
+        mList.add("生化检查体检报告");
         mAdapter = new ExaminationTestAadpter(ExaminationTestActivity.this, mList);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -82,10 +82,19 @@ public class ExaminationTestActivity extends BaseActivity{
                         startActivity(new Intent(ExaminationTestActivity.this, InspectionReportActivity.class));
 
                         break;
-//                    case 2:
-//                        startActivity(new Intent(ExaminationTestActivity.this, BiochemicalReportActivity.class));
-//
-//                        break;
+                    case 2:
+                        if(!isNetWork){
+                            showNetWorkErrorDialog();
+                            return;
+                        }
+                        User dbUser3 = getDao().findUserInfoById(SharePreferenceUtil.getInstance(ExaminationTestActivity.this).getUserId());
+                        if(dbUser3.getUserno()==null|| TextUtils.isEmpty(dbUser3.getUserno())){
+                            completeInfoTips();
+                            return;
+                        }
+                        startActivity(new Intent(ExaminationTestActivity.this, BiochemicalReportActivity.class));
+
+                        break;
 
                 }
             }

@@ -732,7 +732,8 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                 if (TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
                     startActivity(new Intent(getActivity(), LoginActivity1.class));
                 } else {
-                    startIntent(getActivity(), FatherTestActivity.class);
+//                    startIntent(getActivity(), FatherTestActivity.class);
+                    startIntent(getActivity(), ExaminationReportActivity.class);
                 }
                 break;
             case R.id.layout_xdbg:

@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.zzu.ehome.application.Constants.CheckupInfoInsert;
+
 /**
  * Created by xtfgq on 2016/4/5.
  * 统一请求地址
@@ -120,6 +122,7 @@ public class RequestMaker {
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.SendAuthCode, Constants.SendAuthCode,
                 SOAP_URL, paramMap);
     }
+
     public void sendAuthCode(String mobile, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserMobile>%s</UserMobile><Flag>%s</Flag></Request>";
@@ -152,7 +155,7 @@ public class RequestMaker {
         str = String.format(str, new Object[]
                 {userid, username, sex, userno, age, height});
         paramMap.put("str", str);
-        Log.e("str",str);
+        Log.e("str", str);
         // 必须是这5个参数，而且得按照顺序
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.UserInfoChange, Constants.UserInfoChange,
                 SOAP_URL, paramMap);
@@ -209,44 +212,44 @@ public class RequestMaker {
 
     }
 
-    public void TemperatureInsert(String CardNO,String userid, String time, String value, JsonAsyncTask_Info task) {
+    public void TemperatureInsert(String CardNO, String userid, String time, String value, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><UserID>%s</UserID><Value>%s</Value><MonitorTime>%s</MonitorTime><Fromto>%s</Fromto></Request>";
         str = String.format(str, new Object[]
-                {CardNO,userid, value, time,"01"});
+                {CardNO, userid, value, time, "01"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.TemperatureInsert, Constants.TemperatureInsert,
                 SOAP_URL, paramMap);
 
     }
 
-    public void WeightInsert(String cardNo, String userid,String height,String bmi,String value, String time, JsonAsyncTask_Info task) {
+    public void WeightInsert(String cardNo, String userid, String height, String bmi, String value, String time, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><UserID>%s</UserID><Height>%s</Height><BMI>%s</BMI><Weight>%s</Weight><MonitorTime>%s</MonitorTime><Fromto>%s</Fromto></Request>";
         str = String.format(str, new Object[]
-                {cardNo,userid, height,bmi,value, time,"01"});
+                {cardNo, userid, height, bmi, value, time, "01"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.WeightInsert, Constants.WeightInsert,
                 SOAP_URL, paramMap);
 
     }
 
-    public void BloodPressureInsert(String cardNo,String userid, String High, String low, String xinlv, String time,String lv, JsonAsyncTask_Info task) {
+    public void BloodPressureInsert(String cardNo, String userid, String High, String low, String xinlv, String time, String lv, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><UserID>%s</UserID><High>%s</High><Low>%s</Low><Pulse>%s</Pulse><MonitorTime>%s</MonitorTime><Level>%s</Level><Fromto>%s</Fromto></Request>";
         str = String.format(str, new Object[]
-                {cardNo,userid, High, low, xinlv, time,lv,"01"});
+                {cardNo, userid, High, low, xinlv, time, lv, "01"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.BloodPressureInsert, Constants.BloodPressureInsert,
                 SOAP_URL, paramMap);
 
     }
 
-    public void BloodSugarInsert(String cardNo,String userid, String BloodSugarValue, String MonitorPoint, String MonitorTime, String Type, JsonAsyncTask_Info task) {
+    public void BloodSugarInsert(String cardNo, String userid, String BloodSugarValue, String MonitorPoint, String MonitorTime, String Type, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><UserID>%s</UserID><BloodSugarValue>%s</BloodSugarValue><HoursAfterMeal>%s</HoursAfterMeal><MonitorTime>%s</MonitorTime><Type>%s</Type><Fromto>%s</Fromto></Request>";
         str = String.format(str, new Object[]
-                {cardNo,userid, BloodSugarValue, MonitorPoint, MonitorTime, Type,"01"});
+                {cardNo, userid, BloodSugarValue, MonitorPoint, MonitorTime, Type, "01"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.BloodSugarInsert, Constants.BloodSugarInsert,
                 SOAP_URL, paramMap);
@@ -399,7 +402,7 @@ public class RequestMaker {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserMobile>%s</UserMobile><Password>%s</Password><NewPassword>%s</NewPassword></Request>";
         str = String.format(str, new Object[]
-                {UserMobile, Password, NewPassword,"002"});
+                {UserMobile, Password, NewPassword, "002"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.USERAUTHCHANGE, Constants.USERAUTHCHANGE,
                 SOAP_URL, paramMap);
@@ -458,11 +461,11 @@ public class RequestMaker {
      * @param type
      * @param task
      */
-    public void TemperatureInquiry(String CardNO,String UserID, String StartTime, String EndTime, String type, JsonAsyncTask_Info task) {
+    public void TemperatureInquiry(String CardNO, String UserID, String StartTime, String EndTime, String type, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><UserID>%s</UserID><StartTime>%s</StartTime><EndTime>%s</EndTime><Type>%s</Type><Fromto>%s</Fromto></Request>";
         str = String.format(str, new Object[]
-                {CardNO,UserID, StartTime, EndTime, type,"01"});
+                {CardNO, UserID, StartTime, EndTime, type, "01"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.TemperatureInquiry, Constants.TemperatureInquiry,
                 SOAP_URL, paramMap);
@@ -500,11 +503,11 @@ public class RequestMaker {
                 SOAP_URL, paramMap);
     }
 
-    public void HealthDataInquirywWithPageType(String usrid, String CardNo,String pagesize, String pageindex, String type, JsonAsyncTask_Info task) {
+    public void HealthDataInquirywWithPageType(String usrid, String CardNo, String pagesize, String pageindex, String type, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserID>%s</UserID><CardNO>%s</CardNO><Type>%s</Type><PageSize>%s</PageSize><PageIndex>%s</PageIndex><Fromto>%s</Fromto></Request>";
         str = String.format(str, new Object[]
-                {usrid,CardNo,type, pagesize, pageindex,"01"});
+                {usrid, CardNo, type, pagesize, pageindex, "01"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.HealthDataInquirywWithPage, Constants.HealthDataInquirywWithPage,
                 SOAP_URL, paramMap);
@@ -514,7 +517,7 @@ public class RequestMaker {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserID>%s</UserID><StartTime>%s</StartTime><EndTime>%s</EndTime><Fromto>%s</Fromto></Request>";
         str = String.format(str, new Object[]
-                {UserID, StartTime, EndTime,"01"});
+                {UserID, StartTime, EndTime, "01"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.WeightInquiry, Constants.WeightInquiry,
                 SOAP_URL, paramMap);
@@ -529,11 +532,11 @@ public class RequestMaker {
      * @param type
      * @param task
      */
-    public void WeightInquiryType(String CardNO, String userid,String StartTime, String EndTime, String type, JsonAsyncTask_Info task) {
+    public void WeightInquiryType(String CardNO, String userid, String StartTime, String EndTime, String type, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><UserID>%s</UserID><StartTime>%s</StartTime><EndTime>%s</EndTime><Type>%s</Type><Fromto>%s</Fromto></Request>";
         str = String.format(str, new Object[]
-                {CardNO, userid,StartTime, EndTime, type,"01"});
+                {CardNO, userid, StartTime, EndTime, type, "01"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.WeightInquiry, Constants.WeightInquiry,
                 SOAP_URL, paramMap);
@@ -554,7 +557,7 @@ public class RequestMaker {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserID>%s</UserID><StartTime>%s</StartTime><EndTime>%s</EndTime><Fromto>%s</Fromto></Request>";
         str = String.format(str, new Object[]
-                {UserID, StartTime, EndTime,"01"});
+                {UserID, StartTime, EndTime, "01"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.BloodPressureInquiry, Constants.BloodPressureInquiry,
                 SOAP_URL, paramMap);
@@ -569,16 +572,15 @@ public class RequestMaker {
      * @param type
      * @param task
      */
-    public void BloodPressureInquiryType(String cardNo,String UserID, String StartTime, String EndTime, String type, JsonAsyncTask_Info task) {
+    public void BloodPressureInquiryType(String cardNo, String UserID, String StartTime, String EndTime, String type, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><UserID>%s</UserID><StartTime>%s</StartTime><EndTime>%s</EndTime><Type>%s</Type><Fromto>%s</Fromto></Request>";
         str = String.format(str, new Object[]
-                {cardNo,UserID, StartTime, EndTime, type,"01"});
+                {cardNo, UserID, StartTime, EndTime, type, "01"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.BloodPressureInquiry, Constants.BloodPressureInquiry,
                 SOAP_URL, paramMap);
     }
-
 
 
     /**
@@ -588,11 +590,11 @@ public class RequestMaker {
      * @param type
      * @param task
      */
-    public void BloodSugarInquiryType(String CardNO,String UserID, String StartTime, String EndTime, String type, JsonAsyncTask_Info task) {
+    public void BloodSugarInquiryType(String CardNO, String UserID, String StartTime, String EndTime, String type, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><UserID>%s</UserID><StartTime>%s</StartTime><EndTime>%s</EndTime><Type>%s</Type><Fromto>%s</Fromto></Request>";
         str = String.format(str, new Object[]
-                {CardNO,UserID, StartTime, EndTime, type,"01"});
+                {CardNO, UserID, StartTime, EndTime, type, "01"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.BloodSugarInquiry, Constants.BloodSugarInquiry,
                 SOAP_URL, paramMap);
@@ -610,7 +612,7 @@ public class RequestMaker {
                 SOAP_URL, paramMap);
     }
 
-    public void BaseDataInsertInsert(String userid, String Marriage, String DrugAllergy, String GeneticHistory, String MedicalHistory, List<String> list, String Smoking, String Drinking,String bloodtype, JsonAsyncTask_Info task) {
+    public void BaseDataInsertInsert(String userid, String Marriage, String DrugAllergy, String GeneticHistory, String MedicalHistory, List<String> list, String Smoking, String Drinking, String bloodtype, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
 
         String familyHistory = "";
@@ -631,7 +633,7 @@ public class RequestMaker {
 
                 "<Smoking>%s</Smoking><Drinking>%s</Drinking><BloodType>%s</BloodType></Request>";
         str = String.format(str, new Object[]
-                {userid, Marriage, DrugAllergy, GeneticHistory, MedicalHistory, familyHistory, Smoking, Drinking,bloodtype});
+                {userid, Marriage, DrugAllergy, GeneticHistory, MedicalHistory, familyHistory, Smoking, Drinking, bloodtype});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.BaseDataInsert, Constants.BaseDataInsert,
                 SOAP_URL, paramMap);
@@ -647,7 +649,7 @@ public class RequestMaker {
                 SOAP_URL, paramMap);
     }
 
-    public void BaseDataUpdate(String userid, String Marriage, String DrugAllergy, String GeneticHistory, String MedicalHistory, List<String> list, String Smoking, String Drinking,String bloodtype, JsonAsyncTask_Info task) {
+    public void BaseDataUpdate(String userid, String Marriage, String DrugAllergy, String GeneticHistory, String MedicalHistory, List<String> list, String Smoking, String Drinking, String bloodtype, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
 
         String familyHistory = "";
@@ -665,7 +667,7 @@ public class RequestMaker {
 
                 "<Smoking>%s</Smoking><Drinking>%s</Drinking><BloodType>%s</BloodType></Request>";
         str = String.format(str, new Object[]
-                {userid, Marriage, DrugAllergy, GeneticHistory, MedicalHistory, familyHistory, Smoking, Drinking,bloodtype});
+                {userid, Marriage, DrugAllergy, GeneticHistory, MedicalHistory, familyHistory, Smoking, Drinking, bloodtype});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.BASEDATAUPDATE, Constants.BASEDATAUPDATE,
                 SOAP_URL, paramMap);
@@ -759,7 +761,7 @@ public class RequestMaker {
                 SOAP_URL, paramMap);
     }
 
-    public void RegionInquiry(String ParentID,JsonAsyncTask_Info task) {
+    public void RegionInquiry(String ParentID, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><ParentID>%s</ParentID></Request>";
         str = String.format(str, new Object[]
@@ -779,21 +781,21 @@ public class RequestMaker {
                 SOAP_URL, paramMap);
     }
 
-    public void HealthDataSearchByDate(String cardNum,String usrid, String date, JsonAsyncTask_Info task) {
+    public void HealthDataSearchByDate(String cardNum, String usrid, String date, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><UserID>%s</UserID><Date>%s</Date><Fromto>%s</Fromto></Request>";
         str = String.format(str, new Object[]
-                {cardNum,usrid, date,"01"});
+                {cardNum, usrid, date, "01"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.HealthDataSearchByDate, Constants.HealthDataSearchByDate,
                 SOAP_URL, paramMap);
     }
 
-    public void MedicationRecordInquiry(String usrid, String cardNum,String PageSize, String PageIndex, JsonAsyncTask_Info task) {
+    public void MedicationRecordInquiry(String usrid, String cardNum, String PageSize, String PageIndex, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserID>%s</UserID><CardNO>%s</CardNO><PageSize>%s</PageSize><PageIndex>%s</PageIndex></Request>";
         str = String.format(str, new Object[]
-                {usrid, cardNum,PageSize, PageIndex});
+                {usrid, cardNum, PageSize, PageIndex});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.MedicationRecordInquiry, Constants.MedicationRecordInquiry,
                 SOAP_URL, paramMap);
@@ -803,7 +805,7 @@ public class RequestMaker {
      * 新建用药记录
      */
 
-    public void MedicationRecordInsert(String UserID, String MedicationTime, String DrugName, String Number, String Remarks, String cardNo,List<Images> list, JsonAsyncTask_Info task) {
+    public void MedicationRecordInsert(String UserID, String MedicationTime, String DrugName, String Number, String Remarks, String cardNo, List<Images> list, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
 
         String images2 = "";
@@ -816,37 +818,37 @@ public class RequestMaker {
         String str = "<Request><UserID>%s</UserID><MedicationTime>%s</MedicationTime><DrugName>%s</DrugName><Number>%s</Number><Remarks>%s</Remarks><CardNO>%s</CardNO>" +
                 "%s</Request>";
         str = String.format(str, new Object[]
-                {UserID, MedicationTime, DrugName, Number, Remarks,cardNo,images2});
+                {UserID, MedicationTime, DrugName, Number, Remarks, cardNo, images2});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.MedicationRecordInsert, Constants.MedicationRecordInsert,
                 SOAP_URL, paramMap);
     }
 
-    public void StepCounterInsert(String CardNO,String usrid, String TotalStep, String TotalDistance, String TotalTime, String TotalHeat, String MonitorTime, JsonAsyncTask_Info task) {
+    public void StepCounterInsert(String CardNO, String usrid, String TotalStep, String TotalDistance, String TotalTime, String TotalHeat, String MonitorTime, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><UserID>%s</UserID><TotalStep>%s</TotalStep><TotalDistance>%s</TotalDistance><TotalTime>%s</TotalTime><TotalHeat>%s</TotalHeat><MonitorTime>%s</MonitorTime><Fromto>%s</Fromto></Request>";
         str = String.format(str, new Object[]
-                {CardNO,usrid, TotalStep, TotalDistance, TotalTime, TotalHeat, MonitorTime,"01"});
+                {CardNO, usrid, TotalStep, TotalDistance, TotalTime, TotalHeat, MonitorTime, "01"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.StepCounterInsert, Constants.StepCounterInsert,
                 SOAP_URL, paramMap);
     }
 
-    public void StepCounterInquiry(String CardNO,String usrid, String MonitorTime, String PageSize, String PageIndex, JsonAsyncTask_Info task) {
+    public void StepCounterInquiry(String CardNO, String usrid, String MonitorTime, String PageSize, String PageIndex, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><UserID>%s</UserID><MonitorTime>%s</MonitorTime><PageSize>%s</PageSize><PageIndex>%s</PageIndex></Request>";
         str = String.format(str, new Object[]
-                {CardNO,usrid, MonitorTime, PageSize, PageIndex});
+                {CardNO, usrid, MonitorTime, PageSize, PageIndex});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.StepCounterInquiry, Constants.StepCounterInquiry,
                 SOAP_URL, paramMap);
     }
 
-    public void StepCounterInquiry(String cardNo,String usrid, String MonitorTime, JsonAsyncTask_Info task) {
+    public void StepCounterInquiry(String cardNo, String usrid, String MonitorTime, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><UserID>%s</UserID><MonitorTime>%s</MonitorTime></Request>";
         str = String.format(str, new Object[]
-                {cardNo,usrid, MonitorTime});
+                {cardNo, usrid, MonitorTime});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.StepCounterInquiry, Constants.StepCounterInquiry,
                 SOAP_URL, paramMap);
@@ -974,7 +976,7 @@ public class RequestMaker {
                 Constants.URL003, paramMap);
     }
 
-    public void UserContactorInquiryByTopmd(String userid,JsonAsyncTask_Info task) {
+    public void UserContactorInquiryByTopmd(String userid, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserID>%s</UserID></Request>";
         str = String.format(str, new Object[]
@@ -986,7 +988,7 @@ public class RequestMaker {
 
 
     public void GuahaoOrderInsert(String userid, String HospitalID, String DepartmentID, String DepartmentName, String DoctorName, String SchemaID, String DoctorID, String UserContactorID, String SchemaWeek, String NoonName, String BeginTime, String EndTime, String RegistType, String RMB, String Gotime,
-                                  String RegistId,JsonAsyncTask_ECGInfo task) {
+                                  String RegistId, JsonAsyncTask_ECGInfo task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserID>%s</UserID>" +
                 "<HospitalID>%s</HospitalID><DepartmentID>%s</DepartmentID><DepartmentName>%s</DepartmentName>" +
@@ -995,41 +997,45 @@ public class RequestMaker {
                 "<BeginTime>%s</BeginTime><EndTime>%s</EndTime><RegistType>%s</RegistType>" +
                 "<RMB>%s</RMB><Gotime>%s</Gotime><RegistId>%s</RegistId><pAppDate></pAppDate><pAppOrg></pAppOrg><pNoon></pNoon></Request>";
         str = String.format(str, new Object[]
-                {userid,HospitalID,DepartmentID,DepartmentName,DoctorName,SchemaID,DoctorID,UserContactorID,SchemaWeek,NoonName,BeginTime,EndTime,RegistType,RMB,Gotime,RegistId});
+                {userid, HospitalID, DepartmentID, DepartmentName, DoctorName, SchemaID, DoctorID, UserContactorID, SchemaWeek, NoonName, BeginTime, EndTime, RegistType, RMB, Gotime, RegistId});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACEECG, SOAP_NAMESPACEECG + Constants.GuahaoOrderInsert, Constants.GuahaoOrderInsert,
                 Constants.URL003, paramMap);
     }
-    public void getToken(String userid, String nickname,String head,JsonAsyncTask_Info task) {
+
+    public void getToken(String userid, String nickname, String head, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><userId>%s</userId><name>%s</name><portraitUri>%s</portraitUri></Request>";
         str = String.format(str, new Object[]
-                {userid,nickname,head});
+                {userid, nickname, head});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.GetToken, Constants.GetToken,
                 SOAP_URL, paramMap);
     }
-    public void UserRefresh(String userid, String nickname,String head,JsonAsyncTask_Info task) {
+
+    public void UserRefresh(String userid, String nickname, String head, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><userId>%s</userId><name>%s</name><portraitUri>%s</portraitUri></Request>";
         str = String.format(str, new Object[]
-                {userid,nickname,head});
+                {userid, nickname, head});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.UserRefresh, Constants.UserRefresh,
                 SOAP_URL, paramMap);
     }
-    public void PharmacyInquiry(String PageSize,String PageIndex,JsonAsyncTask_Info task) {
+
+    public void PharmacyInquiry(String PageSize, String PageIndex, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><PageSize>%s</PageSize><PageIndex>%s</PageIndex></Request>";
         str = String.format(str, new Object[]
-                {PageSize,PageIndex});
+                {PageSize, PageIndex});
         paramMap.put("str", str);
 
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.PharmacyInquiry, Constants.PharmacyInquiry,
                 SOAP_URL, paramMap);
 
     }
-    public void PharmacyDetailInquiry(String ID,JsonAsyncTask_Info task) {
+
+    public void PharmacyDetailInquiry(String ID, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><ID>%s</ID></Request>";
         str = String.format(str, new Object[]
@@ -1039,6 +1045,7 @@ public class RequestMaker {
                 SOAP_URL, paramMap);
 
     }
+
     public void TitleInquiry(JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request></Request>";
@@ -1049,6 +1056,7 @@ public class RequestMaker {
                 SOAP_URL, paramMap);
 
     }
+
     public void DiseaseInquiryForDoctor(JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request></Request>";
@@ -1059,6 +1067,7 @@ public class RequestMaker {
                 SOAP_URL, paramMap);
 
     }
+
     public void HospitalInquiryPMD(JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request></Request>";
@@ -1069,6 +1078,7 @@ public class RequestMaker {
                 SOAP_URL, paramMap);
 
     }
+
     public void CommonDiseaseInquiry(JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request></Request>";
@@ -1080,17 +1090,17 @@ public class RequestMaker {
 
     }
 
-    public void MSDoctorInquiry(String HospitalID,String Title,String GoodAt,JsonAsyncTask_Info task) {
+    public void MSDoctorInquiry(String HospitalID, String Title, String GoodAt, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><HospitalID>%s</HospitalID><Title>%s</Title><GoodAt>%s</GoodAt></Request>";
         str = String.format(str, new Object[]
-                {HospitalID,Title,GoodAt});
+                {HospitalID, Title, GoodAt});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.MSDoctorInquiry, Constants.MSDoctorInquiry,
                 SOAP_URL, paramMap);
     }
 
-    public void MSDoctorDetailInquiry(String DoctorID,JsonAsyncTask_Info task) {
+    public void MSDoctorDetailInquiry(String DoctorID, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><DoctorID>%s</DoctorID></Request>";
         str = String.format(str, new Object[]
@@ -1099,65 +1109,70 @@ public class RequestMaker {
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.MSDoctorDetailInquiry, Constants.MSDoctorDetailInquiry,
                 SOAP_URL, paramMap);
     }
-    public void MSDoctorDetailInquiry(String DoctorID,String usrid,JsonAsyncTask_Info task) {
+
+    public void MSDoctorDetailInquiry(String DoctorID, String usrid, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><DoctorID>%s</DoctorID><UserID>%s</UserID></Request>";
         str = String.format(str, new Object[]
-                {DoctorID,usrid});
+                {DoctorID, usrid});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.MSDoctorDetailInquiry, Constants.MSDoctorDetailInquiry,
                 SOAP_URL, paramMap);
     }
-    public void MSDoctorSignInsert(String DoctorID,String usrid,JsonAsyncTask_Info task) {
+
+    public void MSDoctorSignInsert(String DoctorID, String usrid, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><DoctorID>%s</DoctorID><UserID>%s</UserID></Request>";
         str = String.format(str, new Object[]
-                {DoctorID,usrid});
+                {DoctorID, usrid});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.MSDoctorSignInsert, Constants.MSDoctorSignInsert,
                 SOAP_URL, paramMap);
     }
-    public void MSDoctorSignDelete(String DoctorID,String usrid,JsonAsyncTask_Info task) {
+
+    public void MSDoctorSignDelete(String DoctorID, String usrid, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><DoctorID>%s</DoctorID><UserID>%s</UserID></Request>";
         str = String.format(str, new Object[]
-                {DoctorID,usrid});
+                {DoctorID, usrid});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.MSDoctorSignDelete, Constants.MSDoctorSignDelete,
                 SOAP_URL, paramMap);
     }
 
 
-    public void MSDoctorSignInquiry(String UserID,String PageSize, String PageIndex, String HospitalID,String Title,String GoodAt,JsonAsyncTask_Info task) {
+    public void MSDoctorSignInquiry(String UserID, String PageSize, String PageIndex, String HospitalID, String Title, String GoodAt, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserID>%s</UserID><PageSize>%s</PageSize><PageIndex>%s</PageIndex><HospitalID>%s</HospitalID><Title>%s</Title><GoodAt>%s</GoodAt></Request>";
         str = String.format(str, new Object[]
-                {UserID,PageSize,PageIndex,HospitalID,Title,GoodAt});
+                {UserID, PageSize, PageIndex, HospitalID, Title, GoodAt});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.MSDoctorSignInquiry, Constants.MSDoctorSignInquiry,
                 SOAP_URL, paramMap);
     }
 
-    public void MSDoctorDiagnoseInsert(String DoctorID,String usrid,JsonAsyncTask_Info task) {
+    public void MSDoctorDiagnoseInsert(String DoctorID, String usrid, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><DoctorID>%s</DoctorID><UserID>%s</UserID></Request>";
         str = String.format(str, new Object[]
-                {DoctorID,usrid});
+                {DoctorID, usrid});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.MSDoctorDiagnoseInsert, Constants.MSDoctorDiagnoseInsert,
                 SOAP_URL, paramMap);
     }
-    public void OCRForAndroid(String usrid,String code,String FileName
-                              ,JsonAsyncTask_Info task) {
+
+    public void OCRForAndroid(String usrid, String code, String FileName
+            , JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserID>%s</UserID><Code>%s</Code><FileName>%s</FileName></Request>";
         str = String.format(str, new Object[]
-                {usrid,code,FileName});
+                {usrid, code, FileName});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.OCRForAndroid, Constants.OCRForAndroid,
                 SOAP_URL, paramMap);
     }
-    public void OrderInquiryByTopmd(String usrid,JsonAsyncTask_Info task) {
+
+    public void OrderInquiryByTopmd(String usrid, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserID>%s</UserID></Request>";
         str = String.format(str, new Object[]
@@ -1166,6 +1181,7 @@ public class RequestMaker {
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.OrderInquiryByTopmd, Constants.OrderInquiryByTopmd,
                 SOAP_URL, paramMap);
     }
+
     public void OrderCancel(String orderid, JsonAsyncTask_ECGInfo task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><OrderID>%s</OrderID></Request>";
@@ -1175,25 +1191,28 @@ public class RequestMaker {
         task.execute(SOAP_NAMESPACEECG, SOAP_NAMESPACEECG + Constants.OrderCancel, Constants.OrderCancel,
                 Constants.URL003, paramMap);
     }
-    public void TreatmentInquiryLatest(String UserID,String Date,JsonAsyncTask_Info task) {
+
+    public void TreatmentInquiryLatest(String UserID, String Date, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserID>%s</UserID><Date>%s</Date></Request>";
         str = String.format(str, new Object[]
-                {UserID,Date});
+                {UserID, Date});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.TreatmentInquiryLatest, Constants.TreatmentInquiryLatest,
                 SOAP_URL, paramMap);
     }
-    public void RemindInsert(String UserID,String Time,String Type,String Weekday,JsonAsyncTask_Info task) {
+
+    public void RemindInsert(String UserID, String Time, String Type, String Weekday, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserID>%s</UserID><Time>%s</Time><Type>%s</Type><Weekday>%s</Weekday></Request>";
         str = String.format(str, new Object[]
-                {UserID,Time,Type,Weekday});
+                {UserID, Time, Type, Weekday});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.RemindInsert, Constants.RemindInsert,
                 SOAP_URL, paramMap);
     }
-    public void RemindInquiry(String UserID,JsonAsyncTask_Info task) {
+
+    public void RemindInquiry(String UserID, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserID>%s</UserID></Request>";
         str = String.format(str, new Object[]
@@ -1202,15 +1221,17 @@ public class RequestMaker {
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.RemindInquiry, Constants.RemindInquiry,
                 SOAP_URL, paramMap);
     }
-    public void RemindUpdate(String ID,String Enabled ,JsonAsyncTask_Info task) {
+
+    public void RemindUpdate(String ID, String Enabled, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><ID>%s</ID><Enabled>%s</Enabled></Request>";
         str = String.format(str, new Object[]
-                {ID,Enabled});
+                {ID, Enabled});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.RemindUpdate, Constants.RemindUpdate,
                 SOAP_URL, paramMap);
     }
+
     public void RemindDelete(String id, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><ID>%s</ID></Request>";
@@ -1220,12 +1241,11 @@ public class RequestMaker {
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.RemindDelete, Constants.RemindDelete,
                 SOAP_URL, paramMap);
     }
+
     /**
      * ocr
-     *
-
      */
-    public void BloodRoutineInsert(String userid, String CardNO, String MonitorTime, String URL, String ocrtype,List<OcrBean> list, JsonAsyncTask_Info task) {
+    public void BloodRoutineInsert(String userid, String CardNO, String MonitorTime, String URL, String ocrtype, List<OcrBean> list, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
 
         String items = "";
@@ -1239,68 +1259,81 @@ public class RequestMaker {
                 "<URL>%s</URL>" +
                 "<Fromto>%s</Fromto><OCRType>%s</OCRType><BloodRoutines>%s</BloodRoutines></Request>";
         str = String.format(str, new Object[]
-                {userid, CardNO, MonitorTime, URL, "02",ocrtype, items});
+                {userid, CardNO, MonitorTime, URL, "02", ocrtype, items});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.BloodRoutineInsert, Constants.BloodRoutineInsert,
                 SOAP_URL, paramMap);
     }
-    public void OCRRecordInquiry(String CardNO,String fromto,String PageIndex,String PageSize,JsonAsyncTask_Info task) {
+
+    public void OCRRecordInquiry(String CardNO, String fromto,String type, String PageIndex, String PageSize, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
-        String str = "<Request><CardNO>%s</CardNO><FromTo>%s</FromTo><PageIndex>%s</PageIndex><PageSize>%s</PageSize></Request>";
+        String str = "<Request><CardNO>%s</CardNO><FromTo>%s</FromTo><OCRType>%s</OCRType><PageIndex>%s</PageIndex><PageSize>%s</PageSize></Request>";
         str = String.format(str, new Object[]
-                {CardNO,fromto,PageIndex,PageSize});
+                {CardNO, fromto, type,PageIndex, PageSize});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.OCRRecordInquiry, Constants.OCRRecordInquiry,
                 SOAP_URL, paramMap);
     }
-    public void BloodRoutineInquiry (String Type,String No,String id,JsonAsyncTask_Info task) {
+
+    public void BloodRoutineInquiry(String Type, String No, String id, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><OCRType>%s</OCRType><CardNO>%s</CardNO><RecordID>%s</RecordID><Fromto>%s</Fromto></Request>";
         str = String.format(str, new Object[]
-                {Type,No,id,"02"});
+                {Type, No, id, "02"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.BloodRoutineInquiry, Constants.BloodRoutineInquiry,
                 SOAP_URL, paramMap);
     }
-   /* APPLogInquiry
-    参数是：UserID，Log_Type（默认值：01），PageIndex，PageSize*/
-   public void APPLogInquiry (String UserID,String Log_Type,String PageIndex,String PageSize,JsonAsyncTask_Info task) {
-       Map<String, Object> paramMap = new HashMap<String, Object>();
-       String str = "<Request><UserID>%s</UserID><Log_Type>%s</Log_Type><PageIndex>%s</PageIndex><PageSize>%s</PageSize></Request>";
-       str = String.format(str, new Object[]
-               {UserID,Log_Type,PageIndex,PageSize});
-       paramMap.put("str", str);
-       task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.APPLogInquiry, Constants.APPLogInquiry,
-               SOAP_URL, paramMap);
-   }
-    public void MSDoctorConsultationTime  (String id, JsonAsyncTask_Info task) {
+
+    /* APPLogInquiry
+     参数是：UserID，Log_Type（默认值：01），PageIndex，PageSize*/
+    public void APPLogInquiry(String UserID, String Log_Type, String PageIndex, String PageSize, JsonAsyncTask_Info task) {
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        String str = "<Request><UserID>%s</UserID><Log_Type>%s</Log_Type><PageIndex>%s</PageIndex><PageSize>%s</PageSize></Request>";
+        str = String.format(str, new Object[]
+                {UserID, Log_Type, PageIndex, PageSize});
+        paramMap.put("str", str);
+        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.APPLogInquiry, Constants.APPLogInquiry,
+                SOAP_URL, paramMap);
+    }
+
+    public void MSDoctorConsultationTime(String id, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><DoctorID>%s</DoctorID></Request>";
         str = String.format(str, new Object[]
                 {id});
         paramMap.put("str", str);
-        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.MSDoctorConsultationTime  , Constants.MSDoctorConsultationTime  ,
+        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.MSDoctorConsultationTime, Constants.MSDoctorConsultationTime,
                 SOAP_URL, paramMap);
     }
-    public void LithicAcidInquiry(String CardNO,String StartTime,String EndTime,String Type,String Top,JsonAsyncTask_Info task) {
+
+    public void LithicAcidInquiry(String CardNO, String StartTime, String EndTime, String Type, String Top, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><StartTime>%s</StartTime><EndTime>%s</EndTime><Type>%s</Type><Top>%s</Top></Request>";
         str = String.format(str, new Object[]
-                {CardNO,StartTime,EndTime,Type,Top});
+                {CardNO, StartTime, EndTime, Type, Top});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.LithicAcidInquiry, Constants.LithicAcidInquiry,
                 SOAP_URL, paramMap);
     }
-    public void CholestenoneInquiry(String CardNO,String StartTime,String EndTime,String Type,String Top,JsonAsyncTask_Info task) {
+
+    public void CholestenoneInquiry(String CardNO, String StartTime, String EndTime, String Type, String Top, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><StartTime>%s</StartTime><EndTime>%s</EndTime><Type>%s</Type><Top>%s</Top></Request>";
         str = String.format(str, new Object[]
-                {CardNO,StartTime,EndTime,Type,Top});
+                {CardNO, StartTime, EndTime, Type, Top});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.CholestenoneInquiry, Constants.CholestenoneInquiry,
                 SOAP_URL, paramMap);
     }
-    public void OCRTypeInquiry(String HospitalID,JsonAsyncTask_Info task) {
+
+    /**
+     * ocr医院查询
+     * @param HospitalID
+     * @param task
+     */
+
+    public void OCRTypeInquiry(String HospitalID, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><HospitalID>%s</HospitalID></Request>";
         str = String.format(str, new Object[]
@@ -1309,33 +1342,84 @@ public class RequestMaker {
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.OCRTypeInquiry, Constants.OCRTypeInquiry,
                 SOAP_URL, paramMap);
     }
+
+    /**
+     * 亲友关系查询
+     * @param task
+     */
+
     public void RelationshipInquiry(JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request></Request>";
-
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.RelationshipInquiry, Constants.RelationshipInquiry,
                 SOAP_URL, paramMap);
     }
+
+
     public void UserRelationshipExit
-            (String homeid,String userid,JsonAsyncTask_Info task) {
+            (String homeid, String userid, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserID>%s</UserID><RUserID>%s</RUserID></Request>";
-
         str = String.format(str, new Object[]
-                {homeid,userid});
+                {homeid, userid});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.UserRelationshipExit, Constants.UserRelationshipExit,
                 SOAP_URL, paramMap);
     }
+
+    /**
+     * 健康指導
+     *
+     * @param cardNum
+     * @param date
+     * @param task
+     */
+
     public void HealthAdviceSearchByDate(String cardNum, String date, JsonAsyncTask_Info task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><CardNO>%s</CardNO><Date>%s</Date></Request>";
         str = String.format(str, new Object[]
-                {cardNum,date});
+                {cardNum, date});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.HealthAdviceSearchByDate, Constants.HealthAdviceSearchByDate,
                 SOAP_URL, paramMap);
     }
+    public void ZDWFYUserRecordJudgeInquiry(String code,String cardno,String name, JsonAsyncTask_Info task){
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        String str = "<Request><CHK_CODE>%s</CHK_CODE><UserNo>%s</UserNo><Name>%s</Name></Request>";
+        str = String.format(str, new Object[]
+                {code, cardno,name});
+        paramMap.put("str", str);
+        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.ZDWFYUserRecordJudgeInquiry  , Constants.ZDWFYUserRecordJudgeInquiry  ,
+                SOAP_URL, paramMap);
+    }
 
+    /**
+     *
+     * @param code
+     * @param cardno
+     * @param name
+     * @param time
+     * @param hosname
+     * @param task
+     */
+    public void CheckupInfoInsert(String code,String cardno,String name, String time,String hosname,String userid,JsonAsyncTask_Info task){
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        String str = "<Request><CHK_CODE>%s</CHK_CODE><UserNo>%s</UserNo><Name>%s</Name><RecordTime>%s</RecordTime><HosName>%s</HosName><UserID>%s</UserID></Request>";
+        str = String.format(str, new Object[]
+                {code, cardno,name,time,hosname,userid});
+        paramMap.put("str", str);
+        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.CheckupInfoInsert  , Constants.CheckupInfoInsert  ,
+                SOAP_URL, paramMap);
+    }
+    public void CheckupInfoInquiry(String cardno,String name,JsonAsyncTask_Info task){
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        String str = "<Request><UserNo>%s</UserNo><Name>%s</Name></Request>";
+        str = String.format(str, new Object[]
+                {cardno, name});
+        paramMap.put("str", str);
+        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.CheckupInfoInquiry  , Constants.CheckupInfoInquiry  ,
+                SOAP_URL, paramMap);
+    }
 }

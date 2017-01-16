@@ -94,17 +94,36 @@ public class MyAppointmetAdapter extends BaseListAdapter<OrderInquiryByTopmd> {
         switch (type) {
             case 0:
                 OrderInquiryByTopmd item = getItem(position);
+                ImageView imageView = holder0.ivhead;
+                final String tag = (String) imageView.getTag(R.id.imageloader_uri);
+                String uri = "";
+                if (TextUtils.isEmpty(item.getPictureURL())||item.getPictureURL().contains("vine")) {
+                    uri="";
+                }else{
+                    uri= Constants.JE_BASE_URL3 + item.getPictureURL().replace("~", "").replace("\\", "/");
+                }
+
                 holder0.name.setText(item.getDoctorName());
                 holder0.tvtitle.setText(item.getHospitalName() + "  " + item.getDepartmentName());
-                if (TextUtils.isEmpty(item.getPictureURL())||item.getPictureURL().contains("vine")) {
-                    holder0.ivhead.setBackgroundResource(R.drawable.icon_doctor);
-                } else {
-
-                    Glide.with(mContext)
-                            .load(Constants.JE_BASE_URL3 + item.getPictureURL().replace("~", "").replace("\\", "/"))
-                            .centerCrop().error(R.drawable.icon_doctor)
-                            .into(holder0.ivhead);
+                if (!uri.equals(tag)) {
+                    imageView.setImageResource(R.drawable.icon_doctor);
                 }
+                    imageView.setTag(R.id.imageloader_uri,uri);
+                    Glide.with(mContext)
+                            .load(uri)
+                            .centerCrop().error(R.drawable.icon_doctor)
+                            .into(imageView);
+
+
+//                if (TextUtils.isEmpty(item.getPictureURL())||item.getPictureURL().contains("vine")) {
+//                    holder0.ivhead.setBackgroundResource(R.drawable.icon_doctor);
+//                } else {
+//
+//                    Glide.with(mContext)
+//                            .load(Constants.JE_BASE_URL3 + item.getPictureURL().replace("~", "").replace("\\", "/"))
+//                            .centerCrop().error(R.drawable.icon_doctor)
+//                            .into(holder0.ivhead);
+//                }
                 holder0.ivstatus.setVisibility(View.GONE);
                 if(TextUtils.isEmpty(item.getBeginTime())){
                     holder0.tvtime.setText("预约时间：" + DateUtils.StringPattern(item.getGoTime(), "yyyy/MM/dd HH:mm:ss", "yyyy/M/dd") + "  " + item.getSchemaWeek() );
@@ -117,19 +136,36 @@ public class MyAppointmetAdapter extends BaseListAdapter<OrderInquiryByTopmd> {
                 break;
             case 1:
                 OrderInquiryByTopmd item1 = getItem(position);
+                ImageView imageView1 = holder1.ivhead;
+                final String tag1 = (String) imageView1.getTag(R.id.imageloader_uri);
+                String uri1 = "";
+                if (TextUtils.isEmpty(item1.getPictureURL())||item1.getPictureURL().contains("vine")) {
+                    uri1="";
+                }else{
+                    uri1= Constants.JE_BASE_URL3 + item1.getPictureURL().replace("~", "").replace("\\", "/");
+                }
+                if (!uri1.equals(tag1)) {
+                    imageView1.setImageResource(R.drawable.icon_doctor);
+                }
+                    imageView1.setTag(R.id.imageloader_uri,uri1);
+                    Glide.with(mContext)
+                            .load(uri1)
+                            .centerCrop().error(R.drawable.icon_doctor)
+                            .into(imageView1);
+
                 holder1.name.setText(item1.getDoctorName());
                 holder1.tvtitle.setText(item1.getHospitalName() + "  " + item1.getDepartmentName());
-                if (TextUtils.isEmpty(item1.getPictureURL())||item1.getPictureURL().contains("vine")) {
-                    holder1.ivhead.setBackgroundResource(R.drawable.icon_doctor);
-                } else {
-
-
-
-                    Glide.with(mContext)
-                            .load(Constants.JE_BASE_URL3 + item1.getPictureURL().replace("~", "").replace("\\", "/"))
-                            .centerCrop().error(R.drawable.icon_doctor)
-                            .into(holder1.ivhead);
-                }
+//                if (TextUtils.isEmpty(item1.getPictureURL())||item1.getPictureURL().contains("vine")) {
+//                    holder1.ivhead.setBackgroundResource(R.drawable.icon_doctor);
+//                } else {
+//
+//
+//
+//                    Glide.with(mContext)
+//                            .load(Constants.JE_BASE_URL3 + item1.getPictureURL().replace("~", "").replace("\\", "/"))
+//                            .centerCrop().error(R.drawable.icon_doctor)
+//                            .into(holder1.ivhead);
+//                }
                 holder1.ivstatus.setVisibility(View.VISIBLE);
                 if(TextUtils.isEmpty(item1.getBeginTime())){
                     holder1.tvtime.setText("预约时间：" + DateUtils.StringPattern(item1.getGoTime(), "yyyy/MM/dd HH:mm:ss", "yyyy/M/dd") + "  " + item1.getSchemaWeek());

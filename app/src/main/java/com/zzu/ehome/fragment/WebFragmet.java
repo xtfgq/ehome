@@ -20,6 +20,7 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.WebAdapter;
+import com.zzu.ehome.bean.OrderInquiryByTopmd;
 import com.zzu.ehome.bean.TreatmentSearch;
 import com.zzu.ehome.bean.TreatmentSearchDate;
 import com.zzu.ehome.db.EHomeDao;
@@ -31,10 +32,14 @@ import com.zzu.ehome.utils.JsonTools;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.ScreenUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
+import com.zzu.ehome.view.RefreshLayout;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.zzu.ehome.R.id.refreshLayout;
 
 /**
  * Created by Administrator on 2016/9/13.
@@ -49,8 +54,10 @@ public class WebFragmet extends BaseFragment {
     private WebAdapter adapter;
     private EHomeDao dao;
     private String parentid;
-    List<TreatmentSearch> list;
+    List<TreatmentSearch> list=new ArrayList<TreatmentSearch>();
     private SupperBaseActivity activity;
+
+
 
 
     @Override
@@ -96,6 +103,7 @@ public class WebFragmet extends BaseFragment {
 
             }
         });
+
     }
 
     public void initDatas() {
@@ -118,8 +126,8 @@ public class WebFragmet extends BaseFragment {
                     } else {
 
                         TreatmentSearchDate date = JsonTools.getData(result.toString(), TreatmentSearchDate.class);
+                        list.clear();
                         list = date.getDate();
-                        adapter = new WebAdapter(getActivity(), list);
                         for (int i = 0; i < list.size(); i++) {
                             TreatmentSearch ts = list.get(i);
 //                            list.get(i).setOverdue(DateUtils.Compare_date(ts.getTime(), DateUtils.getFormatTime()));
@@ -128,7 +136,13 @@ public class WebFragmet extends BaseFragment {
 //                                list.get(i).setOpen(false);
 //                            }
                         }
-                        listView.setAdapter(adapter);
+
+                        if(adapter==null){
+                            adapter = new WebAdapter(getActivity(), list);
+                            listView.setAdapter(adapter);
+                        }else{
+                            adapter.notifyDataSetChanged();
+                        }
                         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
                             @Override
@@ -177,12 +191,7 @@ public class WebFragmet extends BaseFragment {
                         listView.setMenuCreator(creator);
                         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
                             @Override
-                            public void onMenuItemClick(int position, SwipeMenu menu, int index) {
-                                if(!activity.isNetWork){
-                                    activity.showNetWorkErrorDialog();
-                                    return;
-
-                                }
+                            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                                 TreatmentSearch item = list.get(position);
                                 switch (index) {
                                     case 0:
@@ -191,6 +200,7 @@ public class WebFragmet extends BaseFragment {
                                         break;
 
                                 }
+                                return false;
                             }
                         });
 
@@ -200,6 +210,7 @@ public class WebFragmet extends BaseFragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
 
             }
         }));

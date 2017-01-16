@@ -10,19 +10,43 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.baidu.mapapi.search.core.PoiInfo;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
 import com.zzu.ehome.R;
 
 import com.zzu.ehome.bean.PlatformBean;
 
+import com.zzu.ehome.db.EHomeDao;
+import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.utils.CommonUtils;
+import com.zzu.ehome.utils.DateUtils;
+import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
+import com.zzu.ehome.utils.JsonAsyncTask_Info;
+import com.zzu.ehome.utils.RequestMaker;
+import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.HeadView;
 import com.zzu.ehome.view.PullToRefreshLayout;
+import com.zzu.ehome.view.RefreshLayout;
+
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
+
+import static com.zzu.ehome.R.id.refreshLayout;
 
 
 /**
@@ -34,13 +58,22 @@ public class PlatformTestActivity extends BaseActivity{
     private LinearLayout layout_no_msg;
     private MyAdapter adapter=null;
     private List<PlatformBean> list=new ArrayList<>();
-    private PullToRefreshLayout pulltorefreshlayout;
-    int pageNum=1;
-    private boolean isFirst,isReflash,isLoading;
+    private RefreshLayout refreshLayout;
+
+    private boolean isRefresh=false;
+    private RequestMaker requestMaker;
+    private EHomeDao dao;
+    private String cardNo,name,userid;
+    private CompositeSubscription compositeSubscription;
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         setContentView(R.layout.platform_test);
+        requestMaker=RequestMaker.getInstance();
+        dao=new EHomeDaoImpl(PlatformTestActivity.this);
+        userid= SharePreferenceUtil.getInstance(PlatformTestActivity.this).getUserId();
+        cardNo=dao.findUserInfoById(userid).getUserno();
+        name=dao.findUserInfoById(userid).getUsername();
         initViews();
         if(!CommonUtils.isNotificationEnabled(PlatformTestActivity.this)){
             showTitleDialog("请打开通知中心");
@@ -72,43 +105,48 @@ public class PlatformTestActivity extends BaseActivity{
 
             }
         });
-        pulltorefreshlayout = (PullToRefreshLayout) findViewById(R.id.refresh_view);
+        refreshLayout=(RefreshLayout) findViewById(R.id.refreshLayout);
 
     }
     private void initEvnets(){
         adapter = new MyAdapter(list);
         mListView.setAdapter(adapter);
+        compositeSubscription = new CompositeSubscription();
+        //监听订阅事件
+        Subscription subscription = RxBus.getInstance().toObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object event) {
+                        if (event == null) {
+                            return;
+                        }
 
-        pulltorefreshlayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
+                        if (event instanceof EventType){
+                            EventType type=(EventType)event;
+                            if("smart".equals(type.getType())){
+                                list.clear();
+                                initDatas();
+                            }
+                        }
+
+                    }
+                });
+        //subscription交给compositeSubscription进行管理，防止内存溢出
+        compositeSubscription.add(subscription);
+        refreshLayout.setOnRefreshListener(new RefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+            public void onRefresh(RefreshLayout pullToRefreshLayout) {
                 if(!isNetWork){
-                    showNetWorkErrorDialog();
-                    pulltorefreshlayout.refreshFinish(PullToRefreshLayout.FAIL);
+                    if(!isNetWork){
+                        refreshLayout.refreshFinish(RefreshLayout.FAIL);
+                        return;
+                    }
                     return;
                 }
-                pageNum=1;
-                isFirst = true;
-                isReflash=true;
-                isLoading=false;
+                isRefresh=true;
                 list.clear();
-                initDatas();
-
-            }
-
-            @Override
-            public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
-                if(!isNetWork){
-                   showNetWorkErrorDialog();
-                    pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.FAIL);
-                    return;
-                }
-                pageNum++;
-                isLoading=true;
-                isReflash=false;
-                initDatas();
-
-
+               initDatas();
             }
         });
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -116,20 +154,62 @@ public class PlatformTestActivity extends BaseActivity{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i=new Intent(PlatformTestActivity.this,WebPlatmActivity.class);
                 i.putExtra("flag","info");
+                i.putExtra("name",name);
+                i.putExtra("UserNo",cardNo);
+                i.putExtra("code",list.get(position).getCHKCODE());
+                i.putExtra("time",list.get(position).getTime());
+                i.putExtra("hosname",list.get(position).getName());
                 startActivity(i);
             }
         });
     }
     private void initDatas(){
-        for(int i=0;i<10;i++){
-            PlatformBean bean=new PlatformBean();
-            bean.setTime("2016年4月体检报告");
-            bean.setName("郑州大学第五附属医院"+i*pageNum);
-            list.add(bean);
-        }
-        adapter.setList(list);
-        adapter.notifyDataSetChanged();
 
+//        name="张三";
+//        cardNo="410322198608051234";
+        requestMaker.CheckupInfoInquiry(cardNo,name,new JsonAsyncTask_Info(PlatformTestActivity.this, true, new JsonAsyncTaskOnComplete() {
+            @Override
+            public void processJsonObject(Object result) {
+                try {
+                    JSONObject mySO = (JSONObject) result;
+                    stopProgressDialog();
+                    JSONArray array = mySO.getJSONArray("CheckupInfoInquiry");
+                    if (array.getJSONObject(0).has("MessageCode")) {
+
+
+                            layout_no_msg.setVisibility(View.VISIBLE);
+                            mListView.setVisibility(View.GONE);
+
+                    }else{
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject json = array.getJSONObject(i);
+                            list.add(getDataFromJson(json));
+
+                        }
+                        adapter.setList(list);
+                        adapter.notifyDataSetChanged();
+                        layout_no_msg.setVisibility(View.GONE);
+                        mListView.setVisibility(View.VISIBLE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }finally {
+                    if(isRefresh){
+                        refreshLayout.refreshFinish(RefreshLayout.SUCCEED);
+                        isRefresh=false;
+                    }
+                }
+
+            }
+        } ));
+
+    }
+    private PlatformBean getDataFromJson(JSONObject json)throws JSONException {
+        PlatformBean bean = new PlatformBean();
+        bean.setTime(json.getString("RecordTime"));
+        bean.setName(json.getString("HOSName"));
+        bean.setCHKCODE(json.getString("CHKCODE"));
+        return  bean;
     }
     class MyAdapter extends BaseAdapter {
         public void setList(List<PlatformBean> list){
@@ -170,10 +250,8 @@ public class PlatformTestActivity extends BaseActivity{
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            holder.tv_time.setText(list.get(position).getTime());
+            holder.tv_time.setText(DateUtils.StringPattern(list.get(position).getTime(), "yyyy/MM/dd HH:mm:ss", "yyyy年MM月")+"体检报告");
             holder.tv_name.setText(list.get(position).getName());
-
-
             return convertView;
         }
     }
@@ -182,4 +260,5 @@ public class PlatformTestActivity extends BaseActivity{
         public TextView tv_name;
 
     }
+
 }

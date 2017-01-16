@@ -1,26 +1,38 @@
 package com.zzu.ehome.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.View;
+
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.zzu.ehome.R;
-import com.zzu.ehome.fragment.CooperationPharmacyFragment;
-import com.zzu.ehome.fragment.NearPharmacyFragment;
+import com.zzu.ehome.application.Constants;
+import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.fragment.WebPlatmFramet;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.utils.CommonUtils;
+import com.zzu.ehome.utils.DateUtils;
+import com.zzu.ehome.utils.DialogUtils;
+import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
+import com.zzu.ehome.utils.JsonAsyncTask_Info;
+import com.zzu.ehome.utils.RequestMaker;
+import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.utils.ToastUtils;
-import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.HeadView;
+import com.zzu.ehome.view.PlatmDialogEnsureCancelView;
 
-import static android.R.attr.type;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+
 
 
 /**
@@ -35,10 +47,11 @@ public class WebPlatmActivity extends BaseActivity implements View.OnClickListen
     private RelativeLayout layout_zongjian,layout_tijian;
     private WebPlatmFramet mWebPlatmFramet;
     private Intent mIntent;
-    private String tag;
+    private String tag,name,CHKCODE,UserNo,time,hosid,hosname,userid;
     private Fragment[] fragments;
     private int index;
     private int currentIndex;
+    private RequestMaker requestMaker;
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -46,9 +59,17 @@ public class WebPlatmActivity extends BaseActivity implements View.OnClickListen
         mIntent=this.getIntent();
         if(mIntent!=null){
             tag=mIntent.getStringExtra("flag");
-        }
-        initViews();
+            name=mIntent.getStringExtra("name");
+            CHKCODE=mIntent.getStringExtra("code");
+            UserNo=mIntent.getStringExtra("UserNo");
+            time=mIntent.getStringExtra("time");
 
+            hosname=mIntent.getStringExtra("hosname");
+        }
+        userid= SharePreferenceUtil.getInstance(WebPlatmActivity.this).getUserId();
+        requestMaker=RequestMaker.getInstance();
+
+        initViews();
         if(!CommonUtils.isNotificationEnabled(WebPlatmActivity.this)){
             showTitleDialog("请打开通知中心");
         }
@@ -57,12 +78,9 @@ public class WebPlatmActivity extends BaseActivity implements View.OnClickListen
             return;
         }
         initEvnets();
-
-
-
     }
     private void initViews(){
-        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "2016年4月体检报告", new HeadView.OnLeftClickListener() {
+        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, DateUtils.StringPattern(time, "yyyy/MM/dd HH:mm:ss", "yyyy年MM月")+"体检报告", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
                 save();
@@ -77,8 +95,9 @@ public class WebPlatmActivity extends BaseActivity implements View.OnClickListen
         layout_zongjian=(RelativeLayout)findViewById(R.id.layout_zongjian);
         layout_tijian=(RelativeLayout)findViewById(R.id.layout_tijian);
         fragments=new Fragment[2];
-        fragments[0]= WebPlatmFramet.getInstance("http://news.baidu.com/");
-        fragments[1]= WebPlatmFramet.getInstance("http://music.baidu.com/");
+
+        fragments[0]= WebPlatmFramet.getInstance(Constants.EhomeURL+"/WebServices/HealthTest.aspx?"+"Name="+name+"&CHKCODE="+CHKCODE+"&UserNo="+UserNo);
+        fragments[1]= WebPlatmFramet.getInstance(Constants.EhomeURL+"/WebServices/HealthTestDetail.aspx?"+"CHKCODE="+CHKCODE);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,fragments[0]).commit();
         resetImgs();
         iv_zongjian.setImageResource(R.mipmap.icon_zjbg);
@@ -88,10 +107,7 @@ public class WebPlatmActivity extends BaseActivity implements View.OnClickListen
         layout_zongjian.setOnClickListener(this);
         layout_tijian.setOnClickListener(this);
     }
-    private void initDatas(){
 
-
-    }
     private void resetImgs() {
         tv_zongjian.setTextColor(unSelectColor);
         tv_tijian.setTextColor(unSelectColor);
@@ -108,7 +124,7 @@ public class WebPlatmActivity extends BaseActivity implements View.OnClickListen
                 addFragment();
                 break;
             case 1:
-                iv_tijian.setImageResource(R.mipmap.icon_zjbg);
+                iv_tijian.setImageResource(R.mipmap.icon_tjzb);
                 tv_tijian.setTextColor(selectColor);
                 index=1;
                 addFragment();
@@ -128,27 +144,52 @@ public class WebPlatmActivity extends BaseActivity implements View.OnClickListen
 
         }
     }
-    @Override
-    public void onBackPressed() {
-      save();
-    }
+
     private void save(){
         if(tag.equals("add")) {
-            DialogTips dialog = new DialogTips(WebPlatmActivity.this, "请对报告进行存档保存",
-                    "确定");
-            dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialogInterface, int userId) {
-                    ToastUtils.showMessage(WebPlatmActivity.this, "正在保存");
-                    finishActivity();
+            PlatmDialogEnsureCancelView dialogEnsureCancelView = new PlatmDialogEnsureCancelView(
+                    WebPlatmActivity.this).setDialogMsg("", "请对报告进行存档保存", "保存")
+                    .setOnClickListenerEnsure(new View.OnClickListener() {
 
-                }
-            });
-
-            dialog.show();
-            dialog = null;
+                        @Override
+                        public void onClick(View v) {
+                            saveInfo();
+                        }
+                    }).setOnClickListenerCancle(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            finishActivity();
+                        }
+                    });
+            DialogUtils.showSelfDialog(WebPlatmActivity.this, dialogEnsureCancelView);
         }else{
+            CustomApplcation.getInstance().finishSingleActivityByClass(SmartSearchActivity.class);
             finishActivity();
         }
+    }
+    private void saveInfo(){
+        requestMaker.CheckupInfoInsert(CHKCODE,UserNo,name,time,hosname,userid,new JsonAsyncTask_Info(WebPlatmActivity.this, true, new JsonAsyncTaskOnComplete() {
+            @Override
+            public void processJsonObject(Object result) {
+                JSONObject mySO = (JSONObject) result;
+                try {
+                    JSONArray array = mySO.getJSONArray("CheckupInfoInsert");
+                    if (array.getJSONObject(0).has("MessageCode")) {
+                        int flag=Integer.valueOf(array.getJSONObject(0).getString("MessageCode"));
+                        if(flag==0) {
+                            RxBus.getInstance().send(new EventType("smart"));
+                            CustomApplcation.getInstance().finishSingleActivityByClass(SmartSearchActivity.class);
+                            finishActivity();
+                        }else{
+                            ToastUtils.showMessage(WebPlatmActivity.this, array.getJSONObject(0).getString("MessageContent"));
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }));
     }
     public void addFragment() {
         if(currentIndex!=index){
@@ -161,5 +202,14 @@ public class WebPlatmActivity extends BaseActivity implements View.OnClickListen
             ft.show(fragments[index]).commit();
         }
         currentIndex=index;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            save();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

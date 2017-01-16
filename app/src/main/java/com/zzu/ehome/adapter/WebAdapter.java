@@ -95,31 +95,48 @@ public class WebAdapter extends BaseListAdapter<TreatmentSearch> {
                 TreatmentSearch item = getItem(position);
                 holder0.name.setText(item.getName());
                 holder0.tvtitle.setText(item.getHospital() + "  " + item.getJobName());
-
-                if (TextUtils.isEmpty(item.getDoctorIcon())) {
-                    holder0.ivhead.setBackgroundResource(R.drawable.icon_doctor);
-                } else {
-                    Glide.with(mContext)
-                            .load(Constants.ICON + item.getDoctorIcon().replace("~", "").replace("\\", "/"))
-                            .centerCrop().error(R.drawable.icon_doctor)
-                            .into(holder0.ivhead);
+                ImageView imageView = holder0.ivhead;
+                final String tag = (String) imageView.getTag(R.id.imageloader_uri);
+                String uri = "";
+                if (TextUtils.isEmpty(item.getDoctorIcon())||item.getDoctorIcon().contains("vine")) {
+                    uri="";
+                }else{
+                    uri= Constants.ICON  + item.getDoctorIcon().replace("~", "").replace("\\", "/");
                 }
+                if (!uri.equals(tag)) {
+                    imageView.setImageResource(R.drawable.icon_doctor);
+                }
+                imageView.setTag(R.id.imageloader_uri,uri);
+                Glide.with(mContext)
+                        .load(uri)
+                        .centerCrop().error(R.drawable.icon_doctor)
+                        .into(imageView);
+
                 holder0.iv_status.setVisibility(View.INVISIBLE);
                 holder0.tvtime.setText("预约时间：" + item.getTime()+item.getDay());
                 break;
             case 1:
                 TreatmentSearch item1 = getItem(position);
+                ImageView imageView1 = holder1.ivhead;
+                final String tag1 = (String) imageView1.getTag(R.id.imageloader_uri);
+                String uri1 = "";
+                if (TextUtils.isEmpty(item1.getDoctorIcon())||item1.getDoctorIcon().contains("vine")) {
+                    uri1="";
+                }else{
+                    uri1= Constants.ICON+ item1.getDoctorIcon().replace("~", "").replace("\\", "/");
+                }
+                if (!uri1.equals(tag1)) {
+                    imageView1.setImageResource(R.drawable.icon_doctor);
+                }
+                imageView1.setTag(R.id.imageloader_uri,uri1);
+                Glide.with(mContext)
+                        .load(uri1)
+                        .centerCrop().error(R.drawable.icon_doctor)
+                        .into(imageView1);
                 holder1.name.setText(item1.getName());
                 holder1.tvtitle.setText(item1.getHospital() + "  " + item1.getJobName());
 
-                if (TextUtils.isEmpty(item1.getDoctorIcon())) {
-                    holder1.ivhead.setBackgroundResource(R.drawable.icon_doctor);
-                } else {
-                    Glide.with(mContext)
-                            .load(Constants.ICON + item1.getDoctorIcon().replace("~", "").replace("\\", "/"))
-                            .centerCrop().error(R.drawable.icon_doctor)
-                            .into(holder1.ivhead);
-                }
+
                 holder1.iv_status.setVisibility(View.VISIBLE);
                 holder1.tvtime.setText("预约时间：" + item1.getTime()+item1.getDay());
                 break;

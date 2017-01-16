@@ -151,7 +151,7 @@ public class ChangePasswordActivity extends BaseActivity {
 
     }
     private void CHKCodeSend() {
-
+        tvgetcode.setEnabled(false);
         String usermobile = edt_old_Pass.getText().toString().trim();
 
 
@@ -185,6 +185,7 @@ public class ChangePasswordActivity extends BaseActivity {
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+
                     }
                 }
             }));

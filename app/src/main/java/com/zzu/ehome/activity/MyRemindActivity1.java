@@ -24,12 +24,16 @@ import com.zzu.ehome.utils.ScreenUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.HeadView;
 import com.zzu.ehome.view.PullToRefreshLayout;
+import com.zzu.ehome.view.RefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+
+import static com.zzu.ehome.R.attr.position;
+import static com.zzu.ehome.R.id.refreshLayout;
 
 /**
  * Created by Mersens on 2016/8/18.
@@ -64,6 +68,7 @@ public class MyRemindActivity1 extends BaseActivity {
     public void initViews() {
         listView = (SwipeMenuListView) findViewById(R.id.listView);
         layout_no_msg=(LinearLayout)findViewById(R.id.layout_no_msg);
+
         setDefaultTXViewMethod(R.mipmap.icon_arrow_left, "我的提醒", "添加", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
@@ -76,6 +81,7 @@ public class MyRemindActivity1 extends BaseActivity {
                 startActivityForResult(intent, ADD_REMIND);
             }
         });
+
 
     }
 
@@ -105,8 +111,12 @@ public class MyRemindActivity1 extends BaseActivity {
                         listView.setVisibility(View.VISIBLE);
                         MyRemindDate date = JsonTools.getData(result.toString(), MyRemindDate.class);
                         list = date.getData();
-                        myRemindAdapter = new MyRemindAdapter(MyRemindActivity1.this, list);
-                        listView.setAdapter(myRemindAdapter);
+                        if(myRemindAdapter==null) {
+                            myRemindAdapter = new MyRemindAdapter(MyRemindActivity1.this, list);
+                            listView.setAdapter(myRemindAdapter);
+                        }else{
+                            myRemindAdapter.notifyDataSetChanged();
+                        }
                         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
                             @Override
@@ -141,19 +151,18 @@ public class MyRemindActivity1 extends BaseActivity {
                         listView.setMenuCreator(creator);
                         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
                             @Override
-                            public void onMenuItemClick(int position, SwipeMenu menu, int index) {
+                            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                                 MyRemindBean item = list.get(position);
                                 switch (index) {
                                     case 0:
-                                        if(!isNetWork){
-                                          showNetWorkErrorDialog();
-                                            return;
-                                        }
+
                                         deleteRecent(item, position);
                                         break;
 
                                 }
+                                return false;
                             }
+
                         });
 
 
@@ -166,6 +175,7 @@ public class MyRemindActivity1 extends BaseActivity {
                     listView.setVisibility(View.GONE);
                 }
 
+
             }
         }));
 
@@ -173,6 +183,10 @@ public class MyRemindActivity1 extends BaseActivity {
     }
 
     public void deleteRecent(MyRemindBean bean, final int position) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
         String id = bean.getID();
         requestMaker.RemindDelete(id, new JsonAsyncTask_Info(MyRemindActivity1.this, true, new JsonAsyncTaskOnComplete() {
             @Override
