@@ -798,43 +798,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         mLocationClient.start();
     }
 
-    public void confirmExit() {
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View layout = inflater.inflate(R.layout.dialog_default_ensure_click, null);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(layout);
-        builder.setCancelable(false);
-        builder.create().show();
-        TextView tvok = (TextView) layout.findViewById(R.id.dialog_default_click_ensure);
-        tvok.setText("重新登陆");
-        TextView tvCancle = (TextView) layout.findViewById(R.id.dialog_default_click_cancel);
-        tvCancle.setText("取消");
-        TextView tvtitel = (TextView) layout.findViewById(R.id.dialog_default_click_text_title);
-        tvtitel.setText("温馨提示");
-        TextView tvcontent = (TextView) layout.findViewById(R.id.dialog_default_click_text_msg);
-        tvcontent.setText("你的账号在其他设备上登陆？");
-        tvok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getActivity(), LoginActivity1.class);
-                i.putExtra("logout", "logout");
-                startActivity(i);
-            }
-        });
-        tvCancle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                User dbUser = dao.findUserInfoById(SharePreferenceUtil.getInstance(getActivity()).getUserId());
-                if (TextUtils.isEmpty(dbUser.getUserno())) {
-                    UserClientBind();
-                } else {
-                    upload(dbUser.getUserno());
-                }
-            }
-        });
-
-    }
     private void showDialog(String message) {
 
         DialogTips dialog = new DialogTips(getActivity(), message, "确定");
@@ -992,7 +956,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                         if (isFirst) {
                             isFirst = false;
                         }
-                        
+
 
                     } else {
                         NewsDate date = JsonTools.getData(result.toString(), NewsDate.class);
@@ -1249,28 +1213,72 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
 
     private void initHomeFamily() {
         String userid = SharePreferenceUtil.getInstance(getActivity()).getUserId();
+
         User dbUser = dao.findUserInfoById(userid);
-        RelationDes rs = new RelationDes();
-        rs.setUser_Name(dbUser.getUsername());
-        rs.setUser_Icon(dbUser.getImgHead());
-        rs.setRelationship("自己");
-        rs.setRUserID(userid);
-        linearLayout.addMainItem(rs);
-        getToken(userid, dbUser.getUsername(), dbUser.getImgHead());
+        if(dbUser!=null) {
+            RelationDes rs = new RelationDes();
+            rs.setUser_Name(dbUser.getUsername());
+            rs.setUser_Icon(dbUser.getImgHead());
+            rs.setRelationship("自己");
+            rs.setRUserID(userid);
+            linearLayout.addMainItem(rs);
+            getToken(userid, dbUser.getUsername(), dbUser.getImgHead());
 
-        requestMaker.UserRelationshipInquiry(userid, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
+            requestMaker.UserRelationshipInquiry(userid, new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
 
-            @Override
-            public void processJsonObject(Object result) {
+                @Override
+                public void processJsonObject(Object result) {
 
-                try {
-                    JSONObject mySO = (JSONObject) result;
-                    org.json.JSONArray array = mySO
-                            .getJSONArray("UserRelationshipInquiry");
-                    if (array.getJSONObject(0).has("MessageCode")) {
+                    try {
+                        JSONObject mySO = (JSONObject) result;
+                        org.json.JSONArray array = mySO
+                                .getJSONArray("UserRelationshipInquiry");
+                        if (array.getJSONObject(0).has("MessageCode")) {
+                            List<RelationDes> list = new ArrayList<RelationDes>();
+                            RelationDes res = new RelationDes();
+                            res.setRelationship("添加亲人");
+                            list.add(res);
+                            final List<RelationDes> templist = list;
+                            linearLayout.addItem(templist, new MyHomeLayout.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(int pos) {
+                                    rsTemp = linearLayout.getMainItem();
+                                    rsTarget = templist.get(pos);
+                                    UserClientBindChange(rsTemp.getRUserID(), rsTarget.getRUserID(), pos);
+                                }
+                            });
+
+                        } else {
+                            RelationBean date = JsonTools.getData(result.toString(), RelationBean.class);
+                            List<RelationDes> list = date.getData();
+                            for (RelationDes rs : list) {
+                                if (dao.findRsIsExist(rs.getRUserID())) {
+                                    dao.updateResInfo(rs, rs.getRUserID());
+                                } else
+                                    dao.addRelationInfo(rs);
+                            }
+                            RelationDes res = new RelationDes();
+                            res.setRelationship("添加亲人");
+                            list.add(res);
+                            final List<RelationDes> templist = list;
+                            linearLayout.addItem(list, new MyHomeLayout.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(int pos) {
+                                    rsTemp = linearLayout.getMainItem();
+                                    rsTarget = templist.get(pos);
+
+                                    UserClientBindChange(rsTemp.getRUserID(), rsTarget.getRUserID(), pos);
+                                }
+                            });
+
+                        }
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                         List<RelationDes> list = new ArrayList<RelationDes>();
                         RelationDes res = new RelationDes();
-                        res.setRelationship("添加亲人");
+                        res.setRelationship("Add");
                         list.add(res);
                         final List<RelationDes> templist = list;
                         linearLayout.addItem(templist, new MyHomeLayout.OnItemClickListener() {
@@ -1281,53 +1289,14 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                                 UserClientBindChange(rsTemp.getRUserID(), rsTarget.getRUserID(), pos);
                             }
                         });
-
-                    } else {
-                        RelationBean date = JsonTools.getData(result.toString(), RelationBean.class);
-                        List<RelationDes> list = date.getData();
-                        for (RelationDes rs : list) {
-                            if (dao.findRsIsExist(rs.getRUserID())) {
-                                dao.updateResInfo(rs, rs.getRUserID());
-                            } else
-                                dao.addRelationInfo(rs);
-                        }
-                        RelationDes res = new RelationDes();
-                        res.setRelationship("添加亲人");
-                        list.add(res);
-                        final List<RelationDes> templist = list;
-                        linearLayout.addItem(list, new MyHomeLayout.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(int pos) {
-                                rsTemp = linearLayout.getMainItem();
-                                rsTarget = templist.get(pos);
-
-                                UserClientBindChange(rsTemp.getRUserID(), rsTarget.getRUserID(), pos);
-                            }
-                        });
-
+                        ReConnetRong();
                     }
-
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    List<RelationDes> list = new ArrayList<RelationDes>();
-                    RelationDes res = new RelationDes();
-                    res.setRelationship("Add");
-                    list.add(res);
-                    final List<RelationDes> templist = list;
-                    linearLayout.addItem(templist, new MyHomeLayout.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(int pos) {
-                            rsTemp = linearLayout.getMainItem();
-                            rsTarget = templist.get(pos);
-                            UserClientBindChange(rsTemp.getRUserID(), rsTarget.getRUserID(), pos);
-                        }
-                    });
-                    ReConnetRong();
                 }
-            }
-        }));
+            }));
+        }else{
+            SharePreferenceUtil.getInstance(getActivity()).setUserId("");
+            SharePreferenceUtil.getInstance(getActivity()).setIsRemeber(false);
+        }
 
 
     }
@@ -1586,38 +1555,43 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
     private void readCache(){
         String homeid=SharePreferenceUtil.getInstance(getActivity()).getHomeId();
         User dbUser = dao.findUserInfoById(homeid);
-        final RelationDes rsme = new RelationDes();
-        rsme.setUser_Name(dbUser.getUsername());
-        rsme.setUser_Icon(dbUser.getImgHead());
-        rsme.setRUserID(homeid);
-        rsme.setRelationship("自己");
-        String userid=SharePreferenceUtil.getInstance(getActivity()).getUserId();
-        RelationDes rs=dao.findRelationInfoById(userid);
-        linearLayout.addMainItem(rs);
-        User dbOrder=dao.findUserInfoById(homeid);
-        String[] orders=dbOrder.getOrder().split(",");
-        List<RelationDes> listTemp = new ArrayList<RelationDes>();
-        for(int n=0;n<orders.length;n++){
-            RelationDes rsDao=dao.findRelationInfoById(orders[n]);
-            if(orders[n].equals(homeid)){
-                listTemp.add(rsme);
-            }else {
-                listTemp.add(rsDao);
+        if(dbUser!=null) {
+            final RelationDes rsme = new RelationDes();
+            rsme.setUser_Name(dbUser.getUsername());
+            rsme.setUser_Icon(dbUser.getImgHead());
+            rsme.setRUserID(homeid);
+            rsme.setRelationship("自己");
+            String userid = SharePreferenceUtil.getInstance(getActivity()).getUserId();
+            RelationDes rs = dao.findRelationInfoById(userid);
+            linearLayout.addMainItem(rs);
+            User dbOrder = dao.findUserInfoById(homeid);
+            String[] orders = dbOrder.getOrder().split(",");
+            List<RelationDes> listTemp = new ArrayList<RelationDes>();
+            for (int n = 0; n < orders.length; n++) {
+                RelationDes rsDao = dao.findRelationInfoById(orders[n]);
+                if (orders[n].equals(homeid)) {
+                    listTemp.add(rsme);
+                } else {
+                    listTemp.add(rsDao);
+                }
             }
-        }
-        RelationDes res = new RelationDes();
-        res.setRelationship("添加亲人");
-        listTemp.add(res);
-        final List<RelationDes> listfinaltmp = listTemp;
-        linearLayout.addItem(listfinaltmp, new MyHomeLayout.OnItemClickListener() {
-            @Override
-            public void onItemClick(int pos) {
+            RelationDes res = new RelationDes();
+            res.setRelationship("添加亲人");
+            listTemp.add(res);
+            final List<RelationDes> listfinaltmp = listTemp;
+            linearLayout.addItem(listfinaltmp, new MyHomeLayout.OnItemClickListener() {
+                @Override
+                public void onItemClick(int pos) {
 
-                rsTemp = linearLayout.getMainItem();
-                rsTarget = listfinaltmp.get(pos);
-                UserClientBindChange(rsTemp.getRUserID(),rsTarget.getRUserID(), pos);
-            }
-        });
+                    rsTemp = linearLayout.getMainItem();
+                    rsTarget = listfinaltmp.get(pos);
+                    UserClientBindChange(rsTemp.getRUserID(), rsTarget.getRUserID(), pos);
+                }
+            });
+        }else{
+            SharePreferenceUtil.getInstance(getActivity()).setUserId("");
+            SharePreferenceUtil.getInstance(getActivity()).setIsRemeber(false);
+        }
     }
 
     /**

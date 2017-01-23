@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.BaseListAdapter;
+import com.zzu.ehome.adapter.BiochemistryAdapter;
 import com.zzu.ehome.adapter.OcrDetailAdapter;
 import com.zzu.ehome.bean.AdviceBean;
 import com.zzu.ehome.bean.BloodRoutine;
@@ -32,14 +33,14 @@ import java.util.List;
 /**
  * Created by Mersens on 2016/8/23.
  */
-public class InspectionReportDetailActivity extends BaseActivity {
+public class BiochemistryReportDetailActivity extends BaseActivity {
     private RequestMaker requestMaker;
     private ListView listView,listView2;
     private String title,type,id,tvtitle;
     private EHomeDao dao;
     private User dbUser;
     private String usrid;
-    private OcrDetailAdapter mAdapter;
+    private BiochemistryAdapter mAdapter;
     private List<BloodRoutine> mList;
     private TextView textViewtitle;
     private List<AdviceBean> mList2;
@@ -54,7 +55,7 @@ public class InspectionReportDetailActivity extends BaseActivity {
         id=this.getIntent().getStringExtra("RecordID");
         mList2=new ArrayList<>();
         dao = new EHomeDaoImpl(this);
-        usrid = SharePreferenceUtil.getInstance(InspectionReportDetailActivity.this).getUserId();
+        usrid = SharePreferenceUtil.getInstance(BiochemistryReportDetailActivity.this).getUserId();
         initViews();
         initEvent();
         initDatas();
@@ -88,7 +89,7 @@ public class InspectionReportDetailActivity extends BaseActivity {
     public void initDatas() {
         dbUser=dao.findUserInfoById(usrid);
         mList=new ArrayList<>();
-        requestMaker.BloodRoutineInquiry(type, dbUser.getUserno(), id, new JsonAsyncTask_Info(InspectionReportDetailActivity.this, true, new JsonAsyncTaskOnComplete() {
+        requestMaker.BloodRoutineInquiry(type, dbUser.getUserno(), id, new JsonAsyncTask_Info(BiochemistryReportDetailActivity.this, true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
                 try {
@@ -109,6 +110,8 @@ public class InspectionReportDetailActivity extends BaseActivity {
                             br.setMonitorTime(arraySub.getJSONObject(i).getString("MonitorTime"));
                             double value=Double.valueOf(arraySub.getJSONObject(i).getString("ItemValue"));
                             br.setItemValue(df.format(value));
+                            br.setBioType(arraySub.getJSONObject(i).getString("BioType"));
+                            br.setBioTypeName(arraySub.getJSONObject(i).getString("BioTypeName"));
                             mList.add(br);
                             if(!TextUtils.isEmpty(arraySub.getJSONObject(i).getString("Advice"))){
                                 AdviceBean ab=new AdviceBean();
@@ -120,13 +123,13 @@ public class InspectionReportDetailActivity extends BaseActivity {
 //                            ab.setAdvice(arraySub.getJSONObject(i).getString("ItemRange"));
 
                         }
-
-                        mAdapter=new OcrDetailAdapter(InspectionReportDetailActivity.this,mList);
+                        mAdapter=new BiochemistryAdapter(BiochemistryReportDetailActivity.this,mList);
                         listView.setAdapter(mAdapter);
+
                         if(mList2.size()>0){
                             llad.setVisibility(View.VISIBLE);
                             lladnone.setVisibility(View.GONE);
-                            AdviceDetailAdapter  mAadpter2 = new AdviceDetailAdapter(InspectionReportDetailActivity.this, mList2);
+                            AdviceDetailAdapter  mAadpter2 = new AdviceDetailAdapter(BiochemistryReportDetailActivity.this, mList2);
                             listView2.setAdapter(mAadpter2);
 
                         }else{

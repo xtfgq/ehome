@@ -111,12 +111,10 @@ public class MyRemindActivity1 extends BaseActivity {
                         listView.setVisibility(View.VISIBLE);
                         MyRemindDate date = JsonTools.getData(result.toString(), MyRemindDate.class);
                         list = date.getData();
-                        if(myRemindAdapter==null) {
+
                             myRemindAdapter = new MyRemindAdapter(MyRemindActivity1.this, list);
                             listView.setAdapter(myRemindAdapter);
-                        }else{
-                            myRemindAdapter.notifyDataSetChanged();
-                        }
+
                         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
                             @Override

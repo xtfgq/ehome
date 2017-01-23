@@ -19,6 +19,7 @@ import com.lzy.okserver.download.DownloadService;
 import com.lzy.okserver.listener.DownloadListener;
 import com.zzu.ehome.R;
 import com.zzu.ehome.utils.CommonUtils;
+import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.view.HeadView;
 
 import java.io.File;
@@ -70,7 +71,7 @@ public class ECGPDFStaticActivity extends BaseActivity{
         downloadInfo = downloadManager.getDownloadInfo(imurl);
         initViews();
         tv_statu.setVisibility(View.GONE);
-        tvtime.setText(CollectTime);
+        tvtime.setText(DateUtils.StringPattern(CollectTime, "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd"));
         tvname.setText(PatientName);
         circleProgressBar.setVisibility(View.GONE);
         initEvent();

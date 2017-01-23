@@ -25,6 +25,7 @@ import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.bean.CapaingBean;
 import com.zzu.ehome.bean.MessageBean;
 import com.zzu.ehome.utils.CommonUtils;
+import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -235,7 +236,7 @@ public class MessageFragment extends BaseFragment {
                         bean.setCreateDate(array.getJSONObject(0).getString("CreatedDate"));
                         bean.setName(array.getJSONObject(0).getString("Log_Content"));
                         bean.setLog_ID(array.getJSONObject(0).getString("Log_ID"));
-                        bean2.setTips(bean.getCreateDate());
+                        bean2.setTips(DateUtils.StringPattern(bean.getCreateDate(),"yyyy-MM-dd HH:mm:ss","yyyy/MM/dd HH:mm"));
                         mList.add(bean2);
                         MessageBean bean3 = new MessageBean();
                         bean3.setContent("私人医生");

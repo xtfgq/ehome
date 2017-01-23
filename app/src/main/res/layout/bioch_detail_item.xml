@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/lltitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/back_color">
+        <TextView
+            android:id="@+id/tvtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:text="血脂"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:textColor="@color/text_color_black"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="32dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        >
+
+        <TextView
+            android:id="@+id/tvname"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="白细胞计数"
+            android:gravity="center|left"
+            android:textColor="#949395"
+            android:layout_weight="4.5"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3.5"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            >
+            <TextView
+                android:id="@+id/ednum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tool:text="ednum"
+                android:gravity="center"
+
+                android:textColor="#949395"
+                />
+
+            <TextView
+                android:id="@+id/tvAtoB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tool:text="g/l"
+                android:layout_marginLeft="5dp"
+
+                android:textColor="#949395"
+                />
+            </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tvRange"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="4-10"
+            android:textColor="#949395"
+            android:layout_weight="2"/>
+    </LinearLayout>
+
+</LinearLayout>

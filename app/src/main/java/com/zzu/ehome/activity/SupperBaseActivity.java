@@ -70,7 +70,7 @@ public abstract class SupperBaseActivity extends FragmentActivity {
 
 
     private CustomProgressDialog progressDialog = null;
-    private boolean isVisible;
+    private boolean isVisible,isshow=false;
     private Handler mHandler = new Handler() {
 
         @Override
@@ -87,9 +87,10 @@ public abstract class SupperBaseActivity extends FragmentActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals("rongyun") && isVisible) {
+        if (action.equals("rongyun") && isVisible) {
                 confirmLogin();
-            }else if(action.equals(ConnectivityManager.CONNECTIVITY_ACTION)){
+            }else
+            if(action.equals(ConnectivityManager.CONNECTIVITY_ACTION)){
                 ConnectivityManager mConnectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo netInfo = mConnectivityManager.getActiveNetworkInfo();
                 if(netInfo != null && netInfo.isAvailable()) {
@@ -489,39 +490,43 @@ public abstract class SupperBaseActivity extends FragmentActivity {
     }
 
     public void confirmLogin() {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View layout = inflater.inflate(R.layout.dialog_default_ensure_click, null);
+        if(!isshow) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(layout);
-        builder.setCancelable(false);
-        final AlertDialog dialog=builder.create();
-        dialog.show();
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View layout = inflater.inflate(R.layout.dialog_default_ensure_click, null);
 
-        TextView tvok = (TextView) layout.findViewById(R.id.dialog_default_click_ensure);
-        tvok.setText("重新登陆");
-        TextView tvCancle = (TextView) layout.findViewById(R.id.dialog_default_click_cancel);
-        tvCancle.setVisibility(View.GONE);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setView(layout);
+            builder.setCancelable(false);
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+            isshow = true;
+            TextView tvok = (TextView) layout.findViewById(R.id.dialog_default_click_ensure);
+            tvok.setText("重新登陆");
+            TextView tvCancle = (TextView) layout.findViewById(R.id.dialog_default_click_cancel);
+            tvCancle.setVisibility(View.GONE);
 
-        TextView tvtitel = (TextView) layout.findViewById(R.id.dialog_default_click_text_title);
-        tvtitel.setText("提   示");
-        TextView tvcontent = (TextView) layout.findViewById(R.id.dialog_default_click_text_msg);
-        tvcontent.setText("您的账号在别的设备上登录，您被迫下线");
-        tvok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                User dbUser = dao.findUserInfoById(SharePreferenceUtil.getInstance(CustomApplcation.getInstance()).getUserId());
-                dialog.dismiss();
-                CustomApplcation.getInstance().isOnLine=-1;
-                if (TextUtils.isEmpty(dbUser.getUserno())) {
-                    UserClientBind();
-                } else {
-                    upload(dbUser.getUserno());
+            TextView tvtitel = (TextView) layout.findViewById(R.id.dialog_default_click_text_title);
+            tvtitel.setText("提   示");
+            TextView tvcontent = (TextView) layout.findViewById(R.id.dialog_default_click_text_msg);
+            tvcontent.setText("您的账号在别的设备上登录，您被迫下线");
+            tvok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    User dbUser = dao.findUserInfoById(SharePreferenceUtil.getInstance(CustomApplcation.getInstance()).getUserId());
+                    dialog.dismiss();
+                    isshow=false;
+                    CustomApplcation.getInstance().isOnLine = -1;
+                    if (TextUtils.isEmpty(dbUser.getUserno())) {
+                        UserClientBind();
+                    } else {
+                        upload(dbUser.getUserno());
+                    }
+
+
                 }
-
-
-            }
-        });
+            });
+        }
 
     }
     public  void showTitleDialog(String message) {

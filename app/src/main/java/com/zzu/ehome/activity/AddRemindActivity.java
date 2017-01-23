@@ -73,7 +73,7 @@ public class AddRemindActivity extends BaseActivity implements TimePopWindows.On
         setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "添加提醒", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
-                finishActivity();
+               finishActivity();
             }
         });
     }

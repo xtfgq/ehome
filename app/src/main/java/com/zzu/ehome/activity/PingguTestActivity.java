@@ -40,7 +40,7 @@ public class PingguTestActivity extends BaseActivity{
 
     public void initViews() {
         listView = (ListView) findViewById(R.id.listView);
-        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "我的评估", new HeadView.OnLeftClickListener() {
+        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "健康预测", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
                 finishActivity();

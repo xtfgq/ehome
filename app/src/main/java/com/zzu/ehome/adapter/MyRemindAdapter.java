@@ -33,6 +33,15 @@ import java.util.List;
  */
 public class MyRemindAdapter extends BaseListAdapter<MyRemindBean> {
     private List<MyRemindBean> mList;
+    public List<MyRemindBean> getmList() {
+        return mList;
+    }
+
+    public void setmList(List<MyRemindBean> mList) {
+        this.mList = mList;
+    }
+
+
     private Context mContext;
     private RequestMaker requestMaker;
 

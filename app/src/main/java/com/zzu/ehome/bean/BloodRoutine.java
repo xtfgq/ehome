@@ -9,6 +9,25 @@ public class BloodRoutine {
     private String ItemUnit;
     private String ItemRange;
 
+    private String BioType;
+    private String BioTypeName;
+
+    public String getBioType() {
+        return BioType;
+    }
+
+    public void setBioType(String bioType) {
+        BioType = bioType;
+    }
+
+    public String getBioTypeName() {
+        return BioTypeName;
+    }
+
+    public void setBioTypeName(String bioTypeName) {
+        BioTypeName = bioTypeName;
+    }
+
 
     private String ItemValue;
 

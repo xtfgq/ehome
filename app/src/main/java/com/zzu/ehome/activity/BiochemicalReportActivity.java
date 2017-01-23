@@ -105,7 +105,7 @@ public class BiochemicalReportActivity extends BaseActivity{
                     showNetWorkErrorDialog();
                     return;
                 }
-                Intent i = new Intent(BiochemicalReportActivity.this, InspectionReportDetailActivity.class);
+                Intent i = new Intent(BiochemicalReportActivity.this, BiochemistryReportDetailActivity.class);
                 i.putExtra("Type", mList.get(position).getOCRType());
                 i.putExtra("RecordID", mList.get(position).getID());
                 i.putExtra("TypeTitle","生化");
@@ -197,12 +197,16 @@ public class BiochemicalReportActivity extends BaseActivity{
                     } else if (code == 2 && isLoading) {
                         isLoading = false;
                         isFirst = false;
-                        mAdapter.notifyDataSetChanged();
                         pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
                         Toast.makeText(BiochemicalReportActivity.this, "已经没有更多数据了",
                                 Toast.LENGTH_SHORT).show();
+                        layout_none.setVisibility(View.GONE);
                     }else{
-                        layout_none.setVisibility(View.VISIBLE);
+                        if(mList.size()>0) {
+                            layout_none.setVisibility(View.GONE);
+                        }else{
+                            layout_none.setVisibility(View.VISIBLE);
+                        }
                         isFirst = false;
                     }
 

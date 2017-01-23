@@ -163,6 +163,7 @@
         <activity
             android:name=".activity.SelectPlatmHospitalActivity"
             android:theme="@style/mydialog" />
+        <activity android:name=".activity.BiochemistryReportDetailActivity" />
 
         <activity android:name=".view.crop.CropImageActivity" />
 

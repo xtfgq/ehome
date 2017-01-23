@@ -322,7 +322,12 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
         userid = SharePreferenceUtil.getInstance(getActivity()).getUserId();
         if(!TextUtils.isEmpty(userid)) {
             dbUser = dao.findUserInfoById(userid);
-            cardNo = dbUser.getUserno();
+            if(dbUser!=null) {
+                cardNo = dbUser.getUserno();
+            }else{
+                SharePreferenceUtil.getInstance(getActivity()).setUserId("");
+                SharePreferenceUtil.getInstance(getActivity()).setIsRemeber(false);
+            }
         }
         pbtw.setProgress(0);
         pbweight.setProgress(0);
@@ -371,11 +376,9 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                             map.put(bean.getType(), bean);
                         }
                         if (map.get("Weight") != null) {
-
                             tz_num.setText(map.get("Weight").getValue1());
                             if (!TextUtils.isEmpty(dbUser.getUserHeight())) {
                                 tv_bimstatus.setVisibility(View.VISIBLE);
-
                                 float bmi = Float.valueOf(map.get("Weight").getValue3());
                                 BigDecimal b = new BigDecimal(bmi);
                                 tv_bimstatus.setText(CommonUtils.showBMIDetail(b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue()));

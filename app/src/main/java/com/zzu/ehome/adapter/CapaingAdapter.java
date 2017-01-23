@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.zzu.ehome.R;
 import com.zzu.ehome.bean.CapaingBean;
 import com.zzu.ehome.bean.TreatmentInquirywWithPage;
+import com.zzu.ehome.utils.DateUtils;
 
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class CapaingAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.name.setText(itme.getName());
-        holder.tvtime.setText(itme.getCreateDate());
+        holder.tvtime.setText(DateUtils.StringPattern(itme.getCreateDate(),"yyyy-MM-dd HH:mm:ss","yyyy/MM/dd HH:mm"));
 
         return convertView;
     }

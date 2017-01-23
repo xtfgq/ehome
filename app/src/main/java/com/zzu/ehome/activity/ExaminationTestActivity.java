@@ -49,7 +49,7 @@ public class ExaminationTestActivity extends BaseActivity{
         mList=new ArrayList<String>();
         mList.add("自助体检报告");
         mList.add("血常规检查报告");
-        mList.add("生化检查体检报告");
+        mList.add("生化检查报告");
         mAdapter = new ExaminationTestAadpter(ExaminationTestActivity.this, mList);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

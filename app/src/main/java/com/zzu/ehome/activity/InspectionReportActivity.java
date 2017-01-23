@@ -225,7 +225,11 @@ public class InspectionReportActivity extends BaseActivity {
                         Toast.makeText(InspectionReportActivity.this, "已经没有更多数据了",
                                 Toast.LENGTH_SHORT).show();
                     }else{
-                        layout_none.setVisibility(View.VISIBLE);
+                        if(mList.size()>0) {
+                            layout_none.setVisibility(View.GONE);
+                        }else{
+                            layout_none.setVisibility(View.VISIBLE);
+                        }
                         isFirst = false;
                     }
 

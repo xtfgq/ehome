@@ -11,7 +11,7 @@ import com.zzu.ehome.utils.SharePreferenceUtil;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final int VERSION = 17;
+    private static final int VERSION = 18;
     private static final String NAME = "EHOME.db";
     private static final String SQL_LOGIN_HISTORY_CREAT = "create table login_historytb(_id integer primary key autoincrement,userid text ,username text,nick text,mobile text,imgHead text,password text,sex text,age text,userno text,patientId text,height text,_order text,type integer)";
     private static final String SQL_LOGIN_HISTORY_DROP = "drop table if exists login_historytb";

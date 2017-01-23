@@ -186,7 +186,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="6dp"
                             android:layout_toRightOf="@+id/tv_wdpg"
-                            android:text="我的评估"
+                            android:text="健康预测"
                             android:textColor="#0f2536"
                             android:textSize="14sp" />
 

@@ -26,7 +26,7 @@ public class RemindTypeActivity extends BaseActivity {
     private String[] type = {"用药提醒", "测量提醒"};
     private RemindTypeAdapter mAdapter;
     private ListView listView;
-    private int pos;
+    private int pos=-1;
     List<RepatBean> mList = new ArrayList<RepatBean>();
 
     @Override
@@ -45,10 +45,14 @@ public class RemindTypeActivity extends BaseActivity {
         setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "提醒类型", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
-                Intent intent = new Intent();
-                intent.putExtra("Type", type[pos]);
-                setResult(AddRemindActivity.ADD_TYPE, intent);
-                finish();
+                if(pos!=-1) {
+                    Intent intent = new Intent();
+                    intent.putExtra("Type", type[pos]);
+                    setResult(AddRemindActivity.ADD_TYPE, intent);
+                    finish();
+                }else{
+                    finishActivity();
+                }
             }
         });
         listView = (ListView) findViewById(R.id.listView);
@@ -95,10 +99,14 @@ public class RemindTypeActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent intent = new Intent();
-            intent.putExtra("Type", type[pos]);
-            setResult(AddRemindActivity.ADD_TYPE, intent);
-            finish();
+            if(pos!=-1) {
+                Intent intent = new Intent();
+                intent.putExtra("Type", type[pos]);
+                setResult(AddRemindActivity.ADD_TYPE, intent);
+                finish();
+            }else{
+                finish();
+            }
         }
         return super.onKeyDown(keyCode, event);
     }

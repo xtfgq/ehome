@@ -30,12 +30,15 @@
                 android:paddingBottom="7dp"
                 android:paddingLeft="5dp"
                 android:paddingTop="7dp"
+                android:textColor="@color/text_color2"
+                android:textStyle="bold"
+                android:textSize="16sp"
                  />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="24dp"
+                android:layout_height="38dp"
                 android:background="@color/base_color_text_white"
                 android:orientation="horizontal">
 
@@ -44,10 +47,13 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="4.5"
-                    android:gravity="center"
-                    android:text="检查指标"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp"
+                    android:gravity="center|left"
+                    android:layout_marginLeft="7dp"
+                    android:text="检测指标"
                     android:textColor="#0f2536"
-                    android:textSize="14sp" />
+                    android:textSize="15sp" />
 
                 <TextView
 
@@ -56,8 +62,10 @@
                     android:layout_weight="1.75"
                     android:gravity="center"
                     android:text="结果"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp"
                     android:textColor="#0f2536"
-                    android:textSize="14sp" />
+                    android:textSize="15sp" />
 
                 <TextView
 
@@ -75,16 +83,13 @@
                     android:layout_weight="2"
                     android:gravity="center"
                     android:text="参考值"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp"
                     android:textColor="#0f2536"
-                    android:textSize="14sp" />
+                    android:textSize="15sp" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
 
-                android:background="@color/actionbar_color" />
 
             <com.zzu.ehome.view.MyScrollListView
                 android:id="@+id/lilstView"
@@ -94,6 +99,65 @@
                 android:divider="@null"
                 android:scrollbars="none" />
 
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f2f2f2"
+                android:id="@+id/llad"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="7dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:text="健康指导"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_color2"/>
+
+                <com.zzu.ehome.view.MyScrollListView
+                    android:id="@+id/lilstView2"
+                    android:layout_width="match_parent"
+                    android:divider="@null"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f2f2f2"
+                android:id="@+id/lladnone"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="7dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="7dp"
+                    android:text="健康指导"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_color2"/>
+
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:paddingTop="16dp"
+                   android:paddingBottom="16dp"
+                   android:textColor="#949395"
+                   android:background="@color/base_color_text_white"
+                   android:gravity="center"
+                   android:textSize="14sp"
+                   android:text="您的各项指标正常，身体棒棒哒，请继续保持！"/>
+
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -106,32 +170,9 @@
                 android:layout_marginTop="16dp"
                 android:background="@color/base_color_text_white"
                 android:gravity="center"
+                android:textSize="14sp"
                 android:text="本报告只对送检结果负责，结果仅供医生参考"
                 android:textColor="#949395" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#f2f2f2"
-                android:id="@+id/llad"
-                android:orientation="vertical">
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="7dp"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="7dp"
-                    android:text="健康指导" />
-
-                <com.zzu.ehome.view.MyScrollListView
-                    android:id="@+id/lilstView2"
-                    android:layout_width="match_parent"
-                    android:divider="@null"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

@@ -1,9 +1,11 @@
 package com.zzu.ehome.activity;
 
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
+
+import android.os.Parcelable;
 import android.view.KeyEvent;
 import android.webkit.DownloadListener;
 import android.webkit.WebSettings;
@@ -17,9 +19,14 @@ import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.utils.SharePreferenceUtil;
-import com.zzu.ehome.view.HeadView;
 
-import static com.zzu.ehome.R.id.webView;
+import android.webkit.WebView.HitTestResult;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.zzu.ehome.R.id.view;
+
 
 /**
  * Created by Administrator on 2016/5/16.
@@ -49,17 +56,17 @@ public class SmartWebView extends BaseSimpleActivity {
         }
         mIntent = this.getIntent();
         dao = new EHomeDaoImpl(this);
-        userid= SharePreferenceUtil.getInstance(SmartWebView.this).getUserId();
-       String url;
-            user=dao.findUserInfoById(userid);
+        userid = SharePreferenceUtil.getInstance(SmartWebView.this).getUserId();
+        String url;
+        user = dao.findUserInfoById(userid);
 
 //url="http://ehome.staging.topmd.cn/chaxun/select.html";
 
-        if(!isNetWork){
+        if (!isNetWork) {
             showNetWorkErrorDialog();
             return;
         }
-        url=Constants.EhomeURL+"/LaiKang/HealthDataList.aspx?CardNo="+user.getUserno();
+        url = Constants.EhomeURL + "/LaiKang/HealthDataList.aspx?CardNo=" + user.getUserno();
 //        url="http://wxsdk.lkang.cn/LoginZ.aspx?cardno=410322198708063857&mobile=15986816294";
 
         mWebView.loadUrl(url);
@@ -71,15 +78,18 @@ public class SmartWebView extends BaseSimpleActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            http://ehome.staging.topmd.cn:81/LaiKang/BackToAppHomePage
-            if(url.contains("BackToAppHomePage")){
-                finish();
-            }else{
-                view.loadUrl(url);
-            }
-            return true;
 
+            if (url.contains("BackToAppHomePage")) {
+                finish();
+            }else {
+                view.loadUrl(url);
+
+            }
+
+
+            return true;
         }
+
 
     }
 
@@ -116,15 +126,59 @@ public class SmartWebView extends BaseSimpleActivity {
         return super.onKeyDown(keyCode, event);
 
     }
+
     private class MyWebViewDownLoadListener implements DownloadListener {
 
         @Override
         public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype,
                                     long contentLength) {
+//            Uri uri = Uri.parse(url);
+//            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//            startActivity(intent);
             Uri uri = Uri.parse(url);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
+/*             intent.setData(Uri.parse(url));
+            intent.setType("text/html");*//*
+            // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            List<ResolveInfo> resInfo = getPackageManager().queryIntentActivities(intent, 0);
+            int i=-1;
+            int j=-1;
+            if (!resInfo.isEmpty()) {
+                List<Intent> targetedIntents = new ArrayList<Intent>();
+                for (int n = 0; n < resInfo.size(); n++) {
+                    ResolveInfo info = resInfo.get(n);
+                    String pkg = info.activityInfo.packageName.toLowerCase();
+
+                    if (pkg.contains("com.zzu.ehome.main.ehome")) {
+                        i=n;
+*//*                         Uri ur1 = Uri.parse(url);
+                        Intent intentContents = new Intent(Intent.ACTION_VIEW, ur1);
+                        intentContents.setPackage(pkg);
+                        intentContents.setData(ur1);
+                        intentContents.setType("text/html");
+*//**//*                                Intent chit = new Intent();
+                                chit.setPackage(pkg);
+                                chit.setAction(Intent.ACTION_VIEW);*//**//*
+//                                chit.setData(Uri.parse(url));
+                        targetedIntents.add(intentContents);*//*
+                    }
+                    else if( pkg.contains("com.zzu.ehome.ehomefordoctor")){
+                       j=n;
+                    }
+                }
+                if(i!=-1){
+                    getPackageManager().queryIntentActivities(intent, 0).remove(i);
+                }
+                if(j!=-1){
+                    getPackageManager().queryIntentActivities(intent, 0).remove(j);
+                }
+               Intent chooserIntent = Intent.createChooser(getPackageManager().queryIntentActivities(intent, 0).remove(0), "选择浏览方式");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedIntents.toArray(new Parcelable[]{}));
+//                        chooserIntent.setData(Uri.parse(url));
+                chooserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);*//*
+                startActivity(;*/
+            }
         }
 
-    }
 }

@@ -33,25 +33,24 @@ public class CustomApplcation extends MultiDexApplication {
     public static final String IMAGES_FOLDER = SDCARD_PATH + File.separator + "ehome" + File.separator + "images" + File.separator;
     public static List<Activity> mList = new LinkedList<Activity>();
 
-    public int count=0;
-    public int isOnLine=-1;
+    public int count = 0;
+    public int isOnLine = -1;
     public static CustomApplcation mInstance;
     private NetReceiver mReceiver;
 
-    public Boolean isRead=false;
+    public Boolean isRead = false;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-       CrashHandler.getInstance().init(getApplicationContext());
+        CrashHandler.getInstance().init(getApplicationContext());
         SDKInitializer.initialize(this);
         if (getApplicationInfo().packageName
                 .equals(getCurProcessName(getApplicationContext()))
                 || "io.rong.push"
                 .equals(getCurProcessName(getApplicationContext()))) {
             RongIM.init(this);
-
             DemoContext.init(this);
         }
 
@@ -67,8 +66,6 @@ public class CustomApplcation extends MultiDexApplication {
     @Override
     public void onTerminate() {
         super.onTerminate();
-//        Log.e("app","onTerminate()======");
-
         unregisterReceiver(mReceiver);
     }
 
@@ -163,7 +160,8 @@ public class CustomApplcation extends MultiDexApplication {
         }
         return null;
     }
-    private void initGo(){
+
+    private void initGo() {
         OkGo.init(this);
         //以下设置的所有参数是全局参数,同样的参数可以在请求的时候再设置一遍,那么对于该请求来讲,请求中的参数会覆盖全局参数
         //好处是全局参数统一,特定请求可以特别定制参数
@@ -182,7 +180,7 @@ public class CustomApplcation extends MultiDexApplication {
                     //可以全局统一设置超时重连次数,默认为三次,那么最差的情况会请求4次(一次原始请求,三次重连请求),不需要可以设置为0
                     .setRetryCount(3)
                     .setCookieStore(new PersistentCookieStore())        //cookie持久化存储，如果cookie不过期，则一直有效
-                    .setCertificates()   ;
+                    .setCertificates();
         } catch (Exception e) {
             e.printStackTrace();
         }
