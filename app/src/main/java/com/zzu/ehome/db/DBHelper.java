@@ -13,16 +13,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final int VERSION = 18;
     private static final String NAME = "EHOME.db";
+
     private static final String SQL_LOGIN_HISTORY_CREAT = "create table login_historytb(_id integer primary key autoincrement,userid text ,username text,nick text,mobile text,imgHead text,password text,sex text,age text,userno text,patientId text,height text,_order text,type integer)";
     private static final String SQL_LOGIN_HISTORY_DROP = "drop table if exists login_historytb";
+
     private static final String SQL_DISEASE_CREAT = "create table disease_tb(_id integer primary key autoincrement,name text ,type integer,open integer)";
     private static final String SQL_DISEASE_DROP = "drop table if exists disease_tb";
+
     private static final String SQL_STEP_CREAT = "create table step_tb(_id integer primary key autoincrement,num integer ,startTime text,endTime text,userid text,uploadState integer)";
     private static final String SQL_STEP_DROP = "drop table if exists step_tb";
 
     private static final String SQL_RS_CREAT = "create table relation_db(_id integer primary key autoincrement,relationid text ,img text,ship text)";
     private static final String SQL_RS_DROP = "drop table if exists relation_db";
-    private static final String SQL_CACHE_CREAT="create table cache_tb(_id integer primary key autoincrement,url text ,json text)";
+
+    private static final String SQL_CACHE_CREAT = "create table cache_tb(_id integer primary key autoincrement,url text ,json text)";
     private static final String SQL_CACHE_DROP = "drop table if exists cache_tb";
 
     public static DBHelper helper = null;
