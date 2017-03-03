@@ -78,19 +78,26 @@ public class DoctorListActivity extends BaseActivity {
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO
                             .getJSONArray("DepertDoctorByTopmd");
-                    if (array.getJSONObject(0).has("MessageCode")) {
+                    if(listView!=null) {
+                        if (array.getJSONObject(0).has("MessageCode")) {
 //                        Toast.makeText(DoctorListActivity.this, array.getJSONObject(0).getString("MessageContent").toString(),
 //                                Toast.LENGTH_SHORT).show();
-                        show(array.getJSONObject(0).getString("MessageContent"));
-                    } else {
-                        DortorlIst date = JsonTools.getData(result.toString(), DortorlIst.class);
-                        mList = date.getData();
-                        adapter = new DoctorListAdapter(DoctorListActivity.this, mList, hosid, depid, DepartmentName);
-                        listView.setAdapter(adapter);
+                            show(array.getJSONObject(0).getString("MessageContent"));
+                        } else {
+                            DortorlIst date = JsonTools.getData(result.toString(), DortorlIst.class);
+                            mList = date.getData();
+                            adapter = new DoctorListAdapter(DoctorListActivity.this, mList, hosid, depid, DepartmentName);
+                            listView.setAdapter(adapter);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 

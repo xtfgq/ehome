@@ -40,10 +40,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.zzu.ehome.R.id.refreshLayout;
@@ -115,6 +117,8 @@ public class PlatformTestActivity extends BaseActivity{
         //监听订阅事件
         Subscription subscription = RxBus.getInstance().toObservable()
                 .observeOn(AndroidSchedulers.mainThread())
+
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object event) {
@@ -129,6 +133,9 @@ public class PlatformTestActivity extends BaseActivity{
                                 initDatas();
                             }
                         }
+
+
+
 
                     }
                 });
@@ -174,22 +181,21 @@ public class PlatformTestActivity extends BaseActivity{
                     JSONObject mySO = (JSONObject) result;
                     stopProgressDialog();
                     JSONArray array = mySO.getJSONArray("CheckupInfoInquiry");
-                    if (array.getJSONObject(0).has("MessageCode")) {
-
-
+                    if(layout_no_msg!=null&&mListView!=null) {
+                        if (array.getJSONObject(0).has("MessageCode")) {
                             layout_no_msg.setVisibility(View.VISIBLE);
                             mListView.setVisibility(View.GONE);
 
-                    }else{
-                        for (int i = 0; i < array.length(); i++) {
-                            JSONObject json = array.getJSONObject(i);
-                            list.add(getDataFromJson(json));
-
+                        } else {
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject json = array.getJSONObject(i);
+                                list.add(getDataFromJson(json));
+                            }
+                            adapter.setList(list);
+                            adapter.notifyDataSetChanged();
+                            layout_no_msg.setVisibility(View.GONE);
+                            mListView.setVisibility(View.VISIBLE);
                         }
-                        adapter.setList(list);
-                        adapter.notifyDataSetChanged();
-                        layout_no_msg.setVisibility(View.GONE);
-                        mListView.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -199,6 +205,11 @@ public class PlatformTestActivity extends BaseActivity{
                         isRefresh=false;
                     }
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         } ));
@@ -261,4 +272,9 @@ public class PlatformTestActivity extends BaseActivity{
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeSubscription.unsubscribe();
+    }
 }

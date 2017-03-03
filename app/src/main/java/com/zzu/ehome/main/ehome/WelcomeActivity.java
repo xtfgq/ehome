@@ -33,6 +33,10 @@ public class WelcomeActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_welcome);
+        if((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0){
+            finish();
+            return;
+        }
         PushManager.getInstance().initialize(this.getApplicationContext());
         ClientID = PushManager.getInstance().getClientid(WelcomeActivity.this);
         dao = new EHomeDaoImpl(this);

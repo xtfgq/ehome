@@ -219,6 +219,11 @@ public class AddRemindActivity extends BaseActivity implements TimePopWindows.On
                 }
             }
 
+            @Override
+            public void onError(Exception e) {
+
+            }
+
         }));
     }
 }

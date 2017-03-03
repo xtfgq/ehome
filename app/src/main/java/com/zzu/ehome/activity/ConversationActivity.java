@@ -4,24 +4,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.isseiaoki.simplecropview.util.Logger;
 import com.zzu.ehome.DemoContext;
 import com.zzu.ehome.MapLocationActivity;
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.CustomApplcation;
+import com.zzu.ehome.bean.User;
+import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.utils.CommonUtils;
+import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.utils.Tool;
 import com.zzu.ehome.view.HeadView;
 
+import java.util.List;
 import java.util.Locale;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
+import io.rong.imkit.fragment.MessageInputFragment;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
@@ -39,6 +47,8 @@ public class ConversationActivity extends BaseActivity implements RongIM.Locatio
     String name;
     private String mTargetId;
     String token = null;
+    private EHomeDaoImpl dao;
+    User dbUser;
     /**
      * 刚刚创建完讨论组后获得讨论组的id 为targetIds，需要根据 为targetIds 获取 targetId
      */
@@ -55,6 +65,7 @@ public class ConversationActivity extends BaseActivity implements RongIM.Locatio
         setContentView(R.layout.conversation);
         Intent intent = getIntent();
         getIntentDate(intent);
+
         setActionBar();
         RongIM.setLocationProvider(this);
         RongIM.setConversationBehaviorListener(this);
@@ -63,6 +74,8 @@ public class ConversationActivity extends BaseActivity implements RongIM.Locatio
         if(!CommonUtils.isNotificationEnabled(ConversationActivity.this)){
             showTitleDialog("请打开通知中心");
         }
+        dbUser= dao.findUserInfoById(SharePreferenceUtil.getInstance(ConversationActivity.this).getUserId());
+
     }
 
     /**
@@ -71,10 +84,12 @@ public class ConversationActivity extends BaseActivity implements RongIM.Locatio
     private void getIntentDate(Intent intent) {
 
         mTargetId = intent.getData().getQueryParameter("targetId");
-
+        dao = new EHomeDaoImpl(this);
 
         name = getIntent().getData().getQueryParameter("title");
         mConversationType = Conversation.ConversationType.valueOf(intent.getData().getLastPathSegment().toUpperCase(Locale.getDefault()));
+
+
 
     }
 
@@ -96,7 +111,9 @@ public class ConversationActivity extends BaseActivity implements RongIM.Locatio
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         //xxx 为你要加载的 id
         transaction.replace(R.id.rong_content, fragment);
+//        transaction.hide(fragment);
         transaction.commit();
+
     }
 
 
@@ -123,6 +140,10 @@ public class ConversationActivity extends BaseActivity implements RongIM.Locatio
                     @Override
                     public void OnSuccess(String userid) {
                         enterFragment(mConversationType, mTargetId);
+//                       RongIM.getInstance().setSendMessageListener(new SendMessageListener());
+                        RongIM.getInstance().setCurrentUserInfo(new UserInfo(dbUser.getUserid(), dbUser.getUsername(), Uri.parse(dbUser.getImgHead())));
+                        RongIM.getInstance().refreshUserInfoCache(new UserInfo(dbUser.getUserid(), dbUser.getUsername(), Uri.parse(dbUser.getImgHead())));
+                        RongIM.getInstance().setMessageAttachedUserInfo(true);
                     }
                 });
                
@@ -137,13 +158,18 @@ public class ConversationActivity extends BaseActivity implements RongIM.Locatio
                         CommonUtils.connent(token, new CommonUtils.RongIMListener() {
                             @Override
                             public void OnSuccess(String userid) {
+                                RongIM.getInstance().setCurrentUserInfo(new UserInfo(dbUser.getUserid(), dbUser.getUsername(), Uri.parse(dbUser.getImgHead())));
+                                RongIM.getInstance().refreshUserInfoCache(new UserInfo(dbUser.getUserid(), dbUser.getUsername(), Uri.parse(dbUser.getImgHead())));
+                                RongIM.getInstance().setMessageAttachedUserInfo(true);
                                 enterFragment(mConversationType, mTargetId);
+//                               RongIM.getInstance().setSendMessageListener(new SendMessageListener());
                             }
                         });
 
                     }else {
 
                         enterFragment(mConversationType, mTargetId);
+//                        RongIM.getInstance().setSendMessageListener(new SendMessageListener());
                     }
                 }
             }
@@ -192,7 +218,10 @@ public class ConversationActivity extends BaseActivity implements RongIM.Locatio
                 @Override
                 public void onSuccess(String s) {
                     Log.d("LoginActivity", "--onSuccess" + s);
-
+//                   RongIM.getInstance().setSendMessageListener(new SendMessageListener());
+                    RongIM.getInstance().setCurrentUserInfo(new UserInfo(dbUser.getUserid(), dbUser.getUsername(), Uri.parse(dbUser.getImgHead())));
+                    RongIM.getInstance().refreshUserInfoCache(new UserInfo(dbUser.getUserid(), dbUser.getUsername(), Uri.parse(dbUser.getImgHead())));
+                    RongIM.getInstance().setMessageAttachedUserInfo(true);
                 }
 
                 @Override
@@ -254,6 +283,36 @@ public class ConversationActivity extends BaseActivity implements RongIM.Locatio
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+
+    }
+//    public class SendMessageListener implements RongIM.OnSendMessageListener {
+//        @Override
+//        public Message onSend(Message message) {
+//            Logger.e(" onSend "+message.getContent()+" id "+message.getSenderUserId()+"  "+message.getTargetId());
+//            return message;
+//        }
+//
+//        @Override
+//        public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
+//            return false;
+//        }
+//    }
+       @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+//               List<Fragment> fragments = getSupportFragmentManager().getFragments();
+//               FragmentManager fragmentManager = fragments.get(0).getChildFragmentManager();
+//               fragments = fragments.get(0).getChildFragmentManager().getFragments();
+//               for (int a = 0; a < fragments.size(); a++) {
+//                   if (fragments.get(a) instanceof MessageInputFragment) {
+//                       FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                       fragmentTransaction.hide(fragments.get(a));
+//                       fragmentTransaction.commitNowAllowingStateLoss();
+//                   }
+//               }
+
 
 
     }

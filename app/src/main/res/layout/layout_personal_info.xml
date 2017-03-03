@@ -288,7 +288,27 @@
                 android:layout_height="1dp"
                 android:layout_width="match_parent"
                 android:background="#e1e1e2" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="温馨提示"
+                    android:gravity="center"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="如需更改身份证号，请致电客服：0371-86505391"
+                    android:gravity="center"/>
+
+
+            </LinearLayout>
         </LinearLayout>
+
 
 
     </ScrollView>

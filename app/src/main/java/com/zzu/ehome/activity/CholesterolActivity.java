@@ -174,6 +174,11 @@ public class CholesterolActivity extends BaseActivity implements StickyListHeade
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
     private void getHistory(){
@@ -214,6 +219,11 @@ public class CholesterolActivity extends BaseActivity implements StickyListHeade
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));

@@ -217,6 +217,11 @@ public class JibuDataActivity extends BaseActivity implements StickyListHeadersL
 
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 
@@ -314,6 +319,11 @@ public class JibuDataActivity extends BaseActivity implements StickyListHeadersL
                         e.printStackTrace();
                     }
                 }
+
+                @Override
+                public void onError(Exception e) {
+
+                }
             }));
         }
     }
@@ -355,11 +365,13 @@ public class JibuDataActivity extends BaseActivity implements StickyListHeadersL
         if (null != loadingAnimation && loadingAnimation.isRunning()) {
             loadingAnimation.stop();
         }
-        progressBarView.setVisibility(View.INVISIBLE);
-        progressBarTextView.setVisibility(View.INVISIBLE);
-        isLoading = false;
+        if(progressBarView!=null&&progressBarTextView!=null) {
+            progressBarView.setVisibility(View.INVISIBLE);
+            progressBarTextView.setVisibility(View.INVISIBLE);
+            isLoading = false;
 
-        adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

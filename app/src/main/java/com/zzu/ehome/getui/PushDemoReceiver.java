@@ -8,8 +8,11 @@ import android.util.Log;
 
 import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
+import com.zzu.ehome.main.ehome.MainActivity;
 
-import de.greenrobot.event.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class PushDemoReceiver extends BroadcastReceiver {
 
@@ -36,19 +39,35 @@ public class PushDemoReceiver extends BroadcastReceiver {
                 // smartPush第三方回执调用接口，actionid范围为90000-90999，可根据业务场景执行
                 boolean result = PushManager.getInstance().sendFeedbackMessage(context, taskid, messageid, 90001);
                 System.out.println("第三方回执接口调用" + (result ? "成功" : "失败"));
-//                Intent intentout = new Intent();
-//                intentout.setAction("action.loginout");
-//                context.sendBroadcast(intentout);
-//                if (payload != null) {
-//                    String data = new String(payload);
-//
-//                    Log.d("GetuiSdkDemo", "receiver payload : " + data);
-//
-//                    payloadData.append(data);
-//                    payloadData.append("\n");
-//
-//
-//                }
+
+
+                if (payload != null) {
+                    String data = new String(payload);
+                    try {
+                        JSONObject mySO = new JSONObject(data);
+                        org.json.JSONArray array = mySO
+                                .getJSONArray("ReturnValue");
+                        Log.d("GetuiSdkDemo", "receiver payload : " + data);
+                        String MessageCode=array.getJSONObject(0)
+                                .getString("MessageCode").toString();
+                        String MessageContent=array.getJSONObject(0)
+                                .getString("MessageContent").toString();
+                        if(MessageCode.equals("01")||MessageCode.equals("02")){
+                            Intent i = new Intent(context, MainActivity.class);
+                            i.putExtra("Push", "Push");
+                            i.putExtra("MessageCode", MessageCode);
+                            i.putExtra("MessageContent", MessageContent);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(i);
+                        }
+                        payloadData.append(data);
+                        payloadData.append("\n");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
                 break;
 
             case PushConsts.GET_CLIENTID:

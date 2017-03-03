@@ -72,8 +72,6 @@ public class InspectionReportActivity extends BaseActivity {
         setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "血常规检查报告", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
-
-
                     finishActivity();
 
             }
@@ -131,7 +129,7 @@ public class InspectionReportActivity extends BaseActivity {
                 i.putExtra("Type", mList.get(position).getOCRType());
                 i.putExtra("RecordID", mList.get(position).getID());
                 i.putExtra("TypeTitle","血常规");
-                i.putExtra("Title", DateUtils.StringPattern(mList.get(position).getCreatedDate(), "yyyy/MM/dd HH:mm:ss", "yyyy-MM-dd"));
+//                i.putExtra("Title", DateUtils.StringPattern(mList.get(position).getCreatedDate(), "yyyy/MM/dd HH:mm:ss", "yyyy-MM-dd"));
                 startActivity(i);
             }
         });
@@ -184,58 +182,65 @@ public class InspectionReportActivity extends BaseActivity {
                     if (isReflash) {
                         mList.clear();
                     }
-                    if (code == 0) {
-                        layout_none.setVisibility(View.GONE);
-                        org.json.JSONArray arraySub =
-                                array.getJSONObject(0).getJSONArray("ResultContent");
-                        for (int i = 0; i < arraySub.length(); i++) {
-                            ResultContent rc = new ResultContent();
-                            rc.setCreatedDate(arraySub.getJSONObject(i).getString("CreatedDate"));
-                            rc.setID(arraySub.getJSONObject(i).getString("ID"));
-                            rc.setOCRType(arraySub.getJSONObject(i).getString("OCRType"));
-                            rc.setOCRTypeName(arraySub.getJSONObject(i).getString("OCRTypeName"));
-                            rc.setRownumber(arraySub.getJSONObject(i).getString("rownumber"));
+                    if(layout_none!=null&&listView!=null&&pulltorefreshlayout!=null) {
+                        if (code == 0) {
+                            layout_none.setVisibility(View.GONE);
+                            org.json.JSONArray arraySub =
+                                    array.getJSONObject(0).getJSONArray("ResultContent");
+                            for (int i = 0; i < arraySub.length(); i++) {
+                                ResultContent rc = new ResultContent();
+                                rc.setCreatedDate(arraySub.getJSONObject(i).getString("CreatedDate"));
+                                rc.setID(arraySub.getJSONObject(i).getString("ID"));
+                                rc.setOCRType(arraySub.getJSONObject(i).getString("OCRType"));
+                                rc.setOCRTypeName(arraySub.getJSONObject(i).getString("OCRTypeName"));
+                                rc.setRownumber(arraySub.getJSONObject(i).getString("rownumber"));
 //                            rc.setFromto(arraySub.getJSONObject(i).getString("Fromto"));
-                            mList.add(rc);
-                        }
-                        if (isFirst) {
-                            mAdapter = new InspectionReportAdapter(InspectionReportActivity.this, mList);
-                            listView.setAdapter(mAdapter);
-                            isFirst=false;
-                        }
+                                mList.add(rc);
+                            }
+                            if (isFirst) {
+                                mAdapter = new InspectionReportAdapter(InspectionReportActivity.this, mList);
+                                listView.setAdapter(mAdapter);
+                                isFirst = false;
+                            }
 
-                        if (isReflash) {
-                            isReflash = false;
-                            isFirst = false;
-                            mAdapter.notifyDataSetChanged();
-                            pulltorefreshlayout.refreshFinish(PullToRefreshLayout.SUCCEED);
-                        } else if (isLoading) {
+                            if (isReflash) {
+                                isReflash = false;
+                                isFirst = false;
+                                mAdapter.notifyDataSetChanged();
+                                pulltorefreshlayout.refreshFinish(PullToRefreshLayout.SUCCEED);
+                            } else if (isLoading) {
+                                isLoading = false;
+                                isFirst = false;
+                                mAdapter.notifyDataSetChanged();
+                                pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                            }
+
+
+                        } else if (code == 2 && isLoading) {
                             isLoading = false;
                             isFirst = false;
                             mAdapter.notifyDataSetChanged();
                             pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                            Toast.makeText(InspectionReportActivity.this, "已经没有更多数据了",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (mList.size() > 0) {
+                                layout_none.setVisibility(View.GONE);
+                            } else {
+                                layout_none.setVisibility(View.VISIBLE);
+                            }
+                            isFirst = false;
                         }
-
-
-                    } else if (code == 2 && isLoading) {
-                        isLoading = false;
-                        isFirst = false;
-                        mAdapter.notifyDataSetChanged();
-                        pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
-                        Toast.makeText(InspectionReportActivity.this, "已经没有更多数据了",
-                                Toast.LENGTH_SHORT).show();
-                    }else{
-                        if(mList.size()>0) {
-                            layout_none.setVisibility(View.GONE);
-                        }else{
-                            layout_none.setVisibility(View.VISIBLE);
-                        }
-                        isFirst = false;
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));

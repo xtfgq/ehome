@@ -62,6 +62,7 @@ public class RegisterFinishAct extends BaseSimpleActivity implements View.OnClic
         }
         switch (v.getId()) {
             case R.id.btnext:
+                btnext.setEnabled(false);
                 Intent i=new Intent(RegisterFinishAct.this,HealthFilesActivity.class);
 //                i.putExtra("UserId",SharePreferenceUtil.getInstance(RegisterFinishAct.this).getPARENTID());
                 i.putExtra("UserId",SharePreferenceUtil.getInstance(RegisterFinishAct.this).getUserId());
@@ -70,6 +71,7 @@ public class RegisterFinishAct extends BaseSimpleActivity implements View.OnClic
                 startActivity(i);
                 break;
             case R.id.tvno:
+                tvno.setEnabled(false);
                 CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(RelationActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(SexActivity.class);

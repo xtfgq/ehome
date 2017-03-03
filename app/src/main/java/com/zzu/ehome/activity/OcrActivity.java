@@ -155,6 +155,11 @@ public class OcrActivity extends BaseActivity implements View.OnClickListener{
                                 e.printStackTrace();
                             }
                         }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
                     }
                  ));
                 }

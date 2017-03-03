@@ -86,7 +86,6 @@
             android:background="@color/actionbar_color"
             android:gravity="center"
             android:orientation="horizontal"
-
             >
 
             <ImageView

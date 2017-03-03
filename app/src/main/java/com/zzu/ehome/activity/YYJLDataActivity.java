@@ -185,6 +185,11 @@ public class YYJLDataActivity extends BaseActivity {
 
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
     }

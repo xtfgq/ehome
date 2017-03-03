@@ -47,11 +47,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import de.greenrobot.event.EventBus;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 import static com.zzu.ehome.R.id.editText;
 
@@ -428,6 +434,11 @@ public class YYJLActivity extends BaseActivity implements View.OnClickListener {
                 }
             }
 
+            @Override
+            public void onError(Exception e) {
+
+            }
+
         }));
 
     }
@@ -456,4 +467,9 @@ public class YYJLActivity extends BaseActivity implements View.OnClickListener {
         return m.replaceAll("").trim();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 }

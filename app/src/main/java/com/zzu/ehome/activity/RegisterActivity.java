@@ -217,7 +217,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             chkcode = array.getJSONObject(0)
                                     .getString("MessageContent");
                           // ToastUtils.showMessage(RegisterActivity.this,chkcode+"");
-                            ToastUtils.showMessage(RegisterActivity.this,"验证码已发送，请注意查收.");
+                            ToastUtils.showMessage(RegisterActivity.this,"验证码已发送，请注意查收。"+":::"+chkcode);
                         } else {
                             showDialog(array.getJSONObject(0)
                                     .getString("MessageContent"));
@@ -230,6 +230,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+
+                @Override
+                public void onError(Exception e) {
+
                 }
             }));
         }
@@ -327,6 +332,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                         stopProgressDialog();
                     }
 
+
+                }
+
+                @Override
+                public void onError(Exception e) {
 
                 }
 

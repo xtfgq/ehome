@@ -164,6 +164,11 @@ public class OfficeListActivity extends BaseActivity {
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 

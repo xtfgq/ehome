@@ -39,6 +39,7 @@ import com.zzu.ehome.bean.ShareModel;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.utils.CardUtil;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.ImageUtil;
 import com.zzu.ehome.utils.RequestMaker;
@@ -47,6 +48,8 @@ import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.SharePopupWindow;
 
 import de.greenrobot.event.EventBus;
+
+import static com.zzu.ehome.R.id.edt_age;
 
 /**
  * Created by Mersens on 2016/8/5.
@@ -206,7 +209,19 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                         }
                     }
                     if (!TextUtils.isEmpty(age)) {
-                        sbf.append(" | " + age + "岁");
+                        String info=user.getUserno();
+                        try {
+                            if(info.length()==18){
+                                age=CardUtil.getCarInfo(info);
+                            }else if(info.length()==15){
+                                age=CardUtil.getCarInfo15W(info);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }finally {
+                            sbf.append(" | " + age + "岁");
+                        }
+
 
                     }
                     if (!TextUtils.isEmpty(height)&& !"0".equals(height)) {

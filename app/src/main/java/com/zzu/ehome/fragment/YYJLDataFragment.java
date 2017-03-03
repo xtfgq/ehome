@@ -98,6 +98,7 @@ public class YYJLDataFragment extends BaseFragment implements StickyListHeadersL
                     org.json.JSONArray array = mySO
                             .getJSONArray("MedicationRecordInquiry");
                     stopProgressDialog();
+                    if(view!=null){
                     if (array.getJSONObject(0).has("MessageCode")) {
                         if (page == 1) {
                             rlup.setVisibility(View.VISIBLE);
@@ -125,10 +126,16 @@ public class YYJLDataFragment extends BaseFragment implements StickyListHeadersL
                         }
                         loadingFinished();
                     }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     loadingFinished();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 

@@ -175,6 +175,11 @@ public class MyRemindActivity1 extends BaseActivity {
 
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
 
@@ -205,6 +210,11 @@ public class MyRemindActivity1 extends BaseActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 

@@ -104,20 +104,27 @@ public class DynamicFragment extends BaseFragment {
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO.getJSONArray("Result");
                     int code = Integer.valueOf(array.getJSONObject(0).getString("MessageCode"));
-                    if (code == 0) {
-                        layout_no_msg.setVisibility(View.VISIBLE);
-                    } else {
-                        layout_no_msg.setVisibility(View.GONE);
-                        JSONObject mySORel = array.getJSONObject(0).getJSONObject("MessageContent").getJSONObject("resultDetail");
-                        ECGDate date = JsonTools.getData(mySORel.toString(), ECGDate.class);
-                        List<ECGDynamicBean> list = date.getData();
-                        adapter = new ECGReportAdapter(getActivity(), list);
-                        listView.setAdapter(adapter);
+                    if(layout_no_msg!=null&&listView!=null) {
+                        if (code == 0) {
+                            layout_no_msg.setVisibility(View.VISIBLE);
+                        } else {
+                            layout_no_msg.setVisibility(View.GONE);
+                            JSONObject mySORel = array.getJSONObject(0).getJSONObject("MessageContent").getJSONObject("resultDetail");
+                            ECGDate date = JsonTools.getData(mySORel.toString(), ECGDate.class);
+                            List<ECGDynamicBean> list = date.getData();
+                            adapter = new ECGReportAdapter(getActivity(), list);
+                            listView.setAdapter(adapter);
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
 
         }));

@@ -113,6 +113,11 @@ public class AboutEhomeActivity extends BaseActivity {
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
     }

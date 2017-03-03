@@ -39,6 +39,26 @@ public class MSDoctorBean {
     private String TitleCode;
     private String DoctorNo;
     private String DiagnoseCount;
+    private String IsSign;
+
+    public String getUserIsSign() {
+        return UserIsSign;
+    }
+
+    public void setUserIsSign(String userIsSign) {
+        UserIsSign = userIsSign;
+    }
+
+    private String UserIsSign;
+    public String getIsSign() {
+        return IsSign;
+    }
+
+    public void setIsSign(String isSign) {
+        IsSign = isSign;
+    }
+
+
 
 
     public String getSpeciaty() {

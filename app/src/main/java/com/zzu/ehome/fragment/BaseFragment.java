@@ -209,6 +209,7 @@ public abstract class BaseFragment extends Fragment {
             mBroadcastReceiver = null;
         } catch (Exception e) {
         }
+
     }
 
     /**

@@ -124,7 +124,11 @@
                     android:id="@+id/lilstView2"
                     android:layout_width="match_parent"
                     android:divider="@null"
-                    android:layout_height="wrap_content" />
+                    android:background="@color/white"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="6dp"
+
+                    />
 
             </LinearLayout>
             <LinearLayout
@@ -159,6 +163,7 @@
 
             </LinearLayout>
             <View
+
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/actionbar_color" />

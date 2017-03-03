@@ -20,10 +20,10 @@ import com.igexin.sdk.PushManager;
 import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.BaseSimpleActivity;
+import com.zzu.ehome.activity.BiochemistryReportDetailActivity;
+import com.zzu.ehome.activity.InspectionReportDetailActivity;
 import com.zzu.ehome.activity.LoginActivity1;
 import com.zzu.ehome.activity.PrivateDoctorFragment;
-import com.zzu.ehome.activity.SecondActivity;
-import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.StepBean;
@@ -34,6 +34,8 @@ import com.zzu.ehome.fragment.HealthFragment;
 import com.zzu.ehome.fragment.HomeFragment1;
 import com.zzu.ehome.fragment.MessageFragment;
 import com.zzu.ehome.fragment.UserCenterFragment;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.service.StepDetector;
 import com.zzu.ehome.service.StepService;
 import com.zzu.ehome.utils.CommonUtils;
@@ -220,7 +222,14 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
             setTab(0);
             selectCommitItem(index);
         }
+        if (this.getIntent().getStringExtra("Push")!=null)
+        {
+            index = 0;
+            setTab(0);
+            selectCommitItem(index);
+            pushIntent(this.getIntent().getStringExtra("MessageCode").toString(),this.getIntent().getStringExtra("MessageContent").toString());
 
+        }
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("action.DateOrFile");
         intentFilter.addAction("PrivateDoctor");
@@ -238,6 +247,7 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
             }
         }
 
+
     }
 
     @Override
@@ -247,6 +257,14 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
             index = 0;
             setTab(index);
             selectCommitItem(index);
+        }
+        if (intent.getStringExtra("Push")!=null)
+        {
+            index = 0;
+            setTab(0);
+            selectCommitItem(index);
+            pushIntent(intent.getStringExtra("MessageCode").toString(),intent.getStringExtra("MessageContent").toString());
+
         }
     }
 
@@ -338,6 +356,7 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
         if(!isNetWork){
             showNetWorkErrorDialog();
         }
+
         mHomeFragment.hideFamily();
         if(SharePreferenceUtil.getInstance(MainActivity.this).getGUIDId()==4) {
             if (!CommonUtils.isNotificationEnabled(MainActivity.this)&&!isShow) {
@@ -345,8 +364,12 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
                 showDialog();
             }
         }
+        if(isNetWork){
+            RxBus.getInstance().send(new EventType("succ"));
+        }
         switch (v.getId()) {
             case R.id.layout_home:
+
 
                 index = 0;
                 setTab(0);
@@ -368,11 +391,13 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
                 break;
 
             case R.id.layout_doctor:
+
                 index = 3;
                 setTab(3);
 
                 break;
             case R.id.layout_info:
+
                 index = 4;
                 setTab(4);
                 break;
@@ -426,7 +451,6 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
                 EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_manager)));
                 break;
             case 2:
-
                 img_private_doctor.setImageResource(R.mipmap.icon_private_doctor_pressed);
                 tv_private_doctor.setTextColor(selectColor);
                 break;
@@ -525,6 +549,30 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
 
         dialog.show();
         dialog = null;
+    }
+
+    /**
+     * 推送跳转
+     * @param MessageCode
+     * @param MessageContent
+     */
+    private void pushIntent(String MessageCode,String MessageContent){
+        String ID = MessageContent;
+        if("01".equals(MessageCode)){
+            Intent i = new Intent(this, InspectionReportDetailActivity.class);
+            i.putExtra("Type", "01");
+            i.putExtra("RecordID", ID);
+            i.putExtra("TypeTitle","血常规");
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+        }else if("02".equals(MessageCode)){
+            Intent i = new Intent(MainActivity.this, BiochemistryReportDetailActivity.class);
+            i.putExtra("Type", "02");
+            i.putExtra("RecordID", ID);
+            i.putExtra("TypeTitle","生化");
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+        }
     }
 
 }

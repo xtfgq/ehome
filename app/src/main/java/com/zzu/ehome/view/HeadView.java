@@ -71,6 +71,7 @@ public class HeadView extends LinearLayout {
 
     }
 
+
     /**
      * @author Mersens 初始化控件
      */

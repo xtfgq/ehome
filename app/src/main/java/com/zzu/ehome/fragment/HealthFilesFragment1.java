@@ -28,6 +28,8 @@ import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.main.ehome.MainActivity;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -42,9 +44,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Mersens on 2016/7/27.
@@ -826,6 +835,7 @@ public class HealthFilesFragment1 extends BaseFragment {
         }
     }
     public void initEvent() {
+
         maritalStatus_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -1350,6 +1360,12 @@ public class HealthFilesFragment1 extends BaseFragment {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+                if(btn_save!=null)
+                btn_save.setEnabled(true);
+            }
         }));
     }
 
@@ -1444,6 +1460,12 @@ public class HealthFilesFragment1 extends BaseFragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                if(btn_save!=null)
+                btn_save.setEnabled(true);
             }
         }));
     }
@@ -1736,5 +1758,11 @@ public class HealthFilesFragment1 extends BaseFragment {
 
     @Override
     protected void lazyLoad() {
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 }

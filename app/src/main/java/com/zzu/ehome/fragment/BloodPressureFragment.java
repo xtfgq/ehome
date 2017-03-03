@@ -46,8 +46,14 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 
 /**
@@ -200,6 +206,7 @@ public class BloodPressureFragment extends BaseFragment {
 
             }
         });
+
         btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,6 +259,12 @@ public class BloodPressureFragment extends BaseFragment {
                         }
 
                     }
+
+                    @Override
+                    public void onError(Exception e) {
+                        if(btnsave!=null)
+                        btnsave.setEnabled(true);
+                    }
                 }));
             }
         });
@@ -272,31 +285,35 @@ public class BloodPressureFragment extends BaseFragment {
                         ssy = 120;
                         szy = 80;
                         pbvalue = (int) (((float) ssy / (float) 300) * 100);
-                        progressBar1.setProgress(pbvalue);
-                        pbvalue2 = (int) (((float) szy / (float) 300) * 100);
-                        progressBar2.setProgress(pbvalue2);
+                        if(progressBar1!=null&&progressBar2!=null) {
+                            progressBar1.setProgress(pbvalue);
+                            pbvalue2 = (int) (((float) szy / (float) 300) * 100);
+                            progressBar2.setProgress(pbvalue2);
+                        }
                     } else {
 
                         BloodPressDate date = JsonTools.getData(result.toString(), BloodPressDate.class);
                         List<BloodPressBean> list = date.getData();
-                        wheel1.initViewParam(Integer.valueOf(list.get(0).getHigh()), 300, 10);
-                        wheel2.initViewParam(Integer.valueOf(list.get(0).getLow()), 300, 10);
-                        wheel3.initViewParam(Integer.valueOf(list.get(0).getPulse()), 300, 10);
-                        ssy = Integer.valueOf(list.get(0).getHigh());
+                        if(wheel1!=null&&wheel2!=null&&wheel3!=null&&progressBar1!=null&&progressBar2!=null) {
+                            wheel1.initViewParam(Integer.valueOf(list.get(0).getHigh()), 300, 10);
+                            wheel2.initViewParam(Integer.valueOf(list.get(0).getLow()), 300, 10);
+                            wheel3.initViewParam(Integer.valueOf(list.get(0).getPulse()), 300, 10);
+                            ssy = Integer.valueOf(list.get(0).getHigh());
 
-                        pbvalue = (int) (((float) ssy / (float) 300) * 100);
+                            pbvalue = (int) (((float) ssy / (float) 300) * 100);
 
-                        progressBar1.setProgress(pbvalue);
-                        pbvalue2 = (int) (((float) szy / (float) 300) * 100);
-                        progressBar2.setProgress(pbvalue2);
-                        tv_ssy.setText(ssy + "");
-                        changeTextColor(tv_ssy, 1);
-                        szy = Integer.valueOf(list.get(0).getLow());
-                        tv_szy.setText(szy + "");
-                        changeTextColor(tv_szy, 2);
-                        mb = Integer.valueOf(list.get(0).getPulse());
-                        tv_mb.setText(mb + "");
-                        changeImgeView(imagepress, tvlv, ssy, szy);
+                            progressBar1.setProgress(pbvalue);
+                            pbvalue2 = (int) (((float) szy / (float) 300) * 100);
+                            progressBar2.setProgress(pbvalue2);
+                            tv_ssy.setText(ssy + "");
+                            changeTextColor(tv_ssy, 1);
+                            szy = Integer.valueOf(list.get(0).getLow());
+                            tv_szy.setText(szy + "");
+                            changeTextColor(tv_szy, 2);
+                            mb = Integer.valueOf(list.get(0).getPulse());
+                            tv_mb.setText(mb + "");
+                            changeImgeView(imagepress, tvlv, ssy, szy);
+                        }
                     }
 
                 } catch (Exception e) {
@@ -304,6 +321,12 @@ public class BloodPressureFragment extends BaseFragment {
 
                 }
 
+            }
+
+            @Override
+            public void onError(Exception e) {
+                if(btnsave!=null)
+                btnsave.setEnabled(true);
             }
         }));
     }

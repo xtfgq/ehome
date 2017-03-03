@@ -133,6 +133,11 @@ public class SexActivity extends BaseSimpleActivity implements View.OnClickListe
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 

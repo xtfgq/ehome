@@ -81,6 +81,7 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
     private EHomeDao dao;
     private User dbUser;
     private SupperBaseActivity activity;
+    private LinearLayout layout_no_msg;
 
     @Override
     public void onAttach(Context context) {
@@ -101,13 +102,13 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
         EventBus.getDefault().register(this);
         initViews();
         initEvents();
-        rbday.setChecked(true);
-        rbday.setTextColor(getResources().getColor(R.color.white));
-        rbweek.setChecked(false);
-        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-        rbmonth.setChecked(false);
-        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-        setDay();
+//        rbday.setChecked(true);
+//        rbday.setTextColor(getResources().getColor(R.color.white));
+//        rbweek.setChecked(false);
+//        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//        rbmonth.setChecked(false);
+//        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//        setDay();
 
         page = 1;
         getHistory();
@@ -119,15 +120,15 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
 
         mAadpter = new TempChatAdapter(getActivity());
         listview = (StickyListHeadersListView) view.findViewById(R.id.lv_temp);
-        heardchat = (LinearLayout) inflater.inflate(R.layout.layout_temp_new_chat, null);
-
-        mChart = (TempView) heardchat.findViewById(R.id.chart);
-        lltmp = (LinearLayout) heardchat.findViewById(R.id.lltmp);
-        group = (RadioGroup) heardchat.findViewById(R.id.radioGroup);
-        rbday = (RadioButton) heardchat.findViewById(R.id.rb_day);
-        rbweek = (RadioButton) heardchat.findViewById(R.id.rb_week);
-        rbmonth = (RadioButton) heardchat.findViewById(R.id.rb_month);
-        tvnodata = (TextView) heardchat.findViewById(R.id.tvnodate);
+//        heardchat = (LinearLayout) inflater.inflate(R.layout.layout_temp_new_chat, null);
+//
+//        mChart = (TempView) heardchat.findViewById(R.id.chart);
+//        lltmp = (LinearLayout) heardchat.findViewById(R.id.lltmp);
+//        group = (RadioGroup) heardchat.findViewById(R.id.radioGroup);
+//        rbday = (RadioButton) heardchat.findViewById(R.id.rb_day);
+//        rbweek = (RadioButton) heardchat.findViewById(R.id.rb_week);
+//        rbmonth = (RadioButton) heardchat.findViewById(R.id.rb_month);
+//        tvnodata = (TextView) heardchat.findViewById(R.id.tvnodate);
 //        tvvalue = (TextView) heardchat.findViewById(R.id.tv_tempvalue);
 //        tvstatus = (TextView) heardchat.findViewById(R.id.tv_status);
 //        tvtime = (TextView) heardchat.findViewById(R.id.tvtime);
@@ -135,7 +136,8 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
         progressBarView = (View) moredata.findViewById(R.id.loadmore_foot_progressbar);
         progressBarTextView = (TextView) moredata.findViewById(R.id.loadmore_foot_text);
         loadingAnimation = (AnimationDrawable) progressBarView.getBackground();
-        listview.addHeaderView(heardchat);
+        layout_no_msg=(LinearLayout)view.findViewById(R.id.layout_no_msg);
+//        listview.addHeaderView(heardchat);
         listview.addFooterView(moredata);
 
         listview.setOnHeaderClickListener(this);
@@ -145,51 +147,51 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
 
 
     public void initEvents() {
-        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // TODO Auto-generated method stub
-                switch (checkedId) {
-                    case R.id.rb_day:
-
-                        rbday.setChecked(true);
-                        rbday.setTextColor(getResources().getColor(R.color.white));
-                        rbweek.setChecked(false);
-                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbmonth.setChecked(false);
-                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        setDay();
-                        break;
-                    case R.id.rb_week:
-                        rbday.setChecked(false);
-                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbweek.setChecked(true);
-                        rbweek.setTextColor(getResources().getColor(R.color.white));
-                        rbmonth.setChecked(false);
-                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        setWeek();
-
-                        break;
-                    case R.id.rb_month:
-                        rbday.setChecked(false);
-                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbweek.setChecked(false);
-                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbmonth.setChecked(true);
-                        rbmonth.setTextColor(getResources().getColor(R.color.white));
-                        setMonth();
-
-                        break;
-
-
-                    default:
-                        break;
-                }
-            }
-
-
-        });
+//        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                // TODO Auto-generated method stub
+//                switch (checkedId) {
+//                    case R.id.rb_day:
+//
+//                        rbday.setChecked(true);
+//                        rbday.setTextColor(getResources().getColor(R.color.white));
+//                        rbweek.setChecked(false);
+//                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbmonth.setChecked(false);
+//                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        setDay();
+//                        break;
+//                    case R.id.rb_week:
+//                        rbday.setChecked(false);
+//                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbweek.setChecked(true);
+//                        rbweek.setTextColor(getResources().getColor(R.color.white));
+//                        rbmonth.setChecked(false);
+//                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        setWeek();
+//
+//                        break;
+//                    case R.id.rb_month:
+//                        rbday.setChecked(false);
+//                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbweek.setChecked(false);
+//                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbmonth.setChecked(true);
+//                        rbmonth.setTextColor(getResources().getColor(R.color.white));
+//                        setMonth();
+//
+//                        break;
+//
+//
+//                    default:
+//                        break;
+//                }
+//            }
+//
+//
+//        });
 
 
     }
@@ -251,8 +253,13 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
 //                        setTemp(temp);
                         List<PointD> linePoint = new ArrayList<PointD>();
                         for (TempItemHistory th : list) {
-
-                            Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months);
+                            Double xd ;
+//                            if(months.get(29).equals(th.getMonitorTime().split("\\ ")[0])) {
+//                                xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months) + 1;
+//                            }else{
+//                                xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months);
+//                            }
+                            xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months) + 1;
                             Double yd = Double.valueOf(th.getValue());
                             if (Double.compare(xd, -1d) != 0) {
                                 linePoint.add(new PointD(xd, yd));
@@ -266,6 +273,11 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
 
 
@@ -316,6 +328,7 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
                     String value = result.toString();
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO.getJSONArray("TemperatureInquiry");
+                    if(view!=null){
                     if (array.getJSONObject(0)
                             .has("MessageCode")) {
 
@@ -342,12 +355,18 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
 
 
                         mChart.refresh(linePoint2);
+                    }
 
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
 
 
@@ -386,6 +405,7 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
                     String value = result.toString();
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO.getJSONArray("TemperatureInquiry");
+                    if(view!=null){
                     if (array.getJSONObject(0)
                             .has("MessageCode")) {
 
@@ -415,11 +435,17 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
 
 
                         mChart.refresh(linePoint2);
+                    }
 
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
 
 
@@ -444,13 +470,15 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
                     String resultValue = result.toString();
                     JSONArray array = mySO
                             .getJSONArray("HealthDataInquiryWithPage");
+                    if(view!=null){
                     if (array.getJSONObject(0).has("MessageCode")) {
                         if (page == 1) {
-
+                            layout_no_msg.setVisibility(View.VISIBLE);
 //                        listview.setVisibility(View.GONE);
                         } else
                             loadingFinished();
                     } else {
+                        layout_no_msg.setVisibility(View.GONE);
                         listview.setVisibility(View.VISIBLE);
                         HealteTempData date = JsonTools.getData(result.toString(), HealteTempData.class);
                         List<TempRes> list = date.getData();
@@ -465,6 +493,7 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
 
                             loadingFinished();
                         }
+                    }
 
 
                     }
@@ -472,6 +501,11 @@ public class NewTemp extends BaseFragment implements StickyListHeadersListView.O
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));

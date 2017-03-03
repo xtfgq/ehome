@@ -31,7 +31,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:paddingTop="16dp"
-            android:text="暂无关注医生"
+            android:text="暂无签约医生"
             android:textSize="14sp" />
     </RelativeLayout>
     <com.zzu.ehome.view.PullToRefreshLayout

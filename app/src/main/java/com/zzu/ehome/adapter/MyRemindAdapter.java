@@ -153,6 +153,11 @@ public class MyRemindAdapter extends BaseListAdapter<MyRemindBean> {
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 

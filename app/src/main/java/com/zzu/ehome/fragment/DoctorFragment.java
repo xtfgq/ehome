@@ -230,7 +230,8 @@ public class DoctorFragment extends BaseFragment implements View.OnClickListener
                             JSONObject jsonObject = (JSONObject) array.get(0);
                             String code = jsonObject.getString("MessageCode");
                             stopProgressDialog();
-                            if ("0".equals(code)) {
+
+                            if ("0".equals(code)&&tv_hosptial!=null&&tv_office!=null&&tv_doctor!=null&&tv_time!=null) {
 //                                ToastUtils.showMessage(getActivity(), jsonObject.getString("MessageContent"));
                                 tv_hosptial.setText("");
                                 tv_office.setText("");
@@ -246,6 +247,11 @@ public class DoctorFragment extends BaseFragment implements View.OnClickListener
                         } finally {
                             stopProgressDialog();
                         }
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
 
                     }
                 }));

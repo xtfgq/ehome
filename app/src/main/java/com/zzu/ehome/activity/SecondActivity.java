@@ -31,6 +31,8 @@ import com.zzu.ehome.bean.UserInfoDate;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.main.ehome.MainActivity;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.IOUtils;
 import com.zzu.ehome.utils.ImageTools;
@@ -55,6 +57,13 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Administrator on 2016/8/8.
@@ -108,6 +117,7 @@ public class SecondActivity extends BaseSimpleActivity implements View.OnClickLi
         ivback.setOnClickListener(this);
         tvGo.setOnClickListener(this);
         btnext.setOnClickListener(this);
+
     }
 
     @Override
@@ -198,6 +208,13 @@ public class SecondActivity extends BaseSimpleActivity implements View.OnClickLi
                     e.printStackTrace();
                 }
 
+            }
+
+            @Override
+            public void onError(Exception e) {
+                btnext.setEnabled(true);
+                iv_head.setEnabled(true);
+                tvGo.setEnabled(true);
             }
         }));
     }
@@ -451,6 +468,15 @@ public class SecondActivity extends BaseSimpleActivity implements View.OnClickLi
 
             }
 
+            @Override
+            public void onError(Exception e) {
+                if(btnext!=null&&iv_head!=null&&tvGo!=null) {
+                    btnext.setEnabled(true);
+                    iv_head.setEnabled(true);
+                    tvGo.setEnabled(true);
+                }
+            }
+
         }));
     }
 
@@ -491,6 +517,11 @@ public class SecondActivity extends BaseSimpleActivity implements View.OnClickLi
                         imgHead, iv_head);
                 isHead = true;
 
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
 
@@ -560,5 +591,11 @@ public class SecondActivity extends BaseSimpleActivity implements View.OnClickLi
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

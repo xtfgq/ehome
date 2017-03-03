@@ -36,6 +36,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zzu.ehome.R.id.view;
+
 /**
  * Created by Administrator on 2016/12/6.
  */
@@ -109,7 +111,7 @@ public class BiochemicalReportActivity extends BaseActivity{
                 i.putExtra("Type", mList.get(position).getOCRType());
                 i.putExtra("RecordID", mList.get(position).getID());
                 i.putExtra("TypeTitle","生化");
-                i.putExtra("Title", DateUtils.StringPattern(mList.get(position).getCreatedDate(), "yyyy/MM/dd HH:mm:ss", "yyyy-MM-dd"));
+//                i.putExtra("Title", DateUtils.StringPattern(mList.get(position).getCreatedDate(), "yyyy/MM/dd HH:mm:ss", "yyyy-MM-dd"));
                 startActivity(i);
             }
         });
@@ -158,61 +160,68 @@ public class BiochemicalReportActivity extends BaseActivity{
                     org.json.JSONArray array = mySO
                             .getJSONArray("OCRRecordInquiry");
                     int code = Integer.valueOf(array.getJSONObject(0).getString("MessageCode"));
-                    if (isReflash) {
-                        mList.clear();
-                    }
-                    if (code == 0) {
-                        layout_none.setVisibility(View.GONE);
-                        org.json.JSONArray arraySub =
-                                array.getJSONObject(0).getJSONArray("ResultContent");
-                        for (int i = 0; i < arraySub.length(); i++) {
-                            ResultContent rc = new ResultContent();
-                            rc.setCreatedDate(arraySub.getJSONObject(i).getString("CreatedDate"));
-                            rc.setID(arraySub.getJSONObject(i).getString("ID"));
-                            rc.setOCRType(arraySub.getJSONObject(i).getString("OCRType"));
-                            rc.setOCRTypeName(arraySub.getJSONObject(i).getString("OCRTypeName"));
-                            rc.setRownumber(arraySub.getJSONObject(i).getString("rownumber"));
-//                            rc.setFromto(arraySub.getJSONObject(i).getString("Fromto"));
-                            mList.add(rc);
-                        }
-                        if (isFirst) {
-                            mAdapter = new InspectionReportAdapter(BiochemicalReportActivity.this, mList);
-                            listView.setAdapter(mAdapter);
-                            isFirst=false;
-                        }
-
+                    if(layout_none!=null&&listView!=null) {
                         if (isReflash) {
-                            isReflash = false;
-                            isFirst = false;
-                            mAdapter.notifyDataSetChanged();
-                            pulltorefreshlayout.refreshFinish(PullToRefreshLayout.SUCCEED);
-                        } else if (isLoading) {
+                            mList.clear();
+                        }
+                        if (code == 0) {
+                            layout_none.setVisibility(View.GONE);
+                            org.json.JSONArray arraySub =
+                                    array.getJSONObject(0).getJSONArray("ResultContent");
+                            for (int i = 0; i < arraySub.length(); i++) {
+                                ResultContent rc = new ResultContent();
+                                rc.setCreatedDate(arraySub.getJSONObject(i).getString("CreatedDate"));
+                                rc.setID(arraySub.getJSONObject(i).getString("ID"));
+                                rc.setOCRType(arraySub.getJSONObject(i).getString("OCRType"));
+                                rc.setOCRTypeName(arraySub.getJSONObject(i).getString("OCRTypeName"));
+                                rc.setRownumber(arraySub.getJSONObject(i).getString("rownumber"));
+//                            rc.setFromto(arraySub.getJSONObject(i).getString("Fromto"));
+                                mList.add(rc);
+                            }
+                            if (isFirst) {
+                                mAdapter = new InspectionReportAdapter(BiochemicalReportActivity.this, mList);
+                                listView.setAdapter(mAdapter);
+                                isFirst = false;
+                            }
+
+                            if (isReflash) {
+                                isReflash = false;
+                                isFirst = false;
+                                mAdapter.notifyDataSetChanged();
+                                pulltorefreshlayout.refreshFinish(PullToRefreshLayout.SUCCEED);
+                            } else if (isLoading) {
+                                isLoading = false;
+                                isFirst = false;
+                                mAdapter.notifyDataSetChanged();
+                                pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                            }
+
+
+                        } else if (code == 2 && isLoading) {
                             isLoading = false;
                             isFirst = false;
-                            mAdapter.notifyDataSetChanged();
                             pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
-                        }
-
-
-                    } else if (code == 2 && isLoading) {
-                        isLoading = false;
-                        isFirst = false;
-                        pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
-                        Toast.makeText(BiochemicalReportActivity.this, "已经没有更多数据了",
-                                Toast.LENGTH_SHORT).show();
-                        layout_none.setVisibility(View.GONE);
-                    }else{
-                        if(mList.size()>0) {
+                            Toast.makeText(BiochemicalReportActivity.this, "已经没有更多数据了",
+                                    Toast.LENGTH_SHORT).show();
                             layout_none.setVisibility(View.GONE);
-                        }else{
-                            layout_none.setVisibility(View.VISIBLE);
+                        } else {
+                            if (mList.size() > 0) {
+                                layout_none.setVisibility(View.GONE);
+                            } else {
+                                layout_none.setVisibility(View.VISIBLE);
+                            }
+                            isFirst = false;
                         }
-                        isFirst = false;
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));

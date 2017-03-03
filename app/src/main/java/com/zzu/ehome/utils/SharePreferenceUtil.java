@@ -25,6 +25,7 @@ public class SharePreferenceUtil {
     private static final String GUID_ID="guid_id";
 
 
+
     public static Boolean getIsRemeber() {
         return mSharedPreferences.getBoolean(IS_REMEBER, false);
     }

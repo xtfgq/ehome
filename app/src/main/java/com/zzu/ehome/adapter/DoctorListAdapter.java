@@ -2,6 +2,7 @@ package com.zzu.ehome.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -58,6 +59,11 @@ public class DoctorListAdapter extends BaseListAdapter<DoctorBeanDes> {
                 i.putExtra("picUrl", picUrl);
                 i.putExtra("doctorName", item.getDoctorName());
                 i.putExtra("HospitalName", item.getHospitalName());
+                if(item.getIntroduction()==null|| TextUtils.isEmpty(item.getIntroduction())){
+                    i.putExtra("GoodDisease", "");
+                }else {
+                    i.putExtra("GoodDisease", item.getIntroduction().trim());
+                }
                 context.startActivity(i);
             }
         });

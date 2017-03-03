@@ -90,6 +90,11 @@ public class SelectOfficeActivity1 extends BaseActivity{
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 }

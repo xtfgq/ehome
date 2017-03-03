@@ -113,6 +113,7 @@ public class StaticFragment extends BaseFragment {
                     JSONArray array = mySO.getJSONArray("Result");
                     JSONArray arrayContent = array.getJSONObject(0).getJSONArray("MessageContent");
                     int length = arrayContent.length();
+                    if(layout_no_msg!=null&&listView!=null){
                     if (length == 0) {
                         layout_no_msg.setVisibility(View.VISIBLE);
                     } else {
@@ -123,10 +124,16 @@ public class StaticFragment extends BaseFragment {
                         adapter = new ECGStaticAadapter(getActivity(), list);
                         listView.setAdapter(adapter);
                     }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
 
         }));

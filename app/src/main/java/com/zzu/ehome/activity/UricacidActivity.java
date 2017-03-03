@@ -176,6 +176,11 @@ public class UricacidActivity extends BaseActivity implements StickyListHeadersL
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
     private void getHistory(){
@@ -216,6 +221,11 @@ public class UricacidActivity extends BaseActivity implements StickyListHeadersL
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));

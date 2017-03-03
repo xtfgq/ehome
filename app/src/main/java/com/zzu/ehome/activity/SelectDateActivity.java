@@ -207,6 +207,11 @@ public class SelectDateActivity extends Activity {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 /*

@@ -175,7 +175,7 @@ public class ChangePasswordActivity extends BaseActivity {
                                         .getString("MessageContent");
 //                               ToastUtils.showMessage(ChangePasswordActivity.this,chkcode+"");
 
-                                ToastUtils.showMessage(ChangePasswordActivity.this,"验证码已发送，请注意查收.");
+                                ToastUtils.showMessage(ChangePasswordActivity.this,"验证码已发送，请注意查收。");
 
                             }
                         }else{
@@ -187,6 +187,11 @@ public class ChangePasswordActivity extends BaseActivity {
                         e.printStackTrace();
 
                     }
+                }
+
+                @Override
+                public void onError(Exception e) {
+
                 }
             }));
         }
@@ -251,6 +256,11 @@ public class ChangePasswordActivity extends BaseActivity {
                         e.printStackTrace();
                     }
                 }
+
+                @Override
+                public void onError(Exception e) {
+
+                }
             }));
         }
 
@@ -296,6 +306,11 @@ public class ChangePasswordActivity extends BaseActivity {
                         e.printStackTrace();
                     }
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));

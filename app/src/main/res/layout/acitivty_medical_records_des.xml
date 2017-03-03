@@ -195,7 +195,7 @@
                         android:paddingLeft="4dp"
                         android:textColor="#939495"
 
-                        android:textSize="@dimen/text_size_medium" />
+                        android:textSize="@dimen/text_size_small" />
 
 
 

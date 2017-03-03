@@ -26,8 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text=""
             android:gravity="center"
+            android:text=""
             android:textColor="@color/base_color_text_white"
             android:textSize="18sp" />
 
@@ -38,16 +38,16 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="6dp"
-            android:visibility="gone"
-            android:src="@drawable/icon_share" />
+            android:src="@drawable/icon_share"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:scrollbars="none"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,11 +58,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <View
-                    android:layout_height="35dp"
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_user_top"
-                    />
+                    android:layout_height="35dp"
+                    android:background="@drawable/bg_user_top" />
 
                 <RelativeLayout
                     android:id="@+id/rltop"
@@ -73,7 +73,7 @@
                     <FrameLayout
                         android:layout_width="67dp"
                         android:layout_height="67dp"
-                       android:layout_centerInParent="true">
+                        android:layout_centerInParent="true">
 
                         <com.zzu.ehome.view.CircleImageView
                             android:id="@+id/icon_user"
@@ -101,7 +101,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="心血管 主任医师"
+                            android:text=""
                             android:textColor="#5c5e60"
                             android:textSize="14sp" />
 
@@ -130,7 +130,7 @@
                         android:orientation="horizontal">
 
                         <RelativeLayout
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
 
@@ -140,9 +140,9 @@
                                 android:id="@+id/tvfavors"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="16dp"
+                                android:layout_centerInParent="true"
+
+                                android:gravity="center"
                                 android:text="签约量：434"
                                 android:textColor="#00c07d"
                                 android:textSize="16sp" />
@@ -153,9 +153,10 @@
                         <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:layout_marginBottom="2dp"
-                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="6dp"
+                            android:layout_marginTop="6dp"
                             android:background="#e1e1e2"
+                            android:visibility="gone"
 
                             />
 
@@ -163,6 +164,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:visibility="gone"
 
                             >
 
@@ -205,20 +207,13 @@
 
 
                         <TextView
-                            android:id="@+id/tv_title1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="擅长:"
-                            android:textColor="@color/actionbar_color"
-                            android:textSize="16sp" />
-
-                        <TextView
                             android:id="@+id/tv_title_sc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:layout_toRightOf="@+id/tv_title1"
+                            android:layout_marginLeft="7dp"
+                            android:layout_marginRight="7dp"
                             android:ellipsize="end"
+                            android:lineSpacingExtra="7dp"
                             android:text=""
                             android:textColor="#0f2536"
                             android:textSize="14sp" />
@@ -231,22 +226,15 @@
 
 
                         <TextView
-                            android:id="@+id/tv_title_jj"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-
-                            android:text="简介:"
-                            android:textColor="@color/actionbar_color"
-                            android:textSize="16sp" />
-
-                        <TextView
                             android:id="@+id/tvjianjie"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:layout_toRightOf="@+id/tv_title_jj"
+                            android:layout_marginLeft="7dp"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginRight="7dp"
                             android:ellipsize="end"
-                            android:maxLines="2"
+                            android:lineSpacingExtra="7dp"
+
                             android:text=""
                             android:textColor="#0f2536"
                             android:textSize="14sp" />
@@ -304,7 +292,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="服务说明"
+                        android:text="服务内容"
                         android:textColor="@color/actionbar_color"
                         android:textSize="16sp" />
 
@@ -314,8 +302,8 @@
 
                         <ImageView
                             android:id="@+id/img_zx"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:src="@mipmap/icon_shuoming1" />
@@ -338,8 +326,8 @@
 
                         <ImageView
                             android:id="@+id/img_zx1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:src="@mipmap/icon_shuoming1"
@@ -351,9 +339,9 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="8dp"
                             android:layout_toRightOf="@+id/img_zx1"
-                            android:text="对您日常健康问题进行答疑"
+                            android:text="(免费图文咨询、电话咨询)"
                             android:textColor="#0f2536"
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
 
                     </RelativeLayout>
 
@@ -364,8 +352,8 @@
 
                         <ImageView
                             android:id="@+id/img_zx2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:src="@mipmap/icon_shuoming2" />
@@ -376,7 +364,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="8dp"
                             android:layout_toRightOf="@+id/img_zx2"
-                            android:text="检查单解读"
+                            android:text="健康监测与评估"
                             android:textColor="#0f2536"
                             android:textSize="14sp" />
 
@@ -388,8 +376,8 @@
 
                         <ImageView
                             android:id="@+id/img_zx3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:src="@mipmap/icon_shuoming1"
@@ -401,9 +389,9 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="8dp"
                             android:layout_toRightOf="@+id/img_zx3"
-                            android:text="对您日常健康问题进行答疑"
+                            android:text="建立健康档案，提供免费的常规体检，并可享受每年一次指定的健康体检服务一次。"
                             android:textColor="#0f2536"
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
 
                     </RelativeLayout>
 
@@ -414,8 +402,8 @@
 
                         <ImageView
                             android:id="@+id/img_zx4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:src="@mipmap/icon_shuoming3" />
@@ -426,7 +414,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="8dp"
                             android:layout_toRightOf="@+id/img_zx4"
-                            android:text="慢病调理"
+                            android:text="预约家庭医生服务"
                             android:textColor="#0f2536"
                             android:textSize="14sp" />
 
@@ -438,8 +426,8 @@
 
                         <ImageView
                             android:id="@+id/img_zx5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:src="@mipmap/icon_shuoming1"
@@ -451,9 +439,110 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="8dp"
                             android:layout_toRightOf="@+id/img_zx5"
-                            android:text="提供慢性病患者出院后康复指导"
+                            android:text="优先获得家庭医生门诊和出诊服务。"
+                            android:textColor="#0f2536"
+                            android:textSize="12sp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <ImageView
+                            android:id="@+id/img_zx7"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/icon_shuoming4" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:layout_toRightOf="@+id/img_zx7"
+                            android:text="个性化健康服务"
                             android:textColor="#0f2536"
                             android:textSize="14sp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/img_zx8"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/icon_shuoming4"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:layout_toRightOf="@+id/img_zx8"
+                            android:text="空巢老人、行动不便，一建预约家庭医生上门服务。"
+                            android:textColor="#0f2536"
+                            android:textSize="12sp" />
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <ImageView
+                            android:id="@+id/img_zx10"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/icon_shuoming5" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:layout_toRightOf="@+id/img_zx10"
+                            android:text="转诊服务"
+                            android:textColor="#0f2536"
+                            android:textSize="14sp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/img_zx11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/icon_shuoming5"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+
+                            android:layout_toRightOf="@+id/img_zx11"
+                            android:text="看大病不再难，家庭医生帮您预约三甲名医\n优先预约专家门诊、大型仪器设备检查、住院等。"
+                            android:textColor="#0f2536"
+                            android:textSize="12sp" />
 
                     </RelativeLayout>
 
@@ -481,9 +570,39 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="服务时间"
+                        android:text="服务说明"
                         android:textColor="@color/actionbar_color"
                         android:textSize="16sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:id="@+id/tv_fw"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+
+                            android:text="范围："
+                            android:textColor="#0f2536"
+                            android:textSize="14sp" />
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+
+                            android:layout_toRightOf="@+id/tv_fw"
+                            android:text="郑州市高新区盛和苑社区"
+                            android:textColor="#0f2536"
+                            android:textSize="14sp" />
+
+
+                    </RelativeLayout>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -505,25 +624,25 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="8dp"
                             android:layout_toRightOf="@+id/tv_mt"
                             android:text=""
                             android:textColor="#0f2536"
                             android:textSize="14sp" />
 
+
                         <TextView
                             android:id="@+id/tvnotie"
                             android:layout_width="42dp"
                             android:layout_height="21dp"
-                            android:gravity="center"
-                            android:background="@drawable/icon_tixing"
-                            android:textSize="14sp"
-                            android:visibility="gone"
-                            android:textColor="@color/actionbar_color"
-                            android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
-
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/icon_tixing"
+                            android:gravity="center"
                             android:text="提醒"
+                            android:textColor="@color/actionbar_color"
+                            android:textSize="14sp"
+
+                            android:visibility="gone"
 
                             />
                     </RelativeLayout>
@@ -575,7 +694,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="8dp"
+
                             android:layout_toRightOf="@+id/tv_my"
                             android:text="一次家访问诊"
                             android:textColor="#0f2536"
@@ -595,6 +714,38 @@
                 android:orientation="vertical"
 
                 >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="服务团队"
+                        android:textColor="@color/actionbar_color"
+                        android:textSize="16sp" />
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="全科医生+护士+预防保健师"
+                        android:textColor="#0f2536"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="#f2f2f2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -635,22 +786,21 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/layout_ljyy"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
+        android:background="#168ccc"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/layout_ljyy"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#4c5c67"
-            android:gravity="center"
-            android:orientation="horizontal"
 
-            >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="25dp"
@@ -659,40 +809,41 @@
 
             <TextView
                 android:id="@+id/tv_sign"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="立即关注"
+                android:gravity="center"
+                android:text="签约医生"
                 android:textColor="@color/base_color_text_white"
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layout_mfzx"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/actionbar_color"
-            android:gravity="center"
-            android:orientation="horizontal"
+        <!--  <LinearLayout
+              android:id="@+id/layout_mfzx"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="1"
+              android:background="@color/actionbar_color"
+              android:gravity="center"
+              android:orientation="horizontal"
 
-            >
+              >
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@mipmap/icon_zixun" />
+              <ImageView
+                  android:layout_width="25dp"
+                  android:layout_height="25dp"
+                  android:src="@mipmap/icon_zixun" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="免费咨询"
-                android:textColor="@color/base_color_text_white"
-                android:textSize="16sp" />
-        </LinearLayout>
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="8dp"
+                  android:text="免费咨询"
+                  android:textColor="@color/base_color_text_white"
+                  android:textSize="16sp" />
+          </LinearLayout>-->
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
 

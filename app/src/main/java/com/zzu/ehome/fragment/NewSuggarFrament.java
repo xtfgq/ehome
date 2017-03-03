@@ -46,6 +46,8 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
+import static com.zzu.ehome.R.id.layout_no_msg;
+
 /**
  * Created by Administrator on 2016/4/26.
  */
@@ -59,7 +61,7 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
     //    private TextView tvvalue,tvstatus,tvtime;
     private String startTime, endTime;
     private RequestMaker requestMaker;
-    private String userid,cardNo;
+    private String userid, cardNo;
     private int page = 1;
     private StickyListHeadersListView listview;
     private BloodSuggarChatAdapter mAadpter;
@@ -76,11 +78,12 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
     private User dbUser;
     private EHomeDao dao;
     private SupperBaseActivity activity;
+    private LinearLayout layout_no_msg;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        activity=(SupperBaseActivity)context;
+        activity = (SupperBaseActivity) context;
     }
 
     @Nullable
@@ -88,23 +91,21 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.layout_temp_chat, null);
         requestMaker = RequestMaker.getInstance();
-        dao=new EHomeDaoImpl(getActivity());
+        dao = new EHomeDaoImpl(getActivity());
         userid = SharePreferenceUtil.getInstance(getActivity()).getUserId();
-        dbUser=dao.findUserInfoById(userid);
-        cardNo=dbUser.getUserno();
+        dbUser = dao.findUserInfoById(userid);
+        cardNo = dbUser.getUserno();
         mList = new ArrayList<BloodSuggarBean>();
         EventBus.getDefault().register(this);
-
         initViews();
-        initEvents();
-        rbday.setChecked(true);
-        rbday.setTextColor(getResources().getColor(R.color.white));
-        rbweek.setChecked(false);
-        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-        rbmonth.setChecked(false);
-        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-        setDay();
-
+//        initEvents();
+//        rbday.setChecked(true);
+//        rbday.setTextColor(getResources().getColor(R.color.white));
+//        rbweek.setChecked(false);
+//        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//        rbmonth.setChecked(false);
+//        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//        setDay();
         page = 1;
         getHistory();
         return view;
@@ -114,25 +115,23 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
         inflater = LayoutInflater.from(getActivity());
         mAadpter = new BloodSuggarChatAdapter(getActivity());
         listview = (StickyListHeadersListView) view.findViewById(R.id.lv_temp);
-        heardchat = (LinearLayout) inflater.inflate(R.layout.new_suggar, null);
-        mChart = (SuggarView) heardchat.findViewById(R.id.chart);
-        group = (RadioGroup) heardchat.findViewById(R.id.radioGroup);
-        rbday = (RadioButton) heardchat.findViewById(R.id.rb_day);
-        rbweek = (RadioButton) heardchat.findViewById(R.id.rb_week);
-        rbmonth = (RadioButton) heardchat.findViewById(R.id.rb_month);
-        tvnodata = (TextView) heardchat.findViewById(R.id.tvnodate);
+//        heardchat = (LinearLayout) inflater.inflate(R.layout.new_suggar, null);
+//        mChart = (SuggarView) heardchat.findViewById(R.id.chart);
+//        group = (RadioGroup) heardchat.findViewById(R.id.radioGroup);
+//        rbday = (RadioButton) heardchat.findViewById(R.id.rb_day);
+//        rbweek = (RadioButton) heardchat.findViewById(R.id.rb_week);
+//        rbmonth = (RadioButton) heardchat.findViewById(R.id.rb_month);
+//        tvnodata = (TextView) heardchat.findViewById(R.id.tvnodate);
         moredata = (RelativeLayout) inflater.inflate(R.layout.moredata, null);
         progressBarView = (View) moredata.findViewById(R.id.loadmore_foot_progressbar);
         progressBarTextView = (TextView) moredata.findViewById(R.id.loadmore_foot_text);
         loadingAnimation = (AnimationDrawable) progressBarView.getBackground();
-        listview.addHeaderView(heardchat);
+//        listview.addHeaderView(heardchat);
         listview.addFooterView(moredata);
-
+        layout_no_msg=(LinearLayout)view.findViewById(R.id.layout_no_msg);
         listview.setOnHeaderClickListener(this);
         listview.setLoadingMoreListener(this);
         listview.setAdapter(mAadpter);
-
-
     }
 
     public void onEventMainThread(RefreshEvent event) {
@@ -161,64 +160,57 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
 
     public void initEvents() {
 
-        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // TODO Auto-generated method stub
-                switch (checkedId) {
-                    case R.id.rb_day:
-
-                        rbday.setChecked(true);
-                        rbday.setTextColor(getResources().getColor(R.color.white));
-                        rbweek.setChecked(false);
-                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbmonth.setChecked(false);
-                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        setDay();
-                        break;
-                    case R.id.rb_week:
-                        rbday.setChecked(false);
-                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbweek.setChecked(true);
-                        rbweek.setTextColor(getResources().getColor(R.color.white));
-                        rbmonth.setChecked(false);
-                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        setWeek();
-
-
-                        break;
-                    case R.id.rb_month:
-                        rbday.setChecked(false);
-                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbweek.setChecked(false);
-                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbmonth.setChecked(true);
-                        rbmonth.setTextColor(getResources().getColor(R.color.white));
-                        setMonth();
-
-
-                        break;
-
-
-                    default:
-                        break;
-                }
-            }
-
-
-        });
+//        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                // TODO Auto-generated method stub
+//                switch (checkedId) {
+//                    case R.id.rb_day:
+//                        rbday.setChecked(true);
+//                        rbday.setTextColor(getResources().getColor(R.color.white));
+//                        rbweek.setChecked(false);
+//                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbmonth.setChecked(false);
+//                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        setDay();
+//                        break;
+//                    case R.id.rb_week:
+//                        rbday.setChecked(false);
+//                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbweek.setChecked(true);
+//                        rbweek.setTextColor(getResources().getColor(R.color.white));
+//                        rbmonth.setChecked(false);
+//                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        setWeek();
+//                        break;
+//                    case R.id.rb_month:
+//                        rbday.setChecked(false);
+//                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbweek.setChecked(false);
+//                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbmonth.setChecked(true);
+//                        rbmonth.setTextColor(getResources().getColor(R.color.white));
+//                        setMonth();
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//
+//
+//        });
 
 
     }
 
     private void getHistory() {
-        if(!activity.isNetWork){
+        if (!activity.isNetWork) {
             activity.showNetWorkErrorDialog();
             return;
         }
 //        ToastUtils.showMessage(getActivity(),"vvvhhhhBolloess");
-        requestMaker.HealthDataInquirywWithPageType(userid, cardNo,10 + "", page + "", "BloodSugar", new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
+        requestMaker.HealthDataInquirywWithPageType(userid, cardNo, 10 + "", page + "", "BloodSugar", new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
 
@@ -229,24 +221,27 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
                             .getJSONArray("HealthDataInquiryWithPage");
                     if (array.getJSONObject(0).has("MessageCode")) {
                         if (page == 1) {
-
+                            layout_no_msg.setVisibility(View.VISIBLE);
 //                           listview.setVisibility(View.GONE);
                         } else
                             loadingFinished();
                     } else {
-                        listview.setVisibility(View.VISIBLE);
-                        BloodSuggarDa date = JsonTools.getData(result.toString(), BloodSuggarDa.class);
-                        List<BloodSuggarBean> list = date.getData();
-                        if (page == 1 && mList.size() > 0) {
-                            mList.clear();
-                        }
-                        if (list != null && list.size() > 0) {
-                            for (int i = 0; i < list.size(); i++) {
-                                mList.add(list.get(i));
+                        if(view!=null) {
+                            layout_no_msg.setVisibility(View.GONE);
+                            listview.setVisibility(View.VISIBLE);
+                            BloodSuggarDa date = JsonTools.getData(result.toString(), BloodSuggarDa.class);
+                            List<BloodSuggarBean> list = date.getData();
+                            if (page == 1 && mList.size() > 0) {
+                                mList.clear();
                             }
-                            mAadpter.setList(mList);
+                            if (list != null && list.size() > 0) {
+                                for (int i = 0; i < list.size(); i++) {
+                                    mList.add(list.get(i));
+                                }
+                                mAadpter.setList(mList);
 
-                            loadingFinished();
+                                loadingFinished();
+                            }
                         }
 
 
@@ -258,11 +253,16 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 
     private void setDay() {
-        if(!activity.isNetWork){
+        if (!activity.isNetWork) {
             activity.showNetWorkErrorDialog();
             return;
         }
@@ -278,7 +278,7 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
         labels.add("20");
         labels.add("24");
         mChart.setX(labels, 24);
-        requestMaker.BloodSugarInquiryType(cardNo,userid, startTime, endTime, "H", new JsonAsyncTask_Info(
+        requestMaker.BloodSugarInquiryType(cardNo, userid, startTime, endTime, "H", new JsonAsyncTask_Info(
                 getActivity(), true, new JsonAsyncTaskOnComplete() {
             public void processJsonObject(Object result) {
                 try {
@@ -292,7 +292,7 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
                         List<PointD> linePoint1 = new ArrayList<PointD>();
                         List<PointD> linePoint2 = new ArrayList<PointD>();
                         List<PointD> linePoint3 = new ArrayList<PointD>();
-                        mChart.refresh(linePoint1, linePoint2,linePoint3);
+                        mChart.refresh(linePoint1, linePoint2, linePoint3);
                         tvnodata.setVisibility(View.VISIBLE);
 
                     } else {
@@ -305,33 +305,25 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
                         List<PointD> linePoint2 = new ArrayList<PointD>();
                         List<PointD> linePoint3 = new ArrayList<PointD>();
                         for (BloodSuggarRes th : list) {
-                            if (Integer.valueOf(th.getMonitorPoint())==1) {
+                            if (Integer.valueOf(th.getMonitorPoint()) == 1) {
                                 Double xd = Double.valueOf(th.getMonitorTime().split("\\ ")[1]);
                                 Double ydH;
-
                                 ydH = Double.valueOf(th.getBloodSugarValue());
                                 linePoint1.add(new PointD(xd, ydH));
-                            }
-                            else if(Integer.valueOf(th.getMonitorPoint())==0){
+                            } else if (Integer.valueOf(th.getMonitorPoint()) == 0) {
                                 Double xd = Double.valueOf(th.getMonitorTime().split("\\ ")[1]);
                                 Double ydl;
-
                                 ydl = Double.valueOf(th.getBloodSugarValue());
-
-
                                 linePoint2.add(new PointD(xd, ydl));
-                            }else{
+                            } else {
                                 Double xd = Double.valueOf(th.getMonitorTime().split("\\ ")[1]);
                                 Double ydl;
-
                                 ydl = Double.valueOf(th.getBloodSugarValue());
-
-
                                 linePoint3.add(new PointD(xd, ydl));
                             }
 
                         }
-                        mChart.refresh(linePoint1, linePoint2,linePoint3);
+                        mChart.refresh(linePoint1, linePoint2, linePoint3);
 
 
                     }
@@ -339,12 +331,17 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
     }
 
     private void setMonth() {
-        if(!activity.isNetWork){
+        if (!activity.isNetWork) {
             activity.showNetWorkErrorDialog();
             return;
         }
@@ -366,9 +363,8 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
 
         }
 
-
         mChart.setX(labels, 30);
-        requestMaker.BloodSugarInquiryType(cardNo,userid, startTime, endTime, "D", new JsonAsyncTask_Info(
+        requestMaker.BloodSugarInquiryType(cardNo, userid, startTime, endTime, "D", new JsonAsyncTask_Info(
                 getActivity(), true, new JsonAsyncTaskOnComplete() {
             public void processJsonObject(Object result) {
                 try {
@@ -381,7 +377,7 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
                         List<PointD> linePoint1 = new ArrayList<PointD>();
                         List<PointD> linePoint2 = new ArrayList<PointD>();
                         List<PointD> linePoint3 = new ArrayList<PointD>();
-                        mChart.refresh(linePoint1, linePoint2,linePoint3);
+                        mChart.refresh(linePoint1, linePoint2, linePoint3);
                         tvnodata.setVisibility(View.VISIBLE);
 
 
@@ -393,38 +389,30 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
                         List<PointD> linePoint1 = new ArrayList<PointD>();
                         List<PointD> linePoint2 = new ArrayList<PointD>();
                         List<PointD> linePoint3 = new ArrayList<PointD>();
+
                         for (BloodSuggarRes th : list) {
-                            if (Integer.valueOf(th.getMonitorPoint())==1) {
-                                Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months);
+                            Double xd;
+                            if (Integer.valueOf(th.getMonitorPoint()) == 1) {
+                                    xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months)+1;
                                 Double ydH;
-
                                 ydH = Double.valueOf(th.getBloodSugarValue());
-
-
                                 linePoint1.add(new PointD(xd, ydH));
-                            } else if(Integer.valueOf(th.getMonitorPoint())==0){
-                                Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months);
+                            } else if (Integer.valueOf(th.getMonitorPoint()) == 0) {
+                                    xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months)+1;
                                 Double ydl;
-
                                 ydl = Double.valueOf(th.getBloodSugarValue());
-
-
                                 linePoint2.add(new PointD(xd, ydl));
-                            }
-                            else {
-                                Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months);
+                            } else {
+                                    xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months)+1;
                                 Double ydl;
-
                                 ydl = Double.valueOf(th.getBloodSugarValue());
-
-
                                 linePoint3.add(new PointD(xd, ydl));
 
                             }
 
 
                         }
-                        mChart.refresh(linePoint1, linePoint2,linePoint3);
+                        mChart.refresh(linePoint1, linePoint2, linePoint3);
 
 
                     }
@@ -432,12 +420,17 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
     }
 
     private void setWeek() {
-        if(!activity.isNetWork){
+        if (!activity.isNetWork) {
             activity.showNetWorkErrorDialog();
             return;
         }
@@ -459,7 +452,7 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
             labels.add(day.split("-")[2]);
         }
         mChart.setX(labels, 6);
-        requestMaker.BloodSugarInquiryType(cardNo,userid, startTime, endTime, "D", new JsonAsyncTask_Info(
+        requestMaker.BloodSugarInquiryType(cardNo, userid, startTime, endTime, "D", new JsonAsyncTask_Info(
                 getActivity(), true, new JsonAsyncTaskOnComplete() {
             public void processJsonObject(Object result) {
                 try {
@@ -472,7 +465,7 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
                         List<PointD> linePoint1 = new ArrayList<PointD>();
                         List<PointD> linePoint2 = new ArrayList<PointD>();
                         List<PointD> linePoint3 = new ArrayList<PointD>();
-                        mChart.refresh(linePoint1, linePoint2,linePoint3);
+                        mChart.refresh(linePoint1, linePoint2, linePoint3);
                         tvnodata.setVisibility(View.VISIBLE);
                     } else {
                         tvnodata.setVisibility(View.GONE);
@@ -483,40 +476,38 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
                         List<PointD> linePoint2 = new ArrayList<PointD>();
                         List<PointD> linePoint3 = new ArrayList<PointD>();
                         for (BloodSuggarRes th : list) {
-                            if (Integer.valueOf(th.getMonitorPoint())==1) {
+                            if (Integer.valueOf(th.getMonitorPoint()) == 1) {
                                 Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], weeks);
                                 Double ydH;
-
                                 ydH = Double.valueOf(th.getBloodSugarValue());
-
-
                                 linePoint1.add(new PointD(xd, ydH));
-                            } else if(Integer.valueOf(th.getMonitorPoint())==0){
+                            } else if (Integer.valueOf(th.getMonitorPoint()) == 0) {
                                 Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], weeks);
                                 Double ydl;
                                 ydl = Double.valueOf(th.getBloodSugarValue());
                                 linePoint2.add(new PointD(xd, ydl));
-                            }
-                            else {
+                            } else {
                                 Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], weeks);
                                 Double ydl;
-
                                 ydl = Double.valueOf(th.getBloodSugarValue());
-
-
                                 linePoint3.add(new PointD(xd, ydl));
 
                             }
 
 
                         }
-                        mChart.refresh(linePoint1, linePoint2,linePoint3);
+                        mChart.refresh(linePoint1, linePoint2, linePoint3);
 
 
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 
@@ -531,7 +522,7 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
 
     @Override
     public void OnLoadingMore() {
-        if(!activity.isNetWork){
+        if (!activity.isNetWork) {
             loadingFinished();
             activity.showNetWorkErrorDialog();
             return;

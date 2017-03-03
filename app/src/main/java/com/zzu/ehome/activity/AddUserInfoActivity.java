@@ -11,7 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zzu.ehome.R;
+import com.zzu.ehome.utils.CardUtil;
 import com.zzu.ehome.utils.CommonUtils;
+import com.zzu.ehome.utils.IDCardValidate;
 import com.zzu.ehome.utils.IOUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_ECGInfo;
@@ -30,10 +32,11 @@ import org.json.JSONObject;
  */
 public class AddUserInfoActivity extends BaseActivity implements View.OnClickListener,OnGetData {
     private RequestMaker requestMaker;
-    private EditText edt_name,edt_card_num,edt_age,edt_phone;
+    private EditText edt_name,edt_card_num,edt_phone;
+    private TextView edt_age;
     private SexPopupWindows sexPopupWindows;
     private String name,userNo,age,phone,sex="",userid;
-    private RelativeLayout  rlsex;
+    private RelativeLayout  rlsex,rlname,rlphone,rlage;
 
     private TextView tv_sex;
     private Button btn_save;
@@ -60,16 +63,33 @@ public class AddUserInfoActivity extends BaseActivity implements View.OnClickLis
         });
         edt_name=(EditText)findViewById(R.id.edt_name);
         edt_card_num=(EditText)findViewById(R.id.edt_card_num);
-        edt_age=(EditText)findViewById(R.id.edt_age);
+
+        edt_age=(TextView)findViewById(R.id.edt_age);
         edt_phone=(EditText)findViewById(R.id.edt_phone);
         rlsex=(RelativeLayout)findViewById(R.id.rlsex);
         btn_save=(Button)findViewById(R.id.btn_save);
         tv_sex=(TextView)findViewById(R.id.tv_sex);
+        rlname=(RelativeLayout)findViewById(R.id.rlname);
+        rlage=(RelativeLayout)findViewById(R.id.rlage);
+        rlphone=(RelativeLayout)findViewById(R.id.rlphone);
     }
 
     public void initEvent(){
         btn_save.setOnClickListener(this);
         rlsex.setOnClickListener(this);
+        rlage.setOnClickListener(this);
+        rlname.setOnClickListener(this);
+        rlphone.setOnClickListener(this);
+        edt_card_num.setOnFocusChangeListener(new android.view.View.
+                OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                  doAge();
+                }
+
+            }
+        });
     }
 
     public void initDatas(){
@@ -92,6 +112,9 @@ public class AddUserInfoActivity extends BaseActivity implements View.OnClickLis
             showNetWorkErrorDialog();
             return;
         }
+        if(!doAge()){
+            return;
+        }
         switch (v.getId()){
             case R.id.btn_save:
                 name=edt_name.getText().toString();
@@ -112,10 +135,7 @@ public class AddUserInfoActivity extends BaseActivity implements View.OnClickLis
                     show("请填写身份证号码！");
                     return;
                 }
-                if (!IOUtils.isUserNO(userNo.trim())) {
-                    show("身份证号格式不正确！");
-                    return;
-                }
+
                 if (TextUtils.isEmpty(phone.trim())) {
                     show("请填写手机号码！");
                     return;
@@ -128,11 +148,11 @@ public class AddUserInfoActivity extends BaseActivity implements View.OnClickLis
                     show("请填写年龄！");
                     return;
                 }
-                int ageed=Integer.valueOf(edt_age.getText().toString());
-                if(ageed>150){
-                    show( "年龄过长！");
-                    return;
-                }
+//                int ageed=Integer.valueOf(edt_age.getText().toString());
+//                if(ageed>150){
+//                    show( "年龄过长！");
+//                    return;
+//                }
 
                 if (TextUtils.isEmpty(sex)) {
                    show("请选择性别！");
@@ -149,24 +169,32 @@ public class AddUserInfoActivity extends BaseActivity implements View.OnClickLis
                             JSONObject mySO = (JSONObject) result;
                             JSONArray array = mySO.getJSONArray("Result");
                             int code=Integer.valueOf(array.getJSONObject(0).getString("MessageCode"));
-                            if(code==1){
-                                edt_name.setText("");
-                                edt_card_num.setText("");
-                                edt_age.setText("");
-                                edt_phone.setText("");
-                                tv_sex.setText("请选择性别");
-                                Intent data = new Intent();
-                                data.putExtra("NEW", "new");
-                                setResult(SelectPatientActivity.ADD_PATIENT, data);
-                                ToastUtils.showMessage(AddUserInfoActivity.this,"添加成功");
-                                finish();
-                            }else{
-                                ToastUtils.showMessage(AddUserInfoActivity.this,array.getJSONObject(0).getJSONObject("MessageContent").toString());
+                            if(edt_name!=null&&edt_card_num!=null&&edt_age!=null&&edt_phone!=null&&tv_sex!=null) {
+                                if (code == 1) {
+                                    edt_name.setText("");
+                                    edt_card_num.setText("");
+                                    edt_age.setText("");
+                                    edt_phone.setText("");
+                                    tv_sex.setText("请选择性别");
+                                    Intent data = new Intent();
+                                    data.putExtra("NEW", "new");
+                                    setResult(SelectPatientActivity.ADD_PATIENT, data);
+                                    ToastUtils.showMessage(AddUserInfoActivity.this, "添加成功");
+                                    finish();
+                                } else {
+                                    show(array.getJSONObject(0).getString("MessageContent").toString());
+
+                                }
                             }
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
 
                     }
                 }));
@@ -191,5 +219,34 @@ public class AddUserInfoActivity extends BaseActivity implements View.OnClickLis
             sex="02";
             tv_sex.setText("女");
         }
+    }
+    private boolean  doAge() {
+        boolean isCard=false;
+        if (edt_card_num.getText().toString().length() > 14) {
+            try {
+                String info = IDCardValidate.IDCardValidateStr(edt_card_num.getText().toString().toLowerCase());
+                if (!TextUtils.isEmpty(info)) {
+                    show("身份证号格式不正确");
+                    isCard=false;
+
+                }else {
+                    if (edt_card_num.getText().toString().length() == 18) {
+                        edt_age.setText(CardUtil.getCarInfo(edt_card_num.getText().toString()));
+                    } else if (edt_card_num.getText().toString().length() == 15) {
+                        edt_age.setText(CardUtil.getCarInfo15W(edt_card_num.getText().toString()));
+                    }
+                    isCard=true;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if(edt_card_num.getText().toString().length() > 0) {
+            show("身份证号格式不正确");
+            edt_card_num.setFocusable(true);
+            isCard=false;
+
+        }
+        return  isCard;
     }
 }

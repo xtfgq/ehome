@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/9/1.
  */
-public class MyExaminationFragment extends BaseFragment{
+public class MyExaminationFragment extends BaseFragment {
     private View mView;
     private ListView listView;
     private RequestMaker requestMaker;
@@ -42,7 +42,7 @@ public class MyExaminationFragment extends BaseFragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        activity=(SupperBaseActivity)context;
+        activity = (SupperBaseActivity) context;
     }
 
     @Nullable
@@ -50,7 +50,7 @@ public class MyExaminationFragment extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_appointment, null);
         requestMaker = RequestMaker.getInstance();
-        userid= SharePreferenceUtil.getInstance(getActivity()).getUserId();
+        userid = SharePreferenceUtil.getInstance(getActivity()).getUserId();
         initViews();
         initEvent();
         initDatas();
@@ -83,7 +83,7 @@ public class MyExaminationFragment extends BaseFragment{
     }
 
     public void initDatas() {
-        if(!activity.isNetWork){
+        if (!activity.isNetWork) {
             activity.showNetWorkErrorDialog();
             return;
 
@@ -98,23 +98,25 @@ public class MyExaminationFragment extends BaseFragment{
                     JSONObject mySO = (JSONObject) result;
                     org.json.JSONArray array = mySO
                             .getJSONArray("MeidicalReportInquiry");
-                    if (array.getJSONObject(0).has("MessageCode")) {
-                        layout_none.setVisibility(View.VISIBLE);
-                        listView.setVisibility(View.GONE);
-                    } else {
-
-                        if (mList != null && mList.size() > 0)
-                            mList.clear();
-                        MedicalDate date = JsonTools.getData(result.toString(), MedicalDate.class);
-                        mList = date.getData();
-                        if (adapter == null) {
-
-                            adapter = new MedicalExaminationAdapter(getActivity(), mList);
-                            listView.setAdapter(adapter);
+                    if (mView != null) {
+                        if (array.getJSONObject(0).has("MessageCode")) {
+                            layout_none.setVisibility(View.VISIBLE);
+                            listView.setVisibility(View.GONE);
                         } else {
-                            adapter.setmList(mList);
-                            listView.setAdapter(adapter);
-                            adapter.notifyDataSetChanged();
+
+                            if (mList != null && mList.size() > 0)
+                                mList.clear();
+                            MedicalDate date = JsonTools.getData(result.toString(), MedicalDate.class);
+                            mList = date.getData();
+                            if (adapter == null) {
+
+                                adapter = new MedicalExaminationAdapter(getActivity(), mList);
+                                listView.setAdapter(adapter);
+                            } else {
+                                adapter.setmList(mList);
+                                listView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            }
                         }
 
                     }
@@ -122,6 +124,11 @@ public class MyExaminationFragment extends BaseFragment{
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
 

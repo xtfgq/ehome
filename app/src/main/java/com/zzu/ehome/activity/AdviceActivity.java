@@ -75,7 +75,9 @@ public class AdviceActivity extends BaseActivity {
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_ok.setEnabled(false);
                 doUploade();
+
             }
         });
 
@@ -115,6 +117,12 @@ public class AdviceActivity extends BaseActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                if(btn_ok!=null)
+                btn_ok.setEnabled(true);
             }
         }));
     }

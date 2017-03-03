@@ -167,6 +167,11 @@ public class MedicalRecordsActivity extends BaseActivity {
 
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 

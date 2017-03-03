@@ -207,6 +207,11 @@ public class WeightAndHeightAct extends BaseSimpleActivity implements View.OnCli
 
             }
 
+            @Override
+            public void onError(Exception e) {
+
+            }
+
         }));
     }
     private void doWeight(final String id){
@@ -228,8 +233,17 @@ public class WeightAndHeightAct extends BaseSimpleActivity implements View.OnCli
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

@@ -131,6 +131,11 @@ public class MedicalExaminationDesActivity extends BaseActivity implements View.
 
             }
 
+            @Override
+            public void onError(Exception e) {
+
+            }
+
         }));
 
     }

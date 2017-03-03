@@ -44,8 +44,14 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by zzu on 2016/4/12.
@@ -162,21 +168,23 @@ public class WeightFragment extends BaseFragment {
 
             }
         });
+
         btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!activity.isNetWork){
+                if (!activity.isNetWork) {
                     activity.showNetWorkErrorDialog();
                     return;
 
-                }
+                }else{
+
                 if (CommonUtils.isFastClick()) return;
                 btnsave.setEnabled(false);
                 float w = Float.valueOf(weight);
                 float h = Float.valueOf(myheitht) / 100;
                 DecimalFormat decimalFormat = new DecimalFormat("0.0");
                 float bmi = w / (h * h);
-                requestMaker.WeightInsert(cardNo, userid, myheitht, decimalFormat.format(bmi)+"",weight + "",checktime,new JsonAsyncTask_Info(
+                requestMaker.WeightInsert(cardNo, userid, myheitht, decimalFormat.format(bmi) + "", weight + "", checktime, new JsonAsyncTask_Info(
                         getActivity(), true, new JsonAsyncTaskOnComplete() {
                     public void processJsonObject(Object result) {
                         String value = result.toString();
@@ -216,7 +224,14 @@ public class WeightFragment extends BaseFragment {
                         }
 
                     }
+
+                    @Override
+                    public void onError(Exception e) {
+                        if(btnsave!=null)
+                        btnsave.setEnabled(true);
+                    }
                 }));
+            }
 
             }
         });
@@ -275,6 +290,11 @@ public class WeightFragment extends BaseFragment {
                     e.printStackTrace();
 
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));

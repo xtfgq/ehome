@@ -118,10 +118,12 @@ private String code,value;
                     return;
                 }
                 startProgressDialog();
+                btnNext.setEnabled(false);
                 requestMaker.UserRelationshipInsert(userid, code, parentId, new JsonAsyncTask_Info(RelationActivity.this, true, new JsonAsyncTaskOnComplete() {
 
                     @Override
                     public void processJsonObject(Object result) {
+                        btnNext.setEnabled(true);
                         if (result != null) {
                             stopProgressDialog();
                             try {
@@ -164,7 +166,7 @@ private String code,value;
                                     }
 
 
-
+                                    ToastUtils.showMessage(RelationActivity.this, "亲友关系保存成功");
 
                                 } else if (Integer.valueOf(array.getJSONObject(0).getString("MessageCode"))==1){
                                     ToastUtils.showMessage(RelationActivity.this, array.getJSONObject(0).getString("MessageContent").toString());
@@ -183,6 +185,11 @@ private String code,value;
                             }
 
                         }
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        btnNext.setEnabled(true);
                     }
                 }));
 

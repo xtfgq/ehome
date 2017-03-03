@@ -20,6 +20,7 @@
             >
 
             <RelativeLayout
+                android:id="@+id/rlname"
                 android:layout_height="65dp"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="16dp"
@@ -119,6 +120,7 @@
                 android:background="#e1e1e2"
                 />
             <RelativeLayout
+                android:id="@+id/rlphone"
                 android:layout_height="65dp"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="16dp"
@@ -169,6 +171,7 @@
                 android:background="#e1e1e2"
                 />
             <RelativeLayout
+                android:id="@+id/rlage"
                 android:layout_height="65dp"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="16dp"
@@ -186,14 +189,14 @@
                     android:layout_alignParentLeft="true"
                     />
 
-                <EditText
+                <TextView
                     android:id="@+id/edt_age"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
                     android:textSize="16sp"
                     android:hint="请输入年龄"
-                    android:maxLength="3"
+
                     android:inputType="number"
                     android:textCursorDrawable="@null"
                     android:layout_centerVertical="true"

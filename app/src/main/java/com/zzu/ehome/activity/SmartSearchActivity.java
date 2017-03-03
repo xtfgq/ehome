@@ -42,6 +42,7 @@ import java.util.List;
 
 import static com.zzu.ehome.R.attr.position;
 import static com.zzu.ehome.activity.ImageOCRSelectorActivity.hosid;
+import static com.zzu.ehome.activity.ImageOCRSelectorActivity.hosname;
 
 
 /**
@@ -160,7 +161,7 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
 //                name="张三";
 //                userno="410322198608051234";
 //                code="0000000000";
-                doSave(name,userno,code);
+                doSave(name,userno,hosptial,code);
                 break;
             case R.id.layout_add_hosptial:
                 if (mList.size() > 0) {
@@ -231,6 +232,11 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
                 }
             }
 
+            @Override
+            public void onError(Exception e) {
+
+            }
+
         }));
 
 
@@ -250,10 +256,11 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
     /**
      * 查询相关平台数据
      * MessageCode:1，失败，2查不到数据含有表示已经保存过
-     * 没有，在我们的平台上没有该数据
+     * 3.表示已经存过了
      */
-    private void doSave(final String name,final String userno,final String code){
-        requestMaker.ZDWFYUserRecordJudgeInquiry(code,userno,name,new JsonAsyncTask_Info(SmartSearchActivity.this, true, new JsonAsyncTaskOnComplete() {
+
+    private void doSave(final String name,final String userno,String hosname,final String code){
+        requestMaker.ZDWFYUserRecordJudgeInquiry(code,userno,name,hosname,new JsonAsyncTask_Info(SmartSearchActivity.this, true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
                 JSONObject mySO = (JSONObject) result;
@@ -289,6 +296,11 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 

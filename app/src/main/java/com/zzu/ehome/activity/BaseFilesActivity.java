@@ -182,6 +182,11 @@ public class BaseFilesActivity extends BaseActivity implements View.OnClickListe
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 
@@ -322,6 +327,11 @@ public class BaseFilesActivity extends BaseActivity implements View.OnClickListe
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 
@@ -359,6 +369,11 @@ public class BaseFilesActivity extends BaseActivity implements View.OnClickListe
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
     }

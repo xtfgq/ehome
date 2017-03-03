@@ -157,7 +157,12 @@ public class HealthFilesFragment2 extends BaseFragment {
                 }
 
             }
-        }));
+
+          @Override
+          public void onError(Exception e) {
+
+          }
+      }));
     }
 
     public  void buildHealthFiles(){

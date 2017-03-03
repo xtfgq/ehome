@@ -38,10 +38,12 @@ import com.zzu.ehome.view.PullToRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.zzu.ehome.activity.NearPharmacyActivity.mLocation;
@@ -113,6 +115,8 @@ public class NearPharmacyFragment extends BaseFragment {
         //监听订阅事件
         Subscription subscription = RxBus.getInstance().toObservable()
                 .observeOn(AndroidSchedulers.mainThread())
+
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object event) {
@@ -131,6 +135,7 @@ public class NearPharmacyFragment extends BaseFragment {
 
 
                         }
+
 
                     }
                 });

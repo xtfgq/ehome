@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.KeyEvent;
 import android.webkit.DownloadListener;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -38,6 +39,7 @@ public class SmartWebView extends BaseSimpleActivity {
     private EHomeDao dao;
     private String userid;
     private User user;
+    private boolean isFirst=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,19 @@ public class SmartWebView extends BaseSimpleActivity {
         }
         url = Constants.EhomeURL + "/LaiKang/HealthDataList.aspx?CardNo=" + user.getUserno();
 //        url="http://wxsdk.lkang.cn/LoginZ.aspx?cardno=410322198708063857&mobile=15986816294";
-
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if (newProgress == 100) {
+                    stopProgressDialog();
+                } else {
+                    if(!isFirst) {
+                        startProgressDialogTitle("正在加载中...");
+                        isFirst=true;
+                    }
+                }
+            }
+        });
         mWebView.loadUrl(url);
 
 

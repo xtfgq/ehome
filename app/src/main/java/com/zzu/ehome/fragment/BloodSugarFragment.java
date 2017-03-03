@@ -49,8 +49,15 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
+
 
 /**
  * Created by zzu on 2016/4/12.
@@ -244,35 +251,40 @@ public class BloodSugarFragment extends BaseFragment {
                 startActivityForResult(intenttimes, ADD_TIMES);
             }
         });
+
+
+        //监听订阅事件
+
         btnSuggar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!activity.isNetWork){
                     activity.showNetWorkErrorDialog();
-                    return;
-                }
-                if (cbgl.isChecked()) {
-                    mBloodSugarValue = tvmg + "";
-                    type = 2;
-                } else {
-                    mBloodSugarValue = tvmm + "";
-                    type = 1;
-                }
-                if (tvlv.getText().equals("请滑动刻度尺")) {
-                    ToastUtils.showMessage(getActivity(), "请滑动刻度尺");
-                    return;
-                }
-                if (TextUtils.isEmpty(mMonitorPoint)) {
-                    ToastUtils.showMessage(getActivity(), "请选择测量时段！");
-                    return;
-                }
-                btnSuggar.setEnabled(false);
-                if(mMonitorPoint.contains("空腹")){
-                    addBloodSugar(0);
-                }else if(mMonitorPoint.contains("餐后")){
-                    addBloodSugar(1);
-                }else{
-                    addBloodSugar(2);
+
+                }else {
+                    if (cbgl.isChecked()) {
+                        mBloodSugarValue = tvmg + "";
+                        type = 2;
+                    } else {
+                        mBloodSugarValue = tvmm + "";
+                        type = 1;
+                    }
+                    if (tvlv.getText().equals("请滑动刻度尺")) {
+                        ToastUtils.showMessage(getActivity(), "请滑动刻度尺");
+                        return;
+                    }
+                    if (TextUtils.isEmpty(mMonitorPoint)) {
+                        ToastUtils.showMessage(getActivity(), "请选择测量时段！");
+                        return;
+                    }
+                    btnSuggar.setEnabled(false);
+                    if (mMonitorPoint.contains("空腹")) {
+                        addBloodSugar(0);
+                    } else if (mMonitorPoint.contains("餐后")) {
+                        addBloodSugar(1);
+                    } else {
+                        addBloodSugar(2);
+                    }
                 }
 
 
@@ -337,6 +349,12 @@ public class BloodSugarFragment extends BaseFragment {
                     e.printStackTrace();
                 }
 
+            }
+
+            @Override
+            public void onError(Exception e) {
+                if(btnSuggar!=null)
+                btnSuggar.setEnabled(true);
             }
 
         }));
@@ -437,6 +455,11 @@ public class BloodSugarFragment extends BaseFragment {
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 
@@ -489,6 +512,12 @@ public class BloodSugarFragment extends BaseFragment {
 
     @Override
     protected void lazyLoad() {
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
     }
 }

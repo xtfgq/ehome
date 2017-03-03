@@ -128,6 +128,11 @@ public class NetHospitalAreaActivity extends BaseActivity {
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
 

@@ -19,9 +19,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.ContactsContract;
+
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -44,7 +49,11 @@ import com.zzu.ehome.bean.UserInfoDate;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.main.ehome.MainActivity;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
+import com.zzu.ehome.utils.CardUtil;
 import com.zzu.ehome.utils.CommonUtils;
+import com.zzu.ehome.utils.IDCardValidate;
 import com.zzu.ehome.utils.IOUtils;
 import com.zzu.ehome.utils.ImageTools;
 import com.zzu.ehome.utils.ImageUtil;
@@ -59,11 +68,12 @@ import com.zzu.ehome.view.CircleImageView;
 import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.HeadView;
 import com.zzu.ehome.view.HeightPopWindow;
+
 import com.zzu.ehome.view.PicPopupWindows;
 import com.zzu.ehome.view.SexPopupWindows;
 import com.zzu.ehome.view.SexPopupWindows.OnGetData;
 import com.zzu.ehome.view.crop.Crop;
-import com.zzu.ehome.view.crop.util.Log;
+
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -73,16 +83,24 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.UserInfo;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 import static io.rong.imlib.statistics.UserData.name;
+
 
 /**
  * Created by Administrator on 2016/4/16.
@@ -113,7 +131,10 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
     private SexPopupWindows sexPopupWindows;
     String height;
     private TextView tv_save;
-
+    private boolean isCard=false;
+    private boolean isEdit=false;
+    private CompositeSubscription compositeSubscription;
+    private String headurl="";
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -197,6 +218,17 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
     }
 
     private void initEvents() {
+
+        edt_card_num.setOnFocusChangeListener(new android.view.View.
+                OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                   doAge();
+                }
+
+            }
+        });
         iv_head.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,6 +236,8 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                     showNetWorkErrorDialog();
                     return;
                 }
+                doAge();
+                if(isCard)
                 doAddHeadImage();
 
             }
@@ -216,7 +250,10 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                     showNetWorkErrorDialog();
                     return;
                 }
+
                 clear();
+                doAge();
+                if(isCard)
                 doSex();
 
             }
@@ -228,7 +265,9 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                     showNetWorkErrorDialog();
                     return;
                 }
-                complate();
+                doAge();
+                if(isCard)
+               complate();
 
             }
         });
@@ -252,10 +291,12 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                     return;
                 }
                 clear();
-                showAgePop();
+                doAge();
+//                showAgePop();
             }
         });
     }
+
 
 
     public void showAgePop(){
@@ -286,6 +327,11 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
     public void complate() {
         setTVEeable(false);
         String name = edt_name.getText().toString().trim();
+        if(TextUtils.isEmpty(headurl)){
+            show("请上传头像");
+            setTVEeable(true);
+            return;
+        }
         if (TextUtils.isEmpty(name)) {
             show("请输入姓名");
             setTVEeable(true);
@@ -298,11 +344,13 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
             setTVEeable(true);
             return;
         }
-        if (!IOUtils.isUserNO(userno)) {
-            show("身份证号格式不正确");
-            setTVEeable(true);
-            return;
-        }
+
+
+////        if (!TextUtils.isEmpty(IDCardValidate.IDCardValidate(userno))) {
+//            show("身份证号格式不正确");
+//            setTVEeable(true);
+//            return;
+////        }
 
         String age = edt_age.getText().toString().trim();
         if (TextUtils.isEmpty(age)) {
@@ -332,18 +380,18 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
 //            ToastUtils.showMessage(PersonalCenterInfo.this, "请输入身高");
             return;
         }
-        if(!TextUtils.isEmpty(dao.findUserInfoById(userid).getUserno())){
+//       if(!TextUtils.isEmpty(dao.findUserInfoById(userid).getUserno())){
 
-            if(dao.findUserInfoById(userid).getUserno().equals(userno)){
-                doSave(userno,age,name);
-            }else{
-                setTVEeable(true);
-                confirmSave(userno,age,name);
-            }
+//           if(dao.findUserInfoById(userid).getUserno().equals(userno)){
+//               doSave(userno,age,name);
+//          }else{
+//               setTVEeable(true);
+//               confirmSave(userno,age,name);
+//           }
 
-        }else{
+//       }else{
           doSave(userno,age,name);
-        }
+//       }
 
 
 
@@ -384,8 +432,13 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                 setData(dbUser);
                 EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
                 ToastUtils.showMessage(PersonalCenterInfo.this, "修改成功");
-
+                RxBus.getInstance().send(new EventType("refresh"));
                 finishActivity();
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
 
@@ -416,6 +469,7 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                 }
                 User userOld = dao.findUserInfoById(userid);
                 userOld.setImgHead(imgHead);
+                headurl=imgHead;
                 dao.updateUserInfo(userOld, userid);
                 mImageLoader.displayImage(
                         imgHead, iv_head);
@@ -428,17 +482,43 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
 
             }
 
+            @Override
+            public void onError(Exception e) {
+
+            }
+
         }));
     }
 
     public void setData(User user) {
         mImageLoader.displayImage(
                 user.getImgHead(), iv_head);
+        if(TextUtils.isEmpty(user.getImgHead())){
+            headurl="";
+        }else{
+            headurl= user.getImgHead();
+        }
         edt_name.setText(user.getUsername());
-
-
         edt_card_num.setText(user.getUserno());
-        edt_age.setText(user.getAge());
+        String info=user.getUserno();
+//        edt_name.setEnabled(false);
+        isCard=true;
+        try {
+            if(info.length()==18){
+                edt_age.setText(CardUtil.getCarInfo(info));
+                edt_card_num.setEnabled(false);
+            }else if(info.length()==15){
+                edt_age.setText(CardUtil.getCarInfo15W(info));
+                edt_card_num.setEnabled(false);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+
         if (!TextUtils.isEmpty(user.getUserHeight())) {
             edt_height.setText(user.getUserHeight());
         }
@@ -793,6 +873,11 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
 
             }
 
+            @Override
+            public void onError(Exception e) {
+
+            }
+
         }));
     }
 
@@ -828,6 +913,7 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO.getJSONArray("UserInfoChange");
                     stopProgressDialog();
+
                     if (array.getJSONObject(0).getString("MessageCode")
                             .equals("0")) {
                         doInquery();
@@ -837,6 +923,7 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                     CustomApplcation.getInstance().isRead=false;
                     Intent intenthealth = new Intent("userrefresh");
                     sendBroadcast(intenthealth);
+
                     finishActivity();
 
                 } catch (Exception e) {
@@ -845,6 +932,11 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                     setTVEeable(true);
                 }
 
+            }
+
+            @Override
+            public void onError(Exception e) {
+                setTVEeable(true);
             }
         }));
     }
@@ -899,6 +991,11 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
 
@@ -916,4 +1013,49 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
         dialog.show();
         dialog = null;
     }
+    private void doAge(){
+        if (edt_card_num.getText().toString().length() > 14) {
+            try {
+                String info = IDCardValidate.IDCardValidateStr(edt_card_num.getText().toString().toLowerCase());
+                if (!TextUtils.isEmpty(info)) {
+                    show("身份证号格式不正确");
+                    setTVEeable(true);
+                    isCard=false;
+                    edt_card_num.setFocusable(true);
+                    edt_card_num.setSelection(info.length());
+
+                }else {
+                    if (edt_card_num.getText().toString().length() == 18) {
+                        edt_age.setText(CardUtil.getCarInfo(edt_card_num.getText().toString()));
+                    } else if (edt_card_num.getText().toString().length() == 15) {
+                        edt_age.setText(CardUtil.getCarInfo15W(edt_card_num.getText().toString()));
+                    }
+                    isCard = true;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else if(edt_card_num.getText().toString().length() > 0){
+            showCard("身份证号格式不正确");
+            setTVEeable(true);
+            edt_card_num.setFocusable(true);
+            isCard=false;
+            return;
+        }
+    }
+    public  void showCard(String message) {
+
+        DialogTips dialog = new DialogTips(PersonalCenterInfo.this, message, "确定");
+        dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int userId) {
+                isCard=true;
+            }
+        });
+        dialog.show();
+        dialog = null;
+
+
+    }
+
 }

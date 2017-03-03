@@ -78,6 +78,11 @@ public class SelectHospitalActivity extends NetBaseActivity {
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
     }

@@ -150,6 +150,7 @@ public class MedicalExaminationActivity extends BaseActivity implements View.OnC
                     JSONObject mySO = (JSONObject) result;
                     org.json.JSONArray array = mySO
                             .getJSONArray("MeidicalReportInquiry");
+                    if(rlnodate!=null&&listView!=null){
                     if (array.getJSONObject(0).has("MessageCode")) {
                         rlnodate.setVisibility(View.VISIBLE);
                     } else {
@@ -167,12 +168,18 @@ public class MedicalExaminationActivity extends BaseActivity implements View.OnC
                             listView.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
                         }
+                    }
 
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
 

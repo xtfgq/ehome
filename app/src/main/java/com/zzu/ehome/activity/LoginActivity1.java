@@ -330,6 +330,11 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
 
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 
@@ -389,6 +394,11 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
 
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 
@@ -414,6 +424,11 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
     }
@@ -451,6 +466,11 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 
@@ -475,42 +495,49 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
      */
     private void getToken(String userid, final String name, final String head) {
 
-        requestMaker.getToken(userid, name, head, new JsonAsyncTask_Info(LoginActivity1.this, true, new JsonAsyncTaskOnComplete() {
 
-            @Override
-            public void processJsonObject(Object result) {
-                try {
-                    JSONObject mySO = (JSONObject) result;
-                    org.json.JSONArray array = mySO
-                            .getJSONArray("GetToken");
-                    if (array.getJSONObject(0).getString("MessageCode").toString().equals("0")) {
-                        token = array.getJSONObject(0).getString("MessageContent").toString();
-                        SharedPreferences.Editor edit = DemoContext.getInstance().getSharedPreferences().edit();
-                        edit.putString("DEMO_TOKEN", token);
-                        edit.apply();
-                        CommonUtils.connent(token, new CommonUtils.RongIMListener() {
-                            @Override
-                            public void OnSuccess(String userid) {
+            requestMaker.getToken(userid, name, head, new JsonAsyncTask_Info(LoginActivity1.this, true, new JsonAsyncTaskOnComplete() {
+
+                @Override
+                public void processJsonObject(Object result) {
+                    try {
+                        JSONObject mySO = (JSONObject) result;
+                        org.json.JSONArray array = mySO
+                                .getJSONArray("GetToken");
+                        if (array.getJSONObject(0).getString("MessageCode").toString().equals("0")) {
+                            token = array.getJSONObject(0).getString("MessageContent").toString();
+                            SharedPreferences.Editor edit = DemoContext.getInstance().getSharedPreferences().edit();
+                            edit.putString("DEMO_TOKEN", token);
+                            edit.apply();
+                            CommonUtils.connent(token, new CommonUtils.RongIMListener() {
+                                @Override
+                                public void OnSuccess(String userid) {
 //                                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
 
-                                RongIM.getInstance().setCurrentUserInfo(new UserInfo(userid, name, Uri.parse(head)));
-                                RongIM.getInstance().setMessageAttachedUserInfo(true);
-                                CustomApplcation.getInstance().isOnLine=1;
-                            }
-                        });
+                                    RongIM.getInstance().setCurrentUserInfo(new UserInfo(userid, name, Uri.parse(head)));
+                                    RongIM.getInstance().setMessageAttachedUserInfo(true);
+                                    CustomApplcation.getInstance().isOnLine = 1;
+                                }
+                            });
 
-                    } else {
-                        Toast.makeText(LoginActivity1.this, array.getJSONObject(0).getString("MessageContent").toString(),
-                                Toast.LENGTH_SHORT).show();
+                        } else {
+//                            Toast.makeText(LoginActivity1.this, array.getJSONObject(0).getString("MessageContent").toString(),
+//                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        CustomApplcation.getInstance().isOnLine = 0;
                     }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    CustomApplcation.getInstance().isOnLine=0;
                 }
 
-            }
-        }));
+                @Override
+                public void onError(Exception e) {
+
+                }
+            }));
+
 
 
     }
@@ -529,6 +556,11 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));
@@ -569,6 +601,11 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                 mEditPass.setText(user2.getUserPassword());
                 stopProgressDialog();
 
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
 
@@ -613,6 +650,11 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         } ));
 
     }
@@ -650,6 +692,11 @@ public class LoginActivity1 extends BaseActivity implements View.OnClickListener
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));

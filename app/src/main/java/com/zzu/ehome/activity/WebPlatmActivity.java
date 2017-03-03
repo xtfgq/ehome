@@ -87,7 +87,7 @@ public class WebPlatmActivity extends BaseActivity implements View.OnClickListen
             }
         });
         selectColor=getResources().getColor(R.color.bottom_text_color_pressed);
-        unSelectColor=getResources().getColor(R.color.bottom_text_color_normal);
+        unSelectColor=getResources().getColor(R.color.bottom_text_colorg_normal);
         tv_zongjian=(TextView)findViewById(R.id.tv_zongjian);
         tv_tijian=(TextView)findViewById(R.id.tv_tijian);
         iv_zongjian=(ImageView)findViewById(R.id.iv_zongjian);
@@ -96,8 +96,8 @@ public class WebPlatmActivity extends BaseActivity implements View.OnClickListen
         layout_tijian=(RelativeLayout)findViewById(R.id.layout_tijian);
         fragments=new Fragment[2];
 
-        fragments[0]= WebPlatmFramet.getInstance(Constants.EhomeURL+"/WebServices/HealthTest.aspx?"+"Name="+name+"&CHKCODE="+CHKCODE+"&UserNo="+UserNo);
-        fragments[1]= WebPlatmFramet.getInstance(Constants.EhomeURL+"/WebServices/HealthTestDetail.aspx?"+"CHKCODE="+CHKCODE);
+        fragments[0]= WebPlatmFramet.getInstance(Constants.EhomeURL+"/WebServices/HealthTest.aspx?"+"Name="+name+"&CHKCODE="+CHKCODE+"&UserNo="+UserNo+"&HosName="+hosname);
+        fragments[1]= WebPlatmFramet.getInstance(Constants.EhomeURL+"/WebServices/HealthTestDetail.aspx?"+"CHKCODE="+CHKCODE+"&Name="+name+"&UserNo="+UserNo+"&HosName="+hosname);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,fragments[0]).commit();
         resetImgs();
         iv_zongjian.setImageResource(R.mipmap.icon_zjbg);
@@ -180,6 +180,7 @@ public class WebPlatmActivity extends BaseActivity implements View.OnClickListen
                             RxBus.getInstance().send(new EventType("smart"));
                             CustomApplcation.getInstance().finishSingleActivityByClass(SmartSearchActivity.class);
                             finishActivity();
+                            ToastUtils.showMessage(WebPlatmActivity.this,"保存成功");
                         }else{
                             ToastUtils.showMessage(WebPlatmActivity.this, array.getJSONObject(0).getString("MessageContent"));
                         }
@@ -188,6 +189,11 @@ public class WebPlatmActivity extends BaseActivity implements View.OnClickListen
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
     }

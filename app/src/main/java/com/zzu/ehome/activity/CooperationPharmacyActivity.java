@@ -196,6 +196,11 @@ public class CooperationPharmacyActivity extends BaseActivity {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 

@@ -54,7 +54,6 @@
                 android:layout_height="wrap_content"
                 tool:text="ednum"
                 android:gravity="center"
-
                 android:textColor="#949395"
                 />
 
@@ -64,7 +63,6 @@
                 android:layout_height="wrap_content"
                 tool:text="g/l"
                 android:layout_marginLeft="5dp"
-
                 android:textColor="#949395"
                 />
             </LinearLayout>

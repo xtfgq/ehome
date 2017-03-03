@@ -393,6 +393,12 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
 
                     }
 
+                    @Override
+                    public void onError(Exception e) {
+                        if(btn_save!=null)
+                        setEventEnable(true);
+                    }
+
                 }));
 
 

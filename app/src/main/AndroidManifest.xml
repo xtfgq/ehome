@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
 
     <!-- 支持iBeancon 需要蓝牙权限 -->
@@ -46,7 +47,7 @@
     <uses-permission android:name="com.sec.android.provider.badge.permission.READ" />
     <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" />
     <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" />
-
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <permission
         android:name="getui.permission.GetuiService.com.zzu.ehome"
         android:protectionLevel="normal" />
@@ -164,10 +165,11 @@
             android:name=".activity.SelectPlatmHospitalActivity"
             android:theme="@style/mydialog" />
         <activity android:name=".activity.BiochemistryReportDetailActivity" />
-
+        <activity android:name=".activity.SignAgreementActivity" />
         <activity android:name=".view.crop.CropImageActivity" />
 
         <activity android:name=".activity.EcgDesActivity" />
+        <activity android:name=".activity.CurvedShapeListActivity" />
         <activity
             android:name=".activity.SelectItemActivity"
             android:theme="@style/mydialog" />

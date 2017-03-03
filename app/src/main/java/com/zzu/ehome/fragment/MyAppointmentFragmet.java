@@ -111,103 +111,110 @@ public class MyAppointmentFragmet extends BaseFragment {
                 try {
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO.getJSONArray("OrderInquiryByTopmd");
-                    if (array.getJSONObject(0).has("MessageCode")) {
+                    if(mView!=null) {
+                        if (array.getJSONObject(0).has("MessageCode")) {
 //                        Toast.makeText(getActivity(), array.getJSONObject(0).getString("MessageContent").toString(),
 //                                Toast.LENGTH_SHORT).show();
-                        layout_none.setVisibility(View.VISIBLE);
-                    } else {
-                        OrderInquiryByTopmdDate date = JsonTools.getData(result.toString(), OrderInquiryByTopmdDate.class);
-                        List<OrderInquiryByTopmd> temp = date.getData();
-                        list.clear();
-                        for (OrderInquiryByTopmd bean : temp) {
-                            if (!bean.getOrderStatus().equals("02")) {
-                                if (bean.getOrderStatus().equals("07")) {
-                                    bean.setType(1);
-                                } else {
-                                    bean.setType(0);
-                                }
-                                list.add(bean);
-                            }
-                        }
-                        if (list.size() == 0) {
                             layout_none.setVisibility(View.VISIBLE);
-                        }
-
-                        if (adapter == null) {
-                            adapter = new MyAppointmetAdapter(getActivity(), list);
-                            listView.setAdapter(adapter);
                         } else {
-                            adapter.notifyDataSetChanged();
+                            OrderInquiryByTopmdDate date = JsonTools.getData(result.toString(), OrderInquiryByTopmdDate.class);
+                            List<OrderInquiryByTopmd> temp = date.getData();
+                            list.clear();
+                            for (OrderInquiryByTopmd bean : temp) {
+                                if (!bean.getOrderStatus().equals("02")) {
+                                    if (bean.getOrderStatus().equals("07")) {
+                                        bean.setType(1);
+                                    } else {
+                                        bean.setType(0);
+                                    }
+                                    list.add(bean);
+                                }
+                            }
+                            if (list.size() == 0) {
+                                layout_none.setVisibility(View.VISIBLE);
+                            }
+
+                            if (adapter == null) {
+                                adapter = new MyAppointmetAdapter(getActivity(), list);
+                                listView.setAdapter(adapter);
+                            } else {
+                                adapter.notifyDataSetChanged();
+                            }
+
+                            SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+                                @Override
+                                public void create(SwipeMenu menu) {
+                                    // Create different menus depending on the view type
+                                    switch (menu.getViewType()) {
+                                        case 0:
+                                            createMenu1(menu);
+                                            break;
+                                        case 1:
+                                            createMenu2(menu);
+                                            break;
+
+
+                                    }
+                                }
+
+                                private void createMenu1(SwipeMenu menu) {
+                                    SwipeMenuItem delItem = new SwipeMenuItem(
+                                            getActivity());
+                                    // set item background
+
+                                    delItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
+                                    // set item width
+                                    delItem.setWidth(ScreenUtils.dip2px(getActivity(), 90));
+                                    // set item title
+                                    delItem.setTitle("取消预约");
+                                    // set item title fontsize
+                                    delItem.setTitleSize(18);
+                                    // set item title font color
+                                    delItem.setTitleColor(Color.WHITE);
+                                    // add to menu
+                                    menu.addMenuItem(delItem);
+                                }
+
+                                private void createMenu2(SwipeMenu menu) {
+                                    SwipeMenuItem item1 = new SwipeMenuItem(
+                                            getActivity());
+
+                                    menu.addMenuItem(item1);
+
+
+                                }
+
+
+                            };
+
+                            listView.setMenuCreator(creator);
+                            listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                                    OrderInquiryByTopmd item = list.get(position);
+                                    switch (index) {
+                                        case 0:
+                                            // open
+                                            deleteRecent(item, position);
+                                            break;
+
+                                    }
+                                    return false;
+                                }
+
+                            });
                         }
-
-                        SwipeMenuCreator creator = new SwipeMenuCreator() {
-
-                            @Override
-                            public void create(SwipeMenu menu) {
-                                // Create different menus depending on the view type
-                                switch (menu.getViewType()) {
-                                    case 0:
-                                        createMenu1(menu);
-                                        break;
-                                    case 1:
-                                        createMenu2(menu);
-                                        break;
-
-
-                                }
-                            }
-
-                            private void createMenu1(SwipeMenu menu) {
-                                SwipeMenuItem delItem = new SwipeMenuItem(
-                                        getActivity());
-                                // set item background
-
-                                delItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
-                                // set item width
-                                delItem.setWidth(ScreenUtils.dip2px(getActivity(), 90));
-                                // set item title
-                                delItem.setTitle("取消预约");
-                                // set item title fontsize
-                                delItem.setTitleSize(18);
-                                // set item title font color
-                                delItem.setTitleColor(Color.WHITE);
-                                // add to menu
-                                menu.addMenuItem(delItem);
-                            }
-
-                            private void createMenu2(SwipeMenu menu) {
-                                SwipeMenuItem item1 = new SwipeMenuItem(
-                                        getActivity());
-
-                                menu.addMenuItem(item1);
-
-
-                            }
-
-
-                        };
-
-                        listView.setMenuCreator(creator);
-                        listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                                OrderInquiryByTopmd item = list.get(position);
-                                switch (index) {
-                                    case 0:
-                                        // open
-                                        deleteRecent(item, position);
-                                        break;
-
-                                }
-                                return false;
-                            }
-
-                        });
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 
@@ -251,6 +258,11 @@ public class MyAppointmentFragmet extends BaseFragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 

@@ -28,6 +28,8 @@ import com.zzu.ehome.bean.StepBean;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.service.StepDetector;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -105,6 +107,8 @@ public abstract class SupperBaseActivity extends FragmentActivity {
                     }else if(netInfo.getType()==ConnectivityManager.TYPE_MOBILE){
 
                     }
+
+
                 } else {
                     isNetWork=false;
                     //无网络状态
@@ -121,12 +125,6 @@ public abstract class SupperBaseActivity extends FragmentActivity {
     public void showNetWorkErrorDialog(){
       SVProgressHUD.showErrorWithStatus(SupperBaseActivity.this, "网络异常,请稍候重试!", SVProgressHUD.SVProgressHUDMaskType.Gradient);
     }
-
-
-
-
-
-
     @Override
     protected void onCreate(Bundle arg0) {
         // TODO Auto-generated method stub
@@ -207,6 +205,10 @@ public abstract class SupperBaseActivity extends FragmentActivity {
         mHeadView.init(HeadView.HeaderStyle.LEFTANDTITLE);
         mHeadView.setLeftWithTitleViewMethod(leftsrcid, title, onleftclicklistener);
     }
+    public void setHeadTitle(String title) {
+        mHeadView = (HeadView) findViewById(R.id.common_actionbar);
+        mHeadView.setTitle(title);
+    }
 
     public void startProgressDialog() {
         if (progressDialog == null) {
@@ -276,6 +278,15 @@ public abstract class SupperBaseActivity extends FragmentActivity {
         if( CustomApplcation.getInstance().isOnLine==0){
             confirmLogin();
         }
+
+    }
+    public void startProgressDialogTitle(String title) {
+        if (progressDialog == null) {
+            progressDialog = CustomProgressDialog.createDialog(this);
+            progressDialog.setMessage(title);
+        }
+
+        progressDialog.show();
 
     }
 
@@ -419,8 +430,6 @@ public abstract class SupperBaseActivity extends FragmentActivity {
                 if (UserClientBind == null) {
 
                 } else {
-
-
                     try {
                         JSONObject mySO = (JSONObject) result;
                         JSONArray array = mySO
@@ -443,12 +452,15 @@ public abstract class SupperBaseActivity extends FragmentActivity {
                         i.putExtra("logout", "logout");
                         i.putExtra("Home","Home");
                         startActivity(i);
-
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));
@@ -485,6 +497,11 @@ public abstract class SupperBaseActivity extends FragmentActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
     }
@@ -568,6 +585,7 @@ public abstract class SupperBaseActivity extends FragmentActivity {
 
         dialog.show();
         dialog = null;
+
 
     }
 

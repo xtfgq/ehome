@@ -45,6 +45,17 @@ public class DialogTips extends DialogBase {
         super.setTitle(title);
         super.setCancel(isCancel);
     }
+    public DialogTips(Context context, String message, String buttonText, String negetiveText, String title, boolean hasNegative, boolean hasTitle) {
+        super(context);
+        super.setMessage(message);
+        super.setNamePositiveButton(buttonText);
+        this.hasNegative = hasNegative;
+        super.setNameNegativeButton(negetiveText);
+        this.hasTitle = hasTitle;
+        super.setTitle(title);
+        super.setCancel(false);
+    }
+
 
 
     @Override

@@ -83,6 +83,11 @@ public class SelectItemActivity extends NetBaseActivity {
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
     }

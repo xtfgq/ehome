@@ -46,7 +46,7 @@ public class OkHttpClientManager {
     private OkHttpClient mClient;//OkHttpClient实例
     private OkHttpClientManager() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.readTimeout(READ_TIMEOUT, TimeUnit.SECONDS);
+        builder.readTimeout(READ_TIMEOUT, TimeUnit.MICROSECONDS);
         builder.writeTimeout(WRITE_TIMEOUT,TimeUnit.SECONDS);
         builder.connectTimeout(CONNECT_TIMEOUT,TimeUnit.SECONDS);
         builder.retryOnConnectionFailure(true);
@@ -147,6 +147,7 @@ public class OkHttpClientManager {
             }
         }).subscribeOn(Schedulers.io())//设置执行耗时操作（线程池）
                 .observeOn(AndroidSchedulers.mainThread())//Rxjava的返回结果运行在主线程
+
                 .subscribe(new Observer<Object>() {
 
                     @Override

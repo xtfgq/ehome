@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.SelectDateAndTime;
@@ -46,8 +47,14 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by zzu on 2016/4/12.
@@ -70,7 +77,7 @@ public class TempFragment extends BaseFragment {
     private SupperBaseActivity activity;
 
     public static int p = -1;
-
+    private CompositeSubscription compositeSubscription;
 
     @Override
     public void onAttach(Context context) {
@@ -130,6 +137,31 @@ public class TempFragment extends BaseFragment {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         tvcltime.setText(df.format(new Date()));
         checktime = df.format(new Date());
+        compositeSubscription = new CompositeSubscription();
+
+        //监听订阅事件
+        Subscription subscription = RxBus.getInstance().toObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object event) {
+                        if (event == null) {
+                            return;
+                        }
+
+                        if (event instanceof EventType){
+                            EventType type=(EventType)event;
+                            if("fail".equals(type.getType()))
+                                btnsave.setEnabled(true);
+
+                        }
+
+                    }
+                });
+        //subscription交给compositeSubscription进行管理，防止内存溢出
+        compositeSubscription.add(subscription);
         mHeight.setOnValueChangedListener(new ScaleMarkView.OnValueChangedListener() {
             @Override
             public void onValueChanged(ScaleMarkView view, BigDecimal oldValue, BigDecimal newValue) {
@@ -155,19 +187,24 @@ public class TempFragment extends BaseFragment {
             public void onClick(View v) {
                 if(!activity.isNetWork){
                     activity.showNetWorkErrorDialog();
-                    return;
-
+                }else {
+                    addTemperature();
                 }
-                if (CommonUtils.isFastClick()) return;
-                btnsave.setEnabled(false);
-                addTemperature();
+
             }
         });
 
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
     private void addTemperature() {
+        btnsave.setEnabled(false);
         requestMaker.TemperatureInsert(cardNo,userid, checktime, tw + "", new JsonAsyncTask_Info(
                 getActivity(), true, new JsonAsyncTaskOnComplete() {
             public void processJsonObject(Object result) {
@@ -200,6 +237,7 @@ public class TempFragment extends BaseFragment {
                                 getActivity().finish();
                             }
                         }
+
                     } else {
                         ToastUtils.showMessage(getActivity(), array.getJSONObject(0).getString("MessageContent"));
                     }
@@ -207,6 +245,11 @@ public class TempFragment extends BaseFragment {
                     e.printStackTrace();
                     btnsave.setEnabled(true);
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));
@@ -247,6 +290,11 @@ public class TempFragment extends BaseFragment {
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 
@@ -273,7 +321,7 @@ public class TempFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        compositeSubscription.unsubscribe();
     }
 
     @Override

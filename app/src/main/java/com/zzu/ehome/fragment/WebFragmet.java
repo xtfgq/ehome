@@ -121,6 +121,7 @@ public class WebFragmet extends BaseFragment {
                     org.json.JSONArray array = mySO
                             .getJSONArray("TreatmentSearch");
                     stopProgressDialog();
+                    if(layout_none!=null&&listView!=null){
                     if (array.getJSONObject(0).has("MessageCode")) {
                         layout_none.setVisibility(View.VISIBLE);
                     } else {
@@ -137,10 +138,10 @@ public class WebFragmet extends BaseFragment {
 //                            }
                         }
 
-                        if(adapter==null){
+                        if (adapter == null) {
                             adapter = new WebAdapter(getActivity(), list);
                             listView.setAdapter(adapter);
-                        }else{
+                        } else {
                             adapter.notifyDataSetChanged();
                         }
                         SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -176,6 +177,7 @@ public class WebFragmet extends BaseFragment {
                                 // add to menu
                                 menu.addMenuItem(delItem);
                             }
+
                             private void createMenu2(SwipeMenu menu) {
                                 SwipeMenuItem item1 = new SwipeMenuItem(
                                         getActivity());
@@ -203,6 +205,7 @@ public class WebFragmet extends BaseFragment {
                                 return false;
                             }
                         });
+                    }
 
 
 
@@ -211,6 +214,11 @@ public class WebFragmet extends BaseFragment {
                     e.printStackTrace();
                 }
 
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));
@@ -248,6 +256,11 @@ public class WebFragmet extends BaseFragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 

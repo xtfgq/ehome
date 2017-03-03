@@ -60,6 +60,18 @@ public class MSDoctorDetailBean {
     @SerializedName("ApplyTo")
     private String ApplyTo;
 
+    public String getUserIsSign() {
+        return UserIsSign;
+    }
+
+    public void setUserIsSign(String userIsSign) {
+        UserIsSign = userIsSign;
+    }
+
+    @SerializedName("UserIsSign")
+    private String UserIsSign;
+
+
     public String getDoctorOLexplain() {
         return DoctorOLexplain;
     }
@@ -71,27 +83,47 @@ public class MSDoctorDetailBean {
     @SerializedName("DoctorOLexplain")
     private String DoctorOLexplain;
 
-//    @SerializedName("StartOLTime")
-//    private String StartOLTime;
-//    @SerializedName("EndOLTime")
-//    private String EndOLTime;
+    @SerializedName("StartOLTime")
+    private String StartOLTime;
+    @SerializedName("EndOLTime")
+    private String EndOLTime;
+
+    @SerializedName("StartTime")
+    private String StartTime;
+    @SerializedName("EndTime")
+    private String EndTime;
 
 
-//    public String getStartOLTime() {
-//        return StartOLTime;
-//    }
-//
-//    public void setStartOLTime(String startOLTime) {
-//        StartOLTime = startOLTime;
-//    }
-//
-//    public String getEndOLTime() {
-//        return EndOLTime;
-//    }
-//
-//    public void setEndOLTime(String endOLTime) {
-//        EndOLTime = endOLTime;
-//    }
+    public String getStartTime() {
+        return StartTime;
+    }
+
+    public void setStartTime(String startTime) {
+        StartTime = startTime;
+    }
+
+    public String getEndTime() {
+        return EndTime;
+    }
+
+    public void setEndTime(String endTime) {
+        EndTime = endTime;
+    }
+    public String getStartOLTime() {
+        return StartOLTime;
+    }
+
+    public void setStartOLTime(String startOLTime) {
+        StartOLTime = startOLTime;
+    }
+
+    public String getEndOLTime() {
+        return EndOLTime;
+    }
+
+    public void setEndOLTime(String endOLTime) {
+        EndOLTime = endOLTime;
+    }
 
     public String getApplyTo() {
         return ApplyTo;

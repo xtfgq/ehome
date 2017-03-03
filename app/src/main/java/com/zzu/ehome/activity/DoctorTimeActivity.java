@@ -1,9 +1,14 @@
 package com.zzu.ehome.activity;
 
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +32,12 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import static com.zzu.ehome.R.attr.position;
+import static com.zzu.ehome.R.id.ivmore;
+import static com.zzu.ehome.R.id.tv;
+import static com.zzu.ehome.R.id.tvdes;
+import static com.zzu.ehome.R.id.tvjianjie;
+
 /**
  * Created by Mersens on 2016/8/9.
  */
@@ -37,12 +48,16 @@ public class DoctorTimeActivity extends BaseActivity {
     private ImageView icon_share;
     private TextView tv_title;
     private RequestMaker requestMaker;
-    String hosid,depid,doctorid,DepartmentName,picUrl,name,HospitalName;
+    String hosid,depid,doctorid,DepartmentName,picUrl,name,HospitalName,GoodDisease
+            ;
     private TextView tvname,tv_msg;
     private ImageView icon_user;
     private ImageLoader mImageLoader;
     private RelativeLayout   rltop;
-
+    private LinearLayout lldes,lljianjie;
+    private int index = 0;
+    private TextView tvjianjie,tvdes;
+    private ImageView ivmore;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -56,6 +71,7 @@ public class DoctorTimeActivity extends BaseActivity {
         picUrl=this.getIntent().getStringExtra("picUrl");
         name=this.getIntent().getStringExtra("doctorName");
         HospitalName=this.getIntent().getStringExtra("HospitalName");
+        GoodDisease=this.getIntent().getStringExtra("GoodDisease");
         mImageLoader=ImageLoader.getInstance();
         initViews();
         initEvent();
@@ -74,6 +90,11 @@ public class DoctorTimeActivity extends BaseActivity {
         tvname=(TextView)findViewById(R.id.tv_name);
         tv_msg=(TextView)findViewById(R.id.tv_msg);
         rltop=(RelativeLayout)findViewById(R.id.rltop);
+        lljianjie=(LinearLayout)findViewById(R.id.lljianjie);
+        lldes = (LinearLayout) findViewById(R.id.lldes);
+        tvjianjie = (TextView) findViewById(R.id.tvjianjie);
+        tvdes = (TextView) findViewById(R.id.tvdes);
+        ivmore = (ImageView) findViewById(R.id.ivmore);
         if(picUrl.contains("vine")){
             icon_user.setBackgroundResource(R.drawable.icon_doctor);
         }else {
@@ -85,6 +106,12 @@ public class DoctorTimeActivity extends BaseActivity {
         para.width = ScreenUtils.getScreenWidth(DoctorTimeActivity.this);
         para.height = para.width*20/75;
         rltop.setLayoutParams(para);
+        if(TextUtils.isEmpty(GoodDisease)){
+            lljianjie.setVisibility(View.GONE);
+        }else{
+            lljianjie.setVisibility(View.VISIBLE);
+
+        }
     }
 
     public void initEvent() {
@@ -102,7 +129,36 @@ public class DoctorTimeActivity extends BaseActivity {
         });
         tv_title.setText(name);
         tvname.setText(DepartmentName);
-
+        tvjianjie.setText(GoodDisease);
+        tvjianjie.post(new Runnable() {
+            @Override
+            public void run() {
+                int line=tvjianjie.getLineCount();
+                if(tvjianjie.getLineCount()>2){
+                    turnToDown(ivmore);
+                    tvdes.setText("查看详情");
+                    tvjianjie.setMaxLines(2);
+                    lldes.setVisibility(View.VISIBLE);
+                }else{
+                    lldes.setVisibility(View.GONE);
+                }
+            }
+        });
+        lldes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (index % 2 == 0) {
+                    tvjianjie.setMaxLines(100);
+                    turnToUp(ivmore);
+                    tvdes.setText("收起详情");
+                } else {
+                    tvjianjie.setMaxLines(2);
+                    turnToDown(ivmore);
+                    tvdes.setText("查看详情");
+                }
+                index++;
+            }
+        });
     }
 
     public void initDatas() {
@@ -120,21 +176,46 @@ public class DoctorTimeActivity extends BaseActivity {
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO
                             .getJSONArray("DoctorSchemaByTopmd");
-                    if (array.getJSONObject(0).has("MessageCode")) {
+                    if(listView!=null) {
+                        if (array.getJSONObject(0).has("MessageCode")) {
 //                        Toast.makeText(DoctorTimeActivity.this, array.getJSONObject(0).getString("MessageContent").toString(),
 //                                Toast.LENGTH_SHORT).show();
-                        show(array.getJSONObject(0).getString("MessageContent").toString());
-                    } else {
-                        DoctorSchemaByTopmdDate date = JsonTools.getData(result.toString(), DoctorSchemaByTopmdDate.class);
-                        List<DoctorSchemaByTopmdBean> mList=date.getData();
-                        adapter=new DoctorTimeAdapter(DoctorTimeActivity.this,mList,hosid,depid,doctorid,DepartmentName);
-                        listView.setAdapter(adapter);
+                            show(array.getJSONObject(0).getString("MessageContent").toString());
+                        } else {
+                            DoctorSchemaByTopmdDate date = JsonTools.getData(result.toString(), DoctorSchemaByTopmdDate.class);
+                            List<DoctorSchemaByTopmdBean> mList = date.getData();
+                            adapter = new DoctorTimeAdapter(DoctorTimeActivity.this, mList, hosid, depid, doctorid, DepartmentName);
+                            listView.setAdapter(adapter);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
+    }
+    private void turnToUp(ImageView iv) {
+        Matrix matrix = new Matrix();
+        Bitmap bitmap = ((BitmapDrawable) getResources().getDrawable(R.mipmap.icon_arr_g_down)).getBitmap();
+        // 设置旋转角度
+        matrix.setRotate(180f);
+        // 重新绘制Bitmap
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        iv.setImageBitmap(bitmap);
+    }
+    private void turnToDown(ImageView iv) {
+        Matrix matrix = new Matrix();
+        Bitmap bitmap = ((BitmapDrawable) getResources().getDrawable(R.mipmap.icon_arr_g_down)).getBitmap();
+        // 设置旋转角度
+        matrix.setRotate(360f);
+        // 重新绘制Bitmap
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        iv.setImageBitmap(bitmap);
     }
 }

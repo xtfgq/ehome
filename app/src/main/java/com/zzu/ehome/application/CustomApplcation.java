@@ -186,5 +186,13 @@ public class CustomApplcation extends MultiDexApplication {
         }
     }
 
+//    public  Activity getStackTopActivity()
+//    {
+//        if (mList.isEmpty()) {
+//            return null;
+//        }
+//        return mList.get(mList.size()-1);
+//    }
+
 
 }

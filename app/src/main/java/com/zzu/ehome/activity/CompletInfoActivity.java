@@ -208,6 +208,11 @@ public class CompletInfoActivity extends BaseActivity implements View.OnClickLis
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 
@@ -255,6 +260,11 @@ public class CompletInfoActivity extends BaseActivity implements View.OnClickLis
 //                    }
 //                    ]
 //                }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
 
@@ -582,6 +592,11 @@ public class CompletInfoActivity extends BaseActivity implements View.OnClickLis
 
             }
 
+            @Override
+            public void onError(Exception e) {
+
+            }
+
         }));
     }
 
@@ -612,6 +627,11 @@ public class CompletInfoActivity extends BaseActivity implements View.OnClickLis
                         imgHead, iv_head);
                 isHead = true;
 
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
 

@@ -193,6 +193,7 @@ public class ExaminationReportActivity extends BaseActivity {
                     JSONObject mySO = (JSONObject) result;
                     org.json.JSONArray array = mySO
                             .getJSONArray("MeidicalReportInquiry");
+                    if(listView!=null&&layout_none!=null){
                     if (array.getJSONObject(0).has("MessageCode")) {
                         layout_none.setVisibility(View.VISIBLE);
                     } else {
@@ -209,6 +210,7 @@ public class ExaminationReportActivity extends BaseActivity {
                             listView.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
                         }
+                    }
 
                     }
 
@@ -221,6 +223,11 @@ public class ExaminationReportActivity extends BaseActivity {
                         isRefresh=false;
                     }
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
 

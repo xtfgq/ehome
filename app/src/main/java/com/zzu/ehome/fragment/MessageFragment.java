@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -24,18 +25,32 @@ import com.zzu.ehome.adapter.MessageAdapter;
 import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.bean.CapaingBean;
 import com.zzu.ehome.bean.MessageBean;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
+import com.zzu.ehome.view.RefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
+
+import static com.zzu.ehome.R.id.layout_no_msg;
+import static com.zzu.ehome.R.id.nologin;
+import static com.zzu.ehome.R.id.refreshLayout;
 
 
 /**
@@ -49,6 +64,7 @@ public class MessageFragment extends BaseFragment {
     private RequestMaker requestMaker;
     private SupperBaseActivity activity;
     List<MessageBean> mList=new ArrayList<>();
+    private CompositeSubscription compositeSubscription;
     private BroadcastReceiver mDateOrFileBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -73,7 +89,7 @@ public class MessageFragment extends BaseFragment {
                     bean2.setTips("");
                     mList.add(bean2);
                     MessageBean bean3 = new MessageBean();
-                    bean3.setContent("私人医生");
+                    bean3.setContent("家庭医生");
                     bean3.setNum(0);
                     bean3.setTips("在线问诊记录");
                     mList.add(bean3);
@@ -137,26 +153,57 @@ public class MessageFragment extends BaseFragment {
 
     public void initEvent() {
         userid=SharePreferenceUtil.getInstance(getActivity()).getUserId();
+        compositeSubscription = new CompositeSubscription();
 
-        if(!TextUtils.isEmpty(userid)) {
-            initDatas();
-        }else{
-            mList.clear();
-            MessageBean bean2 = new MessageBean();
-            bean2.setContent("系统消息");
-            bean2.setNum(0);
-            bean2.setTips("");
-            mList.add(bean2);
-            MessageBean bean3 = new MessageBean();
-            bean3.setContent("私人医生");
-            bean3.setNum(0);
-            bean3.setTips("在线问诊记录");
-            mList.add(bean3);
-            messageAdapter=null;
-            listView.setAdapter(null);
-            messageAdapter = new MessageAdapter(getActivity(), mList);
-            listView.setAdapter(messageAdapter);
-        }
+        //监听订阅事件
+        Subscription subscription = RxBus.getInstance().toObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object event) {
+                        if (event == null) {
+                            return;
+                        }
+
+                        if (event instanceof EventType){
+                            EventType type=(EventType)event;
+                            if("succ".equals(type.getType())){
+
+                                if(!TextUtils.isEmpty(userid)) {
+                                    initDatas();
+                                }else{
+                                    mList.clear();
+                                    MessageBean bean2 = new MessageBean();
+                                    bean2.setContent("系统消息");
+                                    bean2.setNum(0);
+                                    bean2.setTips("");
+                                    mList.add(bean2);
+                                    MessageBean bean3 = new MessageBean();
+                                    bean3.setContent("家庭医生");
+                                    bean3.setNum(0);
+                                    bean3.setTips("在线问诊记录");
+                                    mList.add(bean3);
+                                    messageAdapter=null;
+                                    listView.setAdapter(null);
+                                    messageAdapter = new MessageAdapter(getActivity(), mList);
+                                    listView.setAdapter(messageAdapter);
+                                }
+
+
+                            }
+
+
+                        }
+
+                    }
+                });
+        //subscription交给compositeSubscription进行管理，防止内存溢出
+        compositeSubscription.add(subscription);
+
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -171,6 +218,7 @@ public class MessageFragment extends BaseFragment {
                 if (position == 0) {
                     startActivity(new Intent(getActivity(), CampaignActivity.class));
                 } else {
+
                     startActivity(new Intent(getActivity(), ConversationListActivity.class));
                 }
 
@@ -213,49 +261,56 @@ public class MessageFragment extends BaseFragment {
                     bean2.setContent("系统消息");
                     bean2.setNum(0);
                     stopProgressDialog();
-                    if (array.getJSONObject(0).has("MessageCode")) {
+                    if(mView!=null) {
+                        if (array.getJSONObject(0).has("MessageCode")) {
 
-                        bean2.setTips("");
-                        mList.add(bean2);
-                        MessageBean bean3 = new MessageBean();
-                        bean3.setContent("私人医生");
-                        if(CustomApplcation.getInstance().count>0){
-                            bean3.setNum(CustomApplcation.getInstance().count);
-                        }else{
-                            bean3.setNum(0);
-                        }
+                            bean2.setTips("");
+                            mList.add(bean2);
+                            MessageBean bean3 = new MessageBean();
+                            bean3.setContent("家庭医生");
+                            if (CustomApplcation.getInstance().count > 0) {
+                                bean3.setNum(CustomApplcation.getInstance().count);
+                            } else {
+                                bean3.setNum(0);
+                            }
 
-                        bean3.setTips("在线问诊记录");
-                        mList.add(bean3);
-                        messageAdapter=null;
-                        listView.setAdapter(null);
-                        messageAdapter = new MessageAdapter(getActivity(), mList);
-                        listView.setAdapter(messageAdapter);
-                    } else {
-                        CapaingBean bean = new CapaingBean();
-                        bean.setCreateDate(array.getJSONObject(0).getString("CreatedDate"));
-                        bean.setName(array.getJSONObject(0).getString("Log_Content"));
-                        bean.setLog_ID(array.getJSONObject(0).getString("Log_ID"));
-                        bean2.setTips(DateUtils.StringPattern(bean.getCreateDate(),"yyyy-MM-dd HH:mm:ss","yyyy/MM/dd HH:mm"));
-                        mList.add(bean2);
-                        MessageBean bean3 = new MessageBean();
-                        bean3.setContent("私人医生");
-                        if(CustomApplcation.getInstance().count>0){
-                            bean3.setNum(CustomApplcation.getInstance().count);
-                        }else{
-                            bean3.setNum(0);
+                            bean3.setTips("在线问诊记录");
+                            mList.add(bean3);
+                            messageAdapter = null;
+                            listView.setAdapter(null);
+                            messageAdapter = new MessageAdapter(getActivity(), mList);
+                            listView.setAdapter(messageAdapter);
+                        } else {
+                            CapaingBean bean = new CapaingBean();
+                            bean.setCreateDate(array.getJSONObject(0).getString("CreatedDate"));
+                            bean.setName(array.getJSONObject(0).getString("Log_Content"));
+                            bean.setLog_ID(array.getJSONObject(0).getString("Log_ID"));
+                            bean2.setTips(DateUtils.StringPattern(bean.getCreateDate(), "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm"));
+                            mList.add(bean2);
+                            MessageBean bean3 = new MessageBean();
+                            bean3.setContent("家庭医生");
+                            if (CustomApplcation.getInstance().count > 0) {
+                                bean3.setNum(CustomApplcation.getInstance().count);
+                            } else {
+                                bean3.setNum(0);
+                            }
+                            bean3.setTips("在线问诊记录");
+                            mList.add(bean3);
+                            messageAdapter = null;
+                            listView.setAdapter(null);
+                            messageAdapter = new MessageAdapter(getActivity(), mList);
+                            listView.setAdapter(messageAdapter);
                         }
-                        bean3.setTips("在线问诊记录");
-                        mList.add(bean3);
-                        messageAdapter=null;
-                        listView.setAdapter(null);
-                        messageAdapter = new MessageAdapter(getActivity(), mList);
-                        listView.setAdapter(messageAdapter);
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 
@@ -287,5 +342,37 @@ public class MessageFragment extends BaseFragment {
 //                listView.setAdapter(messageAdapter);
 //            }
 //        }
+    }
+//    private void getDoctorList(String CategoryID,String userid,String  cardno){
+//
+//            requestMaker.MSDoctorInquiry(CategoryID, userid,cardno,new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
+//                @Override
+//                public void processJsonObject(Object result) {
+//                    JSONObject mySO = (JSONObject) result;
+//                    try {
+//                        JSONArray array = mySO.getJSONArray("MSDoctorInquiry");
+//
+//                        if (array.getJSONObject(0).has("MessageCode")) {
+////                        Toast.makeText(getActivity(), array.getJSONObject(0).getString("MessageContent").toString(),
+////                                Toast.LENGTH_SHORT).show();
+//
+//
+//                        } else {
+//
+//                        }
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }finally {
+//
+//                    }
+//                }
+//            }));
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeSubscription.unsubscribe();
     }
 }

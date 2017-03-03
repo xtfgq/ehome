@@ -313,9 +313,6 @@ private void UploadPicture(File file,String name) {
     okHttpClientManager.doUpload(Constants.OCR + "?UserID="+ userid+"&HospitalName="+hosname+"&HospitalID="+hosid+"&OCRType="+typeid+"&OCRTypeName="+typename, file, getPhotoFileName(), new OkHttpClientManager.RequestCallBack() {
         @Override
         public void onSueecss(String msg) {
-
-
-
             OCRForAndroidDate date = JsonTools.getData(msg, OCRForAndroidDate.class);
             List<OcrImage>list1=date.getData();
             String url=  list1.get(0).getImgUrl();

@@ -99,12 +99,10 @@ public class JsonAsyncTask_ECGInfo extends AsyncTask<Object, Integer, JSONObject
             SoapPrimitive result = (SoapPrimitive) envelope.getResponse();
             response = result.toString();
             rsJson = new JSONObject(response);
-        } catch (IllegalArgumentException ex2) {
-            ToastUtils.showMessage(myContext,"非法字符！");
-
-        } catch (Exception ex) {
+        }catch (Exception ex) {
 
             ex.printStackTrace();
+            mySATCM.onError(ex);
         }
 
         return rsJson;

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.media.CamcorderProfile.get;
+import static com.zzu.ehome.utils.MessageItem.map;
 
 /**
  * Created by dell on 2016/6/17.
@@ -105,25 +106,32 @@ public class InternetHospitalActivity extends BaseActivity {
                     if (array.getJSONObject(0).has("MessageCode")) {
 
                     } else {
-                        Map<String, Object> map;
-                        for (int i = 0; i < array.length(); i++) {
-                            map = new HashMap<String, Object>();
-                            map.put("Name",
-                                    array.getJSONObject(i).getString("Name"));
-                            map.put("ID",
-                                    array.getJSONObject(i).getString("ID"));
-                            map.put("HaveChild",
-                                    array.getJSONObject(i).getString("HaveChild"));
+                        if(listview!=null) {
+                            Map<String, Object> map;
+                            for (int i = 0; i < array.length(); i++) {
+                                map = new HashMap<String, Object>();
+                                map.put("Name",
+                                        array.getJSONObject(i).getString("Name"));
+                                map.put("ID",
+                                        array.getJSONObject(i).getString("ID"));
+                                map.put("HaveChild",
+                                        array.getJSONObject(i).getString("HaveChild"));
 
-                            mList.add(map);
+                                mList.add(map);
+                            }
+                            adapter = new ECGAdapter(InternetHospitalActivity.this, mList);
+                            listview.setAdapter(adapter);
                         }
-                        adapter = new ECGAdapter(InternetHospitalActivity.this, mList);
-                        listview.setAdapter(adapter);
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));

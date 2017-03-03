@@ -4,7 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.application.Constants;
+import com.zzu.ehome.application.CustomApplcation;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 
 import org.json.JSONObject;
 import org.ksoap2.SoapEnvelope;
@@ -98,12 +102,9 @@ public class JsonAsyncTask_Info extends AsyncTask<Object, Integer, JSONObject> {
             SoapPrimitive result = (SoapPrimitive) envelope.getResponse();
             response = result.toString();
             rsJson = new JSONObject(response);
-        } catch (IllegalArgumentException ex2) {
-            ToastUtils.showMessage(myContext,"非法字符！");
-
-
         } catch (Exception ex) {
             ex.printStackTrace();
+            mySATCM.onError(ex);
         }
 
         return rsJson;

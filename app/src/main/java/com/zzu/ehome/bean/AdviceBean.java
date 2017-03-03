@@ -22,6 +22,17 @@ public class AdviceBean {
 String Description;
     @SerializedName("Advice")
     String Advice;
+
+    public String getMonitorTime() {
+        return MonitorTime;
+    }
+
+    public void setMonitorTime(String monitorTime) {
+        MonitorTime = monitorTime;
+    }
+
+    @SerializedName("MonitorTime")
+    String MonitorTime;
     public String getDescription() {
         return Description;
     }

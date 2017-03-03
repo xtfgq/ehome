@@ -135,6 +135,11 @@ public class SelectPatientActivity extends BaseActivity {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
 

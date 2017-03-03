@@ -186,10 +186,12 @@ public class MyHomeLayout extends LinearLayout {
     }
 
     private void hidePromotedActions() {
-        mainView.findViewById(R.id.ivpeople).setBackgroundResource(R.drawable.btn_home);
-        mainView.findViewById(R.id.tvname).setVisibility(View.INVISIBLE);
-        invalidate();
-        handler.postDelayed(hideRunnable,ANIMATION_TIME);
+        if(mainView!=null) {
+            mainView.findViewById(R.id.ivpeople).setBackgroundResource(R.drawable.btn_home);
+            mainView.findViewById(R.id.tvname).setVisibility(View.INVISIBLE);
+            invalidate();
+            handler.postDelayed(hideRunnable, ANIMATION_TIME);
+        }
     }
 
     private void showPromotedActions() {
@@ -322,6 +324,7 @@ public class MyHomeLayout extends LinearLayout {
         }
     }
     public void hide(){
+
         hidePromotedActions();
         isMenuOpened = false;
     }

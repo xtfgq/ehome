@@ -95,11 +95,9 @@ public class BloodSuggarChatAdapter extends BaseAdapter implements StickyListHea
         switch (typevalue) {
             case 1:
                 String xt = "血糖:" + res.getBloodSugarValue() + "mmol/l";
-
                 SpannableString style = new SpannableString(xt);
                 style.setSpan(
                         new TextAppearanceSpan(mContext, R.style.styleNormalColor), 3, xt.length() - 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
                 holder.tv_value.setText(style);
                 checkSuager(Float.valueOf(res.getBloodSugarValue()), holder.tv_status,time, holder.rl_status);
                 break;
@@ -107,11 +105,9 @@ public class BloodSuggarChatAdapter extends BaseAdapter implements StickyListHea
                 DecimalFormat decimalFormat = new DecimalFormat("0.0");
                 String xt2 = "血糖:" + decimalFormat.format(Float.valueOf(res.getBloodSugarValue()) / 18) + "mmol/l";
                 int bstart2 = xt2.indexOf("mmol/l");
-
                 SpannableString style2 = new SpannableString(xt2);
                 style2.setSpan(
                         new TextAppearanceSpan(mContext, R.style.styleNormalColor), 3, xt2.length() - 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
                 holder.tv_value.setText(style2);
                 checkSuager(Float.valueOf(res.getBloodSugarValue()) / 18, holder.tv_status, time, holder.rl_status);
                 break;

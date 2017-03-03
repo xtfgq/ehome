@@ -35,10 +35,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 
@@ -105,6 +107,8 @@ public class CooperationPharmacyFragment extends BaseFragment {
         compositeSubscription=new CompositeSubscription();
         Subscription subscription = RxBus.getInstance().toObservable()
                 .observeOn(AndroidSchedulers.mainThread())
+
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object event) {
@@ -124,6 +128,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
 
 
                         }
+
 
                     }
                 });
@@ -303,28 +308,37 @@ public class CooperationPharmacyFragment extends BaseFragment {
                             pb.setId(id);
                             mList.add(pb);
                         }
-                        if(isReflash){
-                            list.clear();
+                        if(layout_no_msg!=null) {
+                            if (isReflash) {
+                                list.clear();
+                            }
+                            if (mList.size() > 0) {
+                                list.addAll(mList);
+                            }
+                            adapter.setList(list);
+                            adapter.notifyDataSetChanged();
+                            layout_no_msg.setVisibility(View.GONE);
                         }
-                        if(mList.size()>0){
-                            list.addAll(mList);
-                        }
-                        adapter.setList(list);
-                        adapter.notifyDataSetChanged();
-                        layout_no_msg.setVisibility(View.GONE);
                     }
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }finally {
-                    if(isReflash){
-                        isReflash=false;
-                        pulltorefreshlayout.refreshFinish(PullToRefreshLayout.SUCCEED);
-                    }else if(isLoading){
-                        isLoading=false;
-                        pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                    if(pulltorefreshlayout!=null) {
+                        if (isReflash) {
+                            isReflash = false;
+                            pulltorefreshlayout.refreshFinish(PullToRefreshLayout.SUCCEED);
+                        } else if (isLoading) {
+                            isLoading = false;
+                            pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                        }
                     }
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 

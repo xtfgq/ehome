@@ -60,7 +60,11 @@
     <string name="no_photo">没有照片</string>
 
     <string name="record_desc"> 通过上方"拍报告"功能手动上传。&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</string>
-
     //健康数据刷新
     <string name="healthdata">healthdata</string>
+    <string name="no_suggest">您目前很健康\n请继续保持</string>
+    <string name="other_tips1">签约居民对签约服务团队提供的签约服务不满意时，有权向基层医疗机构提出终止服务协议；签约居民提出服务协议内容以外的要求或有侵犯全科医生团队成员人身安全等行为的，基层医疗机构有权终止服务协议，并保留诉讼权。</string>
+
+    <string name="other_tips2">签约居民和服务团队发生纠纷时，由基层医疗机构负责解释，对解释不满意的，双方可申请第三方给予调节，仍不能解决问题的，可向司法部门提出司法诉讼。</string>
 </resources>
+

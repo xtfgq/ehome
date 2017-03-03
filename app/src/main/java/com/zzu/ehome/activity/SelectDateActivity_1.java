@@ -341,6 +341,11 @@ public class SelectDateActivity_1 extends Activity {
                     btn_indext = -2;
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 

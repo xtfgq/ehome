@@ -1,5 +1,6 @@
 package com.zzu.ehome.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -22,6 +24,7 @@ import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
+import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.HeadView;
 import com.zzu.ehome.view.PullToRefreshLayout;
 
@@ -33,6 +36,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import io.rong.imkit.RongIM;
+
+import static com.zzu.ehome.R.id.tv_sign;
 
 /**
  * Created by zzu on 2016/4/15.
@@ -50,6 +56,7 @@ public class MyFocusActivity extends BaseActivity {
     private boolean isFirst = true;
     private boolean isReflash=false;
     private boolean isLoading=false;
+    private String cardno="";
 
 
 
@@ -60,6 +67,9 @@ public class MyFocusActivity extends BaseActivity {
 //        EventBus.getDefault().register(this);
         requestMaker = RequestMaker.getInstance();
         userid = SharePreferenceUtil.getInstance(MyFocusActivity.this).getUserId();
+        if(getDao().findUserInfoById(userid).getUserno()!=null){
+            cardno=getDao().findUserInfoById(userid).getUserno();
+        }
         initViews();
         initEvent();
         isFirst = true;
@@ -120,7 +130,7 @@ public class MyFocusActivity extends BaseActivity {
                 isFirst = true;
                 isReflash=true;
                 isLoading=false;
-                getDoctorListData(userid,page);
+                getDoctorListData(userid,page,cardno);
             }
 
             @Override
@@ -133,7 +143,7 @@ public class MyFocusActivity extends BaseActivity {
                 page++;
                 isLoading=true;
                 isReflash=false;
-                getDoctorListData(userid,page);
+                getDoctorListData(userid,page,cardno);
 
             }
         });
@@ -142,7 +152,7 @@ public class MyFocusActivity extends BaseActivity {
     public void initDatas(){
         adapter=new MyAdapter(mList);
         listView.setAdapter(adapter);
-        getDoctorListData(userid,page);
+        getDoctorListData(userid,page,cardno);
     }
     class MyAdapter extends BaseAdapter {
         private List<MSDoctorBean> list;
@@ -179,29 +189,81 @@ public class MyFocusActivity extends BaseActivity {
                 holder.icon_state = (ImageView) convertView.findViewById(R.id.icon_state);
                 holder.user_img = (ImageView) convertView.findViewById(R.id.user_img);
                 holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
-                holder.tv_zc = (TextView) convertView.findViewById(R.id.tv_zc);
+                holder.tv_yqy = (TextView) convertView.findViewById(R.id.tv_status);
                 holder.tv_hospital = (TextView) convertView.findViewById(R.id.tv_hospital);
                 holder.tv_sc = (TextView) convertView.findViewById(R.id.tv_sc);
-                holder.tv_gooat = (TextView) convertView.findViewById(R.id.tv_gooat);
+//                holder.tv_gooat = (TextView) convertView.findViewById(R.id.tv_gooat);
                 holder.tv_qyl = (TextView) convertView.findViewById(R.id.tv_qyl);
-                holder.tv_wzl = (TextView) convertView.findViewById(R.id.tv_wzl);
+                holder.tv_sign=(Button)convertView.findViewById(tv_sign);
+//                holder.tv_wzl = (TextView) convertView.findViewById(R.id.tv_wzl);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            MSDoctorBean bean = list.get(position);
-            if(bean.getIsLine().equals("1")){
-                holder.icon_state.setImageResource(R.mipmap.icon_online_g);
-            }
+            final MSDoctorBean bean = list.get(position);
+//            if(bean.getIsLine().equals("1")){
+//                holder.icon_state.setImageResource(R.mipmap.icon_online_g);
+//            }
             String imgurl = Constants.EhomeURL + bean.getImageURL().replace("~", "").replace("\\", "/");
             Glide.with(MyFocusActivity.this).load(imgurl).error(R.drawable.icon_doctor).into(holder.user_img);
             holder.tv_name.setText(bean.getDoctorName());
-            holder.tv_zc.setText(bean.getTitle());
+//            holder.tv_zc.setText(bean.getTitle());
             holder.tv_hospital.setText(bean.getHospitalName());
-            holder.tv_sc.setText("擅长："+bean.getSpeciaty());
-            holder.tv_gooat.setText(bean.getGoodAt());
-            holder.tv_qyl.setText("签约量："+bean.getSignCount());
-            holder.tv_wzl.setText("问诊量："+bean.getDiagnoseCount());
+            holder.tv_sc.setText("擅长：" + bean.getSpeciaty());
+//            holder.tv_gooat.setText(bean.getGoodAt());
+            holder.tv_yqy.setText("已签约");
+            holder.tv_qyl.setText("签约量：" + bean.getSignCount());
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(MyFocusActivity.this, DoctorDetialActivity.class);
+                    i.putExtra("doctorid", bean.getDoctorID());
+                    i.putExtra("doctorname", bean.getDoctorName());
+                    i.putExtra("UserSign","1");
+                    startActivity(i);
+                }
+            });
+            holder.tv_sign.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                   startProgressDialog();
+                    requestMaker.MSDoctorConsultationTime(bean.getDoctorID(),new JsonAsyncTask_Info(MyFocusActivity.this, true, new JsonAsyncTaskOnComplete() {
+                        @Override
+                        public void processJsonObject(Object result) {
+                            try {
+
+                                stopProgressDialog();
+                                JSONObject mySO = (JSONObject) result;
+                                JSONArray array = mySO.getJSONArray("MSDoctorConsultationTime");
+//                                {"MSDoctorConsultationTime":[{"MessageCode":"3","MessageContent":"当前时间医生在线，可以咨询！"}]}
+                                if(Integer.valueOf(array.getJSONObject(0).getString("MessageCode"))==3){
+                                    RongIM.getInstance().startPrivateChat(MyFocusActivity.this, bean.getDoctorID(), bean.getDoctorName());
+                                }else {
+                                    confirmConversation(array.getJSONObject(0).getString("MessageContent").toString(),bean.getDoctorID(), bean.getDoctorName());
+                                }
+
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+
+                            }
+                            finally {
+                                stopProgressDialog();
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    }));
+                }
+            });
+//            holder.tv_wzl.setText("问诊量：" + bean.getDiagnoseCount());
+//            RongIM.getInstance().refreshUserInfoCache(new UserInfo(bean.getDoctorID(), bean.getDoctorName(), Uri.parse(imgurl)));
             return convertView;
         }
     }
@@ -210,12 +272,12 @@ public class MyFocusActivity extends BaseActivity {
         public ImageView icon_state;
         public ImageView user_img;
         public TextView tv_name;
-        public TextView tv_zc;
+        public TextView tv_yqy;
         public TextView tv_hospital;
         public TextView tv_sc;
-        public TextView tv_gooat;
+//        public TextView tv_gooat;
         public TextView tv_qyl;
-        public TextView tv_wzl;
+        public Button tv_sign;
 
     }
     /**
@@ -258,15 +320,15 @@ public class MyFocusActivity extends BaseActivity {
         String DiagnoseCount=json.getString("DiagnoseCount");//就诊量
         bean.setDiagnoseCount(DiagnoseCount);
         String SignCount=json.getString("SignCount");//签约量
-
         bean.setSignCount(SignCount);
         String Speciaty=json.getString("Speciaty");
         bean.setSpeciaty(Speciaty);
-
+//        String userissign=json.getString("UserIsSign");
+//        bean.setUserIsSign(userissign);
         return bean;
     }
-    public void getDoctorListData(String id,int page) {
-        requestMaker.MSDoctorSignInquiry(id, pageSize+"",page+"","", "","", new JsonAsyncTask_Info(MyFocusActivity.this, true, new JsonAsyncTaskOnComplete() {
+    public void getDoctorListData(String id,int page,String cardno) {
+        requestMaker.MSDoctorSignInquiry(id, pageSize+"",page+"","", "","",cardno, new JsonAsyncTask_Info(MyFocusActivity.this, true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
                 JSONObject mySO = (JSONObject) result;
@@ -293,9 +355,9 @@ public class MyFocusActivity extends BaseActivity {
                             JSONObject json = array.getJSONObject(i);
                             list.add(getDataFromJson(json));
                         }
-                        if(isReflash){
+//                        if(isReflash){
                             mList.clear();
-                        }
+//                        }
                         mList.addAll(list);
                         adapter.setList(mList);
                         adapter.notifyDataSetChanged();
@@ -314,6 +376,29 @@ public class MyFocusActivity extends BaseActivity {
                     }
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
+    }
+    public void confirmConversation(String str,final String uid,final String name) {
+        DialogTips dialog = new DialogTips(MyFocusActivity.this, "", str,
+                "继续咨询", true, true);
+        dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int userId) {
+//                User dbUser = dao.findUserInfoById(SharePreferenceUtil.getInstance(DoctorDetialActivity.this).getUserId());
+//                if (TextUtils.isEmpty(dbUser.getAge())) {
+//                    startActivity(new Intent(DoctorDetialActivity.this, PersonalCenterInfo.class));
+//                    return;
+//                }
+                RongIM.getInstance().startPrivateChat(MyFocusActivity.this, uid,name);
+
+            }
+        });
+
+        dialog.show();
+        dialog = null;
     }
 }

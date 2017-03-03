@@ -23,6 +23,30 @@ public class DoctorBeanDes {
     private String DoctorID;
     @SerializedName("TitleName")
     private String TitleName;
+    @SerializedName("GoodDisease")
+    private String GoodDisease;
+
+    public String getIntroduction() {
+        return Introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        Introduction = introduction;
+    }
+
+    @SerializedName("Introduction")
+    private String Introduction;
+
+    public String getGoodDisease() {
+        return GoodDisease;
+    }
+
+    public void setGoodDisease(String goodDisease) {
+        GoodDisease = goodDisease;
+    }
+
+
+
 
     public String getDoctorName() {
         return DoctorName;

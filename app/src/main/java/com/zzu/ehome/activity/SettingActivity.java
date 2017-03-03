@@ -188,6 +188,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 
@@ -234,6 +239,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         e.printStackTrace();
                     }
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));

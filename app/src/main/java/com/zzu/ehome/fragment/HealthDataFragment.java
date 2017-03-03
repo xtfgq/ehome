@@ -71,11 +71,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.zzu.ehome.R.id.textView;
@@ -280,6 +282,8 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
         //监听订阅事件
         Subscription subscription = RxBus.getInstance().toObservable()
                 .observeOn(AndroidSchedulers.mainThread())
+
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object event) {
@@ -293,6 +297,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                                 getData();
                             }
                         }
+
 
                     }
                 });
@@ -346,6 +351,8 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                     getJIbu();
                     getTreatmentInquiryLatest(userid, date);
                     stopProgressDialog();
+                    if(tz_num!=null&&tw_num!=null&&xt_num!=null&&xy_num!=null
+                            &&pbweight!=null&&pbPress1!=null&&pbPress2!=null&&tw_status!=null&&tv3!=null&&tv5!=null){
 
                     if (array.getJSONObject(0).has("MessageCode")) {
                         tz_num.setText("0");
@@ -424,8 +431,6 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                             if (Float.compare(tw, 37.1F) >= 0 && Float.compare(tw, 38F) <= 0) {
                                 tw_status.setText("低热");
                                 tw_status.setTextColor(Color.parseColor("#f9a116"));
-
-
                             } else if (Float.compare(tw, 38.1F) >= 0 && Float.compare(tw, 39F) <= 0) {
                                 tw_status.setText("中等度热");
                                 tw_status.setTextColor(Color.parseColor("#fb7701"));
@@ -459,16 +464,16 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                             DecimalFormat decimalFormat = new DecimalFormat("0.0");
                             xt_num.setText(decimalFormat.format(bnum));
                             tv3.setVisibility(View.VISIBLE);
-                            String time="";
-                            if (Integer.valueOf(map.get("BloodSugar").getValue2())==1) {
+                            String time = "";
+                            if (Integer.valueOf(map.get("BloodSugar").getValue2()) == 1) {
 
-                                time="餐后";
-                            } else if(Integer.valueOf(map.get("BloodSugar").getValue2())==0) {
+                                time = "餐后";
+                            } else if (Integer.valueOf(map.get("BloodSugar").getValue2()) == 0) {
 
-                                time="空腹";
-                            }else{
+                                time = "空腹";
+                            } else {
 
-                                time="随机";
+                                time = "随机";
                             }
                             checkSuager(bnum, time);
                             pbStartAnima(pbBloodSuggar, (int) (num * 100));
@@ -506,12 +511,12 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                             dgc_num.setText(map.get("Cholestenone").getValue1());
                             float numCh = (Float.valueOf(map.get("Cholestenone").getValue1())) / 8f;
                             pbStartAnima(pbCh, (int) (numCh * 100));
-                            Double ch=Double.valueOf(map.get("Cholestenone").getValue1());
-                            if ( Double.compare(ch, 5.18d) <= 0) {
+                            Double ch = Double.valueOf(map.get("Cholestenone").getValue1());
+                            if (Double.compare(ch, 5.18d) <= 0) {
                                 textViewDgc2.setText("正常");
                                 textViewDgc2.setTextColor(getResources().getColor(R.color.actionbar_color));
 
-                            } else  {
+                            } else {
                                 textViewDgc2.setText("偏高");
                                 textViewDgc2.setTextColor(Color.parseColor("#fa3b00"));
 
@@ -525,17 +530,17 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
 
                             ls_num.setText(map.get("LithicAcid").getValue1());
                             float num1 = (Float.valueOf(map.get("LithicAcid").getValue1())) / 1f;
-                            pbStartAnima(pbLs,  (int) (num1 * 100));
-                            Double ls=Double.valueOf(map.get("LithicAcid").getValue1());
-                            if ( Double.compare(ls, 0.089d) <= 0) {
+                            pbStartAnima(pbLs, (int) (num1 * 100));
+                            Double ls = Double.valueOf(map.get("LithicAcid").getValue1());
+                            if (Double.compare(ls, 0.089d) <= 0) {
                                 textViewLs2.setText("偏低");
                                 textViewLs2.setTextColor(Color.parseColor("#f9a116"));
 
-                            } else if ( Double.compare(ls, 0.375d) >= 0) {
+                            } else if (Double.compare(ls, 0.375d) >= 0) {
                                 textViewLs2.setText("偏高");
                                 textViewLs2.setTextColor(Color.parseColor("#fa3b00"));
 
-                            }  else {
+                            } else {
                                 textViewLs2.setText("正常");
                                 textViewLs2.setTextColor(getResources().getColor(R.color.actionbar_color));
 
@@ -547,11 +552,17 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                             pbStartAnima(pbLs, 0);
                         }
                     }
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
 
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
     }
@@ -578,6 +589,11 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                     tv_time.setText("暂无就诊数据");
                     tv_address.setText("");
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
     }
@@ -649,6 +665,11 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                     e.printStackTrace();
                 }
 
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));

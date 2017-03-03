@@ -33,7 +33,6 @@ public class IOUtils {
     public static Date YunStart(Date d) {
         long time = 280l * 24 * 60 * 60 * 1000;
         Date dStart = new Date(d.getTime() - time);
-
         return dStart;
     }
 

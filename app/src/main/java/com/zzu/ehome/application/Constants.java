@@ -151,7 +151,7 @@ public class Constants {
     public static final String MSDoctorInquiry = "MSDoctorInquiry";
     public static final String MSDoctorDetailInquiry = "MSDoctorDetailInquiry";
     public static final String MSDoctorSignInsert = "MSDoctorSignInsert";
-    public static final String MSDoctorSignInquiry = "MSDoctorSignInquiry";
+
     public static final String MSDoctorDiagnoseInsert = "MSDoctorDiagnoseInsert";
     public static final String OCRForAndroid = "OCRForAndroid";
     public static final String OrderInquiryByTopmd = "OrderInquiryByTopmd";
@@ -190,5 +190,8 @@ public class Constants {
     public static final String CheckupInfoInsert = "CheckupInfoInsert";
     public static final String CheckupInfoInquiry = "CheckupInfoInquiry";
 
+    public static final String CategoryInfoInquiry = "CategoryInfoInquiry";
+
+    public static final String MSDoctorSignInquiry = "MSDoctorSignInquiry";
 
 }

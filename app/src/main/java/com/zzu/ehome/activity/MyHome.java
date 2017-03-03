@@ -168,6 +168,11 @@ public class MyHome extends BaseActivity implements View.OnClickListener {
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 

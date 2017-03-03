@@ -98,6 +98,11 @@ public class InputHeightActivity extends Activity {
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 

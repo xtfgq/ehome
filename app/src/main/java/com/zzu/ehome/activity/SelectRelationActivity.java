@@ -86,6 +86,11 @@ public class SelectRelationActivity extends NetBaseActivity {
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
     }

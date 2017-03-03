@@ -106,6 +106,11 @@ listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 
                     }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
                 }
                 ));
 

@@ -141,6 +141,11 @@ public class AppointmentActivity extends BaseActivity {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 
@@ -199,6 +204,11 @@ public class AppointmentActivity extends BaseActivity {
                     ToastUtils.showMessage(AppointmentActivity.this, "该医生暂无坐诊时间!");
 
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 

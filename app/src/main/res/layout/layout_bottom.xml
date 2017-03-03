@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/img_private_doctor"
                     android:layout_centerHorizontal="true"
-                    android:text="私人医生"
+                    android:text="家庭医生"
                     android:textColor="@color/bottom_text_color_normal"
                     android:textSize="12sp" />
             </RelativeLayout>

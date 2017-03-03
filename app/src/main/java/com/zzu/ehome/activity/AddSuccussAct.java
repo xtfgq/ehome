@@ -52,6 +52,7 @@ public class AddSuccussAct extends BaseSimpleActivity implements View.OnClickLis
 
         switch (v.getId()) {
             case R.id.tv_continue:
+                tvcontinue.setEnabled(false);
                 CustomApplcation.getInstance().finishSingleActivityByClass(RelationActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
                 Intent i = new Intent(this, LoginActivity1.class);
@@ -59,11 +60,13 @@ public class AddSuccussAct extends BaseSimpleActivity implements View.OnClickLis
                 startActivity(i);
                 break;
             case R.id.btnext:
+                btnext.setEnabled(false);
                 CustomApplcation.getInstance().finishSingleActivityByClass(RelationActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
                 startActivity(new Intent(AddSuccussAct.this,MyHome.class));
                 break;
             case R.id.tv_goHome:
+                tvgoHome.setEnabled(false);
                 goHome();
                 break;
         }

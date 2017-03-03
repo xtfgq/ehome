@@ -60,11 +60,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import de.greenrobot.event.EventBus;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 import static u.aly.au.S;
 
@@ -192,6 +198,7 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
         edt_jzdw.setOnClickListener(this);
         rlphoto.setVisibility(View.VISIBLE);
         resultRecyclerView.setVisibility(View.INVISIBLE);
+
         edt_jzjg.addTextChangedListener(new TextWatcher() {
             CharSequence wordNum;//记录输入的字数
             int selectionStart;
@@ -285,6 +292,12 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
                     e.printStackTrace();
 
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                if(btn_save!=null)
+                setEventEnable(true);
             }
         }));
     }
@@ -418,7 +431,7 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
                 //保存按钮
              /*  if (CommonUtils.isFastClick())
                     return;*/
-                setEventEnable(false);
+
                 jzyy = edt_jzdw.getText().toString();
                 zdjg = StringFilter(edt_jzjg.getText().toString()) ;
                 yyjy =StringFilter(edt_yyjy.getText().toString()) ;
@@ -468,7 +481,7 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
                 }
                 zdjg = zdjg.replace("<", "&lt;").replace(">", "&gt;").replace("&", "&amp;");
                 yyjy = yyjy.replace("<", "&lt;").replace(">", "&gt;").replace("&", "&amp;");
-
+                setEventEnable(false);
                 requestMaker.OtherTreatmentInsert(userid, checktime, jzyy, zdjg, yyjy, mList, new JsonAsyncTask_Info(CreateillnessActivity.this, true, new JsonAsyncTaskOnComplete() {
                     @Override
                     public void processJsonObject(Object result) {
@@ -503,6 +516,12 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
                             setEventEnable(true);
                         }
 
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        if(btn_save!=null)
+                        setEventEnable(true);
                     }
 
                 }));
@@ -601,6 +620,7 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
         edt_jzdw.setText("");
         edt_jzjg.setText("");
         edt_yyjy.setText("");
+
 
     }
 

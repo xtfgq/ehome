@@ -134,6 +134,11 @@ public class MyAppointmentActivity extends BaseActivity {
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 
@@ -296,6 +301,11 @@ public class MyAppointmentActivity extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 

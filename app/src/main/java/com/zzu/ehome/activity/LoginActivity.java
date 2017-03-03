@@ -392,6 +392,11 @@ public class LoginActivity extends BaseActivity implements Callback, View.OnClic
 
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 

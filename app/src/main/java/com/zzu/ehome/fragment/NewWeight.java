@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -84,7 +85,7 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
     private EHomeDao dao;
 
     private SupperBaseActivity activity;
-
+    private LinearLayout layout_no_msg;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -122,13 +123,13 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("action.Weight");
         getActivity().registerReceiver(mRefrushBroadcastReceiver, intentFilter);
-        rbday.setChecked(true);
-        rbday.setTextColor(getResources().getColor(R.color.white));
-        rbweek.setChecked(false);
-        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-        rbmonth.setChecked(false);
-        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-        setDay();
+//        rbday.setChecked(true);
+//        rbday.setTextColor(getResources().getColor(R.color.white));
+//        rbweek.setChecked(false);
+//        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//        rbmonth.setChecked(false);
+//        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//        setDay();
 
         page = 1;
         getHistory();
@@ -140,15 +141,15 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
 
         mAadpter = new WeightChatAdapter(getActivity());
         listview = (StickyListHeadersListView) view.findViewById(R.id.lv_temp);
-        heardchat = (LinearLayout) inflater.inflate(R.layout.new_weight_layout, null);
-
-        mChart = (WeightView) heardchat.findViewById(R.id.chart);
-        lltmp = (LinearLayout) heardchat.findViewById(R.id.lltmp);
-        group = (RadioGroup) heardchat.findViewById(R.id.radioGroup);
-        rbday = (RadioButton) heardchat.findViewById(R.id.rb_day);
-        rbweek = (RadioButton) heardchat.findViewById(R.id.rb_week);
-        rbmonth = (RadioButton) heardchat.findViewById(R.id.rb_month);
-        tvnodata = (TextView) heardchat.findViewById(R.id.tvnodate);
+//        heardchat = (LinearLayout) inflater.inflate(R.layout.new_weight_layout, null);
+//
+//        mChart = (WeightView) heardchat.findViewById(R.id.chart);
+//        lltmp = (LinearLayout) heardchat.findViewById(R.id.lltmp);
+//        group = (RadioGroup) heardchat.findViewById(R.id.radioGroup);
+//        rbday = (RadioButton) heardchat.findViewById(R.id.rb_day);
+//        rbweek = (RadioButton) heardchat.findViewById(R.id.rb_week);
+//        rbmonth = (RadioButton) heardchat.findViewById(R.id.rb_month);
+//        tvnodata = (TextView) heardchat.findViewById(R.id.tvnodate);
 //        tvvalue = (TextView) heardchat.findViewById(R.id.tv_tempvalue);
 //        tvstatus = (TextView) heardchat.findViewById(R.id.tv_status);
 //        tvtime = (TextView) heardchat.findViewById(R.id.tvtime);
@@ -156,9 +157,9 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
         progressBarView = (View) moredata.findViewById(R.id.loadmore_foot_progressbar);
         progressBarTextView = (TextView) moredata.findViewById(R.id.loadmore_foot_text);
         loadingAnimation = (AnimationDrawable) progressBarView.getBackground();
-        listview.addHeaderView(heardchat);
+//        listview.addHeaderView(heardchat);
         listview.addFooterView(moredata);
-
+        layout_no_msg=(LinearLayout)view.findViewById(R.id.layout_no_msg);
         listview.setOnHeaderClickListener(this);
         listview.setLoadingMoreListener(this);
         listview.setAdapter(mAadpter);
@@ -166,51 +167,51 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
 
 
     public void initEvents() {
-        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // TODO Auto-generated method stub
-                switch (checkedId) {
-                    case R.id.rb_day:
-
-                        rbday.setChecked(true);
-                        rbday.setTextColor(getResources().getColor(R.color.white));
-                        rbweek.setChecked(false);
-                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbmonth.setChecked(false);
-                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        setDay();
-                        break;
-                    case R.id.rb_week:
-                        rbday.setChecked(false);
-                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbweek.setChecked(true);
-                        rbweek.setTextColor(getResources().getColor(R.color.white));
-                        rbmonth.setChecked(false);
-                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        setWeek();
-
-                        break;
-                    case R.id.rb_month:
-                        rbday.setChecked(false);
-                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbweek.setChecked(false);
-                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbmonth.setChecked(true);
-                        rbmonth.setTextColor(getResources().getColor(R.color.white));
-                        setMonth();
-
-                        break;
-
-
-                    default:
-                        break;
-                }
-            }
-
-
-        });
+//        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                // TODO Auto-generated method stub
+//                switch (checkedId) {
+//                    case R.id.rb_day:
+//
+//                        rbday.setChecked(true);
+//                        rbday.setTextColor(getResources().getColor(R.color.white));
+//                        rbweek.setChecked(false);
+//                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbmonth.setChecked(false);
+//                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        setDay();
+//                        break;
+//                    case R.id.rb_week:
+//                        rbday.setChecked(false);
+//                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbweek.setChecked(true);
+//                        rbweek.setTextColor(getResources().getColor(R.color.white));
+//                        rbmonth.setChecked(false);
+//                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        setWeek();
+//
+//                        break;
+//                    case R.id.rb_month:
+//                        rbday.setChecked(false);
+//                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbweek.setChecked(false);
+//                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbmonth.setChecked(true);
+//                        rbmonth.setTextColor(getResources().getColor(R.color.white));
+//                        setMonth();
+//
+//                        break;
+//
+//
+//                    default:
+//                        break;
+//                }
+//            }
+//
+//
+//        });
 
 
     }
@@ -269,8 +270,13 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
 
                         List<PointD> linePoint = new ArrayList<PointD>();
                         for (WeightRes th : list) {
-
-                            Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months);
+                            Double xd ;
+//                            if(months.get(29).equals(th.getMonitorTime().split("\\ ")[0])) {
+//                                xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months) + 1;
+//                            }else{
+//                                xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months);
+//                            }
+                            xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months) + 1;
                             Double yd = Double.valueOf(th.getWeight());
                             if (Double.compare(xd, -1d) != 0) {
                                 linePoint.add(new PointD(xd, yd));
@@ -284,6 +290,11 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
 
 
@@ -317,6 +328,7 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
                     String value = result.toString();
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO.getJSONArray("WeightInquiry");
+                    if(view!=null){
                     if (array.getJSONObject(0)
                             .has("MessageCode")) {
 
@@ -345,12 +357,18 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
 
 
                         mChart.refresh(linePoint2);
+                    }
 
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
 
 
@@ -430,6 +448,11 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
                 }
             }
 
+            @Override
+            public void onError(Exception e) {
+
+            }
+
 
         }));
 
@@ -458,12 +481,13 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
                             .getJSONArray("HealthDataInquiryWithPage");
                     if (array.getJSONObject(0).has("MessageCode")) {
                         if (page == 1) {
-
+                            layout_no_msg.setVisibility(View.VISIBLE);
 
                         } else
                             loadingFinished();
                     } else {
-
+                        layout_no_msg.setVisibility(View.GONE);
+                        listview.setVisibility(View.VISIBLE);
                         HealteData date = JsonTools.getData(result.toString(), HealteData.class);
                         List<WeightBeanRes> list = date.getData();
                         if (list != null && list.size() > 0) {
@@ -486,6 +510,11 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
                     e.printStackTrace();
                     loadingFinished();
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));

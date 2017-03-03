@@ -194,10 +194,12 @@ public class AppointmentDetailActivity extends BaseActivity implements View.OnCl
                     bean.setHosptial_office(AppointmentActivity.office);
                     bean.setDoctorinfo(jsonObject.getString("Doctor_Intro"));
                     bean.setHosptial_Name(AppointmentActivity.hosptial);
-                    if (jsonObject.getString("IsFavored").equals("0")) {
-                        tv_focus.setText("关注");
-                    } else {
-                        tv_focus.setText("已关注");
+                    if(tv_focus!=null) {
+                        if (jsonObject.getString("IsFavored").equals("0")) {
+                            tv_focus.setText("关注");
+                        } else {
+                            tv_focus.setText("已关注");
+                        }
                     }
                     setData();
                 } catch (JSONException e) {
@@ -205,17 +207,24 @@ public class AppointmentDetailActivity extends BaseActivity implements View.OnCl
                 }
 
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
     }
 
     public void setData() {
+        if(tv_name!=null&&tv_zc!=null&&tv_doctor_jj!=null&&tv_sc!=null&&iv_head!=null) {
 
-        ImageLoader.getInstance().displayImage(bean.getUser_Icon(), iv_head, ImageOptions.getHeaderOptions());
-        tv_name.setText(bean.getUser_FullName());
-        tv_zc.setText(bean.getDoctor_Title() + "/" + bean.getHosptial_Name());
-        tv_doctor_jj.setText("暂无");
-        tv_sc.setText(Html.fromHtml(bean.getDoctor_Specialty()));
+            ImageLoader.getInstance().displayImage(bean.getUser_Icon(), iv_head, ImageOptions.getHeaderOptions());
+            tv_name.setText(bean.getUser_FullName());
+            tv_zc.setText(bean.getDoctor_Title() + "/" + bean.getHosptial_Name());
+            tv_doctor_jj.setText("暂无");
+            tv_sc.setText(Html.fromHtml(bean.getDoctor_Specialty()));
+        }
 
 //        tv_sc.post(new Runnable() {
 //            @Override
@@ -335,6 +344,11 @@ public class AppointmentDetailActivity extends BaseActivity implements View.OnCl
 
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 
@@ -347,16 +361,23 @@ public class AppointmentDetailActivity extends BaseActivity implements View.OnCl
                     JSONArray array = mySO.getJSONArray("FavorDoctorDelete");
                     JSONObject jsonObject = (JSONObject) array.get(0);
                     String msg = jsonObject.getString("MessageCode");
-                    if ("0".equals(msg)) {
-                        tv_focus.setText("关注");
-                    } else {
-                        ToastUtils.showMessage(AppointmentDetailActivity.this, jsonObject.getString("MessageContent"));
+                    if(tv_focus!=null) {
+                        if ("0".equals(msg)) {
+                            tv_focus.setText("关注");
+                        } else {
+                            ToastUtils.showMessage(AppointmentDetailActivity.this, jsonObject.getString("MessageContent"));
+                        }
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
 
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
     }
@@ -449,6 +470,11 @@ public class AppointmentDetailActivity extends BaseActivity implements View.OnCl
                     ToastUtils.showMessage(AppointmentDetailActivity.this, "该医生暂无坐诊时间!");
 
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 

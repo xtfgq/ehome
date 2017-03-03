@@ -85,6 +85,11 @@ public class SelectOfficeActivity extends NetBaseActivity {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
     }
 

@@ -63,7 +63,7 @@ public class HealthFilesFragment extends BaseFragment implements StickyListHeade
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        activity=(SupperBaseActivity)context;
+        activity = (SupperBaseActivity) context;
     }
 
     @Nullable
@@ -85,7 +85,7 @@ public class HealthFilesFragment extends BaseFragment implements StickyListHeade
         rlup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!activity.isNetWork){
+                if (!activity.isNetWork) {
                     activity.showNetWorkErrorDialog();
                     return;
                 }
@@ -95,7 +95,7 @@ public class HealthFilesFragment extends BaseFragment implements StickyListHeade
         ivupload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!activity.isNetWork){
+                if (!activity.isNetWork) {
                     activity.showNetWorkErrorDialog();
                     return;
                 }
@@ -105,7 +105,7 @@ public class HealthFilesFragment extends BaseFragment implements StickyListHeade
     }
 
     private void initDate() {
-        if(!activity.isNetWork){
+        if (!activity.isNetWork) {
             activity.showNetWorkErrorDialog();
             return;
         }
@@ -119,37 +119,44 @@ public class HealthFilesFragment extends BaseFragment implements StickyListHeade
                     org.json.JSONArray array = mySO
                             .getJSONArray("TreatmentInquirywWithPage");
                     stopProgressDialog();
-                    if (array.getJSONObject(0).has("MessageCode")) {
-                        if (page == 1) {
-                            rlup.setVisibility(View.VISIBLE);
-                            listView.setVisibility(View.GONE);
-                        } else
-                            loadingFinished();
+                    if (rlup != null && listView != null) {
+                        if (array.getJSONObject(0).has("MessageCode")) {
+                            if (page == 1) {
+                                rlup.setVisibility(View.VISIBLE);
+                                listView.setVisibility(View.GONE);
+                            } else
+                                loadingFinished();
 //                        tvcopyright.setVisibility(View.VISIBLE);
-                    } else {
+                        } else {
 //                        tvcopyright.setVisibility(View.VISIBLE);
-                        if (page == 1) {
-                            rlup.setVisibility(View.GONE);
-                            listView.setVisibility(View.VISIBLE);
-                        }
-                        TreatmentInquirywWithPageDate date = JsonTools.getData(result.toString(), TreatmentInquirywWithPageDate.class);
-                        List<TreatmentInquirywWithPage> list = date.getData();
-                        if (page == 1) {
-                            if (mlist.size() > 0) mlist.clear();
-                        }
-                        if (list.size() > 0) {
-                            for (int i = 0; i < list.size(); i++) {
-                                mlist.add(list.get(i));
+                            if (page == 1) {
+                                rlup.setVisibility(View.GONE);
+                                listView.setVisibility(View.VISIBLE);
                             }
-                            mAdapter.setList(mlist);
+                            TreatmentInquirywWithPageDate date = JsonTools.getData(result.toString(), TreatmentInquirywWithPageDate.class);
+                            List<TreatmentInquirywWithPage> list = date.getData();
+                            if (page == 1) {
+                                if (mlist.size() > 0) mlist.clear();
+                            }
+                            if (list.size() > 0) {
+                                for (int i = 0; i < list.size(); i++) {
+                                    mlist.add(list.get(i));
+                                }
+                                mAdapter.setList(mlist);
 
+                            }
+                            loadingFinished();
                         }
-                        loadingFinished();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                     loadingFinished();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 
@@ -206,7 +213,7 @@ public class HealthFilesFragment extends BaseFragment implements StickyListHeade
 
     @Override
     public void OnLoadingMore() {
-        if(!activity.isNetWork){
+        if (!activity.isNetWork) {
             activity.showNetWorkErrorDialog();
             return;
         }

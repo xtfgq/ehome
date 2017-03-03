@@ -147,18 +147,25 @@ public class CapaingFragmet extends BaseFragment{
                         adapter.setmList(list);
                         adapter.notifyDataSetChanged();
                     }
-                    if(isReflash){
-                        isReflash=false;
-                        isFirst=false;
-                        pulltorefreshlayout.refreshFinish(PullToRefreshLayout.SUCCEED);
-                    }else if(isLoading){
-                        isLoading=false;
-                        isFirst=false;
-                        pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                    if(pulltorefreshlayout!=null) {
+                        if (isReflash) {
+                            isReflash = false;
+                            isFirst = false;
+                            pulltorefreshlayout.refreshFinish(PullToRefreshLayout.SUCCEED);
+                        } else if (isLoading) {
+                            isLoading = false;
+                            isFirst = false;
+                            pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 

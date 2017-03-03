@@ -104,6 +104,11 @@ public class AutoSaveService extends Service {
                         e.printStackTrace();
                     }
                 }
+
+                @Override
+                public void onError(Exception e) {
+
+                }
             }));
         }
     }

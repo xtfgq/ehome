@@ -129,6 +129,11 @@ public class ConfirmMsgActivity extends BaseActivity {
                                     finish();
                                 }
                             }
+
+                            @Override
+                            public void onError(Exception e) {
+
+                            }
                         }));
 
 

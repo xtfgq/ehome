@@ -76,7 +76,7 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
     private List<String> months = new ArrayList<>();
     private TextView tvnodata;
     private SupperBaseActivity activity;
-
+    private LinearLayout layout_no_msg;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -97,14 +97,14 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
         initViews();
         initEvents();
 
-        setDay();
-        rbday.setChecked(true);
-        rbday.setTextColor(getResources().getColor(R.color.white));
-        rbweek.setChecked(false);
-        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-        rbmonth.setChecked(false);
-        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-        page = 1;
+//        setDay();
+//        rbday.setChecked(true);
+//        rbday.setTextColor(getResources().getColor(R.color.white));
+//        rbweek.setChecked(false);
+//        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//        rbmonth.setChecked(false);
+//        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//        page = 1;
         getHistory();
         return view;
     }
@@ -113,22 +113,23 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
         inflater = LayoutInflater.from(getActivity());
         mAadpter = new BloodPressChatAdapter(getActivity());
         listview = (StickyListHeadersListView) view.findViewById(R.id.lv_temp);
-        heardchat = (LinearLayout) inflater.inflate(R.layout.new_press_layout, null);
-        mChart = (PressView) heardchat.findViewById(R.id.chart);
-        group = (RadioGroup) heardchat.findViewById(R.id.radioGroup);
-        rbday = (RadioButton) heardchat.findViewById(R.id.rb_day);
-        rbweek = (RadioButton) heardchat.findViewById(R.id.rb_week);
-        rbmonth = (RadioButton) heardchat.findViewById(R.id.rb_month);
+//        heardchat = (LinearLayout) inflater.inflate(R.layout.new_press_layout, null);
+//        mChart = (PressView) heardchat.findViewById(R.id.chart);
+//        group = (RadioGroup) heardchat.findViewById(R.id.radioGroup);
+//        rbday = (RadioButton) heardchat.findViewById(R.id.rb_day);
+//        rbweek = (RadioButton) heardchat.findViewById(R.id.rb_week);
+//        rbmonth = (RadioButton) heardchat.findViewById(R.id.rb_month);
 
 //        tvvalue=(TextView)heardchat.findViewById(R.id.tv_tempvalue);
 //        tvstatus=(TextView)heardchat.findViewById(R.id.tv_status);
 //        tvtime=(TextView)heardchat.findViewById(R.id.tvtime);
-        tvnodata = (TextView) heardchat.findViewById(R.id.tvnodate);
+//        tvnodata = (TextView) heardchat.findViewById(R.id.tvnodate);
         moredata = (RelativeLayout) inflater.inflate(R.layout.moredata, null);
         progressBarView = (View) moredata.findViewById(R.id.loadmore_foot_progressbar);
         progressBarTextView = (TextView) moredata.findViewById(R.id.loadmore_foot_text);
         loadingAnimation = (AnimationDrawable) progressBarView.getBackground();
-        listview.addHeaderView(heardchat);
+        layout_no_msg=(LinearLayout)view.findViewById(R.id.layout_no_msg);
+//        listview.addHeaderView(heardchat);
         listview.addFooterView(moredata);
 
         listview.setOnHeaderClickListener(this);
@@ -141,53 +142,49 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
 
     public void initEvents() {
 
-        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // TODO Auto-generated method stub
-                switch (checkedId) {
-                    case R.id.rb_day:
-
-                        rbday.setChecked(true);
-                        rbday.setTextColor(getResources().getColor(R.color.white));
-                        rbweek.setChecked(false);
-                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbmonth.setChecked(false);
-                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        setDay();
-                        break;
-                    case R.id.rb_week:
-                        rbday.setChecked(false);
-                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbweek.setChecked(true);
-                        rbweek.setTextColor(getResources().getColor(R.color.white));
-                        rbmonth.setChecked(false);
-                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        setWeek();
-
-
-                        break;
-                    case R.id.rb_month:
-                        rbday.setChecked(false);
-                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbweek.setChecked(false);
-                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-                        rbmonth.setChecked(true);
-                        rbmonth.setTextColor(getResources().getColor(R.color.white));
-                        setMonth();
-
-
-                        break;
-
-
-                    default:
-                        break;
-                }
-            }
-
-
-        });
+//        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                // TODO Auto-generated method stub
+//                switch (checkedId) {
+//                    case R.id.rb_day:
+//
+//                        rbday.setChecked(true);
+//                        rbday.setTextColor(getResources().getColor(R.color.white));
+//                        rbweek.setChecked(false);
+//                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbmonth.setChecked(false);
+//                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        setDay();
+//                        break;
+//                    case R.id.rb_week:
+//                        rbday.setChecked(false);
+//                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbweek.setChecked(true);
+//                        rbweek.setTextColor(getResources().getColor(R.color.white));
+//                        rbmonth.setChecked(false);
+//                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        setWeek();
+//                        break;
+//                    case R.id.rb_month:
+//                        rbday.setChecked(false);
+//                        rbday.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbweek.setChecked(false);
+//                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//                        rbmonth.setChecked(true);
+//                        rbmonth.setTextColor(getResources().getColor(R.color.white));
+//                        setMonth();
+//                        break;
+//
+//
+//                    default:
+//                        break;
+//                }
+//            }
+//
+//
+//        });
 
 
     }
@@ -206,35 +203,44 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
                     String resultValue = result.toString();
                     JSONArray array = mySO
                             .getJSONArray("HealthDataInquiryWithPage");
-                    if (array.getJSONObject(0).has("MessageCode")) {
-                        if (page == 1) {
+                    if(view!=null) {
 
+                        if (array.getJSONObject(0).has("MessageCode")) {
+                            if (page == 1) {
 
-                        } else
-                            loadingFinished();
-                    } else {
+                                    layout_no_msg.setVisibility(View.VISIBLE);
 
-                        BloodPressDate date = JsonTools.getData(result.toString(), BloodPressDate.class);
-                        List<BloodPressBean> list = date.getData();
-                        if (page == 1 && mList.size() > 0) {
-                            mList.clear();
-                        }
-                        if (list != null && list.size() > 0) {
-                            for (int i = 0; i < list.size(); i++) {
-                                mList.add(list.get(i));
+                            } else
+                                loadingFinished();
+                        } else {
+                            layout_no_msg.setVisibility(View.GONE);
+                            listview.setVisibility(View.VISIBLE);
+                            BloodPressDate date = JsonTools.getData(result.toString(), BloodPressDate.class);
+                            List<BloodPressBean> list = date.getData();
+                            if (page == 1 && mList.size() > 0) {
+                                mList.clear();
                             }
-                            mAadpter.setList(mList);
+                            if (list != null && list.size() > 0) {
+                                for (int i = 0; i < list.size(); i++) {
+                                    mList.add(list.get(i));
+                                }
+                                mAadpter.setList(mList);
+                                loadingFinished();
+                            }
 
-                            loadingFinished();
+
                         }
-
-
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                     loadingFinished();
                 }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
 
             }
         }));
@@ -267,6 +273,7 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
                     JSONArray array = mySO.getJSONArray("BloodPressureInquiry");
                     if (array.getJSONObject(0)
                             .has("MessageCode")) {
+
                         heardchat.setVisibility(View.VISIBLE);
 
 
@@ -329,6 +336,11 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
         }));
 
     }
@@ -364,33 +376,34 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
                     String value = result.toString();
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO.getJSONArray("BloodPressureInquiry");
-                    if (array.getJSONObject(0)
-                            .has("MessageCode")) {
-                        heardchat.setVisibility(View.VISIBLE);
-                        List<PointD> linePoint1 = new ArrayList<PointD>();
-                        List<PointD> linePoint2 = new ArrayList<PointD>();
-                        mChart.refresh(linePoint1, linePoint2);
-                        tvnodata.setVisibility(View.VISIBLE);
+                    if(view!=null) {
+                        if (array.getJSONObject(0)
+                                .has("MessageCode")) {
+                            heardchat.setVisibility(View.VISIBLE);
+                            List<PointD> linePoint1 = new ArrayList<PointD>();
+                            List<PointD> linePoint2 = new ArrayList<PointD>();
+                            mChart.refresh(linePoint1, linePoint2);
+                            tvnodata.setVisibility(View.VISIBLE);
 
 
 //                        tvstatus.setText("");
 //                        tvtime.setText("");
 //                        tvvalue.setText("");
-                    } else {
-                        tvnodata.setVisibility(View.GONE);
-                        BloodPreessDate date = JsonTools.getData(result.toString(), BloodPreessDate.class);
-                        List<BloodPressRes> list = date.getData();
-                        heardchat.setVisibility(View.VISIBLE);
-                        List<PointD> linePoint1 = new ArrayList<PointD>();
-                        List<PointD> linePoint2 = new ArrayList<PointD>();
-                        for (BloodPressRes th : list) {
-                            Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months);
-                            Double ydH = Double.valueOf(th.getHigh());
-                            Double ydL = Double.valueOf(th.getLow());
-                            linePoint1.add(new PointD(xd, ydH));
-                            linePoint2.add(new PointD(xd, ydL));
-                        }
-                        mChart.refresh(linePoint1, linePoint2);
+                        } else {
+                            tvnodata.setVisibility(View.GONE);
+                            BloodPreessDate date = JsonTools.getData(result.toString(), BloodPreessDate.class);
+                            List<BloodPressRes> list = date.getData();
+                            heardchat.setVisibility(View.VISIBLE);
+                            List<PointD> linePoint1 = new ArrayList<PointD>();
+                            List<PointD> linePoint2 = new ArrayList<PointD>();
+                            for (BloodPressRes th : list) {
+                                Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months) + 1;
+                                Double ydH = Double.valueOf(th.getHigh());
+                                Double ydL = Double.valueOf(th.getLow());
+                                linePoint1.add(new PointD(xd, ydH));
+                                linePoint2.add(new PointD(xd, ydL));
+                            }
+                            mChart.refresh(linePoint1, linePoint2);
 //                        tvtime.setText(CommonUtils.returnTime3(list.get(list.size()-1).getMonitorTime(),1)+" "+CommonUtils.returnTime(list.get(list.size()-1).getMonitorTime(),2));
 
 
@@ -421,10 +434,16 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
 //                        }
 
 
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 
@@ -461,33 +480,39 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
                     String value = result.toString();
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO.getJSONArray("BloodPressureInquiry");
-                    if (array.getJSONObject(0)
-                            .has("MessageCode")) {
-                        heardchat.setVisibility(View.VISIBLE);
-                        List<PointD> linePoint1 = new ArrayList<PointD>();
-                        List<PointD> linePoint2 = new ArrayList<PointD>();
-                        mChart.refresh(linePoint1, linePoint2);
-                        tvnodata.setVisibility(View.VISIBLE);
+                    if(view!=null) {
+                        if (array.getJSONObject(0)
+                                .has("MessageCode")) {
+                            heardchat.setVisibility(View.VISIBLE);
+                            List<PointD> linePoint1 = new ArrayList<PointD>();
+                            List<PointD> linePoint2 = new ArrayList<PointD>();
+                            mChart.refresh(linePoint1, linePoint2);
+                            tvnodata.setVisibility(View.VISIBLE);
 
 //                        tvstatus.setText("");
 //                        tvtime.setText("");
 //                        tvvalue.setText("");
-                    } else {
-                        BloodPreessDate date = JsonTools.getData(result.toString(), BloodPreessDate.class);
-                        List<BloodPressRes> list = date.getData();
-                        tvnodata.setVisibility(View.GONE);
-                        heardchat.setVisibility(View.VISIBLE);
-                        List<PointD> linePoint1 = new ArrayList<PointD>();
-                        List<PointD> linePoint2 = new ArrayList<PointD>();
-                        for (BloodPressRes th : list) {
-                            Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], weeks);
+                        } else {
+                            BloodPreessDate date = JsonTools.getData(result.toString(), BloodPreessDate.class);
+                            List<BloodPressRes> list = date.getData();
+                            tvnodata.setVisibility(View.GONE);
+                            heardchat.setVisibility(View.VISIBLE);
+                            List<PointD> linePoint1 = new ArrayList<PointD>();
+                            List<PointD> linePoint2 = new ArrayList<PointD>();
+                            for (BloodPressRes th : list) {
 
-                            Double ydH = Double.valueOf(th.getHigh());
-                            Double ydL = Double.valueOf(th.getLow());
-                            linePoint1.add(new PointD(xd, ydH));
-                            linePoint2.add(new PointD(xd, ydL));
-                        }
-                        mChart.refresh(linePoint1, linePoint2);
+                                Double xd;
+                                if (months.get(29).equals(th.getMonitorTime().split("\\ ")[0])) {
+                                    xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months) + 1;
+                                } else {
+                                    xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months);
+                                }
+                                Double ydH = Double.valueOf(th.getHigh());
+                                Double ydL = Double.valueOf(th.getLow());
+                                linePoint1.add(new PointD(xd, ydH));
+                                linePoint2.add(new PointD(xd, ydL));
+                            }
+                            mChart.refresh(linePoint1, linePoint2);
 //                        tvtime.setText(CommonUtils.returnTime3(list.get(list.size()-1).getMonitorTime(),1)+" "+CommonUtils.returnTime(list.get(list.size()-1).getMonitorTime(),2));
 
 
@@ -518,10 +543,16 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
 //                        }
 
 
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         }));
 

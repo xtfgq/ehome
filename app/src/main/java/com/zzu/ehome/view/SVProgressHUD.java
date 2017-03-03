@@ -87,6 +87,7 @@ public class SVProgressHUD {
 
     public static   void clean(Context context){
         getInstance(context).dismissImmediately();
+        mSVProgressHUD=null;
     }
 
 
@@ -263,7 +264,7 @@ public class SVProgressHUD {
             mSharedView.dismiss();
         }
         if(rootView!=null){
-            rootView.removeView(mSharedView);
+            rootView.removeAllViews();
         }
         if(decorView!=null){
             decorView.removeView(rootView);
