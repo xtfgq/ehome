@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="132dp"
+    android:background="@color/base_color_text_white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="12dp">
+
+
+
+            <com.zzu.ehome.view.CircleImageView
+                android:id="@+id/user_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/icon_doctor"
+               />
+            <ImageView
+                android:id="@+id/icon_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:visibility="gone"
+                android:src="@mipmap/icon_online" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="王晓明"
+                    android:textSize="14sp"
+                    android:textColor="#0f2536"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true" />
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text=""
+                    android:textSize="10sp"
+                    android:layout_marginLeft="7dp"
+                    android:textColor="#00c07d"
+
+
+                    android:layout_alignBottom="@+id/tv_name"
+                    android:layout_toRightOf="@+id/tv_name"
+                    android:layout_toEndOf="@+id/tv_name" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_hospital"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="郑州大学第一附属医院"
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    android:textColor="#0f2536"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_sc"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="擅长：心血管慢病调理，心血管疾病专家"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    android:textColor="#0f2536"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_qyl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/doctor_item_tv_bg"
+                android:text="签约量："
+                android:textColor="#00c07d"
+                android:textSize="8sp" />
+            <Button
+                android:layout_below="@+id/tv_qyl"
+                android:id="@+id/tv_sign"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/actionbar_color"
+                android:text="立即咨询"
+                android:layout_marginLeft="16dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:background="#e1e1e2" />
+
+  <!--  <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            >
+
+            <TextView
+                android:id="@+id/tv_qyl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="签约量：200"
+                android:textColor="#00c07d"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="#e1e1e2" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            >
+
+            <TextView
+                android:id="@+id/tv_wzl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="问诊量：200"
+                android:textColor="#00c07d"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </LinearLayout>-->
+
+ <!--   <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/back_color" />-->
+
+
+</LinearLayout>

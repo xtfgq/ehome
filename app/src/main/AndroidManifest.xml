@@ -591,13 +591,13 @@
 
         <!-- imlib config begin -->
      <!-- &lt;!&ndash; 正式服务&ndash;&gt;-->
-<meta-data
-            android:name="RONG_CLOUD_APP_KEY"
-            android:value="x18ywvqf8xjpc" />
-<!--   &lt;!&ndash;&lt;!&ndash;  测试服务&ndash;&gt;&ndash;&gt;-->
 <!--<meta-data
+            android:name="RONG_CLOUD_APP_KEY"
+            android:value="x18ywvqf8xjpc" />-->
+<!--   &lt;!&ndash;&lt;!&ndash;  测试服务&ndash;&gt;&ndash;&gt;-->
+<meta-data
                     android:name="RONG_CLOUD_APP_KEY"
-                    android:value="e0x9wycfxehzq" />-->
+                    android:value="e0x9wycfxehzq" />
 
         <service
             android:name="io.rong.imlib.ipc.RongService"
