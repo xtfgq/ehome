@@ -8,8 +8,8 @@ android {
         applicationId "com.zzu.ehome.main.ehome"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 17
-        versionName "2.1.2"
+        versionCode 20
+        versionName "2.2.1"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
@@ -20,8 +20,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-
         }
     }
     dexOptions {
@@ -29,6 +27,7 @@ android {
     }
 
 }
+
 
 
 dependencies {
@@ -42,7 +41,6 @@ dependencies {
     compile files('libs/universal-image-loader-1.9.4.jar')
     compile 'com.android.support:design:23.2.1'
     compile files('libs/GetuiExt-2.0.3.jar')
-    compile files('libs/GetuiSDK2.8.1.0.jar')
     compile files('libs/json_simple-1.1.jar')
     compile project(':percent')
     compile project(':library')
@@ -75,5 +73,7 @@ dependencies {
     compile 'com.lzy.net:okgo:2.1.3'
     compile 'com.lzy.net:okrx:0.1.2'
     compile 'com.lzy.net:okserver:1.1.2'
+    compile 'com.contrarywind:Android-PickerView:3.1.0'
     compile project(':Rong_Cloud_Android_IMKit_SDK_v2_7_3_stable')
+    compile files('libs/GetuiSDK2.9.3.0.jar')
 }
