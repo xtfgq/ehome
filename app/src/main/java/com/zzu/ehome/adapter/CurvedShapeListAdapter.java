@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.zzu.ehome.R;
 
+import com.zzu.ehome.activity.CurveSortActivity;
 import com.zzu.ehome.bean.CurvedPart;
 
 
@@ -110,6 +111,10 @@ public class CurvedShapeListAdapter extends BaseAdapter {
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Intent i=new Intent(mContext, CurveSortActivity.class);
+                        i.putExtra("title",mList.get(p).getName());
+                        mContext.startActivity(i);
+
 
                     }
                 });

@@ -27,7 +27,7 @@ import android.widget.TextView;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.CholesterolActivity;
 import com.zzu.ehome.activity.JibuDataActivity;
-import com.zzu.ehome.activity.LoginActivity1;
+import com.zzu.ehome.activity.LoginActivity;
 import com.zzu.ehome.activity.MedicalRecordsActivity;
 import com.zzu.ehome.activity.PersonalCenterInfo;
 import com.zzu.ehome.activity.SupperBaseActivity;
@@ -59,6 +59,7 @@ import com.zzu.ehome.utils.PermissionsChecker;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.DialogTips;
+import com.zzu.ehome.view.RefreshLayout;
 
 import org.json.JSONObject;
 
@@ -71,7 +72,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
 import rx.Subscription;
@@ -115,6 +115,8 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
     private TextView dgc_num,ls_num,textViewDgc2,textViewLs2;
     private CompositeSubscription compositeSubscription;
     private SupperBaseActivity activity;
+    private RefreshLayout refreshLayout;
+    private boolean isRefresh=false;
     private BroadcastReceiver mRefrushBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -250,8 +252,9 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
         pbCh=(ProgressBar) view.findViewById(R.id.progressDgcBar1);
         textViewLs2=(TextView)view.findViewById(R.id.textViewLs2);
         textViewDgc2=(TextView)view.findViewById(R.id.textViewDgc2);
-        vTop = view.findViewById(R.id.v_top);
 
+        vTop = view.findViewById(R.id.v_top);
+        refreshLayout=(RefreshLayout) view.findViewById(R.id.refreshLayout);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int h = CommonUtils.getStatusHeight(getActivity());
             ViewGroup.LayoutParams params = vTop.getLayoutParams();
@@ -303,6 +306,18 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                 });
         //subscription交给compositeSubscription进行管理，防止内存溢出
         compositeSubscription.add(subscription);
+        refreshLayout.setOnRefreshListener(new RefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout pullToRefreshLayout) {
+
+                    if(!activity.isNetWork){
+                        refreshLayout.refreshFinish(RefreshLayout.FAIL);
+                        return;
+                    }
+                isRefresh=true;
+               getData();
+            }
+        });
     }
     private void getData(){
         if(!TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
@@ -557,6 +572,11 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
                 } catch (Exception e) {
                     e.printStackTrace();
 
+                }finally {
+                    if(isRefresh){
+                        refreshLayout.refreshFinish(RefreshLayout.SUCCEED);
+                        isRefresh=false;
+                    }
                 }
             }
 
@@ -797,7 +817,7 @@ public class HealthDataFragment extends BaseFragment implements View.OnClickList
             return;
         }
         if (TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())) {
-            startActivity(new Intent(getActivity(), LoginActivity1.class));
+            startActivity(new Intent(getActivity(), LoginActivity.class));
             return;
         }
 

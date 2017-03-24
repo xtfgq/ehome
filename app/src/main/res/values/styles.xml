@@ -261,4 +261,5 @@
     <style name="WelcomeTheme" parent="android:Theme.Black.NoTitleBar.Fullscreen">
 
     </style>
+
 </resources>

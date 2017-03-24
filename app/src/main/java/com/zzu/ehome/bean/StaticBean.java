@@ -7,65 +7,55 @@ import com.google.gson.annotations.SerializedName;
  */
 public class StaticBean {
 
-    @SerializedName("UserID")
-    private String UserID;
-    @SerializedName("ImgPath")
-    private String ImgPath;
-    @SerializedName("Diagnosis")
-    private String Diagnosis;
-    @SerializedName("PatientName")
-    private String PatientName;
-    @SerializedName("ApplicationId")
-    private String ApplicationId;
-    @SerializedName("CollectTime")
-    private String CollectTime;
+    @SerializedName("CardNO")
+    private String CardNO;
+    @SerializedName("ReportURL")
+    private String ReportURL;
+    @SerializedName("ECGResult")
+    private String ECGResult;
+    @SerializedName("RealName")
+    private String RealName;
 
-    public String getCollectTime() {
-        return CollectTime;
+    @SerializedName("ReportTime")
+    private String ReportTime;
+
+    public String getCardNO() {
+        return CardNO;
     }
 
-    public void setCollectTime(String collectTime) {
-        CollectTime = collectTime;
+    public void setCardNO(String cardNO) {
+        CardNO = cardNO;
     }
 
-
-    public String getUserID() {
-        return UserID;
+    public String getReportURL() {
+        return ReportURL;
     }
 
-    public void setUserID(String userID) {
-        UserID = userID;
+    public void setReportURL(String reportURL) {
+        ReportURL = reportURL;
     }
 
-    public String getImgPath() {
-        return ImgPath;
+    public String getECGResult() {
+        return ECGResult;
     }
 
-    public void setImgPath(String imgPath) {
-        ImgPath = imgPath;
+    public void setECGResult(String ECGResult) {
+        this.ECGResult = ECGResult;
     }
 
-    public String getDiagnosis() {
-        return Diagnosis;
+    public String getRealName() {
+        return RealName;
     }
 
-    public void setDiagnosis(String diagnosis) {
-        Diagnosis = diagnosis;
+    public void setRealName(String realName) {
+        RealName = realName;
     }
 
-    public String getPatientName() {
-        return PatientName;
+    public String getReportTime() {
+        return ReportTime;
     }
 
-    public void setPatientName(String patientName) {
-        PatientName = patientName;
-    }
-
-    public String getApplicationId() {
-        return ApplicationId;
-    }
-
-    public void setApplicationId(String applicationId) {
-        ApplicationId = applicationId;
+    public void setReportTime(String reportTime) {
+        ReportTime = reportTime;
     }
 }

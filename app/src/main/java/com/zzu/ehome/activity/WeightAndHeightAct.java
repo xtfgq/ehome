@@ -191,7 +191,7 @@ public class WeightAndHeightAct extends BaseSimpleActivity implements View.OnCli
                 dao.updateUserInfo(dbUser, id);
 
                 EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
-                CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
+                CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(RegisterActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(RelationActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(SecondActivity.class);
@@ -217,11 +217,13 @@ public class WeightAndHeightAct extends BaseSimpleActivity implements View.OnCli
     private void doWeight(final String id){
         startProgressDialog();
         SharePreferenceUtil.getInstance(WeightAndHeightAct.this).setWeight(wei + "");
+        btnext.setEnabled(false);
         requestMaker.userInfoWeight(id, hei + "", wei + "", new JsonAsyncTask_Info(WeightAndHeightAct.this, true, new JsonAsyncTaskOnComplete() {
 
             @Override
             public void processJsonObject(Object result) {
                 try {
+                    btnext.setEnabled(true);
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO.getJSONArray("UserInfoChange");
 
@@ -236,7 +238,8 @@ public class WeightAndHeightAct extends BaseSimpleActivity implements View.OnCli
 
             @Override
             public void onError(Exception e) {
-
+                if(btnext!=null)
+                btnext.setEnabled(true);
             }
         }));
 

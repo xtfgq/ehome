@@ -28,7 +28,7 @@ public class ECGStaticAadapter extends BaseListAdapter<StaticBean> {
 
     @Override
     public View getGqView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
+        ViewHolder holder ;
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = getInflater().inflate(R.layout.dynamic_item, null);
@@ -41,23 +41,23 @@ public class ECGStaticAadapter extends BaseListAdapter<StaticBean> {
 
         holder.tvtitle.setText("静态心电报告");
         final StaticBean item = getItem(position);
-        holder.time.setText(item.getCollectTime());
+        holder.time.setText(item.getReportTime());
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(item.getImgPath().contains("pdf")){
+                if(item.getReportURL().contains("pdf")){
                     Intent i = new Intent(mContext, ECGPDFStaticActivity.class);
-                    i.putExtra("imurl", item.getImgPath());
-                    i.putExtra("Diagnosis", item.getDiagnosis());
-                    i.putExtra("PatientName", item.getPatientName());
-                    i.putExtra("CollectTime", item.getCollectTime());
+                    i.putExtra("imurl", item.getReportURL());
+                    i.putExtra("Diagnosis", item.getECGResult());
+                    i.putExtra("PatientName", item.getRealName());
+                    i.putExtra("CollectTime", item.getReportTime());
                     mContext.startActivity(i);
                 }else {
                     Intent i = new Intent(mContext, StaticECGDetailActivity.class);
-                    i.putExtra("imurl", item.getImgPath());
-                    i.putExtra("Diagnosis", item.getDiagnosis());
-                    i.putExtra("PatientName", item.getPatientName());
-                    i.putExtra("CollectTime", item.getCollectTime());
+                    i.putExtra("imurl", item.getReportURL());
+                    i.putExtra("Diagnosis", item.getECGResult());
+                    i.putExtra("PatientName", item.getRealName());
+                    i.putExtra("CollectTime", item.getReportTime());
                     mContext.startActivity(i);
                 }
             }

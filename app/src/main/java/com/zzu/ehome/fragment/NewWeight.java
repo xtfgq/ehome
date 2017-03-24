@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -26,23 +25,18 @@ import com.zzu.ehome.bean.HealteData;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.bean.WeightBeanRes;
-import com.zzu.ehome.bean.WeightDate;
-import com.zzu.ehome.bean.WeightRes;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
-import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
-import com.zzu.ehome.view.WeightView;
+import com.zzu.ehome.view.OneLineView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.xclcharts.chart.PointD;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -56,12 +50,11 @@ import de.greenrobot.event.EventBus;
 public class NewWeight extends BaseFragment implements StickyListHeadersListView.OnHeaderClickListener, StickyListHeadersListView.OnLoadingMoreLinstener {
     private View view;
 
-
     private RequestMaker requestMaker;
     String startTime, endTime;
     Date dNow;
     String userid,cardNo;
-    private WeightView mChart;
+    private OneLineView mChart;
 
 //    private TextView tvvalue, tvstatus, tvtime;
 
@@ -75,9 +68,6 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
     private int page = 1;
     private boolean isLoading = false;
     private List<WeightBeanRes> mList;
-    private LinearLayout heardchat, lltmp;
-    private RadioGroup group;
-    private RadioButton rbday, rbweek, rbmonth;
     private LinkedList<String> labels = new LinkedList<String>();
     private LinkedList<String> weeks = new LinkedList<>();
     private List<String> months = new ArrayList<>();
@@ -98,7 +88,7 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
             String action = intent.getAction();
             if (action.equals("action.Weight")) {
 
-                setDay();
+//                setDay();
 
                 page = 1;
                 getHistory();
@@ -181,7 +171,7 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
 //                        rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
 //                        rbmonth.setChecked(false);
 //                        rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-//                        setDay();
+//                       setDay();
 //                        break;
 //                    case R.id.rb_week:
 //                        rbday.setChecked(false);
@@ -216,248 +206,248 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
 
     }
 
-    private void setMonth() {
-        if(!activity.isNetWork){
-            activity.showNetWorkErrorDialog();
-            return;
-
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        startTime = sdf.format(CommonUtils.changeDate(-29).getTime());
-        endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
-        months.clear();
-        labels.clear();
-        months = CommonUtils.getDays(startTime, sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000));
-        int i = 0;
-        while (i < 30) {
-            if (i == 0) {
-                labels.add(months.get(i).split("-")[2]);
-                i += 4;
-            } else {
-                labels.add(months.get(i).split("-")[2]);
-                i += 5;
-            }
-
-        }
-
-        mChart.setX(labels, 30);
-        requestMaker.WeightInquiryType(cardNo, userid,startTime, endTime, "D", new JsonAsyncTask_Info(
-                getActivity(), true, new JsonAsyncTaskOnComplete() {
-            public void processJsonObject(Object result) {
-
-                try {
-                    String value = result.toString();
-                    JSONObject mySO = (JSONObject) result;
-                    JSONArray array = mySO.getJSONArray("WeightInquiry");
-                    if (array.getJSONObject(0)
-                            .has("MessageCode")) {
-
-
-//                        tvstatus.setText("");
-//                        tvtime.setText("");
-//                        tvvalue.setText("");
-                        List<PointD> linePoint2 = new ArrayList<PointD>();
-                        mChart.refresh(linePoint2);
-                        tvnodata.setVisibility(View.VISIBLE);
-                    } else {
-                        tvnodata.setVisibility(View.GONE);
-                        WeightDate date = JsonTools.getData(result.toString(), WeightDate.class);
-                        List<WeightRes> list = date.getData();
-                        String[] times = list.get(list.size() - 1).getMonitorTime().split("\\ ")[0].split("\\-");
-//                        tvtime.setText(times[1]+"-"+times[2]);
+//    private void setMonth() {
+//        if(!activity.isNetWork){
+//            activity.showNetWorkErrorDialog();
+//            return;
 //
-//                        tvvalue.setText(list.get(list.size()-1).getWeight()+"kg");
-
-                        List<PointD> linePoint = new ArrayList<PointD>();
-                        for (WeightRes th : list) {
-                            Double xd ;
-//                            if(months.get(29).equals(th.getMonitorTime().split("\\ ")[0])) {
-//                                xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months) + 1;
-//                            }else{
-//                                xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months);
+//        }
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        startTime = sdf.format(CommonUtils.changeDate(-29).getTime());
+//        endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
+//        months.clear();
+//        labels.clear();
+//        months = CommonUtils.getDays(startTime, sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000));
+//        int i = 0;
+//        while (i < 30) {
+//            if (i == 0) {
+//                labels.add(months.get(i).split("-")[2]);
+//                i += 4;
+//            } else {
+//                labels.add(months.get(i).split("-")[2]);
+//                i += 5;
+//            }
+//
+//        }
+//
+//        mChart.setX(labels, 30);
+//        requestMaker.WeightInquiryType(cardNo, userid,startTime, endTime, "D", new JsonAsyncTask_Info(
+//                getActivity(), true, new JsonAsyncTaskOnComplete() {
+//            public void processJsonObject(Object result) {
+//
+//                try {
+//                    String value = result.toString();
+//                    JSONObject mySO = (JSONObject) result;
+//                    JSONArray array = mySO.getJSONArray("WeightInquiry");
+//                    if (array.getJSONObject(0)
+//                            .has("MessageCode")) {
+//
+//
+////                        tvstatus.setText("");
+////                        tvtime.setText("");
+////                        tvvalue.setText("");
+//                        List<PointD> linePoint2 = new ArrayList<PointD>();
+//                        mChart.refresh(linePoint2);
+//                        tvnodata.setVisibility(View.VISIBLE);
+//                    } else {
+//                        tvnodata.setVisibility(View.GONE);
+//                        WeightDate date = JsonTools.getData(result.toString(), WeightDate.class);
+//                        List<WeightRes> list = date.getData();
+//                        String[] times = list.get(list.size() - 1).getMonitorTime().split("\\ ")[0].split("\\-");
+////                        tvtime.setText(times[1]+"-"+times[2]);
+////
+////                        tvvalue.setText(list.get(list.size()-1).getWeight()+"kg");
+//
+//                        List<PointD> linePoint = new ArrayList<PointD>();
+//                        for (WeightRes th : list) {
+//                            Double xd ;
+////                            if(months.get(29).equals(th.getMonitorTime().split("\\ ")[0])) {
+////                                xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months) + 1;
+////                            }else{
+////                                xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months);
+////                            }
+//                            xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months) + 1;
+//                            Double yd = Double.valueOf(th.getWeight());
+//                            if (Double.compare(xd, -1d) != 0) {
+//                                linePoint.add(new PointD(xd, yd));
 //                            }
-                            xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months) + 1;
-                            Double yd = Double.valueOf(th.getWeight());
-                            if (Double.compare(xd, -1d) != 0) {
-                                linePoint.add(new PointD(xd, yd));
-                            }
-
-                        }
-                        mChart.refresh(linePoint);
-
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Exception e) {
-
-            }
-
-
-        }));
-
-    }
-
-    private void setDay() {
-        if(!activity.isNetWork){
-            activity.showNetWorkErrorDialog();
-            return;
-
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        startTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
-        endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
-        labels.clear();
-        labels.add("00");
-        labels.add("04");
-        labels.add("08");
-        labels.add("12");
-        labels.add("16");
-        labels.add("20");
-        labels.add("24");
-        mChart.setX(labels, 24);
-        requestMaker.WeightInquiryType(cardNo, userid,startTime, endTime, "H", new JsonAsyncTask_Info(
-                getActivity(), true, new JsonAsyncTaskOnComplete() {
-            public void processJsonObject(Object result) {
-
-                try {
-                    String value = result.toString();
-                    JSONObject mySO = (JSONObject) result;
-                    JSONArray array = mySO.getJSONArray("WeightInquiry");
-                    if(view!=null){
-                    if (array.getJSONObject(0)
-                            .has("MessageCode")) {
-
-
-//                        tvstatus.setText("");
-//                        tvtime.setText("");
-//                        tvvalue.setText("");
-                        List<PointD> linePoint2 = new ArrayList<PointD>();
-                        mChart.refresh(linePoint2);
-                        tvnodata.setVisibility(View.VISIBLE);
-                    } else {
-                        tvnodata.setVisibility(View.GONE);
-                        WeightDate date = JsonTools.getData(result.toString(), WeightDate.class);
-                        List<WeightRes> list = date.getData();
-//                        tvtime.setText("今天"+list.get(list.size() - 1).getMonitorTime().split("\\ ")[1] + ":00");
 //
-//                        tvvalue.setText(list.get(list.size()-1).getWeight()+"kg");
-
-
-                        List<PointD> linePoint2 = new ArrayList<PointD>();
-                        for (WeightRes th : list) {
-                            Double xd = Double.valueOf(th.getMonitorTime().split("\\ ")[1]);
-                            Double yd = Double.valueOf(th.getWeight());
-                            linePoint2.add(new PointD(xd, yd));
-                        }
-
-
-                        mChart.refresh(linePoint2);
-                    }
-
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Exception e) {
-
-            }
-
-
-        }));
-    }
-
-    private void setWeek() {
-        if(!activity.isNetWork){
-            activity.showNetWorkErrorDialog();
-            return;
-
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-
-        startTime = sdf.format(CommonUtils.changeDate(-6).getTime());
-        endTime = sdf.format((new Date()).getTime() + 60 * 60 * 24 * 1000);
-        weeks.clear();
-        weeks.add(startTime);
-        weeks.add(sdf.format(CommonUtils.changeDate(-5).getTime()));
-        weeks.add(sdf.format(CommonUtils.changeDate(-4).getTime()));
-        weeks.add(sdf.format(CommonUtils.changeDate(-3).getTime()));
-        weeks.add(sdf.format(CommonUtils.changeDate(-2).getTime()));
-        weeks.add(sdf.format(CommonUtils.changeDate(-1).getTime()));
-        weeks.add(sdf.format((new Date()).getTime()));
-        labels.clear();
-        for (String day : weeks) {
-            labels.add(day.split("-")[2]);
-        }
-        mChart.setX(labels, 6);
-
-        requestMaker.WeightInquiryType(cardNo, userid,startTime, endTime, "D", new JsonAsyncTask_Info(
-                getActivity(), true, new JsonAsyncTaskOnComplete() {
-            public void processJsonObject(Object result) {
-
-                try {
-                    String value = result.toString();
-                    JSONObject mySO = (JSONObject) result;
-                    JSONArray array = mySO.getJSONArray("WeightInquiry");
-                    if (array.getJSONObject(0)
-                            .has("MessageCode")) {
-
-//                        tvstatus.setText("");
-//                        tvtime.setText("");
-//                        tvvalue.setText("");
-                        List<PointD> linePoint2 = new ArrayList<PointD>();
-                        mChart.refresh(linePoint2);
-                        tvnodata.setVisibility(View.VISIBLE);
-                    } else {
-                        tvnodata.setVisibility(View.GONE);
-                        WeightDate date = JsonTools.getData(result.toString(), WeightDate.class);
-                        List<WeightRes> list = date.getData();
-                        String[] times = list.get(list.size() - 1).getMonitorTime().split("\\ ")[0].split("\\-");
-
-//                        tvtime.setText(times[1]+"-"+times[2]);
+//                        }
+//                        mChart.refresh(linePoint);
 //
-//                        tvvalue.setText(list.get(list.size()-1).getWeight()+"kg");
+//
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Exception e) {
+//
+//            }
+//
+//
+//        }));
 
-                        List<PointD> linePoint2 = new ArrayList<PointD>();
+//    }
 
-                        for (WeightRes th : list) {
+//    private void setDay() {
+//        if(!activity.isNetWork){
+//            activity.showNetWorkErrorDialog();
+//            return;
+//
+//        }
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        startTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
+//        endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
+//        labels.clear();
+//        labels.add("00");
+//        labels.add("04");
+//        labels.add("08");
+//        labels.add("12");
+//        labels.add("16");
+//        labels.add("20");
+//        labels.add("24");
+//        mChart.setX(labels, 24);
+//        requestMaker.WeightInquiryType(cardNo, userid,startTime, endTime, "H", new JsonAsyncTask_Info(
+//                getActivity(), true, new JsonAsyncTaskOnComplete() {
+//            public void processJsonObject(Object result) {
+//
+//                try {
+//                    String value = result.toString();
+//                    JSONObject mySO = (JSONObject) result;
+//                    JSONArray array = mySO.getJSONArray("WeightInquiry");
+//                    if(view!=null){
+//                    if (array.getJSONObject(0)
+//                            .has("MessageCode")) {
+//
+//
+////                        tvstatus.setText("");
+////                        tvtime.setText("");
+////                        tvvalue.setText("");
+//                        List<PointD> linePoint2 = new ArrayList<PointD>();
+//                        mChart.refresh(linePoint2);
+//                        tvnodata.setVisibility(View.VISIBLE);
+//                    } else {
+//                        tvnodata.setVisibility(View.GONE);
+//                        WeightDate date = JsonTools.getData(result.toString(), WeightDate.class);
+//                        List<WeightRes> list = date.getData();
+////                        tvtime.setText("今天"+list.get(list.size() - 1).getMonitorTime().split("\\ ")[1] + ":00");
+////
+////                        tvvalue.setText(list.get(list.size()-1).getWeight()+"kg");
+//
+//
+//                        List<PointD> linePoint2 = new ArrayList<PointD>();
+//                        for (WeightRes th : list) {
+//                            Double xd = Double.valueOf(th.getMonitorTime().split("\\ ")[1]);
+//                            Double yd = Double.valueOf(th.getWeight());
+//                            linePoint2.add(new PointD(xd, yd));
+//                        }
+//
+//
+//                        mChart.refresh(linePoint2);
+//                    }
+//
+//                    }
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Exception e) {
+//
+//            }
+//
+//
+//        }));
+//    }
 
-                            Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], weeks);
-                            Double yd = Double.valueOf(th.getWeight());
-                            if (Double.compare(xd, -1d) != 0) {
-                                linePoint2.add(new PointD(xd, yd));
-                            }
-
-                        }
-
-
-                        mChart.refresh(linePoint2);
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Exception e) {
-
-            }
-
-
-        }));
-
-
-    }
+//    private void setWeek() {
+//        if(!activity.isNetWork){
+//            activity.showNetWorkErrorDialog();
+//            return;
+//
+//        }
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//
+//
+//        startTime = sdf.format(CommonUtils.changeDate(-6).getTime());
+//        endTime = sdf.format((new Date()).getTime() + 60 * 60 * 24 * 1000);
+//        weeks.clear();
+//        weeks.add(startTime);
+//        weeks.add(sdf.format(CommonUtils.changeDate(-5).getTime()));
+//        weeks.add(sdf.format(CommonUtils.changeDate(-4).getTime()));
+//        weeks.add(sdf.format(CommonUtils.changeDate(-3).getTime()));
+//        weeks.add(sdf.format(CommonUtils.changeDate(-2).getTime()));
+//        weeks.add(sdf.format(CommonUtils.changeDate(-1).getTime()));
+//        weeks.add(sdf.format((new Date()).getTime()));
+//        labels.clear();
+//        for (String day : weeks) {
+//            labels.add(day.split("-")[2]);
+//        }
+//        mChart.setX(labels, 6);
+//
+//        requestMaker.WeightInquiryType(cardNo, userid,startTime, endTime, "D", new JsonAsyncTask_Info(
+//                getActivity(), true, new JsonAsyncTaskOnComplete() {
+//            public void processJsonObject(Object result) {
+//
+//                try {
+//                    String value = result.toString();
+//                    JSONObject mySO = (JSONObject) result;
+//                    JSONArray array = mySO.getJSONArray("WeightInquiry");
+//                    if (array.getJSONObject(0)
+//                            .has("MessageCode")) {
+//
+////                        tvstatus.setText("");
+////                        tvtime.setText("");
+////                        tvvalue.setText("");
+//                        List<PointD> linePoint2 = new ArrayList<PointD>();
+//                        mChart.refresh(linePoint2);
+//                        tvnodata.setVisibility(View.VISIBLE);
+//                    } else {
+//                        tvnodata.setVisibility(View.GONE);
+//                        WeightDate date = JsonTools.getData(result.toString(), WeightDate.class);
+//                        List<WeightRes> list = date.getData();
+//                        String[] times = list.get(list.size() - 1).getMonitorTime().split("\\ ")[0].split("\\-");
+//
+////                        tvtime.setText(times[1]+"-"+times[2]);
+////
+////                        tvvalue.setText(list.get(list.size()-1).getWeight()+"kg");
+//
+//                        List<PointD> linePoint2 = new ArrayList<PointD>();
+//
+//                        for (WeightRes th : list) {
+//
+//                            Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], weeks);
+//                            Double yd = Double.valueOf(th.getWeight());
+//                            if (Double.compare(xd, -1d) != 0) {
+//                                linePoint2.add(new PointD(xd, yd));
+//                            }
+//
+//                        }
+//
+//
+//                        mChart.refresh(linePoint2);
+//
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Exception e) {
+//
+//            }
+//
+//
+//        }));
+//
+//
+//    }
 
     @Override
     public void setOnlyTileViewMethod(View v, String title) {
@@ -534,13 +524,13 @@ public class NewWeight extends BaseFragment implements StickyListHeadersListView
     public void onEventMainThread(RefreshEvent event) {
         if (getResources().getInteger(R.integer.refresh_weight) == event
                 .getRefreshWhere()) {
-            rbday.setChecked(true);
-            rbday.setTextColor(getResources().getColor(R.color.white));
-            rbweek.setChecked(false);
-            rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-            rbmonth.setChecked(false);
-            rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-            setDay();
+//            rbday.setChecked(true);
+//            rbday.setTextColor(getResources().getColor(R.color.white));
+//            rbweek.setChecked(false);
+//            rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//            rbmonth.setChecked(false);
+//            rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//            setDay();
 
             page = 1;
             getHistory();

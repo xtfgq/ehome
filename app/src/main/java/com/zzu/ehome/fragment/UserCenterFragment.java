@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zzu.ehome.R;
@@ -25,7 +24,7 @@ import com.zzu.ehome.activity.AdviceActivity;
 import com.zzu.ehome.activity.AppointmentActivity1;
 import com.zzu.ehome.activity.HealthFilesActivity;
 import com.zzu.ehome.activity.HealthFilesActivity1;
-import com.zzu.ehome.activity.LoginActivity1;
+import com.zzu.ehome.activity.LoginActivity;
 import com.zzu.ehome.activity.MyFocusActivity;
 import com.zzu.ehome.activity.MyHome;
 import com.zzu.ehome.activity.MyRemindActivity1;
@@ -48,8 +47,6 @@ import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.SharePopupWindow;
 
 import de.greenrobot.event.EventBus;
-
-import static com.zzu.ehome.R.id.edt_age;
 
 /**
  * Created by Mersens on 2016/8/5.
@@ -275,7 +272,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                 //我的档案
                 userid=SharePreferenceUtil.getInstance(getActivity()).getUserId();
                 if(TextUtils.isEmpty(userid)){
-                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
                 type=dao.findUserInfoById(userid).getType()+"";
@@ -292,7 +289,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                         startActivity(i);
                     }
                 } else {
-                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
 
 
@@ -303,7 +300,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                 if (!TextUtils.isEmpty(userid)) {
                     startActivity(new Intent(getActivity(), MyFocusActivity.class));
                 } else {
-                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
 
                 break;
@@ -312,14 +309,14 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                 if (!TextUtils.isEmpty(userid)) {
                     startActivity(new Intent(getActivity(), MyReportActivity.class));
                 } else {
-                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
 
                 break;
             case R.id.layout_wdyy:
                 //我的预约
                 if(TextUtils.isEmpty(SharePreferenceUtil.getInstance(getActivity()).getUserId())){
-                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 }else
                 startActivity(new Intent(getActivity(), AppointmentActivity1.class));
                 break;
@@ -328,7 +325,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                 if (!TextUtils.isEmpty(userid)) {
                     startActivity(new Intent(getActivity(), MyRemindActivity1.class));
                 } else {
-                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
 
 
@@ -344,7 +341,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                 if (!TextUtils.isEmpty(userid)) {
                     startActivity(new Intent(getActivity(), AdviceActivity.class));
                 } else {
-                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
 
                 break;
@@ -357,7 +354,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                 if (!TextUtils.isEmpty(userid)) {
                     startActivity(new Intent(getActivity(), SettingActivity.class));
                 } else {
-                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
 
 
@@ -368,7 +365,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                 if (!TextUtils.isEmpty(userid)) {
                     startActivity(new Intent(getActivity(), PersonalCenterInfo.class));
                 } else {
-                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
             case R.id.tv_edit:
@@ -376,7 +373,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                 if (!TextUtils.isEmpty(userid)) {
                     startActivity(new Intent(getActivity(), PersonalCenterInfo.class));
                 } else {
-                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
             case R.id.layout_wdys:
@@ -384,7 +381,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                 if (!TextUtils.isEmpty(userid)) {
                     startActivity(new Intent(getActivity(), MyFocusActivity.class));
                 } else {
-                    startActivity(new Intent(getActivity(), LoginActivity1.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
                 break;
         }
@@ -411,7 +408,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         if (!TextUtils.isEmpty(userid)) {
             startActivity(new Intent(getActivity(), MyHome.class));
         } else {
-            startActivity(new Intent(getActivity(), LoginActivity1.class));
+            startActivity(new Intent(getActivity(), LoginActivity.class));
         }
 
     }

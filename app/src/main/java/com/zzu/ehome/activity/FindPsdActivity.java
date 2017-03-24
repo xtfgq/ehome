@@ -3,6 +3,7 @@ package com.zzu.ehome.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -91,6 +92,24 @@ public class FindPsdActivity extends BaseActivity implements View.OnClickListene
         }
 
         ;
+    };
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    if(tv_getCode!=null) {
+                        stopService(mIntent);
+                        tv_getCode.setEnabled(true);
+                        tv_getCode.setText("获取验证码");
+                    }
+                    break;
+
+
+                default:
+                    break;
+            }
+        }
+
     };
 
 
@@ -254,7 +273,9 @@ public class FindPsdActivity extends BaseActivity implements View.OnClickListene
 
                 @Override
                 public void onError(Exception e) {
-
+                    Message message = Message.obtain();
+                    message.what = 0;
+                    mHandler.sendMessage(message);
                 }
             }));
         }
@@ -275,8 +296,8 @@ public class FindPsdActivity extends BaseActivity implements View.OnClickListene
                             .getString("MessageContent"));
                     if (array.getJSONObject(0)
                             .getString("MessageCode").equals("0")) {
-                        CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
-                        startActivity(new Intent(FindPsdActivity.this,LoginActivity1.class));
+                        CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity.class);
+                        startActivity(new Intent(FindPsdActivity.this,LoginActivity.class));
                         finishActivity();
                     }
 

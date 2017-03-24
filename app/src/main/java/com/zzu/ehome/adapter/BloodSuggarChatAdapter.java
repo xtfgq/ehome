@@ -1,7 +1,7 @@
 package com.zzu.ehome.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
+
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.TextAppearanceSpan;
@@ -15,10 +15,8 @@ import android.widget.TextView;
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
 import com.zzu.ehome.R;
 import com.zzu.ehome.bean.BloodSuggarBean;
-import com.zzu.ehome.bean.HealthDataRes;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.DateUtils;
-
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -79,30 +77,28 @@ public class BloodSuggarChatAdapter extends BaseAdapter implements StickyListHea
             holder = (ViewHolder) convertView.getTag();
         }
         int typevalue = Integer.valueOf(res.getType());
-        String time="";
-        if (Integer.valueOf(res.getHoursAfterMeal())==1) {
+        String time = "";
+        if (Integer.valueOf(res.getHoursAfterMeal()) == 1) {
             holder.tv_suggartime.setText("餐后");
-            time="餐后";
-        } else if(Integer.valueOf(res.getHoursAfterMeal())==0) {
+            time = "餐后";
+        } else if (Integer.valueOf(res.getHoursAfterMeal()) == 0) {
             holder.tv_suggartime.setText("空腹");
-            time="空腹";
-        }else{
+            time = "空腹";
+        } else {
             holder.tv_suggartime.setText("随机");
-            time="随机";
+            time = "随机";
         }
-
-
+        DecimalFormat decimalFormat = new DecimalFormat("0.0");
         switch (typevalue) {
             case 1:
-                String xt = "血糖:" + res.getBloodSugarValue() + "mmol/l";
+                String xt = "血糖:" + decimalFormat.format(Float.valueOf(res.getBloodSugarValue())) + "mmol/l";
                 SpannableString style = new SpannableString(xt);
                 style.setSpan(
                         new TextAppearanceSpan(mContext, R.style.styleNormalColor), 3, xt.length() - 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder.tv_value.setText(style);
-                checkSuager(Float.valueOf(res.getBloodSugarValue()), holder.tv_status,time, holder.rl_status);
+                checkSuager(Float.valueOf(res.getBloodSugarValue()), holder.tv_status, time, holder.rl_status);
                 break;
             case 2:
-                DecimalFormat decimalFormat = new DecimalFormat("0.0");
                 String xt2 = "血糖:" + decimalFormat.format(Float.valueOf(res.getBloodSugarValue()) / 18) + "mmol/l";
                 int bstart2 = xt2.indexOf("mmol/l");
                 SpannableString style2 = new SpannableString(xt2);
@@ -113,11 +109,7 @@ public class BloodSuggarChatAdapter extends BaseAdapter implements StickyListHea
                 break;
 
         }
-
-
         holder.tvtime.setText(DateUtils.StringPattern(res.getMonitorTime(), "yyyy/MM/dd HH:mm:ss", "dd日 HH:mm"));
-
-
         return convertView;
 
     }
@@ -133,7 +125,7 @@ public class BloodSuggarChatAdapter extends BaseAdapter implements StickyListHea
     }
 
     private void checkSuager(float value, TextView tv, String time, RelativeLayout rl) {
-        if (time.contains("餐后") ) {
+        if (time.contains("餐后")) {
             if (Float.compare(value, 7.6F) >= 0 && Float.compare(value, 11.1F) <= 0) {
                 tv.setText("正常");
                 rl.setBackgroundResource(R.drawable.btn_yuyue_4);
@@ -148,7 +140,7 @@ public class BloodSuggarChatAdapter extends BaseAdapter implements StickyListHea
 
             }
 
-        } else if(time.contains("空腹")){
+        } else if (time.contains("空腹")) {
             if (Float.compare(value, 3.9F) < 0) {
                 tv.setText("偏低");
                 rl.setBackgroundResource(R.drawable.btn_yuyue_5);
@@ -160,7 +152,7 @@ public class BloodSuggarChatAdapter extends BaseAdapter implements StickyListHea
                 rl.setBackgroundResource(R.drawable.btn_yuyue_6);
             }
 
-        }else{
+        } else {
             if (Float.compare(value, 3.9F) < 0) {
                 tv.setText("偏低");
                 rl.setBackgroundResource(R.drawable.btn_yuyue_5);
@@ -194,9 +186,7 @@ public class BloodSuggarChatAdapter extends BaseAdapter implements StickyListHea
      */
     @Override
     public long getHeaderId(int position) {
-
         BloodSuggarBean res = (BloodSuggarBean) getItem(position);
         return CommonUtils.returnLongNew(DateUtils.StringPattern(res.getMonitorTime(), "yyyy/MM/dd HH:mm:ss", "yyyy-MM"));
-
     }
 }

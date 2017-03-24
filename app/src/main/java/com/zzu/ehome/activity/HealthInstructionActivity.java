@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.BaseListAdapter;
 import com.zzu.ehome.bean.AdviceBean;
@@ -15,11 +16,14 @@ import com.zzu.ehome.utils.JsonTools;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.HeadView;
+
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +41,6 @@ public class HealthInstructionActivity extends BaseActivity implements View.OnCl
     private LinearLayout layout_none;
     private Button btn_save;
 
-    //    private RelativeLayout guide;
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -59,12 +62,10 @@ public class HealthInstructionActivity extends BaseActivity implements View.OnCl
         setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "健康指导", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
-
                 finishActivity();
             }
         });
         listView = (ListView) findViewById(R.id.lilstView);
-//        guide=(RelativeLayout)findViewById(R.id.guide);
         layout_none = (LinearLayout) findViewById(R.id.layout_none);
         btn_save = (Button) findViewById(R.id.btn_save);
         btn_save.setOnClickListener(this);
@@ -82,9 +83,9 @@ public class HealthInstructionActivity extends BaseActivity implements View.OnCl
                         if (array.getJSONObject(0).has("MessageCode")) {
                             layout_none.setVisibility(View.VISIBLE);
                             listView.setVisibility(View.GONE);
-//                            guide.setVisibility(View.GONE);
+
                         } else {
-//                            guide.setVisibility(View.VISIBLE);
+
                             AdviceData date = JsonTools.getData(result.toString(), AdviceData.class);
                             mList = date.getData();
                             mAadpter = new AdviceAdapter(HealthInstructionActivity.this, mList);
@@ -134,7 +135,6 @@ public class HealthInstructionActivity extends BaseActivity implements View.OnCl
             TextView tvDate = (TextView) mView.findViewById(R.id.tvDate);
             TextView tvnum = (TextView) mView.findViewById(R.id.tvnum);
             tvnum.setText("  " + (position + 1) + ".");
-//            tvDate.setText(DateUtils.StringPattern(list.get(position).getMonitorTime(),"yyyy/MM/dd HH:mm:ss", "yyyy/M/dd"));
             tvDescription.setText("体检结论:" + list.get(position).getDescription());
             name.setText(list.get(position).getAdvice());
             return mView;

@@ -49,7 +49,7 @@ public class HealthFilesActivity1 extends BaseActivity implements HealthFilesFra
             @Override
             public void onClick() {
                 if(!TextUtils.isEmpty(tag)) {
-                    CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
+                    CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity.class);
                     CustomApplcation.getInstance().finishSingleActivityByClass(RelationActivity.class);
                     CustomApplcation.getInstance().finishSingleActivityByClass(SexActivity.class);
                     CustomApplcation.getInstance().finishSingleActivityByClass(WeightAndHeightAct.class);
@@ -99,7 +99,7 @@ public class HealthFilesActivity1 extends BaseActivity implements HealthFilesFra
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if(!TextUtils.isEmpty(tag)) {
-                CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
+                CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(RelationActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(SexActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(WeightAndHeightAct.class);

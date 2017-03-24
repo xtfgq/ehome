@@ -297,7 +297,7 @@ public class BloodPressureFragment extends BaseFragment {
                         if(wheel1!=null&&wheel2!=null&&wheel3!=null&&progressBar1!=null&&progressBar2!=null) {
                             wheel1.initViewParam(Integer.valueOf(list.get(0).getHigh()), 300, 10);
                             wheel2.initViewParam(Integer.valueOf(list.get(0).getLow()), 300, 10);
-                            wheel3.initViewParam(Integer.valueOf(list.get(0).getPulse()), 300, 10);
+                            wheel3.initViewParam(Integer.valueOf(list.get(0).getPulse()), 170, 10);
                             ssy = Integer.valueOf(list.get(0).getHigh());
 
                             pbvalue = (int) (((float) ssy / (float) 300) * 100);

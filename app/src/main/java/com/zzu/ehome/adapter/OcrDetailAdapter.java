@@ -2,6 +2,7 @@ package com.zzu.ehome.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -20,23 +21,18 @@ import static android.R.attr.value;
  * Created by Administrator on 2016/9/14.
  */
 public class OcrDetailAdapter extends BaseListAdapter<BloodRoutine> {
-
-
     private List<BloodRoutine> mList;
     private Context mContext;
-
 
     public OcrDetailAdapter(Context context, List<BloodRoutine> objects) {
         super(context, objects);
         this.mList = objects;
         this.mContext = context;
-
     }
 
     @Override
     public View getGqView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
-
+        ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = getInflater().inflate(R.layout.ocr_detail_item, null);
@@ -49,14 +45,12 @@ public class OcrDetailAdapter extends BaseListAdapter<BloodRoutine> {
             holder = (ViewHolder) convertView.getTag();
         }
         BloodRoutine item = getItem(position);
-
         holder.name.setText(item.getCHK_ItemName_Z());
-        if(item.getItemRange().contains("-")) {
+        if (item.getItemRange().contains("-")) {
             String[] range = item.getItemRange().split("-");
             float low = Float.valueOf(range[0]);
             float hight = Float.valueOf(range[1]);
             float value = Float.valueOf(item.getItemValue());
-
             if (Float.compare(value, low) < 0 || Float.compare(value, hight) > 0) {
                 holder.num.setTextColor(Color.RED);
                 holder.AToB.setTextColor(Color.RED);
@@ -64,27 +58,26 @@ public class OcrDetailAdapter extends BaseListAdapter<BloodRoutine> {
                 holder.num.setTextColor(Color.parseColor("#949395"));
                 holder.AToB.setTextColor(Color.parseColor("#949395"));
             }
-        }else{
-            float ll=Float.valueOf(item.getItemRange());
-            float v=Float.valueOf(item.getItemValue());
-            if (Float.compare(v, ll)==0){
-                holder.num.setTextColor(Color.parseColor("#949395"));
-                holder.AToB.setTextColor(Color.parseColor("#949395"));
-            }else{
-                holder.num.setTextColor(Color.RED);
-                holder.AToB.setTextColor(Color.RED);
+        } else {
+            if (!TextUtils.isEmpty(item.getItemRange())) {
+                float ll = Float.valueOf(item.getItemRange());
+                float v = Float.valueOf(item.getItemValue());
+                if (Float.compare(v, ll) == 0) {
+                    holder.num.setTextColor(Color.parseColor("#949395"));
+                    holder.AToB.setTextColor(Color.parseColor("#949395"));
+                } else {
+                    holder.num.setTextColor(Color.RED);
+                    holder.AToB.setTextColor(Color.RED);
+                }
             }
         }
         holder.num.setText(item.getItemValue());
         holder.AToB.setText(item.getItemUnit());
         holder.tvrange.setText(item.getItemRange());
-
         return convertView;
     }
 
-
     public class ViewHolder {
-
         private TextView name;
         private TextView num;
         private TextView AToB;

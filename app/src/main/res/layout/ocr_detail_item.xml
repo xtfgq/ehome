@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    xmlns:tool="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_height="match_parent">
 
@@ -17,7 +16,7 @@
             android:id="@+id/tvname"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="白细胞计数"
+            android:text=""
             android:gravity="center|left"
             android:textColor="#949395"
             android:layout_weight="4.5"/>
@@ -35,9 +34,7 @@
                 android:id="@+id/ednum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tool:text="ednum"
                 android:gravity="center"
-
                 android:textColor="#949395"
                 />
 
@@ -45,9 +42,7 @@
                 android:id="@+id/tvAtoB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tool:text="g/l"
                 android:layout_marginLeft="5dp"
-
                 android:textColor="#949395"
                 />
             </LinearLayout>
@@ -58,7 +53,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="4-10"
             android:textColor="#949395"
             android:layout_weight="2"/>
     </LinearLayout>

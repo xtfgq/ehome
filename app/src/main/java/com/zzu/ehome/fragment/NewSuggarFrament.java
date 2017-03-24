@@ -137,14 +137,14 @@ public class NewSuggarFrament extends BaseFragment implements StickyListHeadersL
     public void onEventMainThread(RefreshEvent event) {
         if (getResources().getInteger(R.integer.refresh_suggar) == event
                 .getRefreshWhere()) {
-            rbday.setChecked(true);
-            rbday.setTextColor(getResources().getColor(R.color.white));
-            rbweek.setChecked(false);
-            rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-            rbmonth.setChecked(false);
-            rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-            setDay();
-
+//            rbday.setChecked(true);
+//            rbday.setTextColor(getResources().getColor(R.color.white));
+//            rbweek.setChecked(false);
+//            rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//            rbmonth.setChecked(false);
+//            rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//            setDay();
+//
             page = 1;
             getHistory();
 

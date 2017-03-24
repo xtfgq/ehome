@@ -1,311 +1,238 @@
 package com.zzu.ehome.activity;
 
-
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Handler.Callback;
-import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.igexin.sdk.PushManager;
-import com.umeng.analytics.MobclickAgent;
+
+import com.zzu.ehome.DemoContext;
 import com.zzu.ehome.R;
-import com.zzu.ehome.adapter.UserAdapter;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.application.CustomApplcation;
+import com.zzu.ehome.bean.RefreshEvent;
+import com.zzu.ehome.bean.StepBean;
+import com.zzu.ehome.bean.StepCounterBean;
+import com.zzu.ehome.bean.StepCounterDate;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.bean.UserDate;
+import com.zzu.ehome.bean.UserInfoDate;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.main.ehome.MainActivity;
+import com.zzu.ehome.service.StepDetector;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.IOUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
+import com.zzu.ehome.utils.NetUtils;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.HeadView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.UserInfo;
 
-public class LoginActivity extends BaseActivity implements Callback, View.OnClickListener {
-    private final String mPageName = "LoginActivity";
-    private EditText edUser;
-    private EditText edPass;
-    // 下拉框对象
-    private PopupWindow selectPopupWindow = null;
-    // 下拉框选项数据源
-    private List<User> datas;
-
-
-    // 展示所有下拉选项的listView
-    private ListView listView = null;
-    // 用来处理选中或者删除下拉项消息
-    private Handler handler;
-    // 是否初始化下拉框完成标志
-    private boolean flag = false;
-    // 下拉框依附附件
-    private RelativeLayout parent;
-    private UserAdapter userAdapter;
-    // 下拉框依附组件宽度，也将作为下拉框的宽度
-    private int pwidth;
+/**
+ * Created by Administrator on 2016/8/5.
+ */
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
+    /**
+     * token 的主要作用是身份授权和安全，因此不能通过客户端直接访问融云服务器获取 token，
+     * 您必须通过 Server API 从融云服务器 获取 token 返回给您的 App，并在之后连接时使用
+     */
+    private String token;
     private EHomeDao dao;
-    private CheckBox checkbox;
-    private TextView tv_forget_psd;
-    private Button btn_login;
-    private String ClientID;
     private RequestMaker requestMaker;
-    private ImageView ivselect;
+    private String ClientID;
+    private EditText mEditPhone, mEditPass;
+    private Button login;
+    private TextView tvselect, tvnewReg;
+    private String tag = "",hometag="";
     private Intent mIntent;
-    private User user;
-    private String userid;
+    private String title = "登录";
+    private double calories = 0;
+    private int step_length = 55;
+    private int minute_distance = 80;
+    private String timeCount;
+    private float weight;
+    private String backUserid = "";
+    private String userid = "",homeid="";
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login1);
+        initViews();
         PushManager.getInstance().initialize(this.getApplicationContext());
         dao = new EHomeDaoImpl(this);
         mIntent = this.getIntent();
-        ClientID = PushManager.getInstance().getClientid(LoginActivity.this);
         requestMaker = RequestMaker.getInstance();
-        initViews();
-        initEvent();
+        if (mIntent != null) {
+            if (mIntent.getStringExtra("relation") != null) {
+                tag = mIntent.getStringExtra("relation");
+                title = "添加家人";
+                login.setText("添加");
+                tvselect.setVisibility(View.GONE);
+                homeid=SharePreferenceUtil.getInstance(LoginActivity.this).getHomeId();
 
-
-        checkbox.setChecked(true);
-        if (!"".equals(SharePreferenceUtil.getInstance(LoginActivity.this).getUserId())) {
-            userid = SharePreferenceUtil.getInstance(LoginActivity.this).getUserId();
-            User user2 = dao.findUserInfoById(userid);
-            edUser.setText(user2.getMobile());
-            if (SharePreferenceUtil.getInstance(LoginActivity.this).getIsRemeber()) {
-                edPass.setText(user2.getPassword());
             }
-
+            if(mIntent.getStringExtra("Home")!=null){
+                hometag=mIntent.getStringExtra("Home");
+            }
         }
+        if (TextUtils.isEmpty(SharePreferenceUtil.getInstance(LoginActivity.this).getWeight())) {
+            weight = 50.0f;
+        } else {
+            weight = Float.parseFloat(SharePreferenceUtil.getInstance(LoginActivity.this).getWeight());
+        }
+        ClientID = PushManager.getInstance().getClientid(LoginActivity.this);
 
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart(mPageName);
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd(mPageName);
-        MobclickAgent.onPause(this);
-    }
-
-    private void initViews() {
-        handler = new Handler(LoginActivity.this);
-        parent = (RelativeLayout) findViewById(R.id.rlaccount);
-        edUser = (EditText) findViewById(R.id.editPhone);
-        edPass = (EditText) findViewById(R.id.editPass);
-        checkbox = (CheckBox) findViewById(R.id.checkbox);
-        tv_forget_psd = (TextView) findViewById(R.id.tv_forget_psd);
-        btn_login = (Button) findViewById(R.id.btn_login);
-        int width = parent.getWidth();
-        ivselect = (ImageView) findViewById(R.id.ivselect);
-        pwidth = width;
-
-        setDefaultTXViewMethod(R.mipmap.icon_arrow_left, "", "注册", new HeadView.OnLeftClickListener() {
+        setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, title, new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
 
                 if (mIntent.getStringExtra("logout") != null && mIntent.getStringExtra("logout").equals("logout")) {
                     confirmExit();
-                } else {
+                } else if(mIntent.getStringExtra("Home") != null && mIntent.getStringExtra("Home").equals("Home")){
+                    CustomApplcation.getInstance().finishSingleActivityByClass(SettingActivity.class);
+                    Intent i=new Intent(LoginActivity.this,MainActivity.class);
+                    i.putExtra("Home","Home");
+                    startActivity(i);
+                }else {
                     finishActivity();
-                }
-
-
-            }
-        }, new HeadView.OnRightClickListener() {
-            @Override
-            public void onClick() {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-//                finishActivity();
-
+               }
             }
         });
 
-        initPopupWindow();
-
-
-    }
-
-
-    public void initEvent() {
-        tv_forget_psd.setOnClickListener(this);
-        btn_login.setOnClickListener(this);
-        ivselect.setOnClickListener(this);
-    }
-
-    @Override
-    public boolean handleMessage(Message message) {
-        Bundle data = message.getData();
-        switch (message.what) {
-            case 1:
-                int selIndex = data.getInt("selIndex");
-                edUser.setText(datas.get(selIndex).getMobile() + "");
-                user = dao.findUserInfoById(datas.get(selIndex).getUserid());
-//                edPass.setText(user.getPassword());
-                dismiss();
-                break;
-
+        login.setOnClickListener(this);
+        tvselect.setOnClickListener(this);
+        tvnewReg.setOnClickListener(this);
+        if(!CommonUtils.isNotificationEnabled(LoginActivity.this)){
+            showTitleDialog("请打开通知中心");
         }
-        return false;
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        while (!flag) {
-            initViews();
-            flag = true;
-        }
-    }
-
-    protected void PopupWindowShowing() {
-        selectPopupWindow.showAsDropDown(parent, 0, -3);
-    }
-
-    @SuppressWarnings("deprecation")
-    private void initPopupWindow() {
-        if (dao.findAllUser() != null) {
-
-            datas = initDatas();
-            View loginwindow = (View) this.getLayoutInflater().inflate(
-                    R.layout.userlist_layout, null);
-            listView = (ListView) loginwindow.findViewById(R.id.list);
-            userAdapter = new UserAdapter(this, handler);
-            userAdapter.addAll(datas);
-            listView.setAdapter(userAdapter);
-            selectPopupWindow = new PopupWindow(loginwindow, pwidth,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, true);
-            selectPopupWindow.setOutsideTouchable(true);
-            selectPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-        }
-    }
-
-    /**
-     * 下拉框数据
-     *
-     * @return
-     */
-    private List<User> initDatas() {
-
-
-        List<User> listItems = dao.findAllUser();
-
-        return listItems;
-    }
-
-    private void dismiss() {
-        selectPopupWindow.dismiss();
     }
 
     @Override
     public void onClick(View v) {
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
+        if(!CommonUtils.isNotificationEnabled(LoginActivity.this)){
+            showTitleDialog("请打开通知中心");
+        }
         switch (v.getId()) {
-            case R.id.tv_forget_psd:
-                doForgetPsd();
-                break;
-            case R.id.btn_login:
-                if (isNetworkAvailable()) {
+            case R.id.btnlogin:
+                if (NetUtils.isNetworkConnected(LoginActivity.this)) {
                     doLogin();
                 } else {
-                    ToastUtils.showMessage(LoginActivity.this, R.string.msgUninternet);
+                    ToastUtils.showMessage(LoginActivity.this,"请连接网络！");
+
                 }
                 break;
-            case R.id.ivselect:
-                if (flag) {
-                    PopupWindowShowing();
-                }
-
+            case R.id.tvselect:
+                doForgetPsd();
                 break;
-
+            case R.id.tvnewReg:
+                doReg();
+                break;
         }
 
     }
 
-    /**
-     * 执行忘记密码操作
-     */
-    private void doForgetPsd() {
-        Intent intent = new Intent(LoginActivity.this, FindPsdActivity.class);
-        startActivity(intent);
+    private void doReg() {
+        if (TextUtils.isEmpty(tag)) {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            intent.putExtra("relation", "rela");
+            startActivity(intent);
+        }
     }
 
-    /**
-     * 执行登录操作
-     */
+    private void initViews() {
+        mEditPhone = (EditText) findViewById(R.id.editPhone);
+        mEditPass = (EditText) findViewById(R.id.editPass);
+        login = (Button) findViewById(R.id.btnlogin);
+        tvselect = (TextView) findViewById(R.id.tvselect);
+        tvnewReg = (TextView) findViewById(R.id.tvnewReg);
+    }
+
     private void doLogin() {
-        boolean isChecked = checkbox.isChecked();
-        String name = edUser.getText().toString().trim();
-        String psd = edPass.getText().toString().trim();
+
+        String name = mEditPhone.getText().toString().trim();
+        String psd = mEditPass.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
-            ToastUtils.showMessage(this, "请输入您的账号!");
+
+//            ToastUtils.showMessage(LoginActivity.this,"请输入您的账号!");
+            showDialog("请输入您的账号!");
             return;
         }
         if (TextUtils.isEmpty(psd)) {
-            ToastUtils.showMessage(this, "请输入您的密码!");
+
+//            ToastUtils.showMessage(LoginActivity.this,"请输入您的密码!");
+            showDialog("请输入您的密码!");
             return;
         }
         if (!IOUtils.isMobileNO(name)) {
-            ToastUtils.showMessage(this, "请输入正确的手机号!");
+
+//            ToastUtils.showMessage(LoginActivity.this,"请输入正确的手机号!");
+            showDialog("请输入正确的手机号!");
             return;
         }
-        login(name, psd);
+       if(!TextUtils.isEmpty(tag)){
+           homeid=SharePreferenceUtil.getInstance(LoginActivity.this).getHomeId();
+          if(name.equals(dao.findUserInfoById(homeid).getMobile())) {
+              showDialog("此亲友关系已存在！");
+          }else{
+              login(name, psd);
+          }
+       }else {
+           login(name, psd);
+       }
     }
 
     public void login(final String mobile, final String psd) {
         startProgressDialog();
-
-
         requestMaker.userLogin(mobile, psd, ClientID, new JsonAsyncTask_Info(LoginActivity.this, true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
                 if (result != null) {
-
                     try {
                         JSONObject mySO = (JSONObject) result;
                         org.json.JSONArray array = mySO
                                 .getJSONArray("UserLogin");
                         stopProgressDialog();
                         if (array.getJSONObject(0).has("MessageCode")) {
-                            Toast.makeText(LoginActivity.this, array.getJSONObject(0).getString("MessageContent").toString(),
-                                    Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(LoginActivity.this, array.getJSONObject(0).getString("MessageContent").toString(),
+//                                    Toast.LENGTH_SHORT).show();
+                            ToastUtils.showMessage(LoginActivity.this,array.getJSONObject(0).getString("MessageContent").toString());
+
                         } else {
-                            if (SharePreferenceUtil.getInstance(LoginActivity.this).getUserId().equals("") && !SharePreferenceUtil.getInstance(LoginActivity.this).getIsFirst()) {
-                                GuideActivity guideActivity = new GuideActivity();
-                                guideActivity.guidAct.finish();
-                            }
                             UserDate date = JsonTools.getData(result.toString(), UserDate.class);
                             List<User> list = date.getData();
                             String imgHead = list.get(0).getImgHead();
@@ -314,7 +241,6 @@ public class LoginActivity extends BaseActivity implements Callback, View.OnClic
                                     imgHead = "";
                                 } else {
                                     imgHead = Constants.JE_BASE_URL3 + imgHead.replace("~", "").replace("\\", "/");
-
                                 }
                             } else {
                                 imgHead = "";
@@ -324,10 +250,12 @@ public class LoginActivity extends BaseActivity implements Callback, View.OnClic
                             list.get(0).setPassword(psd);
                             list.get(0).setMobile(mobile);
 
-
+//
+//                            UserRefresh(list.get(0).getUserid(), list.get(0).getUsername(), imgHead);
                             if (!dao.findUserIsExist(list.get(0).getUserid())) {
+                                User user=list.get(0);
+                                user.setType(1);
                                 dao.addUserInfo(list.get(0));
-
                             } else {
                                 User dbUser = dao.findUserInfoById(list.get(0).getUserid());
                                 dbUser.setImgHead(imgHead);
@@ -349,39 +277,49 @@ public class LoginActivity extends BaseActivity implements Callback, View.OnClic
                                 if (list.get(0).getUserHeight() != null) {
                                     dbUser.setUserHeight(list.get(0).getUserHeight());
                                 }
+                                if(list.get(0).getUserno()!=null){
+                                    dbUser.setUserno(list.get(0).getUserno());
+                                }
 
                                 dao.updateUserInfo(dbUser, list.get(0).getUserid());
                             }
 
-                            SharePreferenceUtil.getInstance(LoginActivity.this).setUserId(array.getJSONObject(0).getString("UserID"));
-                            SharePreferenceUtil.getInstance(LoginActivity.this).setIsFirst(true);
-                            if (checkbox.isChecked()) {
-                                SharePreferenceUtil.getInstance(LoginActivity.this).setIsRemeber(true);
-                            } else {
-                                SharePreferenceUtil.getInstance(LoginActivity.this).setIsRemeber(false);
-                            }
-                            if (imgHead.equals("") || list.get(0).getUsername().equals("")) {
-                                if (TextUtils.isEmpty(list.get(0).getUsername())) {
-                                    if (TextUtils.isEmpty(imgHead)) {
-                                        startActivity(new Intent(LoginActivity.this, CompletInfoActivity.class));
-                                    } else {
-                                        Intent i = new Intent(LoginActivity.this, CompletInfoActivity.class);
-                                        i.putExtra("imgHead", list.get(0).getImgHead());
-                                        startActivity(i);
-
-                                    }
+                            CustomApplcation.getInstance().finishSingleActivityByClass(AddSuccussAct.class);
+                            if (!TextUtils.isEmpty(tag)) {
+                                if (mIntent.getStringExtra("usrid") != null) {
+                                    CustomApplcation.getInstance().finishSingleActivityByClass(MyHome.class);
+                                    upload(SharePreferenceUtil.getInstance(LoginActivity.this).getPARENTID(), array.getJSONObject(0).getString("UserID"));
+                                    SharePreferenceUtil.getInstance(LoginActivity.this).setUserId(array.getJSONObject(0).getString("UserID"));
+                                    EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
+                                    Intent intenthealth = new Intent("userrefresh");
+                                    sendBroadcast(intenthealth);
+                                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                                    finish();
                                 } else {
-                                    Intent i = new Intent(LoginActivity.this, CompletInfoActivity.class);
-                                    i.putExtra("username", list.get(0).getUsername());
-                                    startActivity(i);
+                                    UserShipInquiry(homeid,list.get(0).getUserid());
+
                                 }
 
-
                             } else {
-
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                getToken(list.get(0).getUserid(), list.get(0).getUsername(), imgHead);
+                                SharePreferenceUtil.getInstance(LoginActivity.this).setUserId(array.getJSONObject(0).getString("UserID"));
+                                if(array.getJSONObject(0).has("UserNO")){
+                                    getJIbu(array.getJSONObject(0).getString("UserNO"),array.getJSONObject(0).getString("UserID"));
+                                }
+                                Intent intenthealth = new Intent("userrefresh");
+                                 sendBroadcast(intenthealth);
+//                                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
+                                SharePreferenceUtil.getInstance(LoginActivity.this).setHomeId(array.getJSONObject(0).getString("UserID"));
                                 finish();
                             }
+                            SharePreferenceUtil.getInstance(LoginActivity.this).setIsFirst(true);
+                            if(!TextUtils.isEmpty(hometag)) {
+                                Intent i=new Intent(LoginActivity.this, MainActivity.class);
+                                i.putExtra("Home","Home");
+                                startActivity(i);
+                                finish();
+                            }
+                            getBaseData();
 
                         }
                     } catch (Exception e) {
@@ -400,33 +338,375 @@ public class LoginActivity extends BaseActivity implements Callback, View.OnClic
         }));
     }
 
+
+    /**
+     * 执行忘记密码操作
+     */
+    private void doForgetPsd() {
+        Intent intent = new Intent(LoginActivity.this, FindPsdActivity.class);
+        startActivity(intent);
+    }
+
+
+
+    private void getJIbu(final String cardNo,final String userid) {
+        /**
+         * 查询历史数据
+         */
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        requestMaker.StepCounterInquiry(cardNo,userid, sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000), new JsonAsyncTask_Info(LoginActivity.this, true, new JsonAsyncTaskOnComplete() {
+            @Override
+            public void processJsonObject(Object result) {
+                try {
+                    JSONObject mySO = (JSONObject) result;
+                    org.json.JSONArray array = mySO
+                            .getJSONArray("StepCounterInquiry");
+                    if (array.getJSONObject(0).has("MessageCode")) {
+                        StepDetector.CURRENT_SETP = 0;
+                        StepBean step = new StepBean();
+                        step.setEndTime("");
+                        step.setStartTime("");
+                        step.setNum(0);
+                        step.setUserid("");
+                        step.setUploadState(0);
+                        dao.updateStep(step);
+
+                    } else {
+
+                        StepCounterDate date = JsonTools.getData(result.toString(), StepCounterDate.class);
+                        List<StepCounterBean> list = date.getData();
+
+                        StepDetector.CURRENT_SETP = Integer.valueOf(list.get(0).getTotalStep());
+                        StepBean step = new StepBean();
+                        step.setEndTime("");
+                        step.setStartTime("");
+                        step.setNum(StepDetector.CURRENT_SETP);
+                        step.setUserid(userid);
+                        step.setUploadState(0);
+                        dao.updateStep(step);
+
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        }));
+    }
+
+    private void upload(final String oldid, final String newid) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        calories = (weight * StepDetector.CURRENT_SETP * 50 * 0.01 * 0.01) / 1000;
+        double d = step_length * StepDetector.CURRENT_SETP;
+        timeCount = String.format("%.2f", d / 100000);
+        int m = StepDetector.CURRENT_SETP / minute_distance;
+        String h1 = String.valueOf(m / 60);
+        String h2 = String.valueOf(m % 60);
+        String userid = SharePreferenceUtil.getInstance(LoginActivity.this).getUserId();
+        String card=dao.findUserInfoById(userid).getUserno();
+        requestMaker.StepCounterInsert(card,userid, StepDetector.CURRENT_SETP + "", timeCount, h1 + "." + h2, String.format("%.2f", calories), sdf.format(new Date()), new JsonAsyncTask_Info(this, true, new JsonAsyncTaskOnComplete() {
+            @Override
+            public void processJsonObject(Object result) {
+                try {
+                    JSONObject mySO = (JSONObject) result;
+                    org.json.JSONArray array = mySO
+                            .getJSONArray("StepCounterInsert");
+                    UserClientBind(oldid, newid);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        }));
+    }
+
+    private void UserClientBind(final String oldid, final String newid) {
+        startProgressDialog();
+        final String userid = SharePreferenceUtil.getInstance(LoginActivity.this).getUserId();
+        requestMaker.loginOut(userid, new JsonAsyncTask_Info(LoginActivity.this, true, new JsonAsyncTaskOnComplete() {
+            @Override
+            public void processJsonObject(Object result) {
+                String UserClientBind = result.toString();
+                if (UserClientBind == null) {
+
+                } else {
+                    stopProgressDialog();
+
+                    try {
+                        JSONObject mySO = (JSONObject) result;
+                        org.json.JSONArray array = mySO
+                                .getJSONArray("UserClientIDChange");
+                        StepDetector.CURRENT_SETP = 0;
+                        StepBean step = new StepBean();
+                        step.setEndTime("");
+                        step.setStartTime("");
+                        step.setNum(0);
+                        step.setUserid("");
+                        step.setUploadState(0);
+                        dao.updateStep(step);
+                        getJIbu("",newid);
+                        finishActivity();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        }));
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+
         if (keyCode == KeyEvent.KEYCODE_BACK) {
 
             if (mIntent.getStringExtra("logout") != null && mIntent.getStringExtra("logout").equals("logout")) {
                 confirmExit();
-            } else {
-                finishActivity();
+            } else if(mIntent.getStringExtra("Home") != null && mIntent.getStringExtra("Home").equals("Home")){
+                CustomApplcation.getInstance().finishSingleActivityByClass(SettingActivity.class);
+                Intent i=new Intent(LoginActivity.this,MainActivity.class);
+                i.putExtra("Home","Home");
+                startActivity(i);
             }
+            else {
+                finishActivity();
+          }
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    public void confirmExit() {
-        DialogTips dialog = new DialogTips(LoginActivity.this, "", "是否退出软件？",
-                "确定", true, true);
-        dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogInterface, int userId) {
-                SharePreferenceUtil.getInstance(LoginActivity.this).setUserId("");
-                SharePreferenceUtil.getInstance(LoginActivity.this).setIsRemeber(false);
-                CustomApplcation.getInstance().exit();
-                finish();
+    /**
+     * 获得token
+     */
+    private void getToken(String userid, final String name, final String head) {
+
+
+            requestMaker.getToken(userid, name, head, new JsonAsyncTask_Info(LoginActivity.this, true, new JsonAsyncTaskOnComplete() {
+
+                @Override
+                public void processJsonObject(Object result) {
+                    try {
+                        JSONObject mySO = (JSONObject) result;
+                        org.json.JSONArray array = mySO
+                                .getJSONArray("GetToken");
+                        if (array.getJSONObject(0).getString("MessageCode").toString().equals("0")) {
+                            token = array.getJSONObject(0).getString("MessageContent").toString();
+                            SharedPreferences.Editor edit = DemoContext.getInstance().getSharedPreferences().edit();
+                            edit.putString("DEMO_TOKEN", token);
+                            edit.apply();
+                            CommonUtils.connent(token, new CommonUtils.RongIMListener() {
+                                @Override
+                                public void OnSuccess(String userid) {
+//                                EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
+
+                                    RongIM.getInstance().setCurrentUserInfo(new UserInfo(userid, name, Uri.parse(head)));
+                                    RongIM.getInstance().setMessageAttachedUserInfo(true);
+                                    CustomApplcation.getInstance().isOnLine = 1;
+                                }
+                            });
+
+                        } else {
+//                            Toast.makeText(LoginActivity.this, array.getJSONObject(0).getString("MessageContent").toString(),
+//                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        CustomApplcation.getInstance().isOnLine = 0;
+                    }
+
+                }
+
+                @Override
+                public void onError(Exception e) {
+
+                }
+            }));
+
+
+
+    }
+
+    private void UserRefresh(String userid, String name, String head) {
+        RongIM.getInstance().refreshUserInfoCache(new UserInfo(userid, name, Uri.parse(head)));
+        requestMaker.UserRefresh(userid, name, head, new JsonAsyncTask_Info(LoginActivity.this, true, new JsonAsyncTaskOnComplete() {
+
+            @Override
+            public void processJsonObject(Object result) {
+                try {
+                    JSONObject mySO = (JSONObject) result;
+                    org.json.JSONArray array = mySO
+                            .getJSONArray("UserRefresh");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
-        });
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        }));
+
+    }
+
+    public void confirmExit() {
+
+//        DialogTips dialog = new DialogTips(LoginActivity.this, "", "是否退出软件？",
+//                "确定", true, true);
+//        dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialogInterface, int userId) {
+//                SharePreferenceUtil.getInstance(LoginActivity.this).setUserId("");
+//                SharePreferenceUtil.getInstance(LoginActivity.this).setIsRemeber(false);
+//                CustomApplcation.getInstance().exit();
+//                finish();
+//            }
+//        });
+//
+//        dialog.show();
+//        dialog = null;
+        Intent i=new Intent(LoginActivity.this, MainActivity.class);
+        i.putExtra("Home","Home");
+        startActivity(i);
+
+    }
+
+    private void getUser(String userid) {
+        requestMaker.UserInquiry(userid, new JsonAsyncTask_Info(LoginActivity.this, true, new JsonAsyncTaskOnComplete() {
+            @Override
+            public void processJsonObject(Object result) {
+
+                UserInfoDate date = JsonTools.getData(result.toString(), UserInfoDate.class);
+                Log.e("psd", result.toString() + "<<<<----------->");
+                List<User> list = date.getData();
+                User user2 = list.get(0);
+                mEditPhone.setText(user2.getMobile());
+                mEditPass.setText(user2.getUserPassword());
+                stopProgressDialog();
+
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+
+        }));
+    }
+    private void showDialog(String message) {
+
+        DialogTips dialog = new DialogTips(LoginActivity.this, message, "确定");
 
         dialog.show();
         dialog = null;
+
     }
+    private void UserShipInquiry(String homeid,final String userid){
+        requestMaker.UserRelationshipExit(homeid,userid,new JsonAsyncTask_Info(LoginActivity.this, true, new JsonAsyncTaskOnComplete(){
+
+            @Override
+            public void processJsonObject(Object result) {
+                try {
+                    JSONObject mySO = (JSONObject) result;
+                    org.json.JSONArray array = mySO
+                            .getJSONArray("UserRelationshipExit");
+                    int code=Integer.valueOf(array.getJSONObject(0).getString("MessageCode"));
+                   switch(code){
+                       case 0:
+                           showDialog(array.getJSONObject(0).getString("MessageContent"));
+                           mEditPhone.setText("");
+                           mEditPass.setText("");
+                           break;
+                       case 1:
+                               break;
+                       case 2:
+                           SharePreferenceUtil.getInstance(LoginActivity.this).setPARENTID(userid);
+                           Intent i = new Intent(LoginActivity.this, RelationActivity.class);
+                           i.putExtra("relation", "rela");
+                           startActivity(i);
+
+
+                       break;
+                   }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        } ));
+
+    }
+
+    /**
+     * type 2,空，3，更新
+     */
+    public void getBaseData(){
+        userid=SharePreferenceUtil.getInstance(LoginActivity.this).getUserId();
+        requestMaker.BaseDataInquiry(userid, new JsonAsyncTask_Info(LoginActivity.this, true, new JsonAsyncTaskOnComplete() {
+            @Override
+            public void processJsonObject(Object result) {
+                JSONObject mySO = (JSONObject) result;
+                Log.e("JSONObject",mySO.toString());
+                int type=0;
+
+                try {
+                    JSONArray json = mySO.getJSONArray("BaseDataInquiry");
+                    if (json.getJSONObject(0).has("MessageCode")) {
+                        String MessageCode = json.getJSONObject(0).getString("MessageCode");
+                        if ("2".equals(MessageCode)) {
+                            type=2;
+                        }
+                        if ("1".equals(MessageCode)) {
+                            type=1;
+                        }
+                    } else {
+                        type=3;
+
+                    }
+                    User user=dao.findUserInfoById(userid);
+                    user.setType(type);
+                    dao.updateUserInfo(user, userid);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        }));
+    }
+
+
 }

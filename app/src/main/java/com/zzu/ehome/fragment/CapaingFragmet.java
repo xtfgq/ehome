@@ -122,6 +122,7 @@ public class CapaingFragmet extends BaseFragment{
                 try {
                     JSONObject mySO = (JSONObject) result;
                     JSONArray array = mySO.getJSONArray("APPLogInquiry");
+                    if(getActivity()!=null){
                     if(isReflash){
                         list.clear();
                     }
@@ -157,6 +158,7 @@ public class CapaingFragmet extends BaseFragment{
                             isFirst = false;
                             pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
                         }
+                    }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

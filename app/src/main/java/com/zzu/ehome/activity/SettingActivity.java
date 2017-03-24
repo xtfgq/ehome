@@ -16,6 +16,7 @@ import com.zzu.ehome.DemoContext;
 import com.zzu.ehome.R;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.StepBean;
+import com.zzu.ehome.db.DBRongHelper;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.main.ehome.MainActivity;
@@ -31,11 +32,16 @@ import com.zzu.ehome.view.HeadView;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
 
 /**
  * Created by zzu on 2016/4/15.
@@ -45,6 +51,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private RelativeLayout layout_xgmm;
     private RelativeLayout layout_qchc;
     private RelativeLayout layout_exit;
+    private RelativeLayout layout_convation;
     private RequestMaker request;
     private String userid;
     private final String mPageName = "SettingActivity";
@@ -85,6 +92,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         layout_xgmm = (RelativeLayout) findViewById(R.id.layout_xgmm);
         layout_qchc = (RelativeLayout) findViewById(R.id.layout_qchc);
         layout_exit = (RelativeLayout) findViewById(R.id.layout_exit);
+        layout_convation=(RelativeLayout)findViewById(R.id.layout_convation);
         setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "设置", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
@@ -112,6 +120,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         layout_xgmm.setOnClickListener(this);
         layout_qchc.setOnClickListener(this);
         layout_exit.setOnClickListener(this);
+        layout_convation.setOnClickListener(this);
     }
 
     @Override
@@ -128,7 +137,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 if (!TextUtils.isEmpty(userid)) {
                     intentAction(SettingActivity.this, ChangePasswordActivity.class);
                 } else {
-                    startActivity(new Intent(SettingActivity.this, LoginActivity1.class));
+                    startActivity(new Intent(SettingActivity.this, LoginActivity.class));
                 }
 
                 break;
@@ -145,6 +154,18 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 dialog.show();
                 dialog = null;
                 break;
+            case R.id.layout_convation:
+                DialogTips dialog2 = new DialogTips(SettingActivity.this, "", "是否清理聊天记录?",
+                        "确定", true, true);
+                dialog2.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int userId) {
+                        clearConversation();
+                    }
+                });
+
+                dialog2.show();
+                dialog2 = null;
+             break;
             case R.id.layout_exit:
                 if (CommonUtils.isFastClick())
                     return;
@@ -154,7 +175,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     upload();
                 }
 //                if(TextUtils.isEmpty(SharePreferenceUtil.getInstance(SettingActivity.this).getUserId())){
-//                    Intent i = new Intent(SettingActivity.this, LoginActivity1.class);
+//                    Intent i = new Intent(SettingActivity.this, LoginActivity.class);
 //                    i.putExtra("logout", "logout");
 //                    startActivity(i);
 //                }else {
@@ -261,10 +282,68 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             public void run() {
                 stopProgressDialog();
                 DialogTips dialog = new DialogTips(SettingActivity.this, "清除成功!", "确定");
+
                 dialog.show();
                 dialog = null;
             }
         }, 3000);
+    }
+    private void clearConversation(){
+        DBRongHelper myDbHelper = new DBRongHelper(this);
+        try {
+            myDbHelper.removeDataBase();
+        } catch (IOException io) {
+
+        }
+//        if (DemoContext.getInstance() != null) {
+//            String token = DemoContext.getInstance().getSharedPreferences().getString("DEMO_TOKEN", "default");
+//            if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED)) {
+//
+//                CommonUtils.connent(token, new CommonUtils.RongIMListener() {
+//                    @Override
+//                    public void OnSuccess(String userid) {
+//
+//                        try {
+//                            clearMessage();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+//            }else{
+//                clearMessage();
+//            }
+//        }
+        }
+
+    /**
+     * 清除本地聊天记录
+     */
+    private void clearMessage(){
+//        RongIM.getInstance().getRongIMClient().getLatestMessages(Conversation.ConversationType.PRIVATE,userid,20,new RongIMClient.ResultCallback<List<Message>>(){
+//            @Override
+//            public void onSuccess(List<Message> messages) {
+//                if(messages.size()>0) {
+//                    ToastUtils.showMessage(SettingActivity.this,messages.get(0).getContent()+"");
+//                }else{
+//                    ToastUtils.showMessage(SettingActivity.this,"0");
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onError(RongIMClient.ErrorCode errorCode) {
+//                ToastUtils.showMessage(SettingActivity.this,"xxxxx");
+//            }
+//        });
+//        RongIM.getInstance().getRongIMClient().clearConversations(new RongIMClient.ResultCallback<Boolean>(){
+//            @Override
+//            public void onSuccess(Boolean aBoolean) {
+//            }
+//            @Override
+//            public void onError(RongIMClient.ErrorCode errorCode) {
+//            }
+//        },Conversation.ConversationType.PRIVATE);
     }
 
 }

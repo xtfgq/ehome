@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/base_color_text_white">
+    <TextView
+        android:id="@+id/tv_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="7dp"
+        android:text="请选择查询时间段(默认显示最新7条数据)"
+        android:textColor="#0f2536"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginTop="7dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/rl_weight_time"
+                android:layout_width="96dp"
+                android:layout_height="34dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="6dp"
+                android:background="@mipmap/bg_time">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    >
+
+                    <ImageView
+                        android:id="@+id/img_startime"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/icon_time" />
+
+                    <TextView
+                        android:id="@+id/tv_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/img_startime"
+                        android:text="2016-02-03"
+                        android:hint="开始时间"
+                        android:textColorHint="#CECECE"
+                        android:textColor="#0f2536"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="-"
+                android:textSize="16sp"
+                android:textColor="#0f2536"
+                android:layout_gravity="center"
+                android:layout_marginRight="6dp"
+                />
+
+            <RelativeLayout
+                android:id="@+id/rl_weight_endtime"
+                android:layout_width="96dp"
+                android:layout_height="34dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:background="@mipmap/bg_time"
+                android:src="@mipmap/icon_time">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+
+                    >
+
+                    <ImageView
+                        android:id="@+id/img_endtime"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/icon_time" />
+
+                    <TextView
+                        android:id="@+id/tv_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/img_endtime"
+                        android:text="2016-02-03"
+                        android:textColor="#0f2536"
+                        android:hint="结束时间"
+                        android:textColorHint="#CECECE"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+
+            <Button
+                android:id="@+id/btn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@color/actionbar_color"
+                android:text="查询"
+                android:textColor="@color/base_color_text_white"
+                android:textSize="12sp"
+
+                />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.AddSuccussAct;
-import com.zzu.ehome.activity.LoginActivity1;
+import com.zzu.ehome.activity.LoginActivity;
 import com.zzu.ehome.activity.RegisterActivity;
 import com.zzu.ehome.activity.RelationActivity;
 import com.zzu.ehome.activity.SecondActivity;
@@ -82,13 +82,13 @@ public class MyHomeFragment extends BaseFragment {
                         return;
                     }
                     CustomApplcation.getInstance().finishSingleActivityByClass(AddSuccussAct.class);
-                    CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
+                    CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity.class);
                     CustomApplcation.getInstance().finishSingleActivityByClass(RegisterActivity.class);
                     CustomApplcation.getInstance().finishSingleActivityByClass(WeightAndHeightAct.class);
                     CustomApplcation.getInstance().finishSingleActivityByClass(SexActivity.class);
                     CustomApplcation.getInstance().finishSingleActivityByClass(RelationActivity.class);
                     CustomApplcation.getInstance().finishSingleActivityByClass(SecondActivity.class);
-                    Intent i = new Intent(getActivity(), LoginActivity1.class);
+                    Intent i = new Intent(getActivity(), LoginActivity.class);
                     i.putExtra("relation", "rela");
                     startActivity(i);
                 }
@@ -119,7 +119,7 @@ public class MyHomeFragment extends BaseFragment {
                          return;
                      }
                      CustomApplcation.getInstance().finishSingleActivityByClass(AddSuccussAct.class);
-                     Intent i = new Intent(getActivity(), LoginActivity1.class);
+                     Intent i = new Intent(getActivity(), LoginActivity.class);
                      i.putExtra("relation", "rela");
                      i.putExtra("usrid",res.getRUserID());
                      startActivity(i);

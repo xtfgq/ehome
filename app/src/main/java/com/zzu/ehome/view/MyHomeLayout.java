@@ -19,7 +19,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zzu.ehome.R;
-import com.zzu.ehome.activity.LoginActivity1;
+
+import com.zzu.ehome.activity.LoginActivity;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.RelationDes;
 import com.zzu.ehome.bean.User;
@@ -242,7 +243,7 @@ public class MyHomeLayout extends LinearLayout {
             }
 
             if(items.get(pos).getRelationship().contains("添加亲人")){
-                Intent i = new Intent(context, LoginActivity1.class);
+                Intent i = new Intent(context, LoginActivity.class);
                 i.putExtra("relation", "rela");
                 context.startActivity(i);
                 return;
@@ -273,11 +274,20 @@ public class MyHomeLayout extends LinearLayout {
         mainItem.setRUserID(items.get(postion).getRUserID());
         mainItem.setUser_Name(items.get(postion).getUser_Name());
 
+//        RelationDes rs = new RelationDes();
+//        rs.setUser_Name(items.get(postion).getUser_Name());
+//        rs.setUser_Icon(items.get(postion).getUser_Icon());
+//        rs.setRelationship(items.get(postion).getRelationship());
+//        rs.setRUserID(items.get(postion).getRUserID());
+//        rs.setUser_FullName(items.get(postion).getUser_FullName());
+//        dao.updateResInfo(rs,items.get(postion).getRUserID());
+
         items.get(postion).setUser_Icon(itemOld.getUser_Icon());
         items.get(postion).setRelationship(itemOld.getRelationship());
         items.get(postion).setUser_FullName(itemOld.getUser_FullName());
         items.get(postion).setRUserID(itemOld.getRUserID());
         items.get(postion).setUser_Name(itemOld.getUser_Name());
+
         ImageView imageView=(ImageView) mainView.findViewById(R.id.ivpeople);
         TextView tv_name=(TextView)mainView.findViewById(R.id.tvname);
         if(TextUtils.isEmpty(mainItem.getUser_Icon())){

@@ -14,10 +14,10 @@
 
 
         <com.zzu.ehome.view.PullToRefreshLayout
+
             android:layout_width="match_parent"
             android:id="@+id/refresh_view"
             android:layout_height="match_parent">
-
         <include layout="@layout/refresh_head" />
 
         <com.zzu.ehome.view.PullableListView

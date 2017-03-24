@@ -28,8 +28,6 @@ import com.zzu.ehome.bean.StepBean;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
-import com.zzu.ehome.reciver.EventType;
-import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.service.StepDetector;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -448,7 +446,7 @@ public abstract class SupperBaseActivity extends FragmentActivity {
                         SharePreferenceUtil.getInstance(CustomApplcation.getInstance()).setIsRemeber(false);
                         Intent intenthealth = new Intent("userrefresh");
                         sendBroadcast(intenthealth);
-                        Intent i = new Intent(CustomApplcation.getInstance(), LoginActivity1.class);
+                        Intent i = new Intent(CustomApplcation.getInstance(), LoginActivity.class);
                         i.putExtra("logout", "logout");
                         i.putExtra("Home","Home");
                         startActivity(i);

@@ -4,20 +4,12 @@ import android.app.Activity;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ParseException;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.zzu.ehome.DemoContext;
-import com.zzu.ehome.activity.LoginActivity1;
 import com.zzu.ehome.application.CustomApplcation;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,10 +26,11 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.text.SimpleDateFormat;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
+
+import static u.aly.au.O;
 
 /**
  * Created by Administrator on 2016/4/9.
@@ -70,14 +63,13 @@ public class CommonUtils {
         context.finish();
 
     }
-  
 
 
     public static int computeSsz(int ssz) {
         if (ssz < 140) {
-            if(ssz<=89){
+            if (ssz <= 89) {
                 return -1;
-            }else {
+            } else {
                 return 0;
             }
         } else if (ssz >= 140 && ssz < 160) {
@@ -92,9 +84,9 @@ public class CommonUtils {
 
     public static int computeSzy(int szy) {
         if (szy < 90) {
-            if(szy<=59){
+            if (szy <= 59) {
                 return -1;
-            }else {
+            } else {
                 return 0;
             }
         } else if (szy >= 90 && szy < 100) {
@@ -109,19 +101,55 @@ public class CommonUtils {
         }
 
     }
+    public static int computeLineSsz(Float ssz) {
+        if (Float.compare(ssz,140) < 0) {
+            if (Float.compare(ssz,89) <= 0) {
+                return -1;
+            } else {
+                return 0;
+            }
+        } else if (Float.compare(ssz,140) >= 0 && Float.compare(ssz,160)< 0) {
+            return 1;
+        } else if (Float.compare(ssz,160) >= 0 && Float.compare(ssz,180) < 0) {
+            return 2;
+        } else {
+            return 3;
+        }
+
+    }
+
+    public static int computeLineSzy(Float szy) {
+        if (Float.compare(szy,90) < 0) {
+            if (Float.compare(szy,59) <= 0) {
+                return -1;
+            } else {
+                return 0;
+            }
+        } else if (Float.compare(szy,90) >= 0 && Float.compare(szy,100) < 0) {
+            return 1;
+
+        } else if (Float.compare(szy,100) >= 0 && Float.compare(szy,110) < 0) {
+            return 2;
+
+        } else {
+            return 3;
+
+        }
+
+    }
 
     public static int MaxInt(int lvssz, int lvszy) {
         if (lvssz != lvszy) {
             if (lvssz > lvszy) {
-               if(lvssz==0&&lvszy==-1){
+                if (lvssz == 0 && lvszy == -1) {
                     return -1;
-                }else {
+                } else {
                     return lvssz;
                 }
             } else {
-                if(lvssz==-1&&lvszy==0){
+                if (lvssz == -1 && lvszy == 0) {
                     return -1;
-                }else {
+                } else {
                     return lvszy;
                 }
             }
@@ -441,6 +469,19 @@ public class CommonUtils {
 
     }
 
+    public static String showFromto(String str) {
+        if (str.equals("02")) {
+            return "智能识别";
+        } else if (str.equals("03")) {
+            return "自助体检";
+        } else if (str.equals("04")) {
+            return "医学检验";
+        } else {
+            return "手工记录";
+        }
+
+    }
+
     /**
      * bmi指数
      *
@@ -473,12 +514,12 @@ public class CommonUtils {
         return statusHeight;
     }
 
-    public  interface RongIMListener {
+    public interface RongIMListener {
 
         void OnSuccess(String userid);
     }
 
-    public static void connent(String token,final RongIMListener listener){
+    public static void connent(String token, final RongIMListener listener) {
 
         if (CustomApplcation.getInstance().getApplicationInfo().packageName.equals(CustomApplcation.getCurProcessName(CustomApplcation.getInstance().getApplicationContext()))) {
 
@@ -504,29 +545,28 @@ public class CommonUtils {
 
         }
     }
-    public  static boolean isNotificationEnabled(Context context){
 
-        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT){
+    /**
+     * 判断通知中心是否打开的方法
+     * @param context
+     * @return
+     */
+
+    public static boolean isNotificationEnabled(Context context) {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
             return true;
         }
         AppOpsManager mAppOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
         ApplicationInfo appInfo = context.getApplicationInfo();
-
         String pkg = context.getApplicationContext().getPackageName();
-
         int uid = appInfo.uid;
-
         Class appOpsClass = null;
-
         try {
-
             appOpsClass = Class.forName(AppOpsManager.class.getName());
-
             Method checkOpNoThrowMethod = appOpsClass.getMethod(CHECK_OP_NO_THROW, Integer.TYPE, Integer.TYPE, String.class);
-
             Field opPostNotificationValue = appOpsClass.getDeclaredField(OP_POST_NOTIFICATION);
-            int value = (int)opPostNotificationValue.get(Integer.class);
-            return ((int)checkOpNoThrowMethod.invoke(mAppOps,value, uid, pkg) == AppOpsManager.MODE_ALLOWED);
+            int value = (int) opPostNotificationValue.get(Integer.class);
+            return ((int) checkOpNoThrowMethod.invoke(mAppOps, value, uid, pkg) == AppOpsManager.MODE_ALLOWED);
 
         } catch (Exception e) {
             e.printStackTrace();

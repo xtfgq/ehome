@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zzu.ehome.R.id.view;
 import static com.zzu.ehome.utils.DateUtils.StringPattern;
 
 /**
@@ -171,13 +172,20 @@ public class BiochemistryReportDetailActivity extends BaseActivity {
 
         @Override
         public View getGqView(int position, View convertView, ViewGroup parent) {
-            View mView = getInflater().inflate(R.layout.item_advice, null);
+            View mView = getInflater().inflate(R.layout.item_new_instruction, null);
             TextView name = (TextView) mView.findViewById(R.id.tv_content);
-            TextView tvDescription=(TextView)mView.findViewById(R.id.tvDescription);
-            TextView tvnum=(TextView)mView.findViewById(R.id.tvnum);
-            tvnum.setText("  "+(position+1)+".");
-            tvDescription.setText(list.get(position).getDescription());
+            TextView tvDescription = (TextView) mView.findViewById(R.id.tvLast);
+            TextView tvDate = (TextView) mView.findViewById(R.id.tvDate);
+            TextView tvnum = (TextView) mView.findViewById(R.id.tvnum);
+            tvnum.setText("  " + (position + 1) + ".");
+            tvDescription.setText("体检结论:" + list.get(position).getDescription());
+            View view=(View) mView.findViewById(R.id.vvview);
             name.setText(list.get(position).getAdvice());
+            if(position==list.size()-1){
+                view.setVisibility(View.GONE);
+            }else{
+                view.setVisibility(View.VISIBLE);
+            }
             return mView;
         }
     }

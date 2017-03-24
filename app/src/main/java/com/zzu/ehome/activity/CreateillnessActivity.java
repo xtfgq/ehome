@@ -463,7 +463,7 @@ public class CreateillnessActivity extends BaseActivity implements View.OnClickL
                     }
                     List<String> imgs = new ArrayList<String>(images);
 
-                    if (images.size() < 5) {
+                    if (images.size() <=5&&imgs.get(imgs.size() - 1).equals(path)) {
                         imgs.remove(imgs.size() - 1);
 
                     }

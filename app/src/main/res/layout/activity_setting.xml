@@ -91,6 +91,51 @@
                 android:src="@mipmap/icon_arr_gr" />
         </RelativeLayout>
 
+   <!--<View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="4dp"
+            android:background="#e1e1e2" />-->
+        <RelativeLayout
+            android:id="@+id/layout_convation"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="16dp"
+            android:visibility="gone"
+            android:layout_marginRight="16dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:text="清除聊天记录"
+                android:textColor="#0f2536"
+                android:textSize="@dimen/text_size_normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:layout_toLeftOf="@+id/icon_arr_gr3"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="#7f868e"
+                android:text="12.3M"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/icon_arr_gr3"
+                android:layout_width="10dp"
+                android:layout_height="22dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_arr_gr" />
+        </RelativeLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -99,7 +144,6 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="4dp"
             android:background="#e1e1e2" />
-
         <RelativeLayout
             android:id="@+id/layout_exit"
             android:layout_width="match_parent"

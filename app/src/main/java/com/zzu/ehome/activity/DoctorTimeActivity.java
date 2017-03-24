@@ -48,8 +48,7 @@ public class DoctorTimeActivity extends BaseActivity {
     private ImageView icon_share;
     private TextView tv_title;
     private RequestMaker requestMaker;
-    String hosid,depid,doctorid,DepartmentName,picUrl,name,HospitalName,GoodDisease
-            ;
+    String hosid,depid,doctorid,DepartmentName,picUrl,name,HospitalName,GoodDisease;
     private TextView tvname,tv_msg;
     private ImageView icon_user;
     private ImageLoader mImageLoader;
@@ -110,7 +109,6 @@ public class DoctorTimeActivity extends BaseActivity {
             lljianjie.setVisibility(View.GONE);
         }else{
             lljianjie.setVisibility(View.VISIBLE);
-
         }
     }
 

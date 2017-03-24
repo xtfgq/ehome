@@ -3,6 +3,7 @@ package com.zzu.ehome.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -12,14 +13,10 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.R;
-import com.zzu.ehome.bean.RefreshEvent;
-import com.zzu.ehome.bean.StepBean;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
-import com.zzu.ehome.main.ehome.MainActivity;
 import com.zzu.ehome.service.RegisterCodeTimerService;
-import com.zzu.ehome.service.StepDetector;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.IOUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
@@ -34,7 +31,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 
 import static com.zzu.ehome.R.id.tv_getCode;
@@ -61,7 +57,9 @@ public class ChangePasswordActivity extends BaseActivity {
         dao = new EHomeDaoImpl(ChangePasswordActivity.this);
         initViews();
         user = dao.findUserInfoById(userid);
-        edt_old_Pass.setText(user.getMobile());
+        if(!TextUtils.isEmpty(user.getMobile())) {
+            edt_old_Pass.setText(user.getMobile());
+        }
         edt_old_Pass.setFocusable(false);
         edt_old_Pass.setEnabled(false);
         initEvent();
@@ -82,6 +80,24 @@ public class ChangePasswordActivity extends BaseActivity {
         }
 
         ;
+    };
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    if(tvgetcode!=null) {
+                        tvgetcode.setEnabled(true);
+                        stopService(mIntent);
+                        tvgetcode.setText("获取验证码");
+                    }
+                    break;
+
+
+                default:
+                    break;
+            }
+        }
+
     };
 
     private void initViews() {
@@ -191,6 +207,9 @@ public class ChangePasswordActivity extends BaseActivity {
 
                 @Override
                 public void onError(Exception e) {
+                    Message message = Message.obtain();
+                    message.what = 0;
+                    mHandler.sendMessage(message);
 
                 }
             }));
@@ -268,12 +287,12 @@ public class ChangePasswordActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        stopService(mIntent);
-    }
 
+    }
+    @Override
     protected void onDestroy() {
             super.onDestroy();
-
+        stopService(mIntent);
         }
     private void UserClientBind() {
         startProgressDialog();
@@ -295,7 +314,7 @@ public class ChangePasswordActivity extends BaseActivity {
 
                         SharePreferenceUtil.getInstance(ChangePasswordActivity.this).setUserId("");
                         SharePreferenceUtil.getInstance(ChangePasswordActivity.this).setHomeId("");
-                        Intent i=new Intent(ChangePasswordActivity.this,LoginActivity1.class);
+                        Intent i=new Intent(ChangePasswordActivity.this,LoginActivity.class);
                         i.putExtra("Home","Home");
                         startActivity(i);
                         Intent intenthealth = new Intent("userrefresh");

@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zzu.ehome.R;
+import com.zzu.ehome.activity.InputHeightActivity;
 import com.zzu.ehome.activity.SelectDateAndTime;
 import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.application.Constants;
@@ -180,10 +181,19 @@ public class WeightFragment extends BaseFragment {
 
                 if (CommonUtils.isFastClick()) return;
                 btnsave.setEnabled(false);
-                float w = Float.valueOf(weight);
-                float h = Float.valueOf(myheitht) / 100;
-                DecimalFormat decimalFormat = new DecimalFormat("0.0");
-                float bmi = w / (h * h);
+                    DecimalFormat decimalFormat = new DecimalFormat("0.0");
+                    float w = 0;
+                    float h=0;
+                    float bmi=0;
+                    try {
+                        w = Float.valueOf(weight);
+                        h=Float.valueOf(myheitht) / 100;
+                        bmi = w / (h * h);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
                 requestMaker.WeightInsert(cardNo, userid, myheitht, decimalFormat.format(bmi) + "", weight + "", checktime, new JsonAsyncTask_Info(
                         getActivity(), true, new JsonAsyncTaskOnComplete() {
                     public void processJsonObject(Object result) {

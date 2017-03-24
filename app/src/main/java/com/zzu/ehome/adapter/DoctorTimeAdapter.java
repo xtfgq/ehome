@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zzu.ehome.R;
-import com.zzu.ehome.activity.LoginActivity1;
+import com.zzu.ehome.activity.LoginActivity;
 import com.zzu.ehome.activity.SelectPatientActivity;
 import com.zzu.ehome.bean.DoctorSchemaByTopmdBean;
 import com.zzu.ehome.utils.SharePreferenceUtil;
@@ -75,7 +75,7 @@ public class DoctorTimeAdapter extends BaseListAdapter<DoctorSchemaByTopmdBean> 
         public void onClick(View v) {
             usrid= SharePreferenceUtil.getInstance(context).getUserId();
             if(TextUtils.isEmpty(usrid)){
-                context.startActivity(new Intent(context, LoginActivity1.class));
+                context.startActivity(new Intent(context, LoginActivity.class));
                 return;
             }
 

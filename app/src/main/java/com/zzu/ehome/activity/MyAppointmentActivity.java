@@ -2,7 +2,6 @@ package com.zzu.ehome.activity;
 
 
 import android.content.Intent;
-
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,10 +14,10 @@ import android.widget.Toast;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.MyAppointmentAdapter;
-
 import com.zzu.ehome.bean.TreatmentSearch;
 import com.zzu.ehome.bean.TreatmentSearchDate;
 import com.zzu.ehome.db.EHomeDao;
@@ -31,23 +30,11 @@ import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.ScreenUtils;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.HeadView;
-
-import android.widget.BaseAdapter;
+import com.zzu.ehome.view.RefreshLayout;
 
 import org.json.JSONObject;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuLayout;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
-import com.baoyz.swipemenulistview.SwipeMenuListView.OnSwipeListener;
-import com.zzu.ehome.view.RefreshLayout;
-
 import java.util.List;
-
-import static com.zzu.ehome.R.id.refreshLayout;
 
 
 /**

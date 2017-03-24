@@ -36,6 +36,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import com.umeng.analytics.MobclickAgent;
@@ -99,6 +100,8 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+import static com.igexin.sdk.PushService.context;
+import static com.zzu.ehome.R.id.imageView;
 import static io.rong.imlib.statistics.UserData.name;
 
 
@@ -471,8 +474,8 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
                 userOld.setImgHead(imgHead);
                 headurl=imgHead;
                 dao.updateUserInfo(userOld, userid);
-                mImageLoader.displayImage(
-                        imgHead, iv_head);
+                Glide.with(PersonalCenterInfo.this).load(imgHead).into(iv_head);
+
                 Intent intenthealth = new Intent("userrefresh");
                 sendBroadcast(intenthealth);
 
@@ -491,8 +494,8 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
     }
 
     public void setData(User user) {
-        mImageLoader.displayImage(
-                user.getImgHead(), iv_head);
+        Glide.with(PersonalCenterInfo.this).load(user.getImgHead()).into(iv_head);
+
         if(TextUtils.isEmpty(user.getImgHead())){
             headurl="";
         }else{

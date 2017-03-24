@@ -10,12 +10,18 @@
         android:layout_height="wrap_content" />
 
     <include layout="@layout/layout_toolbar" />
+    <com.zzu.ehome.view.RefreshLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/refreshLayout"
+        >
+    <include layout="@layout/refresh_head" />
 
-    <ListView
+    <com.zzu.ehome.view.PullableListView
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:divider="@null"
         android:id="@+id/listView" />
 
-
+    </com.zzu.ehome.view.RefreshLayout>
 </LinearLayout>

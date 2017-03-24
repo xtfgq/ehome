@@ -74,7 +74,6 @@
         <activity
             android:name=".main.ehome.MainActivity"
             android:launchMode="singleTop" />
-        <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.GuideActivity"
             android:theme="@style/WelcomeTheme"
@@ -111,15 +110,12 @@
         <activity android:name=".activity.HealthFilesActivity1" />
         <activity android:name=".activity.AppointmentActivity1" />
         <activity android:name=".activity.MyReportActivity" />
-
         <activity android:name="activity.MedicalRecordsActivity" />
         <activity android:name=".activity.ExaminationTestActivity" />
         <activity android:name=".activity.BiochemicalReportActivity" />
-
         <activity
             android:name=".activity.HypertensionActivity"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".activity.YYJLActivity"
             android:windowSoftInputMode="adjustResize" />
@@ -139,7 +135,6 @@
         <activity
             android:name=".activity.SelectMarriageActivity"
             android:theme="@style/mydialog"
-
             />
         <activity
             android:name=".activity.SelectOfficeActivity"
@@ -174,6 +169,7 @@
             android:name=".activity.SelectItemActivity"
             android:theme="@style/mydialog" />
         <activity android:name=".activity.HealthInstructionActivity" />
+        <activity android:name=".activity.CurveSortActivity" />
         <!-- 个推SDK配置开始 -->
         <!-- 配置的第三方参数属性 -->
         <meta-data
@@ -394,7 +390,7 @@
             android:theme="@style/mydialog" />
         <activity android:name=".activity.ImageAlbumManager" />
         <activity android:name=".activity.InternetMap" />
-        <activity android:name=".activity.LoginActivity1" />
+        <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.RelationActivity" />
         <activity android:name=".activity.YuYueGuaHaoActivity" />
         <activity android:name=".activity.OrdinaryYuYueActivity" />
@@ -591,13 +587,13 @@
 
         <!-- imlib config begin -->
      <!-- &lt;!&ndash; 正式服务&ndash;&gt;-->
-<!--<meta-data
-            android:name="RONG_CLOUD_APP_KEY"
-            android:value="x18ywvqf8xjpc" />-->
-<!--   &lt;!&ndash;&lt;!&ndash;  测试服务&ndash;&gt;&ndash;&gt;-->
 <meta-data
+            android:name="RONG_CLOUD_APP_KEY"
+            android:value="x18ywvqf8xjpc" />
+<!--   &lt;!&ndash;&lt;!&ndash;  测试服务&ndash;&gt;&ndash;&gt;-->
+<!--<meta-data
                     android:name="RONG_CLOUD_APP_KEY"
-                    android:value="e0x9wycfxehzq" />
+                    android:value="e0x9wycfxehzq" />-->
 
         <service
             android:name="io.rong.imlib.ipc.RongService"

@@ -39,6 +39,17 @@ public class BloodPressRes {
     private String high;
     @SerializedName("low")
     private String low;
+    @SerializedName("Fromto")
+    private String FromTo;
+    public String getFromTo() {
+        return FromTo;
+    }
+
+    public void setFromTo(String fromTo) {
+        FromTo = fromTo;
+    }
+
+
 
     public String getUpdatedDate() {
         return UpdatedDate;

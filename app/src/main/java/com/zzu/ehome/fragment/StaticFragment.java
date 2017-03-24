@@ -13,11 +13,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zzu.ehome.R;
+import com.zzu.ehome.activity.EcgDesActivity;
 import com.zzu.ehome.activity.InternetHospitalActivity;
 import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.ECGStaticAadapter;
 import com.zzu.ehome.bean.StaticBean;
 import com.zzu.ehome.bean.StaticDate;
+import com.zzu.ehome.db.EHomeDao;
+import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_ECGInfo;
 import com.zzu.ehome.utils.JsonTools;
@@ -42,6 +45,8 @@ public class StaticFragment extends BaseFragment {
     private ECGStaticAadapter adapter;
     private LinearLayout heardchat;
     private SupperBaseActivity activity;
+    private String cardNo;
+    private EHomeDao dao;
 
     @Override
     public void onAttach(Context context) {
@@ -55,6 +60,8 @@ public class StaticFragment extends BaseFragment {
         mView = inflater.inflate(R.layout.layout_ect, null);
         requestMaker = RequestMaker.getInstance();
         userid = SharePreferenceUtil.getInstance(getActivity()).getUserId();
+        dao=new EHomeDaoImpl(getActivity());
+        cardNo=dao.findUserInfoById(userid).getUserno();
         initViews();
         initEvent();
         initDatas();
@@ -98,28 +105,27 @@ public class StaticFragment extends BaseFragment {
             activity.showNetWorkErrorDialog();
             return;
         }
-        String starttime = "";
-        String endtime = "";
+
         startProgressDialog();
-//       userid = "92";
-        requestMaker.BJResultInquiry(userid, starttime, endtime, new JsonAsyncTask_ECGInfo(getActivity(), true, new JsonAsyncTaskOnComplete() {
+//      userid = "113397";
+//        cardNo="4101051964020252737";
+        requestMaker.GetElectrocardio(userid, cardNo,new JsonAsyncTask_ECGInfo(getActivity(), true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
 
                 stopProgressDialog();
                 try {
-                    String value = result.toString();
+
                     JSONObject mySO = (JSONObject) result;
-                    JSONArray array = mySO.getJSONArray("Result");
-                    JSONArray arrayContent = array.getJSONObject(0).getJSONArray("MessageContent");
-                    int length = arrayContent.length();
+                    org.json.JSONArray array = mySO
+                            .getJSONArray("GetElectrocardio");
+
                     if(layout_no_msg!=null&&listView!=null){
-                    if (length == 0) {
+                        if (array.getJSONObject(0).has("MessageCode")) {
                         layout_no_msg.setVisibility(View.VISIBLE);
                     } else {
                         layout_no_msg.setVisibility(View.GONE);
-                        JSONObject s = array.getJSONObject(0);
-                        StaticDate date = JsonTools.getData(s.toString(), StaticDate.class);
+                        StaticDate date = JsonTools.getData(result.toString(), StaticDate.class);
                         List<StaticBean> list = date.getData();
                         adapter = new ECGStaticAadapter(getActivity(), list);
                         listView.setAdapter(adapter);

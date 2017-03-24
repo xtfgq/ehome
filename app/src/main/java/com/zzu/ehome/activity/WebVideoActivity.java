@@ -62,7 +62,7 @@ public class WebVideoActivity extends BaseSimpleActivity implements View.OnClick
                 break;
             case R.id.layout_yyjz:
                 if(TextUtils.isEmpty(SharePreferenceUtil.getInstance(WebVideoActivity.this).getUserId())){
-                    startActivity(new Intent(WebVideoActivity.this,LoginActivity1.class));
+                    startActivity(new Intent(WebVideoActivity.this,LoginActivity.class));
                 }else
                 startActivity(new Intent(WebVideoActivity.this,MyDoctorActivity.class));
                 break;

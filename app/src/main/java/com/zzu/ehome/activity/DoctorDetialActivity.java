@@ -39,15 +39,12 @@ import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.DialogTips;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.UserInfo;
-
-import static com.zzu.ehome.db.DBHelper.mContext;
 
 /**
  * Created by Mersens on 2016/8/16.
@@ -79,6 +76,7 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
     private String endTime;
 
     private int userissign = 0;
+    private boolean isFisrt=false;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -257,29 +255,33 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
                             hosname = bean.getHospitalName();
                             tv_hosname.setText(bean.getHospitalName());
                             tvfavors.setText("签约量：" + bean.getSignCount());
-                            String sch = "擅长:" + bean.getSpeciaty();
-                            SpannableString stylesch = new SpannableString(sch);
-                            stylesch.setSpan(
-                                    new TextAppearanceSpan(DoctorDetialActivity.this, R.style.styleNormalColor), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                            tv_title_sc.setText(stylesch);
-                            String jjie = "简介:" + bean.getDescription();
-                            SpannableString styljianjie = new SpannableString(jjie);
-                            styljianjie.setSpan(
-                                    new TextAppearanceSpan(DoctorDetialActivity.this, R.style.styleNormalColor), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                            tvjianjie.setText(styljianjie);
-                            tvjianjie.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (tvjianjie.getLineCount() > 2) {
-                                        turnToDown(ivmore);
-                                        tvdes.setText("查看详情");
-                                        tvjianjie.setMaxLines(2);
-                                        lldes.setVisibility(View.VISIBLE);
-                                    } else {
-                                        lldes.setVisibility(View.GONE);
+
+                            if(!isFisrt) {
+                                String sch = "擅长:" + bean.getSpeciaty();
+                                SpannableString stylesch = new SpannableString(sch);
+                                stylesch.setSpan(
+                                        new TextAppearanceSpan(DoctorDetialActivity.this, R.style.styleNormalColor), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                tv_title_sc.setText(stylesch);
+                                String jjie = "简介:" + bean.getDescription();
+                                SpannableString styljianjie = new SpannableString(jjie);
+                                styljianjie.setSpan(
+                                        new TextAppearanceSpan(DoctorDetialActivity.this, R.style.styleNormalColor), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                tvjianjie.setText(styljianjie);
+                                tvjianjie.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (tvjianjie.getLineCount() > 2) {
+                                            turnToDown(ivmore);
+                                            tvdes.setText("查看详情");
+                                            tvjianjie.setMaxLines(2);
+                                            lldes.setVisibility(View.VISIBLE);
+                                        } else {
+                                            lldes.setVisibility(View.GONE);
+                                        }
                                     }
-                                }
-                            });
+                                });
+                                isFisrt=true;
+                            }
                             startTime = bean.getStartTime();
                             endTime = bean.getEndTime();
                             if (!TextUtils.isEmpty(SharePreferenceUtil.getInstance(DoctorDetialActivity.this).getUserId())) {
@@ -351,7 +353,7 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
             case R.id.layout_ljyy:
 
                 if (TextUtils.isEmpty(SharePreferenceUtil.getInstance(DoctorDetialActivity.this).getUserId())) {
-                    startActivity(new Intent(DoctorDetialActivity.this, LoginActivity1.class));
+                    startActivity(new Intent(DoctorDetialActivity.this, LoginActivity.class));
                 } else if (TextUtils.isEmpty(tv_title_sc.getText().toString())) {
                     show("服务器异常");
                 } else {

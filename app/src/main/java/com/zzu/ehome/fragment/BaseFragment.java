@@ -259,4 +259,12 @@ public abstract class BaseFragment extends Fragment {
                                            int[] grantResults) {
         PermissionGen.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
     }
+    public void showDialog(String title) {
+
+        DialogTips dialog = new DialogTips(getActivity(), title, "确定");
+
+        dialog.show();
+        dialog = null;
+
+    }
 }

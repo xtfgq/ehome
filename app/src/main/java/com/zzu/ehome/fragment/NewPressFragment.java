@@ -18,29 +18,23 @@ import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.zzu.ehome.R;
 import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.BloodPressChatAdapter;
-import com.zzu.ehome.bean.BloodPreessDate;
 import com.zzu.ehome.bean.BloodPressBean;
 import com.zzu.ehome.bean.BloodPressDate;
-import com.zzu.ehome.bean.BloodPressRes;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
-import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.JsonTools;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
-import com.zzu.ehome.view.PressView;
+import com.zzu.ehome.view.DoubleLineView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.xclcharts.chart.PointD;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,7 +46,7 @@ import de.greenrobot.event.EventBus;
 public class NewPressFragment extends BaseFragment implements StickyListHeadersListView.OnHeaderClickListener, StickyListHeadersListView.OnLoadingMoreLinstener {
     private View view;
     private LayoutInflater inflater;
-    private PressView mChart;
+    private DoubleLineView mChart;
     private LinearLayout heardchat, lltmp;
     private RadioGroup group;
     private RadioButton rbday, rbweek, rbmonth;
@@ -246,328 +240,328 @@ public class NewPressFragment extends BaseFragment implements StickyListHeadersL
         }));
     }
 
-    private void setDay() {
-        if(!activity.isNetWork){
-            activity.showNetWorkErrorDialog();
-            return;
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        startTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
-        endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
-        labels.clear();
-        labels.add("00");
-        labels.add("04");
-        labels.add("08");
-        labels.add("12");
-        labels.add("16");
-        labels.add("20");
-        labels.add("24");
-        mChart.setX(labels, 24);
-
-        requestMaker.BloodPressureInquiryType(cardNo,userid, startTime, endTime, "H", new JsonAsyncTask_Info(
-                getActivity(), true, new JsonAsyncTaskOnComplete() {
-            public void processJsonObject(Object result) {
-                try {
-                    String value = result.toString();
-                    JSONObject mySO = (JSONObject) result;
-                    JSONArray array = mySO.getJSONArray("BloodPressureInquiry");
-                    if (array.getJSONObject(0)
-                            .has("MessageCode")) {
-
-                        heardchat.setVisibility(View.VISIBLE);
-
-
-//                        tvstatus.setText("");
-//                        tvtime.setText("");
-//                        tvvalue.setText("");
-                        List<PointD> linePoint1 = new ArrayList<PointD>();
-                        List<PointD> linePoint2 = new ArrayList<PointD>();
-                        mChart.refresh(linePoint1, linePoint2);
-                        tvnodata.setVisibility(View.VISIBLE);
-                    } else {
-                        tvnodata.setVisibility(View.GONE);
-                        BloodPreessDate date = JsonTools.getData(result.toString(), BloodPreessDate.class);
-                        List<BloodPressRes> list = date.getData();
-                        heardchat.setVisibility(View.VISIBLE);
-//                        tvtime.setText("今天"+CommonUtils.returnTime(list.get(list.size()-1).getMonitorTime(),2));
-
-
-//                        int ssz=CommonUtils.computeSsz(Integer.valueOf(list.get(list.size()-1).getHigh()));
-//                        int szy=CommonUtils.computeSzy(Integer.valueOf(list.get(list.size()-1).getLow()));
-//                        int lv=CommonUtils.MaxInt(ssz,szy);
-                        List<PointD> linePoint1 = new ArrayList<PointD>();
-                        List<PointD> linePoint2 = new ArrayList<PointD>();
-                        for (BloodPressRes th : list) {
-
-                            Double xd = Double.valueOf(th.getMonitorTime().split("\\ ")[1]);
-                            Double ydH = Double.valueOf(th.getHigh());
-                            Double ydL = Double.valueOf(th.getLow());
-                            linePoint1.add(new PointD(xd, ydH));
-                            linePoint2.add(new PointD(xd, ydL));
-                        }
-                        mChart.refresh(linePoint1, linePoint2);
-
-//                        switch (lv) {
-//                            case 1:
-//                                tvstatus.setText("血压正常");
-//                                tvstatus.setTextColor(Color.parseColor("#53bbb3"));
-//                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
-//                                break;
-//                            case 2:
-//                                tvstatus.setText("高血压一期");
-//                                tvstatus.setTextColor(Color.parseColor("#fb7701"));
-//                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
-//                                break;
-//                            case 3:
-//                                tvstatus.setText("高血压二期");
-//                                tvstatus.setTextColor(Color.parseColor("#fac833"));
-//                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
-//                                break;
-//                            case 4:
-//                                tvstatus.setText("高血压三期");
-//                                tvstatus.setTextColor(Color.parseColor("#ff6616"));
-//                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
-//                                break;
+//    private void setDay() {
+//        if(!activity.isNetWork){
+//            activity.showNetWorkErrorDialog();
+//            return;
+//        }
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        startTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000);
+//        endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
+//        labels.clear();
+//        labels.add("00");
+//        labels.add("04");
+//        labels.add("08");
+//        labels.add("12");
+//        labels.add("16");
+//        labels.add("20");
+//        labels.add("24");
+//        mChart.setX(labels, 24);
+//
+//        requestMaker.BloodPressureInquiryType(cardNo,userid, startTime, endTime, "H", new JsonAsyncTask_Info(
+//                getActivity(), true, new JsonAsyncTaskOnComplete() {
+//            public void processJsonObject(Object result) {
+//                try {
+//                    String value = result.toString();
+//                    JSONObject mySO = (JSONObject) result;
+//                    JSONArray array = mySO.getJSONArray("BloodPressureInquiry");
+//                    if (array.getJSONObject(0)
+//                            .has("MessageCode")) {
+//
+//                        heardchat.setVisibility(View.VISIBLE);
+//
+//
+////                        tvstatus.setText("");
+////                        tvtime.setText("");
+////                        tvvalue.setText("");
+//                        List<PointD> linePoint1 = new ArrayList<PointD>();
+//                        List<PointD> linePoint2 = new ArrayList<PointD>();
+//                        mChart.refresh(linePoint1, linePoint2);
+//                        tvnodata.setVisibility(View.VISIBLE);
+//                    } else {
+//                        tvnodata.setVisibility(View.GONE);
+//                        BloodPreessDate date = JsonTools.getData(result.toString(), BloodPreessDate.class);
+//                        List<BloodPressRes> list = date.getData();
+//                        heardchat.setVisibility(View.VISIBLE);
+////                        tvtime.setText("今天"+CommonUtils.returnTime(list.get(list.size()-1).getMonitorTime(),2));
+//
+//
+////                        int ssz=CommonUtils.computeSsz(Integer.valueOf(list.get(list.size()-1).getHigh()));
+////                        int szy=CommonUtils.computeSzy(Integer.valueOf(list.get(list.size()-1).getLow()));
+////                        int lv=CommonUtils.MaxInt(ssz,szy);
+//                        List<PointD> linePoint1 = new ArrayList<PointD>();
+//                        List<PointD> linePoint2 = new ArrayList<PointD>();
+//                        for (BloodPressRes th : list) {
+//
+//                            Double xd = Double.valueOf(th.getMonitorTime().split("\\ ")[1]);
+//                            Double ydH = Double.valueOf(th.getHigh());
+//                            Double ydL = Double.valueOf(th.getLow());
+//                            linePoint1.add(new PointD(xd, ydH));
+//                            linePoint2.add(new PointD(xd, ydL));
 //                        }
+//                        mChart.refresh(linePoint1, linePoint2);
+//
+////                        switch (lv) {
+////                            case 1:
+////                                tvstatus.setText("血压正常");
+////                                tvstatus.setTextColor(Color.parseColor("#53bbb3"));
+////                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
+////                                break;
+////                            case 2:
+////                                tvstatus.setText("高血压一期");
+////                                tvstatus.setTextColor(Color.parseColor("#fb7701"));
+////                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
+////                                break;
+////                            case 3:
+////                                tvstatus.setText("高血压二期");
+////                                tvstatus.setTextColor(Color.parseColor("#fac833"));
+////                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
+////                                break;
+////                            case 4:
+////                                tvstatus.setText("高血压三期");
+////                                tvstatus.setTextColor(Color.parseColor("#ff6616"));
+////                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
+////                                break;
+////                        }
+//
+//
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Exception e) {
+//
+//            }
+//        }));
+//
+//    }
 
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Exception e) {
-
-            }
-        }));
-
-    }
-
-    private void setMonth() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        startTime = sdf.format(CommonUtils.changeDate(-29).getTime());
-        endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
-        months.clear();
-        labels.clear();
-        months = CommonUtils.getDays(startTime, sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000));
-        int i = 0;
-        while (i < 30) {
-            if (i == 0) {
-                labels.add(months.get(i).split("-")[2]);
-                i += 4;
-            } else {
-                labels.add(months.get(i).split("-")[2]);
-                i += 5;
-            }
-
-        }
-
-        mChart.setX(labels, 30);
-        if(!activity.isNetWork){
-            activity.showNetWorkErrorDialog();
-            return;
-        }
-        requestMaker.BloodPressureInquiryType(cardNo,userid, startTime, endTime, "D", new JsonAsyncTask_Info(
-                getActivity(), true, new JsonAsyncTaskOnComplete() {
-            public void processJsonObject(Object result) {
-                try {
-                    String value = result.toString();
-                    JSONObject mySO = (JSONObject) result;
-                    JSONArray array = mySO.getJSONArray("BloodPressureInquiry");
-                    if(view!=null) {
-                        if (array.getJSONObject(0)
-                                .has("MessageCode")) {
-                            heardchat.setVisibility(View.VISIBLE);
-                            List<PointD> linePoint1 = new ArrayList<PointD>();
-                            List<PointD> linePoint2 = new ArrayList<PointD>();
-                            mChart.refresh(linePoint1, linePoint2);
-                            tvnodata.setVisibility(View.VISIBLE);
-
-
-//                        tvstatus.setText("");
-//                        tvtime.setText("");
-//                        tvvalue.setText("");
-                        } else {
-                            tvnodata.setVisibility(View.GONE);
-                            BloodPreessDate date = JsonTools.getData(result.toString(), BloodPreessDate.class);
-                            List<BloodPressRes> list = date.getData();
-                            heardchat.setVisibility(View.VISIBLE);
-                            List<PointD> linePoint1 = new ArrayList<PointD>();
-                            List<PointD> linePoint2 = new ArrayList<PointD>();
-                            for (BloodPressRes th : list) {
-                                Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months) + 1;
-                                Double ydH = Double.valueOf(th.getHigh());
-                                Double ydL = Double.valueOf(th.getLow());
-                                linePoint1.add(new PointD(xd, ydH));
-                                linePoint2.add(new PointD(xd, ydL));
-                            }
-                            mChart.refresh(linePoint1, linePoint2);
-//                        tvtime.setText(CommonUtils.returnTime3(list.get(list.size()-1).getMonitorTime(),1)+" "+CommonUtils.returnTime(list.get(list.size()-1).getMonitorTime(),2));
-
-
-//                        int ssz=CommonUtils.computeSsz(Integer.valueOf(list.get(list.size()-1).getHigh()));
-//                        int szy=CommonUtils.computeSzy(Integer.valueOf(list.get(list.size()-1).getLow()));
-//                        int lv=CommonUtils.MaxInt(ssz,szy);
-//                        switch (lv) {
-//                            case 1:
-//                                tvstatus.setText("血压正常");
-//                                tvstatus.setTextColor(Color.parseColor("#53bbb3"));
-//                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
-//                                break;
-//                            case 2:
-//                                tvstatus.setText("高血压一期");
-//                                tvstatus.setTextColor(Color.parseColor("#fb7701"));
-//                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
-//                                break;
-//                            case 3:
-//                                tvstatus.setText("高血压二期");
-//                                tvstatus.setTextColor(Color.parseColor("#fac833"));
-//                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
-//                                break;
-//                            case 4:
-//                                tvstatus.setText("高血压三期");
-//                                tvstatus.setTextColor(Color.parseColor("#ff6616"));
-//                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
-//                                break;
+//    private void setMonth() {
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        startTime = sdf.format(CommonUtils.changeDate(-29).getTime());
+//        endTime = sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000 * 2);
+//        months.clear();
+//        labels.clear();
+//        months = CommonUtils.getDays(startTime, sdf.format(CommonUtils.changeDate(-1).getTime() + 60 * 60 * 24 * 1000));
+//        int i = 0;
+//        while (i < 30) {
+//            if (i == 0) {
+//                labels.add(months.get(i).split("-")[2]);
+//                i += 4;
+//            } else {
+//                labels.add(months.get(i).split("-")[2]);
+//                i += 5;
+//            }
+//
+//        }
+//
+//        mChart.setX(labels, 30);
+//        if(!activity.isNetWork){
+//            activity.showNetWorkErrorDialog();
+//            return;
+//        }
+//        requestMaker.BloodPressureInquiryType(cardNo,userid, startTime, endTime, "D", new JsonAsyncTask_Info(
+//                getActivity(), true, new JsonAsyncTaskOnComplete() {
+//            public void processJsonObject(Object result) {
+//                try {
+//                    String value = result.toString();
+//                    JSONObject mySO = (JSONObject) result;
+//                    JSONArray array = mySO.getJSONArray("BloodPressureInquiry");
+//                    if(view!=null) {
+//                        if (array.getJSONObject(0)
+//                                .has("MessageCode")) {
+//                            heardchat.setVisibility(View.VISIBLE);
+//                            List<PointD> linePoint1 = new ArrayList<PointD>();
+//                            List<PointD> linePoint2 = new ArrayList<PointD>();
+//                            mChart.refresh(linePoint1, linePoint2);
+//                            tvnodata.setVisibility(View.VISIBLE);
+//
+//
+////                        tvstatus.setText("");
+////                        tvtime.setText("");
+////                        tvvalue.setText("");
+//                        } else {
+//                            tvnodata.setVisibility(View.GONE);
+//                            BloodPreessDate date = JsonTools.getData(result.toString(), BloodPreessDate.class);
+//                            List<BloodPressRes> list = date.getData();
+//                            heardchat.setVisibility(View.VISIBLE);
+//                            List<PointD> linePoint1 = new ArrayList<PointD>();
+//                            List<PointD> linePoint2 = new ArrayList<PointD>();
+//                            for (BloodPressRes th : list) {
+//                                Double xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months) + 1;
+//                                Double ydH = Double.valueOf(th.getHigh());
+//                                Double ydL = Double.valueOf(th.getLow());
+//                                linePoint1.add(new PointD(xd, ydH));
+//                                linePoint2.add(new PointD(xd, ydL));
+//                            }
+//                            mChart.refresh(linePoint1, linePoint2);
+////                        tvtime.setText(CommonUtils.returnTime3(list.get(list.size()-1).getMonitorTime(),1)+" "+CommonUtils.returnTime(list.get(list.size()-1).getMonitorTime(),2));
+//
+//
+////                        int ssz=CommonUtils.computeSsz(Integer.valueOf(list.get(list.size()-1).getHigh()));
+////                        int szy=CommonUtils.computeSzy(Integer.valueOf(list.get(list.size()-1).getLow()));
+////                        int lv=CommonUtils.MaxInt(ssz,szy);
+////                        switch (lv) {
+////                            case 1:
+////                                tvstatus.setText("血压正常");
+////                                tvstatus.setTextColor(Color.parseColor("#53bbb3"));
+////                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
+////                                break;
+////                            case 2:
+////                                tvstatus.setText("高血压一期");
+////                                tvstatus.setTextColor(Color.parseColor("#fb7701"));
+////                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
+////                                break;
+////                            case 3:
+////                                tvstatus.setText("高血压二期");
+////                                tvstatus.setTextColor(Color.parseColor("#fac833"));
+////                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
+////                                break;
+////                            case 4:
+////                                tvstatus.setText("高血压三期");
+////                                tvstatus.setTextColor(Color.parseColor("#ff6616"));
+////                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
+////                                break;
+////                        }
+//
+//
 //                        }
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Exception e) {
+//
+//            }
+//        }));
+//
+//    }
 
-
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Exception e) {
-
-            }
-        }));
-
-    }
-
-    private void setWeek() {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-
-        startTime = sdf.format(CommonUtils.changeDate(-6).getTime());
-        endTime = sdf.format((new Date()).getTime() + 60 * 60 * 24 * 1000);
-        weeks.clear();
-        weeks.add(startTime);
-        weeks.add(sdf.format(CommonUtils.changeDate(-5).getTime()));
-        weeks.add(sdf.format(CommonUtils.changeDate(-4).getTime()));
-        weeks.add(sdf.format(CommonUtils.changeDate(-3).getTime()));
-        weeks.add(sdf.format(CommonUtils.changeDate(-2).getTime()));
-        weeks.add(sdf.format(CommonUtils.changeDate(-1).getTime()));
-        weeks.add(sdf.format((new Date()).getTime()));
-        labels.clear();
-        for (String day : weeks) {
-            labels.add(day.split("-")[2]);
-        }
-        mChart.setX(labels, 6);
-        if(!activity.isNetWork){
-            activity.showNetWorkErrorDialog();
-            return;
-        }
-        requestMaker.BloodPressureInquiryType(cardNo,userid, startTime, endTime, "D", new JsonAsyncTask_Info(
-                getActivity(), true, new JsonAsyncTaskOnComplete() {
-            public void processJsonObject(Object result) {
-                try {
-                    String value = result.toString();
-                    JSONObject mySO = (JSONObject) result;
-                    JSONArray array = mySO.getJSONArray("BloodPressureInquiry");
-                    if(view!=null) {
-                        if (array.getJSONObject(0)
-                                .has("MessageCode")) {
-                            heardchat.setVisibility(View.VISIBLE);
-                            List<PointD> linePoint1 = new ArrayList<PointD>();
-                            List<PointD> linePoint2 = new ArrayList<PointD>();
-                            mChart.refresh(linePoint1, linePoint2);
-                            tvnodata.setVisibility(View.VISIBLE);
-
-//                        tvstatus.setText("");
-//                        tvtime.setText("");
-//                        tvvalue.setText("");
-                        } else {
-                            BloodPreessDate date = JsonTools.getData(result.toString(), BloodPreessDate.class);
-                            List<BloodPressRes> list = date.getData();
-                            tvnodata.setVisibility(View.GONE);
-                            heardchat.setVisibility(View.VISIBLE);
-                            List<PointD> linePoint1 = new ArrayList<PointD>();
-                            List<PointD> linePoint2 = new ArrayList<PointD>();
-                            for (BloodPressRes th : list) {
-
-                                Double xd;
-                                if (months.get(29).equals(th.getMonitorTime().split("\\ ")[0])) {
-                                    xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months) + 1;
-                                } else {
-                                    xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months);
-                                }
-                                Double ydH = Double.valueOf(th.getHigh());
-                                Double ydL = Double.valueOf(th.getLow());
-                                linePoint1.add(new PointD(xd, ydH));
-                                linePoint2.add(new PointD(xd, ydL));
-                            }
-                            mChart.refresh(linePoint1, linePoint2);
-//                        tvtime.setText(CommonUtils.returnTime3(list.get(list.size()-1).getMonitorTime(),1)+" "+CommonUtils.returnTime(list.get(list.size()-1).getMonitorTime(),2));
-
-
-//                        int ssz=CommonUtils.computeSsz(Integer.valueOf(list.get(list.size()-1).getHigh()));
-//                        int szy=CommonUtils.computeSzy(Integer.valueOf(list.get(list.size()-1).getLow()));
-//                        int lv=CommonUtils.MaxInt(ssz,szy);
-//                        switch (lv) {
-//                            case 1:
-//                                tvstatus.setText("血压正常");
-//                                tvstatus.setTextColor(Color.parseColor("#53bbb3"));
-//                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
-//                                break;
-//                            case 2:
-//                                tvstatus.setText("高血压一期");
-//                                tvstatus.setTextColor(Color.parseColor("#fb7701"));
-//                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
-//                                break;
-//                            case 3:
-//                                tvstatus.setText("高血压二期");
-//                                tvstatus.setTextColor(Color.parseColor("#fac833"));
-//                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
-//                                break;
-//                            case 4:
-//                                tvstatus.setText("高血压三期");
-//                                tvstatus.setTextColor(Color.parseColor("#ff6616"));
-//                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
-//                                break;
+//    private void setWeek() {
+//
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//
+//
+//        startTime = sdf.format(CommonUtils.changeDate(-6).getTime());
+//        endTime = sdf.format((new Date()).getTime() + 60 * 60 * 24 * 1000);
+//        weeks.clear();
+//        weeks.add(startTime);
+//        weeks.add(sdf.format(CommonUtils.changeDate(-5).getTime()));
+//        weeks.add(sdf.format(CommonUtils.changeDate(-4).getTime()));
+//        weeks.add(sdf.format(CommonUtils.changeDate(-3).getTime()));
+//        weeks.add(sdf.format(CommonUtils.changeDate(-2).getTime()));
+//        weeks.add(sdf.format(CommonUtils.changeDate(-1).getTime()));
+//        weeks.add(sdf.format((new Date()).getTime()));
+//        labels.clear();
+//        for (String day : weeks) {
+//            labels.add(day.split("-")[2]);
+//        }
+//        mChart.setX(labels, 6);
+//        if(!activity.isNetWork){
+//            activity.showNetWorkErrorDialog();
+//            return;
+//        }
+//        requestMaker.BloodPressureInquiryType(cardNo,userid, startTime, endTime, "D", new JsonAsyncTask_Info(
+//                getActivity(), true, new JsonAsyncTaskOnComplete() {
+//            public void processJsonObject(Object result) {
+//                try {
+//                    String value = result.toString();
+//                    JSONObject mySO = (JSONObject) result;
+//                    JSONArray array = mySO.getJSONArray("BloodPressureInquiry");
+//                    if(view!=null) {
+//                        if (array.getJSONObject(0)
+//                                .has("MessageCode")) {
+//                            heardchat.setVisibility(View.VISIBLE);
+//                            List<PointD> linePoint1 = new ArrayList<PointD>();
+//                            List<PointD> linePoint2 = new ArrayList<PointD>();
+//                            mChart.refresh(linePoint1, linePoint2);
+//                            tvnodata.setVisibility(View.VISIBLE);
+//
+////                        tvstatus.setText("");
+////                        tvtime.setText("");
+////                        tvvalue.setText("");
+//                        } else {
+//                            BloodPreessDate date = JsonTools.getData(result.toString(), BloodPreessDate.class);
+//                            List<BloodPressRes> list = date.getData();
+//                            tvnodata.setVisibility(View.GONE);
+//                            heardchat.setVisibility(View.VISIBLE);
+//                            List<PointD> linePoint1 = new ArrayList<PointD>();
+//                            List<PointD> linePoint2 = new ArrayList<PointD>();
+//                            for (BloodPressRes th : list) {
+//
+//                                Double xd;
+//                                if (months.get(29).equals(th.getMonitorTime().split("\\ ")[0])) {
+//                                    xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months) + 1;
+//                                } else {
+//                                    xd = CommonUtils.position(th.getMonitorTime().split("\\ ")[0], months);
+//                                }
+//                                Double ydH = Double.valueOf(th.getHigh());
+//                                Double ydL = Double.valueOf(th.getLow());
+//                                linePoint1.add(new PointD(xd, ydH));
+//                                linePoint2.add(new PointD(xd, ydL));
+//                            }
+//                            mChart.refresh(linePoint1, linePoint2);
+////                        tvtime.setText(CommonUtils.returnTime3(list.get(list.size()-1).getMonitorTime(),1)+" "+CommonUtils.returnTime(list.get(list.size()-1).getMonitorTime(),2));
+//
+//
+////                        int ssz=CommonUtils.computeSsz(Integer.valueOf(list.get(list.size()-1).getHigh()));
+////                        int szy=CommonUtils.computeSzy(Integer.valueOf(list.get(list.size()-1).getLow()));
+////                        int lv=CommonUtils.MaxInt(ssz,szy);
+////                        switch (lv) {
+////                            case 1:
+////                                tvstatus.setText("血压正常");
+////                                tvstatus.setTextColor(Color.parseColor("#53bbb3"));
+////                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
+////                                break;
+////                            case 2:
+////                                tvstatus.setText("高血压一期");
+////                                tvstatus.setTextColor(Color.parseColor("#fb7701"));
+////                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
+////                                break;
+////                            case 3:
+////                                tvstatus.setText("高血压二期");
+////                                tvstatus.setTextColor(Color.parseColor("#fac833"));
+////                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
+////                                break;
+////                            case 4:
+////                                tvstatus.setText("高血压三期");
+////                                tvstatus.setTextColor(Color.parseColor("#ff6616"));
+////                                tvvalue.setText("收缩压"+list.get(list.size()-1).getHigh()+"mmhg; "+"舒张压"+list.get(list.size()-1).getLow()+"mmhg");
+////                                break;
+////                        }
+//
+//
 //                        }
-
-
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Exception e) {
-
-            }
-        }));
-
-    }
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Exception e) {
+//
+//            }
+//        }));
+//
+//    }
 
     public void onEventMainThread(RefreshEvent event) {
         if (getResources().getInteger(R.integer.refresh_press) == event
                 .getRefreshWhere()) {
-            rbday.setChecked(true);
-            rbday.setTextColor(getResources().getColor(R.color.white));
-            rbweek.setChecked(false);
-            rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
-            rbmonth.setChecked(false);
-            rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
-            setDay();
+//            rbday.setChecked(true);
+//            rbday.setTextColor(getResources().getColor(R.color.white));
+//            rbweek.setChecked(false);
+//            rbweek.setTextColor(getResources().getColor(R.color.actionbar_color));
+//            rbmonth.setChecked(false);
+//            rbmonth.setTextColor(getResources().getColor(R.color.actionbar_color));
+//            setDay();
 
             page = 1;
             getHistory();

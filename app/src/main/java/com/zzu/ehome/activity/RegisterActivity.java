@@ -3,6 +3,7 @@ package com.zzu.ehome.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -86,6 +87,24 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         }
 
         ;
+    };
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    if(tv_getCode!=null) {
+                        stopService(mIntent);
+                        tv_getCode.setEnabled(true);
+                        tv_getCode.setText("获取验证码");
+                    }
+                    break;
+
+
+                default:
+                    break;
+            }
+        }
+
     };
 
     public void initViews() {
@@ -217,7 +236,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             chkcode = array.getJSONObject(0)
                                     .getString("MessageContent");
                           // ToastUtils.showMessage(RegisterActivity.this,chkcode+"");
-                            ToastUtils.showMessage(RegisterActivity.this,"验证码已发送，请注意查收。"+":::"+chkcode);
+                            ToastUtils.showMessage(RegisterActivity.this,"验证码已发送，请注意查收。");
                         } else {
                             showDialog(array.getJSONObject(0)
                                     .getString("MessageContent"));
@@ -234,7 +253,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
                 @Override
                 public void onError(Exception e) {
-
+                    Message message = Message.obtain();
+                    message.what = 0;
+                    mHandler.sendMessage(message);
                 }
             }));
         }
@@ -316,7 +337,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                                     SharePreferenceUtil.getInstance(RegisterActivity.this).setHomeId(array.getJSONObject(0).getString("UserID"));
                                 }
                                 SharePreferenceUtil.getInstance(RegisterActivity.this).setUserId(array.getJSONObject(0).getString("UserID"));
-                                CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
+                                CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity.class);
                                 startActivity(new Intent(RegisterActivity.this, SecondActivity.class));
                                 finish();
                             } else {
@@ -358,6 +379,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onStop() {
         super.onStop();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         stopService(mIntent);
+
     }
 }

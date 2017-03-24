@@ -1,23 +1,15 @@
 package com.zzu.ehome.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.zzu.ehome.R;
-import com.zzu.ehome.activity.LoginActivity1;
-import com.zzu.ehome.activity.MyRemindActivity1;
-import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.MyRemindBean;
-import com.zzu.ehome.bean.OrderInquiryByTopmd;
-import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;

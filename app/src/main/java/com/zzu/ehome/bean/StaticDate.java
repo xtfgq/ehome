@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Administrator on 2016/6/22.
  */
 public class StaticDate {
-    @SerializedName("MessageContent")
+    @SerializedName("GetElectrocardio")
     List<StaticBean> data;
 
     public List<StaticBean> getData() {

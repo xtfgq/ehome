@@ -22,7 +22,8 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.activity.BaseSimpleActivity;
 import com.zzu.ehome.activity.BiochemistryReportDetailActivity;
 import com.zzu.ehome.activity.InspectionReportDetailActivity;
-import com.zzu.ehome.activity.LoginActivity1;
+import com.zzu.ehome.activity.LoginActivity;
+import com.zzu.ehome.activity.NewsWebView;
 import com.zzu.ehome.activity.PrivateDoctorFragment;
 import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.bean.RefreshEvent;
@@ -34,8 +35,6 @@ import com.zzu.ehome.fragment.HealthFragment;
 import com.zzu.ehome.fragment.HomeFragment1;
 import com.zzu.ehome.fragment.MessageFragment;
 import com.zzu.ehome.fragment.UserCenterFragment;
-import com.zzu.ehome.reciver.EventType;
-import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.service.StepDetector;
 import com.zzu.ehome.service.StepService;
 import com.zzu.ehome.utils.CommonUtils;
@@ -46,6 +45,9 @@ import com.zzu.ehome.view.DialogTips;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+
+import static com.zzu.ehome.R.attr.position;
+import static com.zzu.ehome.application.CustomApplcation.mList;
 
 
 public class MainActivity extends BaseSimpleActivity implements View.OnClickListener{
@@ -364,9 +366,7 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
                 showDialog();
             }
         }
-        if(isNetWork){
-            RxBus.getInstance().send(new EventType("succ"));
-        }
+
         switch (v.getId()) {
             case R.id.layout_home:
 
@@ -377,7 +377,7 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
                 break;
             case R.id.layout_health:
 /*                if(TextUtils.isEmpty(SharePreferenceUtil.getInstance(MainActivity.this).getUserId())){
-                    startActivity(new Intent(MainActivity.this, LoginActivity1.class));
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     return;
                 }*/
 
@@ -456,7 +456,7 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
                 break;
             case 3:
                 if(TextUtils.isEmpty(SharePreferenceUtil.getInstance(MainActivity.this).getUserId())){
-                    startActivity(new Intent(MainActivity.this,LoginActivity1.class));
+                    startActivity(new Intent(MainActivity.this,LoginActivity.class));
 
                 }
                 img_doctor.setImageResource(R.mipmap.icon_msg_pressed);
@@ -571,6 +571,12 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
             i.putExtra("RecordID", ID);
             i.putExtra("TypeTitle","生化");
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+        }else {
+            Intent i = new Intent(MainActivity.this,
+                    NewsWebView.class);
+            i.putExtra("ID", ID);
+            i.putExtra("Title", "");
             startActivity(i);
         }
     }

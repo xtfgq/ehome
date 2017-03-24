@@ -40,6 +40,28 @@ public class WeightRes {
     @SerializedName("UpdatedBy")
     private String UpdatedBy;
 
+    public String getFromTo() {
+        return FromTo;
+    }
+
+    public void setFromTo(String fromTo) {
+        FromTo = fromTo;
+    }
+
+    @SerializedName("Fromto")
+    private String FromTo;
+
+    public String getBMI() {
+        return BMI;
+    }
+
+    public void setBMI(String BMI) {
+        this.BMI = BMI;
+    }
+
+    @SerializedName("BMI")
+    String BMI;
+
     public String getID() {
         return ID;
     }

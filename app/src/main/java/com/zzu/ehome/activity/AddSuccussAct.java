@@ -11,7 +11,6 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.application.CustomApplcation;
 import com.zzu.ehome.main.ehome.MainActivity;
 import com.zzu.ehome.utils.CommonUtils;
-import com.zzu.ehome.utils.RegisterCodeTimer;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 
@@ -54,15 +53,15 @@ public class AddSuccussAct extends BaseSimpleActivity implements View.OnClickLis
             case R.id.tv_continue:
                 tvcontinue.setEnabled(false);
                 CustomApplcation.getInstance().finishSingleActivityByClass(RelationActivity.class);
-                CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
-                Intent i = new Intent(this, LoginActivity1.class);
+                CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity.class);
+                Intent i = new Intent(this, LoginActivity.class);
                 i.putExtra("relation", "rela");
                 startActivity(i);
                 break;
             case R.id.btnext:
                 btnext.setEnabled(false);
                 CustomApplcation.getInstance().finishSingleActivityByClass(RelationActivity.class);
-                CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
+                CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity.class);
                 startActivity(new Intent(AddSuccussAct.this,MyHome.class));
                 break;
             case R.id.tv_goHome:
@@ -100,7 +99,7 @@ public class AddSuccussAct extends BaseSimpleActivity implements View.OnClickLis
         CustomApplcation.getInstance().finishSingleActivityByClass(SecondActivity.class);
         CustomApplcation.getInstance().finishSingleActivityByClass(SexActivity.class);
         CustomApplcation.getInstance().finishSingleActivityByClass(WeightAndHeightAct.class);
-        CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
+        CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity.class);
         Intent i=new Intent(AddSuccussAct.this, MainActivity.class);
         i.putExtra("Home","Home");
         startActivity(i);

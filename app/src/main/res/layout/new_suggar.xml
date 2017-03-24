@@ -7,76 +7,19 @@
     android:orientation="vertical">
     <include
 
-        layout="@layout/chat_common_layout" />
+        layout="@layout/curved_head" />
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:cardElevation="4dp"
         app:cardBackgroundColor="@color/white"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
         app:cardCornerRadius="10dp"
        >
 
-        <!--  <RelativeLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="12dp"
-              android:layout_marginLeft="12dp"
-              android:layout_marginRight="12dp"
-              >
-              <TextView
 
-                  android:layout_alignParentLeft="true"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="血压"
-                  android:textColor="@color/select_dark_gray"
-                  android:textSize="@dimen/text_size_medium"/>
-              <TextView
-                  android:id="@+id/tv_status"
-                  android:layout_alignParentRight="true"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text=""
-                  android:textColor="@color/select_dark_gray"
-                  android:textSize="@dimen/text_size_medium"/>
-
-          </RelativeLayout>
-          <RelativeLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="12dp"
-              android:layout_marginLeft="12dp"
-              android:layout_marginRight="12dp"
-              >
-              <TextView
-                  android:id="@+id/tv_tempvalue"
-                  android:layout_alignParentLeft="true"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text=""
-                  android:textColor="@color/select_dark_gray"
-                  android:textSize="@dimen/text_size_small"/>
-              <TextView
-                  android:id="@+id/tvtime"
-                  android:layout_alignParentRight="true"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="今天9:30"
-                  android:textColor="@color/select_dark_gray"
-                  android:textSize="@dimen/text_size_small"/>
-
-
-
-          </RelativeLayout>
-          <View
-
-              android:layout_marginTop="12dp"
-              android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:layout_marginLeft="12dp"
-              android:layout_marginRight="12dp"
-              android:background="@color/colorline"/>-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -173,13 +173,12 @@ public class DoctorListFragment extends BaseFragment {
         refreshLayout.setOnRefreshListener(new RefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout pullToRefreshLayout) {
-                if(!activity.isNetWork){
+
                     if(!activity.isNetWork){
                         refreshLayout.refreshFinish(RefreshLayout.FAIL);
                         return;
                     }
-                    return;
-                }
+
                 isRefresh=true;
                 getDoctorListData(hosptialId, title,cardno);
             }

@@ -1,20 +1,15 @@
 package com.zzu.ehome;
 
-import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
@@ -35,17 +30,13 @@ import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.zzu.ehome.activity.BaseActivity;
-import com.zzu.ehome.activity.LoginActivity;
-import com.zzu.ehome.activity.RegisterActivity;
 import com.zzu.ehome.adapter.PlaceListAdapter;
 import com.zzu.ehome.utils.Tool;
-import com.zzu.ehome.view.HeadView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-import io.rong.imkit.RongIM;
 import io.rong.message.LocationMessage;
 
 public class MapLocationActivity extends BaseActivity {

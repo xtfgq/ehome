@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zzu.ehome.R;
@@ -14,10 +13,6 @@ import com.zzu.ehome.main.ehome.MainActivity;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
-import com.zzu.ehome.view.wheel.wheelview.WheelView;
-import com.zzu.ehome.view.wheel.wheelview.adapter.NumericWheelAdapter;
-
-import static android.R.attr.type;
 
 /**
  * Created by Administrator on 2016/8/9.
@@ -72,7 +67,7 @@ public class RegisterFinishAct extends BaseSimpleActivity implements View.OnClic
                 break;
             case R.id.tvno:
                 tvno.setEnabled(false);
-                CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity1.class);
+                CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(RelationActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(SexActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(WeightAndHeightAct.class);

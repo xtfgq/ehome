@@ -1,7 +1,6 @@
 package com.zzu.ehome.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.TextAppearanceSpan;
@@ -14,12 +13,9 @@ import android.widget.TextView;
 
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
 import com.zzu.ehome.R;
-import com.zzu.ehome.bean.HealthDataRes;
-import com.zzu.ehome.bean.TempItemHistory;
 import com.zzu.ehome.bean.TempRes;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.DateUtils;
-import com.zzu.ehome.utils.RequestMaker;
 
 import java.util.List;
 

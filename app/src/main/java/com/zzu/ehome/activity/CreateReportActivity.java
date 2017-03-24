@@ -344,7 +344,7 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
                     }
                     List<String> imgs = new ArrayList<String>(images);
 
-                    if (images.size() < 9) {
+                    if (images.size() <= 9&&imgs.get(imgs.size() - 1).equals(path)) {
                         imgs.remove(imgs.size() - 1);
 
                     }

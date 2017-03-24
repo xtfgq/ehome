@@ -1,9 +1,9 @@
 package com.zzu.ehome.activity;
 
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -19,7 +19,7 @@ import com.zzu.ehome.bean.User;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.utils.CommonUtils;
-import com.zzu.ehome.utils.DateUtils;
+
 
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -36,18 +36,16 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zzu.ehome.R.id.view;
 
 /**
  * Created by Administrator on 2016/12/6.
  */
 
-public class BiochemicalReportActivity extends BaseActivity{
+public class BiochemicalReportActivity extends BaseActivity {
+
     private ListView listView;
     private LinearLayout layout_none;
-
     private EHomeDao dao;
-
     private String usrid;
     private PullToRefreshLayout pulltorefreshlayout;
     private List<ResultContent> mList = new ArrayList<ResultContent>();
@@ -64,13 +62,13 @@ public class BiochemicalReportActivity extends BaseActivity{
         super.onCreate(arg0);
         setContentView(R.layout.layout_biochemical_report);
         dao = new EHomeDaoImpl(this);
-        requestMaker= RequestMaker.getInstance();
+        requestMaker = RequestMaker.getInstance();
         usrid = SharePreferenceUtil.getInstance(BiochemicalReportActivity.this).getUserId();
         initViews();
 
         initEvent();
         initDatas();
-        if(!CommonUtils.isNotificationEnabled(BiochemicalReportActivity.this)){
+        if (!CommonUtils.isNotificationEnabled(BiochemicalReportActivity.this)) {
             showTitleDialog("请打开通知中心");
         }
     }
@@ -95,23 +93,20 @@ public class BiochemicalReportActivity extends BaseActivity{
     }
 
 
-
-
     public void initEvent() {
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               if(!isNetWork){
+                if (!isNetWork) {
                     showNetWorkErrorDialog();
                     return;
                 }
                 Intent i = new Intent(BiochemicalReportActivity.this, BiochemistryReportDetailActivity.class);
                 i.putExtra("Type", mList.get(position).getOCRType());
                 i.putExtra("RecordID", mList.get(position).getID());
-                i.putExtra("TypeTitle","生化");
-//                i.putExtra("Title", DateUtils.StringPattern(mList.get(position).getCreatedDate(), "yyyy/MM/dd HH:mm:ss", "yyyy-MM-dd"));
+                i.putExtra("TypeTitle", "生化");
                 startActivity(i);
             }
         });
@@ -123,8 +118,6 @@ public class BiochemicalReportActivity extends BaseActivity{
                 isReflash = true;
                 isLoading = false;
                 initDatas();
-
-
             }
 
             @Override
@@ -141,7 +134,7 @@ public class BiochemicalReportActivity extends BaseActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        if(!isFirst){
+        if (!isFirst) {
             page = 1;
             isFirst = true;
             isReflash = true;
@@ -152,7 +145,7 @@ public class BiochemicalReportActivity extends BaseActivity{
 
     public void initDatas() {
         dbUser = dao.findUserInfoById(usrid);
-        requestMaker.OCRRecordInquiry(dbUser.getUserno(), "04","02",page + "", 10 + "", new JsonAsyncTask_Info(BiochemicalReportActivity.this, true, new JsonAsyncTaskOnComplete() {
+        requestMaker.OCRRecordInquiry(dbUser.getUserno(), "04", "02", page + "", 10 + "", new JsonAsyncTask_Info(BiochemicalReportActivity.this, true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
                 try {
@@ -160,7 +153,7 @@ public class BiochemicalReportActivity extends BaseActivity{
                     org.json.JSONArray array = mySO
                             .getJSONArray("OCRRecordInquiry");
                     int code = Integer.valueOf(array.getJSONObject(0).getString("MessageCode"));
-                    if(layout_none!=null&&listView!=null) {
+                    if (layout_none != null && listView != null) {
                         if (isReflash) {
                             mList.clear();
                         }
@@ -209,6 +202,7 @@ public class BiochemicalReportActivity extends BaseActivity{
                                 layout_none.setVisibility(View.GONE);
                             } else {
                                 layout_none.setVisibility(View.VISIBLE);
+                                pulltorefreshlayout.setVisibility(View.GONE);
                             }
                             isFirst = false;
                         }
@@ -227,9 +221,7 @@ public class BiochemicalReportActivity extends BaseActivity{
         }));
 
 
-
     }
-
 
 
 }

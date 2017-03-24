@@ -446,7 +446,7 @@ public class BaseActivity extends SupperBaseActivity {
 //                        SharePreferenceUtil.getInstance(CustomApplcation.getInstance()).setIsRemeber(false);
 //                        Intent intenthealth = new Intent("userrefresh");
 //                        sendBroadcast(intenthealth);
-//                        Intent i = new Intent(CustomApplcation.getInstance(), LoginActivity1.class);
+//                        Intent i = new Intent(CustomApplcation.getInstance(), LoginActivity.class);
 //                        i.putExtra("logout", "logout");
 //                        startActivity(i);
 //                        finishActivity();

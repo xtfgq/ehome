@@ -240,7 +240,7 @@ public class CompletInfoActivity extends BaseActivity implements View.OnClickLis
                 dbUser.setImgHead(imgHead);
                 dbUser.setUsername(edt_setting_name.getText().toString().trim());
                 dao.updateUserInfo(dbUser, userid);
-                CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity.class);
+//                CustomApplcation.getInstance().finishSingleActivityByClass(LoginActivity.class);
                 CustomApplcation.getInstance().finishSingleActivityByClass(RegisterActivity.class);
                 CommonUtils.intentAction(CompletInfoActivity.this, MainActivity.class);
 

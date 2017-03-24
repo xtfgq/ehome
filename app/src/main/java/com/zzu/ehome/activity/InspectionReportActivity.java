@@ -31,6 +31,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zzu.ehome.R.id.refresh_view;
+
 /**
  * Created by Mersens on 2016/8/23.
  * 检查报告
@@ -90,7 +92,7 @@ public class InspectionReportActivity extends BaseActivity {
 //
 //            }
 //        });
-        pulltorefreshlayout = (PullToRefreshLayout) findViewById(R.id.refresh_view);
+        pulltorefreshlayout = (PullToRefreshLayout) findViewById(refresh_view);
 
         listView = (ListView) findViewById(R.id.listView);
 
@@ -198,8 +200,8 @@ public class InspectionReportActivity extends BaseActivity {
                                 mList.add(rc);
                             }
                             if (isFirst) {
-                                mAdapter = new InspectionReportAdapter(InspectionReportActivity.this, mList);
-                                listView.setAdapter(mAdapter);
+                                    mAdapter = new InspectionReportAdapter(InspectionReportActivity.this, mList);
+                                    listView.setAdapter(mAdapter);
                                 isFirst = false;
                             }
 
@@ -219,7 +221,7 @@ public class InspectionReportActivity extends BaseActivity {
                         } else if (code == 2 && isLoading) {
                             isLoading = false;
                             isFirst = false;
-                            mAdapter.notifyDataSetChanged();
+
                             pulltorefreshlayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
                             Toast.makeText(InspectionReportActivity.this, "已经没有更多数据了",
                                     Toast.LENGTH_SHORT).show();
@@ -228,6 +230,7 @@ public class InspectionReportActivity extends BaseActivity {
                                 layout_none.setVisibility(View.GONE);
                             } else {
                                 layout_none.setVisibility(View.VISIBLE);
+                                pulltorefreshlayout.setVisibility(View.GONE);
                             }
                             isFirst = false;
                         }

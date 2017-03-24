@@ -82,7 +82,7 @@ public class SuggarView extends ChildView {
     public void setX(LinkedList<String> labels, int size) {
 
 
-        chart.setCategoryAxisMax(size);
+        chart.setCategoryAxisMax(size+1);
 
         chart.setCategoryAxisMin(0);
         chart.setCategories(labels);
@@ -126,7 +126,7 @@ public class SuggarView extends ChildView {
             chart.getCategoryAxis().getTickMarksPaint().setColor(getResources().getColor(R.color.actionbar_color));
             chart.getDataAxis().setHorizontalTickAlign(Paint.Align.CENTER);
             chart.getDataAxis().getTickLabelPaint().setTextAlign(Paint.Align.RIGHT);
-            int size = (25 * ScreenUtils.getScreenHeight(mContext)) / 1080;
+            int size = (22 * ScreenUtils.getScreenHeight(mContext)) / 1080;
 
             //不使用精确计算，忽略Java计算误差,提高性能
             chart.setCrurveLineStyle(XEnum.CrurveLineStyle.BEELINE);
@@ -134,6 +134,7 @@ public class SuggarView extends ChildView {
 
             chart.getCategoryAxis().getTickLabelPaint().setTextSize(size);
             chart.getDataAxis().getTickLabelPaint().setTextSize(size);
+
 //定义数据轴标签显示格式
             chart.getDataAxis().setLabelFormatter(new IFormatterTextCallBack() {
 
@@ -278,7 +279,7 @@ public class SuggarView extends ChildView {
 
     protected int[] getBarLnDefaultSpadding() {
         int[] ltrb = new int[4];
-        ltrb[0] = DensityUtil.dip2px(getContext(), 30); //left
+        ltrb[0] = DensityUtil.dip2px(getContext(), 40); //left
         ltrb[1] = DensityUtil.dip2px(getContext(), 10); //top
         ltrb[2] = DensityUtil.dip2px(getContext(), 10); //right
         ltrb[3] = DensityUtil.dip2px(getContext(), 30); //bottom

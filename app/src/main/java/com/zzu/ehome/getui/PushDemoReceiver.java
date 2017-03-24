@@ -47,12 +47,12 @@ public class PushDemoReceiver extends BroadcastReceiver {
                         JSONObject mySO = new JSONObject(data);
                         org.json.JSONArray array = mySO
                                 .getJSONArray("ReturnValue");
-                        Log.d("GetuiSdkDemo", "receiver payload : " + data);
+
                         String MessageCode=array.getJSONObject(0)
                                 .getString("MessageCode").toString();
                         String MessageContent=array.getJSONObject(0)
                                 .getString("MessageContent").toString();
-                        if(MessageCode.equals("01")||MessageCode.equals("02")){
+                        if(MessageCode.equals("01")||MessageCode.equals("02")||MessageCode.equals("03")){
                             Intent i = new Intent(context, MainActivity.class);
                             i.putExtra("Push", "Push");
                             i.putExtra("MessageCode", MessageCode);

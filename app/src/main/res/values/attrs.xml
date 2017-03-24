@@ -84,4 +84,11 @@
             <enum name="FILL" value="1"></enum>
         </attr>
     </declare-styleable>
+    <declare-styleable name="LineChart">
+        <attr name="LMaxValue" format="string"></attr>
+        <attr name="LStep" format="string"></attr>
+        <attr name="LLow" format="string"></attr>
+        <attr name="LHigh" format="string"></attr>
+
+    </declare-styleable>
 </resources>

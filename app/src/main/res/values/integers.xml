@@ -3,7 +3,6 @@
 
 
     <!-- 刷新的界面 -->
-
     <integer name="refresh_manager_data">1</integer>
     <integer name="refresh_manager_file">2</integer>
     <integer name="refresh_info">3</integer>
