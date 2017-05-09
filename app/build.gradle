@@ -8,17 +8,25 @@ android {
         applicationId "com.zzu.ehome.main.ehome"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 20
-        versionName "2.2.1"
+        versionCode 21
+        versionName "2.2.2"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
         }
-
+    }
+    signingConfigs {
+        releaseConfig {
+            keyAlias 'ehome'
+            keyPassword 'netlab'
+            storeFile file('../ehome.jks')
+            storePassword 'netlab'
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.releaseConfig
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -76,4 +84,13 @@ dependencies {
     compile 'com.contrarywind:Android-PickerView:3.1.0'
     compile project(':Rong_Cloud_Android_IMKit_SDK_v2_7_3_stable')
     compile files('libs/GetuiSDK2.9.3.0.jar')
+    compile files('libs/imsdk.jar')
+    compile files('libs/mobilepb.jar')
+    compile files('libs/qalsdk.jar')
+    compile files('libs/soload.jar')
+    compile files('libs/tls_sdk.jar')
+    compile files('libs/wup-1.0.0-SNAPSHOT.jar')
+    compile files('libs/txrtmpsdk.jar')
+   
+
 }
