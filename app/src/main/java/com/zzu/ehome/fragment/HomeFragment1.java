@@ -1309,9 +1309,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
     }
 
     private void initUnreadCountListener() {
-//        final Conversation.ConversationType[] conversationTypes = {Conversation.ConversationType.PRIVATE, Conversation.ConversationType.DISCUSSION,
-//                Conversation.ConversationType.GROUP, Conversation.ConversationType.SYSTEM,
-//                Conversation.ConversationType.PUBLIC_SERVICE};
+
         final Conversation.ConversationType[] conversationTypes = {Conversation.ConversationType.PRIVATE, Conversation.ConversationType.DISCUSSION,
                 Conversation.ConversationType.GROUP};
 
@@ -1328,10 +1326,8 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
         @Override
         public void onMessageIncreased(int count) {
             CustomApplcation.getInstance().count = count;
-
             Intent intenthealth = new Intent("NumRefresh");
             getActivity().sendBroadcast(intenthealth);
-
         }
     };
 

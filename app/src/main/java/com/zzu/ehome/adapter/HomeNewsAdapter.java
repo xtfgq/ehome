@@ -83,11 +83,14 @@ public class HomeNewsAdapter extends BaseAdapter {
         try {
             int t=DateUtils.isYeaterday(date,null);
             if(t==-1){
-                holder.tvtime.setText("今天 "+DateUtils.StringPattern(item.getCreatedDate(),"yyyy/MM/dd HH:mm:ss","HH:mm"));
+                holder.tvtime.setText("今天 "+DateUtils.StringPattern(item.getCreatedDate(),
+                        "yyyy/MM/dd HH:mm:ss","HH:mm"));
             }else if(t==0){
-                holder.tvtime.setText("昨天 "+DateUtils.StringPattern(item.getCreatedDate(),"yyyy/MM/dd HH:mm:ss","HH:mm"));
+                holder.tvtime.setText("昨天 "+DateUtils.StringPattern(item.getCreatedDate(),"yyyy" +
+                        "/MM/dd HH:mm:ss","HH:mm"));
             }else if(t==1){
-                holder.tvtime.setText(DateUtils.StringPattern(item.getCreatedDate(),"yyyy/MM/dd HH:mm:ss","MM/dd HH:mm"));
+                holder.tvtime.setText(DateUtils.StringPattern(item.getCreatedDate(),"yyy" +
+                        "y/MM/dd HH:mm:ss","MM/dd HH:mm"));
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -96,7 +99,8 @@ public class HomeNewsAdapter extends BaseAdapter {
         String url=Constants.EhomeURL + item.getPic().replace("~", "").replace("\\", "/");
         Glide.with(mContext)
                 .load(Constants.EhomeURL + item.getPic().replace("~", "").replace("\\", "/"))
-                .centerCrop().error(R.drawable.pic_defaultads).transform(new GlideRoundTransform(mContext, 5))
+                .centerCrop().error(R.drawable.pic_defaultads).transform(
+                        new GlideRoundTransform(mContext, 5))
                 .into(holder.iv_head);
 //        mImageLoader.displayImage(Constants.EhomeURL + item.getPic(), holder.iv_head);
         return convertView;

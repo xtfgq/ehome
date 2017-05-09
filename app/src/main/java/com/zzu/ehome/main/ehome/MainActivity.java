@@ -232,6 +232,7 @@ public class MainActivity extends BaseSimpleActivity implements View.OnClickList
             pushIntent(this.getIntent().getStringExtra("MessageCode").toString(),this.getIntent().getStringExtra("MessageContent").toString());
 
         }
+
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("action.DateOrFile");
         intentFilter.addAction("PrivateDoctor");

@@ -46,7 +46,7 @@ public class OkHttpClientManager {
     private OkHttpClient mClient;//OkHttpClient实例
     private OkHttpClientManager() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.readTimeout(READ_TIMEOUT, TimeUnit.MICROSECONDS);
+        builder.readTimeout(READ_TIMEOUT, TimeUnit.SECONDS);
         builder.writeTimeout(WRITE_TIMEOUT,TimeUnit.SECONDS);
         builder.connectTimeout(CONNECT_TIMEOUT,TimeUnit.SECONDS);
         builder.retryOnConnectionFailure(true);

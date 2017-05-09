@@ -202,7 +202,6 @@ public class DateUtils {
     }
 
     public static String getCurrMonth() {
-
         Calendar now = Calendar.getInstance();
         int year = now.get(Calendar.YEAR);
         int month = now.get(Calendar.MONTH) + 1;
@@ -304,7 +303,6 @@ public class DateUtils {
         Calendar now = Calendar.getInstance();
         now.setTime(d);
         now.add(Calendar.DATE, day);
-
         return now.getTime();
     }
 

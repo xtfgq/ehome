@@ -92,12 +92,12 @@ public class AdviceActivity extends BaseActivity {
         String msg = editText.getText().toString().toString();
         if (TextUtils.isEmpty(msg)) {
             show("请输入内容！");
-
+            btn_ok.setEnabled(true);
             return;
         }
         if (msg.contains("<") || msg.contains(">") || msg.contains("&")) {
             show("不允许输入非法字符！");
-
+            btn_ok.setEnabled(true);
             return;
         }
         requestMaker.FeedBackInsert(userid, msg, new JsonAsyncTask_Info(AdviceActivity.this, true, new JsonAsyncTaskOnComplete() {

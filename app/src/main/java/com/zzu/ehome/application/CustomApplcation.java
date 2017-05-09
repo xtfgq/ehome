@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.tencent.TIMManager;
 import com.zzu.ehome.DemoContext;
 import com.zzu.ehome.reciver.NetReceiver;
 
@@ -59,6 +60,7 @@ public class CustomApplcation extends MultiDexApplication {
         IntentFilter mFilter = new IntentFilter();
         mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(mReceiver, mFilter);
+        TIMManager.getInstance().init(getApplicationContext());
         initGo();
 
     }

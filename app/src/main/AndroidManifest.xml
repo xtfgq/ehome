@@ -48,6 +48,13 @@
     <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" />
     <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CAPTURE_AUDIO_OUTPUT" />
+    <uses-permission android:name="android.permission.CAPTURE_VIDEO_OUTPUT"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-feature android:name="android.hardware.Camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <permission
         android:name="getui.permission.GetuiService.com.zzu.ehome"
         android:protectionLevel="normal" />
@@ -170,6 +177,7 @@
             android:theme="@style/mydialog" />
         <activity android:name=".activity.HealthInstructionActivity" />
         <activity android:name=".activity.CurveSortActivity" />
+        <activity android:name=".activity.PlatformHospitalActivity" />
         <!-- 个推SDK配置开始 -->
         <!-- 配置的第三方参数属性 -->
         <meta-data
@@ -430,6 +438,12 @@
         <activity android:name=".activity.ImagePreviewActivity"></activity>
         <activity android:name=".activity.WebConfigAct"></activity>
         <activity android:name=".activity.AddYuyueAct"></activity>
+       <!-- <activity
+            android:name=".activity.LiveActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+
+            android:windowSoftInputMode="adjustResize"
+            />-->
         <activity
             android:name=".activity.ConversationActivity"
             android:screenOrientation="portrait"
@@ -527,7 +541,47 @@
             android:name=".activity.SelectRelationActivity"
             android:theme="@style/mydialog" />
         <activity android:name=".activity.ECGPDFStaticActivity" />
-
+        <activity android:name=".activity.MessageLiveActivity" />
+        <activity android:name=".activity.LiveActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"/>
+        <!--TLS Qal 一些服务 -->
+        <!--  消息收发service -->
+        <service
+            android:name="com.tencent.qalsdk.service.QalService"
+            android:exported="false"
+            android:process=":QALSERVICE" >
+        </service>
+        <!--  消息收发辅助service -->
+        <service
+            android:name="com.tencent.qalsdk.service.QalAssistService"
+            android:exported="false"
+            android:process=":QALSERVICE" >
+        </service>
+        <!--  离线消息广播接收器 -->
+        <receiver
+            android:name="com.tencent.qalsdk.QALBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.tencent.qalsdk.broadcast.qal" />
+            </intent-filter>
+        </receiver>
+        <!--  系统消息广播接收器 -->
+        <receiver
+            android:name="com.tencent.qalsdk.core.NetConnInfoCenter"  android:process=":QALSERVICE">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.TIME_SET" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+        </receiver>
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -572,7 +626,7 @@
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
- <receiver
+        <receiver
             android:name="com.zzu.ehome.DemoNotificationReceiver"
             android:exported="true">
             <intent-filter>
@@ -586,14 +640,14 @@
         <!-- end -->
 
         <!-- imlib config begin -->
-     <!-- &lt;!&ndash; 正式服务&ndash;&gt;-->
-<meta-data
-            android:name="RONG_CLOUD_APP_KEY"
-            android:value="x18ywvqf8xjpc" />
-<!--   &lt;!&ndash;&lt;!&ndash;  测试服务&ndash;&gt;&ndash;&gt;-->
-<!--<meta-data
+        <!-- &lt;!&ndash; zhenshizhenshi&ndash;&gt;-->
+        <!--<meta-data
                     android:name="RONG_CLOUD_APP_KEY"
-                    android:value="e0x9wycfxehzq" />-->
+                    android:value="x18ywvqf8xjpc" />&ndash;&gt;-->
+        <!--   &lt;!&ndash;&lt;!&ndash;  测试服务&ndash;&gt;&ndash;&gt;-->
+        <meta-data
+            android:name="RONG_CLOUD_APP_KEY"
+            android:value="e0x9wycfxehzq" />
 
         <service
             android:name="io.rong.imlib.ipc.RongService"
@@ -607,7 +661,18 @@
         <receiver
             android:name="io.rong.imlib.HeartbeatReceiver"
             android:process=":ipc" />
+        <meta-data
+            android:name="BUGLY_APPID"
+            android:value="1251918063" />
+        <!-- 配置bugly组件的APP渠道号 -->
+        <meta-data
+            android:name="BUGLY_APP_CHANNEL"
+            android:value="RDM版本" />
 
+        <!-- 配置bugly组件的调试模式（true或者false）-->
+        <meta-data
+            android:name="BUGLY_ENABLE_DEBUG"
+            android:value="true" />
 
     </application>
 

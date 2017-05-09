@@ -3,28 +3,40 @@ package com.zzu.ehome.application;
 import android.os.Environment;
 
 
+import static com.zzu.ehome.application.MMloveConstants.NewsDetailInquiry;
+import static java.lang.annotation.ElementType.PACKAGE;
+
+
 /**
  * Created by Dell on 2016/3/14.
  */
 public class Constants {
     //测试服务器地址
-//    public static String EhomeURL = "http://ehome.staging.topmd.cn:81";
-//    public static final String ICON = "http://p2d.staging.topmd.cn/Images/headImg/";
-//    public static final String URL002Topmd = "http://staging.topmd.cn/android/TopMD.asmx";
-//    public static final String JE_BASE_URL = "http://staging.topmd.cn/";
-//    public static final String JE_BASE_URL3 = "http://staging.topmd.cn";
-//    public static final String Download = "http://file.staging.topmd.cn/upload/";
-//    public static String PlatformURL = "http://hd.staging.topmd.cn:81";
-
+    public static String EhomeURL = "http://ehome.staging.topmd.cn:81";
+    public static final String ICON = "http://p2d.staging.topmd.cn/Images/headImg/";
+    public static final String URL002Topmd = "http://staging.topmd.cn/android/TopMD.asmx";
+    public static final String JE_BASE_URL = "http://staging.topmd.cn/";
+    public static final String JE_BASE_URL3 = "http://staging.topmd.cn";
+    public static final String Download = "http://file.staging.topmd.cn/upload/";
+    public static String PlatformURL = "http://hd.staging.topmd.cn:81";
     //    正式服务器
+    //    public static String EhomeURL = "https://ehome.topmd.cn";
+//    public static final String ICON = "https://p2d.topmd.cn/Images/headImg/";
+//    public static final String URL002Topmd = "https://www.topmd.cn/android/TopMD.asmx";
+//    public static final String JE_BASE_URL = "https://www.topmd.cn/";
+//    public static final String JE_BASE_URL3 = "https://www.topmd.cn";
+//    public static final String Download = "https://file.topmd.cn/upload/";
+//    public static String PlatformURL = "https://healthdata.topmd.cn";
 
-    public static String EhomeURL = "https://ehome.topmd.cn";
-    public static final String ICON = "https://p2d.topmd.cn/Images/headImg/";
-    public static final String URL002Topmd = "https://www.topmd.cn/android/TopMD.asmx";
-    public static final String JE_BASE_URL = "https://www.topmd.cn/";
-    public static final String JE_BASE_URL3 = "https://www.topmd.cn";
-    public static final String Download = "https://file.topmd.cn/upload/";
-    public static String PlatformURL = "https://healthdata.topmd.cn";
+    //视频直播测试=======
+    public static String LiveURL = "http://lucifer5501.eicp.net/home/";
+    public static final String AppCheckkey = "7407d5829e270dd92661ffcf06169bcf";
+    public static final String Appkey = "1251175924";
+    public static final int sdkAppId = 1400028799;
+
+    public static final String UserSig = "eJx10F1PgzAUBuB7fkXTa*OolJV5BwQTpmNuOHXcNLUfo0NYw8q*jP-duC2RG8-tefK*J*fLAQDAl6f8lnG*6RpL7dFICO4BRGhIELz5A8ZoQZmlXisuALuue0eI11fyYHQrKVNWthflk2Hg-k5PaSEbq5W*GiZq3fRTtqKi577-i7Z6dV5OkmWczuJmt87qOfe7h7bC*yDJ520xUssqnD5qdVpX04Cwozfe7XmYluHz5*CtKrtJkS1MvEKlL*WAjxNZRCaK3jdpiD9es9lB5Yv*1VbX19fgEfI9jBGGzrfzA2laWOY_";
+    public static final String groupId = "@TGS#aZONJBYES";
+    //end 视频直播测试
 
     //相机常量
     public static final String ACCOUNT_DIR = Environment.getExternalStorageDirectory().getPath();
@@ -197,5 +209,31 @@ public class Constants {
 
     public static final String BiochemistryInquiryForLine = "BiochemistryInquiryForLine";
     public static final String BloodRoutineInquiryForLine = "BloodRoutineInquiryForLine";
+    public static final String NewsDetailInquiry = "NewsDetailInquiry";
+
+    public static final String GetUserSig = "GetUserSig";
+    public static final String ZDWFYRecordInfoInquiry = "ZDWFYRecordInfoInquiry";
+
+    public static final String imageUrl = "shotapi";
+    public static final int TEXT_TYPE = 0;
+
+
+    public static final int IS_ALREADY_MEMBER = 10013;
+
+    public static final int IS_ALREADY_IN_ROOM = 10025;
+    public static final String CMD_KEY = "userAction";
+    public static final String CMD_PARAM = "actionParam";
+    public static final int AVIMCMD_TEXT = -1;         // 普通的聊天消息
+    public static final int AVIMCMD_NONE = AVIMCMD_TEXT + 1;               // 无事件
+    // 以下事件为TCAdapter内部处理的通用事件
+    public static final int AVIMCMD_ENTERLIVE = AVIMCMD_NONE + 1;          // 用户加入直播, Group消息  1
+    public static final int AVIMCMD_EXITLIVE = AVIMCMD_ENTERLIVE + 1;         // 用户退出直播, Group消息  2
+    public static final int AVIMCMD_PRAISE = AVIMCMD_EXITLIVE + 1;           // 点赞消息, Demo中使用Group消息  3
+    public static final int AVIMCMD_HOST_LEAVE = AVIMCMD_PRAISE + 1;         // 主播离开, Group消息 ： 4
+    public static final int AVIMCMD_HOST_BACK = AVIMCMD_HOST_LEAVE + 1;         // 主播回来, Demo中使用Group消息 ： 5cons
+    private static final String PACKAGE = "com.zzu.ehome.main.ehome";
+    public static final String APPLY_CHATROOM = "申请加入";
+    public static final String ACTION_CLOSE_CONTEXT_COMPLETE = PACKAGE
+            + ".ACTION_CLOSE_CONTEXT_COMPLETE";
 
 }

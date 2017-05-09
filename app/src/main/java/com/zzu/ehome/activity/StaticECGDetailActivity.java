@@ -26,9 +26,6 @@ public class StaticECGDetailActivity extends BaseActivity {
         super.onCreate(arg0);
         setContentView(R.layout.layout_static_detail);
         initViews();
-
-//        holder.name.setText(DateUtils.StringPattern(item.getCollectTime(),"yyyy/MM/dd HH:mm:ss","yyyy年M月dd日")+"心电报告");
-
         mIntent = this.getIntent();
         imurl = mIntent.getStringExtra("imurl");
         Diagnosis = mIntent.getStringExtra("Diagnosis");
@@ -62,7 +59,6 @@ public class StaticECGDetailActivity extends BaseActivity {
         icon_pdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent i = new Intent(StaticECGDetailActivity.this, ImageECGDetail.class);
                 i.putExtra("imurl", imurl);
                 startActivity(i);

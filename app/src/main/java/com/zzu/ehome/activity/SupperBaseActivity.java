@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -127,11 +129,8 @@ public abstract class SupperBaseActivity extends FragmentActivity {
     protected void onCreate(Bundle arg0) {
         // TODO Auto-generated method stub
         super.onCreate(arg0);
-        //设置禁止横屏
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         requestMaker = RequestMaker.getInstance();
-//        setTranslucentStatus();
         CustomApplcation.getInstance().addActivity(this);
         activity = this;
         //获取手机屏幕的高度和宽度
@@ -409,12 +408,10 @@ public abstract class SupperBaseActivity extends FragmentActivity {
         stopProgressDialog();
         try {
             unregisterReceiver(mBroadcastReceiver);
-
             mBroadcastReceiver = null;
-
-
         } catch (Exception e) {
         }
+        mHandler.removeCallbacksAndMessages(null);
 
     }
 
@@ -580,12 +577,30 @@ public abstract class SupperBaseActivity extends FragmentActivity {
     public  void show(String message) {
 
         DialogTips dialog = new DialogTips(SupperBaseActivity.this, message, "确定");
-
         dialog.show();
         dialog = null;
 
-
+    }
+    @Override
+    public Resources getResources() {
+        Resources res = super.getResources();
+        Configuration config=new Configuration();
+        config.setToDefaults();
+        res.updateConfiguration(config,res.getDisplayMetrics());
+        return res;
+    }
+    /**
+     * 隐藏ActionBar
+     */
+    public void hideActionBar(){
+        mHeadView.setVisibility(View.GONE);
     }
 
+    /**
+     * 显示ActionBar
+     */
+    public void showActionBar(){
+        mHeadView.setVisibility(View.VISIBLE);
+    }
 
 }

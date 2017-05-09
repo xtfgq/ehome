@@ -56,7 +56,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
     private static int pagesize=10;
     private int pageindex=1;
     private static final double EARTH_RADIUS = 6378137;
-    private BDLocation mLocation= NearPharmacyActivity.mLocation;
+
     private List<PharmacyBean> list=new ArrayList<>();
     private MyAdapter adapter=null;
     private boolean isReflash=false;
@@ -87,7 +87,9 @@ public class CooperationPharmacyFragment extends BaseFragment {
         mView=view;
         initViews();
         initEvent();
-        initDatas();
+        if(NearPharmacyActivity.getLocation()!=null) {
+            initDatas();
+        }
     }
 
     public void  initViews(){
@@ -121,15 +123,13 @@ public class CooperationPharmacyFragment extends BaseFragment {
                                 if(pageindex==1) {
                                     isReflash = true;
                                     isLoading = false;
+                                    if(NearPharmacyActivity.getLocation()!=null)
                                     initDatas();
                                 }
 
                             }
 
-
                         }
-
-
                     }
                 });
         //subscription交给compositeSubscription进行管理，防止内存溢出
@@ -145,6 +145,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
                 pageindex=1;
                 isReflash=true;
                 isLoading=false;
+                if(NearPharmacyActivity.getLocation()!=null)
                 initDatas();
             }
 
@@ -158,6 +159,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
                 pageindex++;
                 isReflash=false;
                 isLoading=true;
+                if(NearPharmacyActivity.getLocation()!=null)
                 initDatas();
             }
         });
@@ -247,7 +249,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
 
             double mLongitude = Double.valueOf(p.getLongitude());
             double mLatitude = Double.valueOf(p.getLatitude());
-            int distance = getDistance(mLocation.getLongitude(), mLocation.getLatitude(), mLongitude, mLatitude);
+            long distance = getDistance(NearPharmacyActivity.getLocation().getLongitude(), NearPharmacyActivity.getLocation().getLatitude(), mLongitude, mLatitude);
             holder.tv_distance.setText(distance + "m");
             return convertView;
         }
@@ -257,14 +259,14 @@ public class CooperationPharmacyFragment extends BaseFragment {
         return d * Math.PI / 180.0;
     }
 
-    public static int getDistance(double lon1, double lat1, double lon2, double lat2) {
+    public static long getDistance(double lon1, double lat1, double lon2, double lat2) {
         double radLat1 = rad(lat1);
         double radLat2 = rad(lat2);
         double a = radLat1 - radLat2;
         double b = rad(lon1) - rad(lon2);
         double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
         s = s * EARTH_RADIUS;
-        return (int) Math.round(s * 10000) / 10000;
+        return (long) Math.round(s * 10000) / 10000;
     }
 
     public void initDatas(){
@@ -272,7 +274,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
             activity.showNetWorkErrorDialog();
             return;
         }
-        requestMaker.PharmacyInquiry(pagesize+"",pageindex+"", new JsonAsyncTask_Info(
+        requestMaker.PharmacyInquiry(NearPharmacyActivity.getLocation().getCity(),pagesize+"",pageindex+"", new JsonAsyncTask_Info(
                 getActivity(), true, new JsonAsyncTaskOnComplete() {
             public void processJsonObject(Object result) {
                 JSONObject mySO = (JSONObject) result;
@@ -281,12 +283,10 @@ public class CooperationPharmacyFragment extends BaseFragment {
                     JSONArray array = mySO.getJSONArray("PharmacyInquiry");
                     if (array.getJSONObject(0).has("MessageCode")) {
                         if(pageindex==1) {
-
                             layout_no_msg.setVisibility(View.VISIBLE);
                         }
 
                     } else {
-
                         for(int i=0;i<array.length();i++){
                             JSONObject json=array.getJSONObject(i);
                             PharmacyBean pb=new PharmacyBean();
@@ -309,7 +309,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
                             mList.add(pb);
                         }
                         if(layout_no_msg!=null) {
-                            if (isReflash) {
+                            if (pageindex==1) {
                                 list.clear();
                             }
                             if (mList.size() > 0) {

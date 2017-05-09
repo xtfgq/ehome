@@ -197,7 +197,7 @@ public class PlatformTestActivity extends BaseActivity{
                             mListView.setVisibility(View.VISIBLE);
                         }
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }finally {
                     if(isRefresh){

@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.DemoContext;
 import com.zzu.ehome.R;
+import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.StepBean;
 import com.zzu.ehome.db.DBRongHelper;
@@ -29,6 +30,7 @@ import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.HeadView;
+import com.zzu.ehome.view.crop.util.Log;
 
 import org.json.JSONObject;
 
@@ -42,6 +44,13 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import tencent.tls.platform.TLSAccountHelper;
+import tencent.tls.platform.TLSErrInfo;
+import tencent.tls.platform.TLSPwdRegListener;
+import tencent.tls.platform.TLSStrAccRegListener;
+import tencent.tls.platform.TLSUserInfo;
+
+import static android.R.attr.accountType;
 
 /**
  * Created by zzu on 2016/4/15.
@@ -85,6 +94,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         if(!CommonUtils.isNotificationEnabled(SettingActivity.this)){
             showTitleDialog("请打开通知中心");
         }
+
+
     }
 
     public void initViews() {
@@ -100,6 +111,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             }
         });
     }
+
 
     @Override
     public void onResume() {
@@ -345,5 +357,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 //            }
 //        },Conversation.ConversationType.PRIVATE);
     }
+
 
 }

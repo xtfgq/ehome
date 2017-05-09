@@ -310,14 +310,18 @@ public class ScaleMarkView extends SurfaceView implements SurfaceHolder.Callback
         canvas.drawText(text, centerX - offsetX - mTextRect.centerX(), mBorderRectF.height() * 0.8f + 4, mScaleMarkPaint);
     }
 
-    private void drawOneMark(Canvas canvas, boolean isBigMark, float offsetX) {
+    private void drawOneMark(Canvas canvas, boolean isBigMark, float offsetX,boolean isHalfMark) {
         float centerX = mBorderRectF.centerX();
 
         float scaleMarkHeight;
         if (isBigMark) {
             scaleMarkHeight = mScaleMarkHeight;
         } else {
-            scaleMarkHeight = mScaleMarkHeight * 0.4f;
+            if(isHalfMark){
+                scaleMarkHeight = mScaleMarkHeight * 0.7f;
+            }else {
+                scaleMarkHeight = mScaleMarkHeight * 0.4f;
+            }
         }
 
         if (offsetX != 0) {
@@ -350,12 +354,13 @@ public class ScaleMarkView extends SurfaceView implements SurfaceHolder.Callback
         // 与中心大刻度相隔的刻度数
         int offsetMark = 0;
         boolean isBigMark = true;
+        boolean isHalfMark=true;
         // 画一个屏幕的刻度
         while (offsetX < mBorderRectF.centerX() + Math.abs(mPerMM2PX * scalePoint)) {
             isBigMark = offsetMark % mPerScaleMark == 0;
-            drawOneMark(canvas, isBigMark, offsetX);
+            isHalfMark=offsetMark % (mPerScaleMark/2 )== 0;
+            drawOneMark(canvas, isBigMark, offsetX,isHalfMark);
             drawMarkName(canvas, isBigMark, offsetX, centerMarkValue, offsetMark / mPerScaleMark);
-
             offsetX += mPerMM2PX;
             offsetMark++;
         }

@@ -79,7 +79,7 @@
 
                 <RelativeLayout
                     android:id="@+id/rl_status"
-                    android:layout_width="56dp"
+                    android:layout_width="62dp"
                     android:layout_height="24dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="15dp"
@@ -90,7 +90,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:text="高热"
+                        android:text="中等度热"
                         android:textColor="@color/white" />
                 </RelativeLayout>
 

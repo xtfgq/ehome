@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.activity.CampaignActivity;
 import com.zzu.ehome.activity.ConversationListActivity;
 import com.zzu.ehome.activity.LoginActivity;
+import com.zzu.ehome.activity.MessageLiveActivity;
 import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.adapter.MessageAdapter;
 import com.zzu.ehome.application.CustomApplcation;
@@ -28,6 +30,7 @@ import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.DateUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
+import com.zzu.ehome.utils.MD5Utils;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.view.RefreshLayout;
@@ -35,8 +38,13 @@ import com.zzu.ehome.view.RefreshLayout;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 
 /**
@@ -166,12 +174,18 @@ public class MessageFragment extends BaseFragment {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
-                if (position == 0) {
-                    startActivity(new Intent(getActivity(), CampaignActivity.class));
-                } else {
-
-                    startActivity(new Intent(getActivity(), ConversationListActivity.class));
+                switch (position){
+                    case 0:
+                        startActivity(new Intent(getActivity(), CampaignActivity.class));
+                        break;
+                    case 1:
+                        startActivity(new Intent(getActivity(), ConversationListActivity.class));
+                        break;
+                    case 2:
+                        startActivity(new Intent(getActivity(), MessageLiveActivity.class));
+                        break;
                 }
+
 
             }
         });
@@ -227,6 +241,7 @@ public class MessageFragment extends BaseFragment {
 
                             bean3.setTips("在线问诊记录");
                             mList.add(bean3);
+                            addList(mList);
                             messageAdapter = null;
                             listView.setAdapter(null);
                             messageAdapter = new MessageAdapter(getActivity(), mList);
@@ -247,6 +262,7 @@ public class MessageFragment extends BaseFragment {
                             }
                             bean3.setTips("在线问诊记录");
                             mList.add(bean3);
+                            addList(mList);
                             messageAdapter = null;
                             listView.setAdapter(null);
                             messageAdapter = new MessageAdapter(getActivity(), mList);
@@ -348,10 +364,19 @@ public class MessageFragment extends BaseFragment {
             bean3.setNum(0);
             bean3.setTips("在线问诊记录");
             mList.add(bean3);
+            addList(mList);
             messageAdapter = null;
             listView.setAdapter(null);
             messageAdapter = new MessageAdapter(getActivity(), mList);
             listView.setAdapter(messageAdapter);
         }
     }
+    public void addList(List<MessageBean> mList){
+        MessageBean bean = new MessageBean();
+        bean.setContent("视频教学");
+        bean.setNum(0);
+        bean.setTips("视频教学");
+        mList.add(bean);
+    }
+
 }

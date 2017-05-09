@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.zzu.ehome.R.id.head;
+import static com.zzu.ehome.application.MMloveConstants.NewsDetailInquiry;
+
 /**
  * Created by xtfgq on 2016/4/5.
  * 统一请求地址
@@ -102,11 +105,10 @@ public class RequestMaker {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         String str = "<Request><UserMobile>%s</UserMobile><Password>%s</Password><ClientID>%s</ClientID><FromTo>%s</FromTo><PhoneType>%s</PhoneType></Request>";
         str = String.format(str, new Object[]
-                {UserMobile, password, ClientID, "5", "0"});
+                {UserMobile, password, ClientID, "10", "0"});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.UserRegister, Constants.UserRegister,
                 SOAP_URL, paramMap);
-
     }
 
     public void sendCode(String mobile, JsonAsyncTask_Info task) {
@@ -1019,16 +1021,16 @@ public class RequestMaker {
                 SOAP_URL, paramMap);
     }
 
-    public void PharmacyInquiry(String PageSize, String PageIndex, JsonAsyncTask_Info task) {
+    public void PharmacyInquiry(String city,String PageSize, String PageIndex, JsonAsyncTask_Info
+            task) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
-        String str = "<Request><PageSize>%s</PageSize><PageIndex>%s</PageIndex></Request>";
+        String str = "<Request><City>%s</City><PageSize>%s</PageSize><PageIndex>%s</PageIndex>" +
+                "</Request>";
         str = String.format(str, new Object[]
-                {PageSize, PageIndex});
+                {city,PageSize, PageIndex});
         paramMap.put("str", str);
-
-        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.PharmacyInquiry, Constants.PharmacyInquiry,
-                SOAP_URL, paramMap);
-
+        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.PharmacyInquiry,
+                Constants.PharmacyInquiry, SOAP_URL, paramMap);
     }
 
     public void PharmacyDetailInquiry(String ID, JsonAsyncTask_Info task) {
@@ -1470,6 +1472,33 @@ public class RequestMaker {
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.BiochemistryInquiryForLine, Constants.BiochemistryInquiryForLine,
                 SOAP_URL, paramMap);
+    }
+    public void getUserSign(String userid, JsonAsyncTask_Info task) {
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        String str = "<Request><UserID>%s</UserID></Request>";
+        str = String.format(str, new Object[]
+                {userid});
+        paramMap.put("str", str);
+        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.GetUserSig, Constants.GetUserSig,
+                SOAP_URL, paramMap);
+    }
+    public void  NewsDetailInquiry(String id, JsonAsyncTask_Info task) {
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        String str = "<Request><ID>%s</ID></Request>";
+        str = String.format(str, new Object[]
+                {id});
+        paramMap.put("str", str);
+        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.NewsDetailInquiry, Constants.NewsDetailInquiry,
+                SOAP_URL, paramMap);
+    }
+    public void ZDWFYRecordInfoInquiry(String cardno, String name,String hosname, JsonAsyncTask_Info task) {
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        String str = "<Request><UserNo>%s</UserNo><Name>%s</Name><HosName>%s</HosName></Request>";
+        str = String.format(str, new Object[]
+                {cardno, name,hosname});
+        paramMap.put("str", str);
+        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.ZDWFYRecordInfoInquiry,
+                Constants.ZDWFYRecordInfoInquiry, SOAP_URL, paramMap);
     }
 
 

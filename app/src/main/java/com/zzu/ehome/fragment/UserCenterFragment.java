@@ -205,7 +205,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                             sbf.append("女");
                         }
                     }
-                    if (!TextUtils.isEmpty(age)) {
+
                         String info=user.getUserno();
                         try {
                             if(info.length()==18){
@@ -220,7 +220,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                         }
 
 
-                    }
+
                     if (!TextUtils.isEmpty(height)&& !"0".equals(height)) {
                         if(TextUtils.isEmpty(age)&&TextUtils.isEmpty(sex)){
                             sbf.append( height + "cm");

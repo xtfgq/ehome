@@ -186,8 +186,8 @@ public class TuneWheel extends View {
             xPosition = (width / 2 - mMove) + i * mLineDivider * mDensity;
             if (xPosition + getPaddingRight() < mWidth) {
                 if ((mValue + i) % mModType == 0) {
-//                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * ITEM_MAX_HEIGHT, linePaint);
-                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, (int) (mDensity * canvas.getHeight() * 0.16), linePaint);
+
+                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, (int) (mDensity * canvas.getHeight() * 0.18), linePaint);
                     if (mValue + i <= mMaxValue) {
                         switch (mModType) {
                             case MOD_TYPE_HALF:
@@ -202,17 +202,22 @@ public class TuneWheel extends View {
                                 break;
                         }
                     }
-                } else {
+                }
+                else {
+                    if((mValue + i) % 5==0){
+                        canvas.drawLine(xPosition, getPaddingTop(), xPosition, (int) (mDensity * canvas.getHeight() * 0.15), linePaint);
+                    }else {
 
-                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * ITEM_MIN_HEIGHT, linePaint);
+                        canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * ITEM_MIN_HEIGHT, linePaint);
+                    }
                 }
             }
 
             xPosition = (width / 2 - mMove) - i * mLineDivider * mDensity;
             if (xPosition > getPaddingLeft()) {
                 if ((mValue - i) % mModType == 0) {
-//                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * ITEM_MAX_HEIGHT, linePaint);
-                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, (int) (mDensity * canvas.getHeight() * 0.16), linePaint);
+
+                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, (int) (mDensity * canvas.getHeight() * 0.18), linePaint);
                     if (mValue - i >= 0) {
                         switch (mModType) {
                             case MOD_TYPE_HALF:
@@ -226,7 +231,11 @@ public class TuneWheel extends View {
                         }
                     }
                 } else {
-                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * ITEM_MIN_HEIGHT, linePaint);
+                    if((mValue - i) % 5==0){
+                        canvas.drawLine(xPosition, getPaddingTop(), xPosition, (int) (mDensity * canvas.getHeight() * 0.15), linePaint);
+                    }else {
+                        canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * ITEM_MIN_HEIGHT, linePaint);
+                    }
                 }
             }
 

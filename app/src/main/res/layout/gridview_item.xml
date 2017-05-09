@@ -25,7 +25,8 @@
 
 
 
-            <FrameLayout
+          <!--可能没有
+          <FrameLayout
                 android:layout_width="46dp"
                 android:layout_height="46dp"
                 android:background="@drawable/icon_label"
@@ -46,7 +47,7 @@
                     android:layout_gravity="center" />
 
 
-            </FrameLayout>
+            </FrameLayout>-->
 
         </RelativeLayout>
 

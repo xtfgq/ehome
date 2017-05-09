@@ -45,4 +45,12 @@ public class ScreenUtils {
     public static float getDensity(Context context) {
         return context.getResources().getDisplayMetrics().density;
     }
+    /**
+     * sp转px的方法。
+     */
+    public static int sp2px(Context context,float spValue) {
+        final float fontScale =context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
+    }
+
 }

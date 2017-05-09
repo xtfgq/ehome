@@ -29,6 +29,7 @@ import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.baidu.mapapi.search.poi.PoiSortType;
 import com.zzu.ehome.R;
+import com.zzu.ehome.activity.CooperationPharmacyActivity;
 import com.zzu.ehome.activity.NearPharmacyActivity;
 import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.reciver.EventType;
@@ -62,7 +63,7 @@ public class NearPharmacyFragment extends BaseFragment {
     private PoiNearbySearchOption nearbySearchOption = new PoiNearbySearchOption();
     private boolean isFirst = true;
 
-    private List<PoiInfo> list=new ArrayList<>();
+    private List<PoiInfo> list=new ArrayList<PoiInfo>();
     private static final double EARTH_RADIUS = 6378137;
     private PullToRefreshLayout pulltorefreshlayout;
     private int pageNum=0;
@@ -104,7 +105,6 @@ public class NearPharmacyFragment extends BaseFragment {
         mPoiSearch.setOnGetPoiSearchResultListener(poiSearchListener);
         layout_no_msg=(LinearLayout)mView.findViewById(R.id.layout_no_msg);
         pulltorefreshlayout = (PullToRefreshLayout) mView.findViewById(R.id.refresh_view);
-
         tvnodate=(TextView)mView.findViewById(R.id.tvnodate);
         tvnodate.setText("暂无数据");
 
@@ -128,15 +128,10 @@ public class NearPharmacyFragment extends BaseFragment {
                             EventType type=(EventType)event;
                             if("location".equals(type.getType())){
                                 if (isFirst) {
-
                                     searchNearbyProcess(NearPharmacyActivity.getLocation());
                                 }
                             }
-
-
                         }
-
-
                     }
                 });
         //subscription交给compositeSubscription进行管理，防止内存溢出
@@ -183,7 +178,9 @@ public class NearPharmacyFragment extends BaseFragment {
                 final double mLatitude = p.location.latitude;
                 final double mLongitude = p.location.longitude;
                 final String name = p.name;
-                DialogTips dialog = new DialogTips(getActivity(), name, "到这里去");
+                DialogTips dialog = new DialogTips(getActivity(), "", name,
+                        "到这里去", true, true);
+
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int userId) {
@@ -195,6 +192,7 @@ public class NearPharmacyFragment extends BaseFragment {
 
                 dialog.show();
                 dialog = null;
+
 
             }
         });
@@ -302,7 +300,6 @@ public class NearPharmacyFragment extends BaseFragment {
             if (poiResult == null || poiResult.error == SearchResult.ERRORNO.RESULT_NOT_FOUND) {
                 if(isReflash){
                     isReflash=false;
-
                     pulltorefreshlayout.refreshFinish(PullToRefreshLayout.SUCCEED);
                 }else if(isLoading){
                     isLoading=false;

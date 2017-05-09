@@ -5,12 +5,10 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.bumptech.glide.Glide;
 import com.zzu.ehome.R;
 import com.zzu.ehome.view.HeadView;
 import com.zzu.ehome.view.PhotoViewPager;
-
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -56,7 +54,7 @@ public class ImageECGDetail extends BaseActivity implements PhotoViewAttacher.On
 
     @Override
     public void onViewTap(View view, float x, float y) {
-//        finish();
+
     }
 
     class PhotoViewAdapter extends PagerAdapter {
@@ -68,7 +66,7 @@ public class ImageECGDetail extends BaseActivity implements PhotoViewAttacher.On
             mImageView = (PhotoView) view.findViewById(R.id.image);
             mAttacher = new PhotoViewAttacher(mImageView);
             mAttacher.setOnViewTapListener(ImageECGDetail.this);
-            ImageLoader.getInstance().displayImage(imgstr, mImageView);
+            Glide.with(ImageECGDetail.this).load(imgstr).into(mImageView);
             container.addView(view);
             return view;
         }

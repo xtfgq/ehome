@@ -95,7 +95,6 @@ public class WebPlatmActivity extends BaseActivity implements View.OnClickListen
         layout_zongjian=(RelativeLayout)findViewById(R.id.layout_zongjian);
         layout_tijian=(RelativeLayout)findViewById(R.id.layout_tijian);
         fragments=new Fragment[2];
-
         fragments[0]= WebPlatmFramet.getInstance(Constants.EhomeURL+"/WebServices/HealthTest.aspx?"+"Name="+name+"&CHKCODE="+CHKCODE+"&UserNo="+UserNo+"&HosName="+hosname);
         fragments[1]= WebPlatmFramet.getInstance(Constants.EhomeURL+"/WebServices/HealthTestDetail.aspx?"+"CHKCODE="+CHKCODE+"&Name="+name+"&UserNo="+UserNo+"&HosName="+hosname);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,fragments[0]).commit();
@@ -179,6 +178,7 @@ public class WebPlatmActivity extends BaseActivity implements View.OnClickListen
                         if(flag==0) {
                             RxBus.getInstance().send(new EventType("smart"));
                             CustomApplcation.getInstance().finishSingleActivityByClass(SmartSearchActivity.class);
+                            CustomApplcation.getInstance().finishSingleActivityByClass(PlatformHospitalActivity.class);
                             finishActivity();
                             ToastUtils.showMessage(WebPlatmActivity.this,"保存成功");
                         }else{

@@ -1,6 +1,11 @@
 package com.zzu.ehome.activity;
 
+import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -20,6 +25,7 @@ import com.zzu.ehome.R;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.PharmacyBean;
 import com.zzu.ehome.fragment.CooperationPharmacyFragment;
+import com.zzu.ehome.main.ehome.MainActivity;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -48,6 +54,8 @@ public class CooperationPharmacyActivity extends BaseActivity {
     private TextView tv_mame, tv_address, tv_yb, tv_zk;
     private List<String> mList=new ArrayList<>();
     private MyAdapter adapter=null;
+    private RelativeLayout rllocation,rl_hui,rl_youhui;
+    private View viewline;
 
 
     @Override
@@ -78,7 +86,10 @@ public class CooperationPharmacyActivity extends BaseActivity {
         tv_address = (TextView) findViewById(R.id.tv_address);
         tv_yb = (TextView) findViewById(R.id.tv_yb);
         tv_zk = (TextView) findViewById(R.id.tv_zk);
-
+        rllocation=(RelativeLayout)findViewById(R.id.rllocation);
+        rl_hui=(RelativeLayout)findViewById(R.id.rl_hui);
+        rl_youhui=(RelativeLayout)findViewById(R.id.rl_youhui);
+        viewline=(View)findViewById(R.id.line);
         setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "合作药店", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
@@ -111,28 +122,67 @@ public class CooperationPharmacyActivity extends BaseActivity {
     }
 
 
-    public void doTel(String tel) {
+    public void doTel(final String tel) {
         DialogTips dialog = new DialogTips(this, "", tel,
                 "拨打", true, true);
         dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int userId) {
-
+                callPhone(tel);
             }
         });
 
         dialog.show();
         dialog = null;
+
+    }
+    private void callPhone(String tel) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (CooperationPharmacyActivity.this.checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                Intent intentTel = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + tel));
+                startActivity(intentTel);
+            }
+        } else {
+            Intent intentTel = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + tel));
+            startActivity(intentTel);
+        }
+
+
     }
 
-    public void setDatas(PharmacyBean pb) {
+    public void setDatas(final PharmacyBean pb) {
         tv_tel.setText(pb.getPharmacyPhone());
-        String imgurl= Constants.EhomeURL + pb.getPicURL().replace("~", "").replace("\\", "/");
-        Glide.with(CooperationPharmacyActivity.this).load(imgurl).into(img_logo_shop);
+        Glide.with(CooperationPharmacyActivity.this).load(Constants.EhomeURL + pb.getPicURL().
+                replace("~", "").replace("\\", "/")).
+                into(img_logo_shop);
         tv_mame.setText(pb.getPharmacyName());
-                tv_address.setText(pb.getPharmacyAddress());
+        tv_address.setText(pb.getPharmacyAddress());
+        rllocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final double mLatitude = Double.valueOf(pb.getLatitude());
+                final double mLongitude =Double.valueOf(pb.getLongitude());
+                final String name = pb.getPharmacyName();
+                DialogTips dialog = new DialogTips(CooperationPharmacyActivity.this, "", name,
+                        "到这里去", true, true);
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int userId) {
+                        Uri mUri = Uri.parse("geo:" + mLatitude + "," + mLongitude + "?" + "q=" +
+                                name);
+                        Intent mIntent = new Intent(Intent.ACTION_VIEW, mUri);
+                        startActivity(mIntent);
+                    }
+                });
+
+                dialog.show();
+                dialog = null;
+            }
+        });
         String zk=pb.getZhekou();
         if(TextUtils.isEmpty(zk)){
-            tv_zk.setVisibility(View.GONE);
+
+            tv_zk.setText("暂无折扣");
         }else{
             tv_zk.setText(zk+"折");
         }
@@ -156,14 +206,19 @@ public class CooperationPharmacyActivity extends BaseActivity {
             }
             adapter.setList(mList);
             adapter.notifyDataSetChanged();
+        }else{
+            viewline.setVisibility(View.GONE);
+            rl_youhui.setVisibility(View.GONE);
         }
     }
 
     public void initDatas() {
+        startProgressDialog();
         requestMaker.PharmacyDetailInquiry(id, new JsonAsyncTask_Info(
                 this, true, new JsonAsyncTaskOnComplete() {
             public void processJsonObject(Object result) {
                 JSONObject mySO = (JSONObject) result;
+               stopProgressDialog();
                 try {
                     JSONArray array = mySO.getJSONArray("PharmacyDetailInquiry");
                     if (array.getJSONObject(0).has("MessageCode")) {
@@ -199,7 +254,7 @@ public class CooperationPharmacyActivity extends BaseActivity {
 
             @Override
             public void onError(Exception e) {
-
+                stopProgressDialog();
             }
         }));
     }

@@ -34,16 +34,12 @@ public class NearPharmacyActivity extends BaseActivity {
     private LocationClientOption.LocationMode tempMode = LocationClientOption.LocationMode.Hight_Accuracy;
     private String tempcoor = "bd09ll";
     public  static BDLocation mLocation = null;
-    public static BDLocation getLocation() {
+    public  static BDLocation getLocation() {
         return mLocation;
     }
     private Fragment[] fragments;
     private int index;
     private int currentIndex;
-
-
-
-
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -206,6 +202,8 @@ public class NearPharmacyActivity extends BaseActivity {
             if (null != location) {
                 mLocation=location;
                 RxBus.getInstance().send(new EventType("location"));
+                mLocationClient.stop();
+                mLocationClient.unRegisterLocationListener(mMyLocationListener);
             }
         }
 

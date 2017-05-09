@@ -1,5 +1,6 @@
-package com.zzu.ehome.fragment;
 
+package com.zzu.ehome.fragment;
+import com.zzu.ehome.utils.RequestMaker;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -332,7 +333,7 @@ public class HypertensionWithWebFragment extends BaseFragment {
             if (convertView == null) {
                 holder = new ViewHolder();
                 convertView = LayoutInflater.from(getActivity()).inflate(R.layout.item_doctor_wev, null);
-                holder.icon_state = (ImageView) convertView.findViewById(R.id.icon_state);
+                holder.icon_state = (TextView) convertView.findViewById(R.id.icon_state);
                 holder.user_img = (ImageView) convertView.findViewById(R.id.user_img);
                 holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
                 holder.tv_yqy = (TextView) convertView.findViewById(R.id.tv_status);
@@ -348,9 +349,13 @@ public class HypertensionWithWebFragment extends BaseFragment {
                 holder = (ViewHolder) convertView.getTag();
             }
             final MSDoctorBean bean = list.get(position);
-//            if(bean.getIsLine().equals("1")){
-//                holder.icon_state.setImageResource(R.mipmap.icon_online_g);
-//            }
+            if(bean.getIsLine().equals("0")){
+                holder.icon_state.setBackgroundResource(R.mipmap.online);
+                holder.icon_state.setText("在线");
+            }else{
+                holder.icon_state.setBackgroundResource(R.mipmap.offline);
+                holder.icon_state.setText("离线");
+            }
             String imgurl = Constants.EhomeURL + bean.getImageURL().replace("~", "").replace("\\", "/");
             Glide.with(getActivity()).load(imgurl).error(R.drawable.icon_doctor).into(holder.user_img);
 //            bean.setImageURL(imgurl);
@@ -429,7 +434,7 @@ public class HypertensionWithWebFragment extends BaseFragment {
     }
 
     public static class ViewHolder {
-        public ImageView icon_state;
+        public TextView icon_state;
         public ImageView user_img;
         public TextView tv_name;
         public TextView tv_yqy;

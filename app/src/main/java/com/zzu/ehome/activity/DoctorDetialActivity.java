@@ -76,7 +76,7 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
     private String endTime;
 
     private int userissign = 0;
-    private boolean isFisrt=false;
+    private boolean isFisrt = false;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -256,7 +256,7 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
                             tv_hosname.setText(bean.getHospitalName());
                             tvfavors.setText("签约量：" + bean.getSignCount());
 
-                            if(!isFisrt) {
+                            if (!isFisrt) {
                                 String sch = "擅长:" + bean.getSpeciaty();
                                 SpannableString stylesch = new SpannableString(sch);
                                 stylesch.setSpan(
@@ -280,7 +280,7 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
                                         }
                                     }
                                 });
-                                isFisrt=true;
+                                isFisrt = true;
                             }
                             startTime = bean.getStartTime();
                             endTime = bean.getEndTime();

@@ -33,16 +33,10 @@ import cn.sharesdk.wechat.moments.WechatMoments;
  * Created by Administrator on 2016/3/21.
  */
 public class SharePopupWindow extends PopupWindow {
-
     private Context mcontext;
-
     private ShareParams shareParams;
-
-//    Button btn_cancel;
-
     public SharePopupWindow(Context cx) {
         this.mcontext = cx;
-
     }
 
 
@@ -62,20 +56,15 @@ public class SharePopupWindow extends PopupWindow {
         // 设置SelectPicPopupWindow弹出窗体动画效果
         this.setAnimationStyle(R.style.AnimBottom);
         // 实例化一个ColorDrawable颜色为半透明
-
         // 设置SelectPicPopupWindow弹出窗体的背景ffb0c9
         ColorDrawable dw = new ColorDrawable(0xffeeeeee);
-
         this.setBackgroundDrawable(dw);
-
-
         gridView.setOnItemClickListener(new ShareItemClickListener(this));
 
     }
 
     private class ShareItemClickListener implements OnItemClickListener {
         private PopupWindow pop;
-
         public ShareItemClickListener(PopupWindow pop) {
             this.pop = pop;
         }
@@ -111,7 +100,6 @@ public class SharePopupWindow extends PopupWindow {
         } else if (platform.equals(WechatMoments.NAME)) {
             oks.setTitle(shareParams.getText());
         } else {
-
             oks.setTitle(shareParams.getTitle());  //最多30个字符
         }
         // text是分享文本：所有平台都需要这个字段

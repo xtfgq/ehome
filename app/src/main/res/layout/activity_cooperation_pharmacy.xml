@@ -36,7 +36,7 @@
                         android:layout_height="48dp"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/icon_logo_shop" />
+                        />
 
             <TextView
                 android:id="@+id/tv_mame"
@@ -53,6 +53,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rllocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp">
@@ -159,6 +160,7 @@
                 />
 
             <RelativeLayout
+                android:id="@+id/rl_hui"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginLeft="16dp"
@@ -188,14 +190,17 @@
                     />
             </RelativeLayout>
 
+
             <View
+                android:id="@+id/line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#e1e1e2"
 
-                />
 
+                />
             <RelativeLayout
+                android:id="@+id/rl_youhui"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginLeft="16dp"

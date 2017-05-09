@@ -23,35 +23,38 @@ import com.zzu.ehome.bean.TitleInquiryBean;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.utils.CommonUtils;
-import com.zzu.ehome.utils.IOUtils;
+
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
-import com.zzu.ehome.utils.ToastUtils;
+
 import com.zzu.ehome.view.GlideRoundTransform;
 import com.zzu.ehome.view.HeadView;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
+
 import java.util.List;
 
-import static com.zzu.ehome.R.attr.position;
-import static com.zzu.ehome.activity.ImageOCRSelectorActivity.hosid;
-import static com.zzu.ehome.activity.ImageOCRSelectorActivity.hosname;
+
+
 
 
 /**
  * Created by Administrator on 2017/1/4.
  */
 
-public class SmartSearchActivity extends BaseActivity implements View.OnClickListener {
+public class SmartSearchActivity extends BaseActivity implements View.OnClickListener{
     private TextView tv_tips;
     private TextView tv_shengming;
+
     private Button btn_ok;
     private RelativeLayout layout_add_hosptial;
     public static final int ADD_HOSPITAL = 0x00;
@@ -102,6 +105,8 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
         edt_card_num=(TextView)findViewById(R.id.edt_card_num);
         name=dao.findUserInfoById(userid).getUsername();
         userno=dao.findUserInfoById(userid).getUserno();
+
+
         ed_name.setText(name);
         edt_card_num.setText(userno);
         ed_code=(EditText)findViewById(R.id.ed_code);
@@ -153,15 +158,24 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
             case R.id.btn_ok:
 
                 String code=ed_code.getText().toString();
-                if(TextUtils.isEmpty(code)){
-                    show("请输入体检编号");
-                    setTVEeable(true);
-                    return;
-                }
+
+//                if(TextUtils.isEmpty(code)){
+//                    show("请输入体检编号");
+//                    setTVEeable(true);
+//                    return;
+//                }
 //                name="张三";
 //                userno="410322198608051234";
 //                code="0000000000";
-                doSave(name,userno,hosptial,code);
+                if(TextUtils.isEmpty(code)){
+                    Intent i = new Intent(SmartSearchActivity.this, PlatformHospitalActivity.class);
+                    i.putExtra("hosptial", hosptial);
+                    i.putExtra("name", name);
+                    i.putExtra("UserNo", userno);
+                    startActivity(i);
+                }else {
+                    doSave(name, userno, hosptial, code);
+                }
                 break;
             case R.id.layout_add_hosptial:
                 if (mList.size() > 0) {
@@ -269,30 +283,33 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
                     if (array.getJSONObject(0).has("MessageCode")) {
                         int flag=Integer.valueOf(array.getJSONObject(0).getString("MessageCode"));
                         if(flag==3){
-                            Intent i=new Intent(SmartSearchActivity.this,WebPlatmActivity.class);
-                            i.putExtra("flag","info");
-                            i.putExtra("name",name);
-                            i.putExtra("UserNo",userno);
-                            i.putExtra("code",code);
-                            i.putExtra("time",array.getJSONObject(0).getString("RecordTime"));
-                            i.putExtra("hosname",hosptial);
-                            startActivity(i);
+
+                                Intent i = new Intent(SmartSearchActivity.this, WebPlatmActivity.class);
+                                i.putExtra("flag", "info");
+                                i.putExtra("name", name);
+                                i.putExtra("UserNo", userno);
+                                i.putExtra("code", code);
+                                i.putExtra("time", array.getJSONObject(0).getString("RecordTime"));
+                                i.putExtra("hosname", hosptial);
+                                startActivity(i);
+
                         }else {
                             show(array.getJSONObject(0).getString("MessageContent"));
                         }
                     }else {
                         String time= array.getJSONObject(0).getString("RecordTime");
-                        Intent i = new Intent(SmartSearchActivity.this, WebPlatmActivity.class);
-                        i.putExtra("flag", "add");
-                        i.putExtra("name", name);
-                        i.putExtra("code", code);
-                        i.putExtra("UserNo", userno);
-                        i.putExtra("time", time);
-                        i.putExtra("hosname",hosptial);
-                        i.putExtra("hospital_id",hospital_id);
-                        setTVEeable(true);
-                        startActivity(i);
-                    }
+
+                            Intent i = new Intent(SmartSearchActivity.this, WebPlatmActivity.class);
+                            i.putExtra("flag", "add");
+                            i.putExtra("name", name);
+                            i.putExtra("code", code);
+                            i.putExtra("UserNo", userno);
+                            i.putExtra("time", time);
+                            i.putExtra("hosname", hosptial);
+                            i.putExtra("hospital_id", hospital_id);
+                            setTVEeable(true);
+                            startActivity(i);
+                        }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -306,4 +323,12 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
 
     }
 
+//    @Override
+//    public void onSelect(String select) {
+//        select_year.setText(select);
+//    }
+//    public void showAgePop(int year){
+//        ypw=new YearPopWindow(SmartSearchActivity.this,layout_main,year);
+//        ypw.setOnYearSelectListener(SmartSearchActivity.this);
+//    }
 }

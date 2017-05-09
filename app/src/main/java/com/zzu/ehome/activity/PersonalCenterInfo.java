@@ -510,9 +510,13 @@ public class PersonalCenterInfo extends BaseActivity implements OnGetData,AgePop
             if(info.length()==18){
                 edt_age.setText(CardUtil.getCarInfo(info));
                 edt_card_num.setEnabled(false);
+                edt_card_num.setTextColor(getResources().getColor(R.color.bottom_text_color_normal));
+                edt_age.setTextColor(getResources().getColor(R.color.bottom_text_color_normal));
             }else if(info.length()==15){
                 edt_age.setText(CardUtil.getCarInfo15W(info));
+                edt_age.setTextColor(getResources().getColor(R.color.bottom_text_color_normal));
                 edt_card_num.setEnabled(false);
+                edt_card_num.setTextColor(getResources().getColor(R.color.bottom_text_color_normal));
             }
 
 

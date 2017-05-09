@@ -157,7 +157,6 @@ public class MonthDateView extends View {
 
                         int row1 = isshowy / mRowSize;
                         int column1 = isshowx / mColumnSize;
-
                         setSelectYearMonth(isShowYear, isShowMonth, isShowDay);
 
                         invalidate();
@@ -449,7 +448,6 @@ public class MonthDateView extends View {
                     }
                 }
                 setSelectYearMonth(year, month, day);
-
                 invalidate();
             } else {
                 iv.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_calender_arr_hui));
