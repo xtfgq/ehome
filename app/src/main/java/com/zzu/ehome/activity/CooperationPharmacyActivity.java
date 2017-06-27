@@ -1,12 +1,15 @@
 package com.zzu.ehome.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +47,8 @@ import java.util.List;
  * Created by Mersens on 2016/8/17.
  */
 public class CooperationPharmacyActivity extends BaseActivity {
-    private GridView gridView;
+    private RecyclerView gridView;
+
     private RelativeLayout layout_tel;
     private TextView tv_tel;
     private ScrollView scrollView;
@@ -52,9 +56,9 @@ public class CooperationPharmacyActivity extends BaseActivity {
     private RequestMaker requestMaker;
     private ImageView img_logo_shop;
     private TextView tv_mame, tv_address, tv_yb, tv_zk;
-    private List<String> mList=new ArrayList<>();
-    private MyAdapter adapter=null;
-    private RelativeLayout rllocation,rl_hui,rl_youhui;
+    private List<String> mList = new ArrayList<>();
+    private MyAdapter adapter = null;
+    private RelativeLayout rllocation, rl_hui, rl_youhui;
     private View viewline;
 
 
@@ -66,18 +70,20 @@ public class CooperationPharmacyActivity extends BaseActivity {
         initViews();
         initEvent();
         initDatas();
-        if(!CommonUtils.isNotificationEnabled(CooperationPharmacyActivity.this)){
+        if (!CommonUtils.isNotificationEnabled(CooperationPharmacyActivity.this)) {
             showTitleDialog("请打开通知中心");
         }
     }
 
 
     public void initViews() {
-        adapter=new MyAdapter(mList);
+        adapter = new MyAdapter(CooperationPharmacyActivity.this, mList);
         requestMaker = RequestMaker.getInstance();
         scrollView = (ScrollView) findViewById(R.id.scrollView);
         scrollView.fullScroll(ScrollView.FOCUS_UP);
-        gridView = (GridView) findViewById(R.id.gridView);
+        gridView = (RecyclerView) findViewById(R.id.gridView);
+        GridLayoutManager mgr = new GridLayoutManager(CooperationPharmacyActivity.this, 2);
+        gridView.setLayoutManager(mgr);
         gridView.setAdapter(adapter);
         layout_tel = (RelativeLayout) findViewById(R.id.layout_tel);
         tv_tel = (TextView) findViewById(R.id.tv_tel);
@@ -86,10 +92,10 @@ public class CooperationPharmacyActivity extends BaseActivity {
         tv_address = (TextView) findViewById(R.id.tv_address);
         tv_yb = (TextView) findViewById(R.id.tv_yb);
         tv_zk = (TextView) findViewById(R.id.tv_zk);
-        rllocation=(RelativeLayout)findViewById(R.id.rllocation);
-        rl_hui=(RelativeLayout)findViewById(R.id.rl_hui);
-        rl_youhui=(RelativeLayout)findViewById(R.id.rl_youhui);
-        viewline=(View)findViewById(R.id.line);
+        rllocation = (RelativeLayout) findViewById(R.id.rllocation);
+        rl_hui = (RelativeLayout) findViewById(R.id.rl_hui);
+        rl_youhui = (RelativeLayout) findViewById(R.id.rl_youhui);
+        viewline = (View) findViewById(R.id.line);
         setLeftWithTitleViewMethod(R.mipmap.icon_arrow_left, "合作药店", new HeadView.OnLeftClickListener() {
             @Override
             public void onClick() {
@@ -99,12 +105,7 @@ public class CooperationPharmacyActivity extends BaseActivity {
     }
 
     public void initEvent() {
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            }
-        });
         layout_tel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +136,7 @@ public class CooperationPharmacyActivity extends BaseActivity {
         dialog = null;
 
     }
+
     private void callPhone(String tel) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (CooperationPharmacyActivity.this.checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
@@ -161,7 +163,7 @@ public class CooperationPharmacyActivity extends BaseActivity {
             public void onClick(View v) {
 
                 final double mLatitude = Double.valueOf(pb.getLatitude());
-                final double mLongitude =Double.valueOf(pb.getLongitude());
+                final double mLongitude = Double.valueOf(pb.getLongitude());
                 final String name = pb.getPharmacyName();
                 DialogTips dialog = new DialogTips(CooperationPharmacyActivity.this, "", name,
                         "到这里去", true, true);
@@ -179,38 +181,35 @@ public class CooperationPharmacyActivity extends BaseActivity {
                 dialog = null;
             }
         });
-        String zk=pb.getZhekou();
-        if(TextUtils.isEmpty(zk)){
-
+        String zk = pb.getZhekou();
+        if (TextUtils.isEmpty(zk)) {
             tv_zk.setText("暂无折扣");
-        }else{
-            tv_zk.setText(zk+"折");
+        } else {
+            tv_zk.setText(zk + "折");
         }
 
-        String yb=pb.getYibaoType();
-        if(TextUtils.isEmpty(yb)){
+        String yb = pb.getYibaoType();
+        if (TextUtils.isEmpty(yb)) {
             tv_yb.setVisibility(View.GONE);
-        }else if(yb.contains(",")){
-            String ybs[]=yb.split(",");
-            tv_yb.setText("省,市保");
-        }else if("1".equals(yb)){
-            tv_yb.setText("市保");
-
-        }else if("0".equals(yb)){
-            tv_yb.setText("省保");
+        } else{
+            tv_yb.setText(yb);
         }
-        if(!TextUtils.isEmpty(pb.getPharmacyPicUrl())){
-            String strs[]=pb.getPharmacyPicUrl().split(",");
-            for(String s:strs){
-                mList.add(s);
+        if (!TextUtils.isEmpty(pb.getPharmacyPicUrl())) {
+            String strs[] = pb.getPharmacyPicUrl().split(",");
+            for (String s : strs) {
+                String imgurl = Constants.EhomeURL + s.replace("~", "").replace("\\", "/");
+                mList.add(imgurl);
             }
             adapter.setList(mList);
-            adapter.notifyDataSetChanged();
-        }else{
+            adapter. notifyDataSetChanged();
+
+        } else {
             viewline.setVisibility(View.GONE);
             rl_youhui.setVisibility(View.GONE);
         }
+        scrollView.smoothScrollTo(0,0);
     }
+
 
     public void initDatas() {
         startProgressDialog();
@@ -218,7 +217,7 @@ public class CooperationPharmacyActivity extends BaseActivity {
                 this, true, new JsonAsyncTaskOnComplete() {
             public void processJsonObject(Object result) {
                 JSONObject mySO = (JSONObject) result;
-               stopProgressDialog();
+                stopProgressDialog();
                 try {
                     JSONArray array = mySO.getJSONArray("PharmacyDetailInquiry");
                     if (array.getJSONObject(0).has("MessageCode")) {
@@ -246,6 +245,7 @@ public class CooperationPharmacyActivity extends BaseActivity {
                         pb.setPicURL(json.getString("PicURL"));
                         pb.setPharmacyPicUrl(json.getString("PharmacyPicUrl"));
                         setDatas(pb);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -259,24 +259,36 @@ public class CooperationPharmacyActivity extends BaseActivity {
         }));
     }
 
-    class MyAdapter extends BaseAdapter{
+    class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         private List<String> list;
-        public MyAdapter(List<String> list){
-            this.list=list;
+        private Context mContext;
+        private LayoutInflater inf;
+
+        public MyAdapter(Context context, List<String> list) {
+            this.mContext = context;
+            this.list = list;
+            this.inf = LayoutInflater.from(context);
         }
 
-        public void setList(List<String> list){
-            this.list=list;
+
+        public void setList(List<String> list) {
+            this.list = list;
+
         }
+
 
         @Override
-        public int getCount() {
-            return list==null?0:list.size();
+        public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v = inf.inflate(R.layout.gridview_item, parent, false);
+            return new ViewHolder(v);
         }
 
+
         @Override
-        public Object getItem(int position) {
-            return list.get(position);
+        public void onBindViewHolder(MyAdapter.ViewHolder holder, int position) {
+            Glide.with(mContext).load(list.get(position)).into(holder.imageView);
+
+
         }
 
         @Override
@@ -285,13 +297,32 @@ public class CooperationPharmacyActivity extends BaseActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = LayoutInflater.from(CooperationPharmacyActivity.this).inflate(R.layout.gridview_item, null);
-            ImageView imageView=(ImageView)v.findViewById(R.id.imageView);
-            String str=list.get(position);
-            String imgurl= Constants.EhomeURL + str.replace("~", "").replace("\\", "/");
-            Glide.with(CooperationPharmacyActivity.this).load(imgurl).into(imageView);
-            return v;
+        public int getItemCount() {
+            return list == null ? 0 : list.size();
         }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+
+            ImageView imageView;
+
+            //在布局中找到所含有的UI组件
+            public ViewHolder(View itemView) {
+                super(itemView);
+                imageView = (ImageView) itemView.findViewById(R.id.imageView);
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, ImageAlbumManager.class);
+                        intent.putStringArrayListExtra("imgs", (ArrayList<String>) list);
+                        intent.putExtra("position", getPosition());
+                        intent.putExtra("type", 1);
+                        mContext.startActivity(intent);
+                    }
+                });
+            }
+        }
+
     }
+
+
 }

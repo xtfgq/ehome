@@ -34,6 +34,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.bumptech.glide.Glide;
 import com.igexin.sdk.PushManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zzu.ehome.DemoContext;
@@ -417,8 +418,9 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
                             public void displayImage(String imageURL,
                                                      ImageView imageView) {
                                 try {
-                                    ImageLoader.getInstance().displayImage(imageURL,
-                                            imageView, ImageOptions.getAdsOptions());
+//                                    ImageLoader.getInstance().displayImage(imageURL,
+//                                            imageView, ImageOptions.getAdsOptions());
+                                   Glide.with(getActivity()).load(imageURL).into(imageView);
                                     ViewGroup.LayoutParams para;
                                     para = imageView.getLayoutParams();
                                     para.width = ScreenUtils.getScreenWidth(getActivity());

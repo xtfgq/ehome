@@ -4,43 +4,34 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.Constants;
-
 import com.zzu.ehome.bean.TitleInquiryBean;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.utils.CommonUtils;
-
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.utils.SharePreferenceUtil;
-
 import com.zzu.ehome.view.GlideRoundTransform;
 import com.zzu.ehome.view.HeadView;
 
-
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
-
 import java.util.List;
 
 
@@ -82,6 +73,11 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
         if (!CommonUtils.isNotificationEnabled(SmartSearchActivity.this)) {
             showTitleDialog("请打开通知中心");
         }
+        if(!isNetWork){
+            showNetWorkErrorDialog();
+            return;
+        }
+
         initEvnets();
         initData();
 
@@ -157,13 +153,13 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.btn_ok:
 
-                String code=ed_code.getText().toString();
+                String code=ed_code.getText().toString().replaceAll("\n","").replaceAll(" ","");
 
-//                if(TextUtils.isEmpty(code)){
-//                    show("请输入体检编号");
-//                    setTVEeable(true);
-//                    return;
-//                }
+                if(TextUtils.isEmpty(code)&&hosptial.contains("郑州大学医院")){
+                    show("请输入体检编号");
+                    setTVEeable(true);
+                    return;
+                }
 //                name="张三";
 //                userno="410322198608051234";
 //                code="0000000000";
@@ -174,6 +170,7 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
                     i.putExtra("UserNo", userno);
                     startActivity(i);
                 }else {
+                    setTVEeable(false);
                     doSave(name, userno, hosptial, code);
                 }
                 break;
@@ -199,6 +196,27 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
             hospital_id = data.getStringExtra("hospital_id");
             tv_hospital.setText(hosptial);
             index = data.getIntExtra("index", 0);
+            ed_code.setText("");
+            if(hosptial.contains("郑州大学医院")){
+                ed_code.setHint("请输入体检编号");
+            }else{
+                ed_code.setHint("请输入体检编号(非必填)");
+            }
+            String userIdWithCode=SharePreferenceUtil.getInstance(
+                    SmartSearchActivity.this).getSmartSearchCode();
+            if(userIdWithCode.contains(",")){
+                String codes[]=userIdWithCode.split(",");
+                for(String str:codes){
+                    if(str.contains(":")){
+                        String strs[]=str.split(":");
+                        if(strs.length==3){
+                            if(strs[0].equals(userid)&&strs[1].equals(hosptial)){
+                                ed_code.setText(strs[2]);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -237,7 +255,28 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
                             hosptial = mList.get(0).getValue();
                             hospital_id = mList.get(0).getCode();
                             index = 0;
+                            ed_code.setText("");
                             tv_hospital.setText(hosptial);
+                            if(hosptial.contains("郑州大学医院")){
+                                ed_code.setHint("请输入体检编号");
+                            }else{
+                                ed_code.setHint("请输入体检编号(非必填)");
+                            }
+                            String userIdWithCode=SharePreferenceUtil.getInstance(
+                                    SmartSearchActivity.this).getSmartSearchCode();
+                            if(userIdWithCode.contains(",")){
+                                String codes[]=userIdWithCode.split(",");
+                                for(String str:codes){
+                                    if(str.contains(":")){
+                                        String strs[]=str.split(":");
+                                        if(strs.length==3){
+                                            if(strs[0].equals(userid)&&strs[1].equals(hosptial)){
+                                                ed_code.setText(strs[2]);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                     }
@@ -273,17 +312,31 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
      * 3.表示已经存过了
      */
 
-    private void doSave(final String name,final String userno,String hosname,final String code){
-        requestMaker.ZDWFYUserRecordJudgeInquiry(code,userno,name,hosname,new JsonAsyncTask_Info(SmartSearchActivity.this, true, new JsonAsyncTaskOnComplete() {
+    private void doSave(final String name,final String userno,final String hosname,final String code){
+
+        requestMaker.ZDWFYUserRecordJudgeInquiry(code,userno,name,hosname,new JsonAsyncTask_Info(SmartSearchActivity.this,
+                true, new JsonAsyncTaskOnComplete() {
             @Override
             public void processJsonObject(Object result) {
+                setTVEeable(true);
                 JSONObject mySO = (JSONObject) result;
                 try {
                     JSONArray array = mySO.getJSONArray("ZDWFYUserRecordJudgeInquiry");
                     if (array.getJSONObject(0).has("MessageCode")) {
                         int flag=Integer.valueOf(array.getJSONObject(0).getString("MessageCode"));
                         if(flag==3){
+                            StringBuffer sbf=new StringBuffer();
+                            String string=userid+":"+hosname+":"+code+",";
+                            String str= SharePreferenceUtil.getInstance(SmartSearchActivity.this).getSmartSearchCode();
+                            if(!TextUtils.isEmpty(str)){
+                                if(!str.equals(string)){
+                                    sbf.append(str);
 
+                                }
+
+                            }
+                            sbf.append(string);
+                            SharePreferenceUtil.getInstance(SmartSearchActivity.this).setSmartSearchCode(sbf.toString());
                                 Intent i = new Intent(SmartSearchActivity.this, WebPlatmActivity.class);
                                 i.putExtra("flag", "info");
                                 i.putExtra("name", name);
@@ -292,13 +345,23 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
                                 i.putExtra("time", array.getJSONObject(0).getString("RecordTime"));
                                 i.putExtra("hosname", hosptial);
                                 startActivity(i);
-
                         }else {
                             show(array.getJSONObject(0).getString("MessageContent"));
                         }
                     }else {
-                        String time= array.getJSONObject(0).getString("RecordTime");
+                        StringBuffer sbf=new StringBuffer();
+                        String string=userid+":"+hosname+":"+code+",";
+                        String str= SharePreferenceUtil.getInstance(SmartSearchActivity.this).getSmartSearchCode();
+                        if(!TextUtils.isEmpty(str)){
+                            if(!str.equals(string)){
+                                sbf.append(str);
 
+                            }
+
+                        }
+                        sbf.append(string);
+                        SharePreferenceUtil.getInstance(SmartSearchActivity.this).setSmartSearchCode(sbf.toString());
+                            String time= array.getJSONObject(0).getString("RecordTime");
                             Intent i = new Intent(SmartSearchActivity.this, WebPlatmActivity.class);
                             i.putExtra("flag", "add");
                             i.putExtra("name", name);
@@ -307,7 +370,6 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
                             i.putExtra("time", time);
                             i.putExtra("hosname", hosptial);
                             i.putExtra("hospital_id", hospital_id);
-                            setTVEeable(true);
                             startActivity(i);
                         }
                 } catch (Exception e) {
@@ -317,7 +379,7 @@ public class SmartSearchActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onError(Exception e) {
-
+                setTVEeable(true);
             }
         }));
 

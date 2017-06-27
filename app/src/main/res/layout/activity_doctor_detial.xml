@@ -338,6 +338,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="8dp"
+                            android:layout_marginTop="2dp"
                             android:layout_toRightOf="@+id/img_zx1"
                             android:text="(免费图文咨询、电话咨询)"
                             android:textColor="#0f2536"
@@ -388,6 +389,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="8dp"
+                            android:layout_marginTop="2dp"
                             android:layout_toRightOf="@+id/img_zx3"
                             android:text="建立健康档案，提供免费的常规体检，并可享受每年一次指定的健康体检服务一次。"
                             android:textColor="#0f2536"
@@ -438,6 +440,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="8dp"
+                            android:layout_marginTop="2dp"
                             android:layout_toRightOf="@+id/img_zx5"
                             android:text="优先获得家庭医生门诊和出诊服务。"
                             android:textColor="#0f2536"
@@ -488,6 +491,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="8dp"
+                            android:layout_marginTop="2dp"
                             android:layout_toRightOf="@+id/img_zx8"
                             android:text="空巢老人、行动不便，一建预约家庭医生上门服务。"
                             android:textColor="#0f2536"
@@ -540,6 +544,7 @@
                             android:layout_centerVertical="true"
 
                             android:layout_toRightOf="@+id/img_zx11"
+                            android:layout_marginTop="2dp"
                             android:text="看大病不再难，家庭医生帮您预约三甲名医\n优先预约专家门诊、大型仪器设备检查、住院等。"
                             android:textColor="#0f2536"
                             android:textSize="12sp" />
@@ -580,24 +585,21 @@
                         android:layout_marginBottom="8dp">
 
                         <TextView
-                            android:id="@+id/tv_fw"
+                            android:id="@+id/tv_fwl"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
-
                             android:text="范围："
                             android:textColor="#0f2536"
                             android:textSize="14sp" />
 
                         <TextView
-
+                            android:id="@+id/tv_fw"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-
-                            android:layout_toRightOf="@+id/tv_fw"
-                            android:text="郑州市高新区盛和苑社区"
+                            android:layout_toRightOf="@+id/tv_fwl"
                             android:textColor="#0f2536"
                             android:textSize="14sp" />
 
@@ -767,7 +769,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="心血管患者"
+                        android:text=""
                         android:textColor="#0f2536"
                         android:textSize="14sp" />
 
@@ -775,7 +777,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="亚健康人群"
+                        android:text=""
                         android:textColor="#0f2536"
                         android:textSize="14sp" />
 

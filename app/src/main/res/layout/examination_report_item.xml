@@ -36,6 +36,15 @@
                     android:text="体检报告"
                     android:textColor="@color/text_color2"
                     android:textSize="16sp" />
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_toRightOf="@+id/tv_title"
+                    android:src="@mipmap/icon_tijianflag"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+
+                    />
 
 
             </RelativeLayout>

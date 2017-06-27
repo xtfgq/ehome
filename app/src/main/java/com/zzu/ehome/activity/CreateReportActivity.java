@@ -1,7 +1,6 @@
 package com.zzu.ehome.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -28,7 +27,6 @@ import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.R;
 import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.Images;
-import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.ImageUtil;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -39,6 +37,7 @@ import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.ContainsEmojiEditText;
 import com.zzu.ehome.view.GridViewForScrollView;
 import com.zzu.ehome.view.HeadView;
+import com.zzu.ehome.view.PicPopu;
 
 import org.json.JSONObject;
 
@@ -56,7 +55,7 @@ import java.util.regex.PatternSyntaxException;
 /**
  * Created by zzu on 2016/4/12.
  */
-public class CreateReportActivity extends BaseActivity implements View.OnClickListener {
+public class CreateReportActivity extends BaseActivity implements View.OnClickListener,PicPopu.OnSelectPicFromAlbumListener {
     private static final int TAKE_PICTURE = 0x000001;
     public static final int ADD_TIME = 0x11;
     public static final int ADD_TIMES = 0x35;
@@ -84,7 +83,7 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
     public static final String EXTRA_IMAGES = "extraImages";
     private RecyclerView resultRecyclerView;
     private ImageView singleImageView;
-
+    private PicPopu picPop;
 
     private ArrayList<String> images;
     private List<Images> mList = new ArrayList<Images>();
@@ -174,7 +173,6 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
         resultRecyclerView.setVisibility(View.INVISIBLE);
     }
 
-
     private class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
         private Context mContext;
 
@@ -218,8 +216,8 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
                 @Override
                 public void onClick(View v) {
                     if (mList.get(position).equals(path)) {
-
-                        ImageSelectorActivity.start((Activity) mContext, 9, ImageSelectorActivity.MODE_MULTIPLE, true, false, false, images.size() - 1);
+                        picPop = new PicPopu(CreateReportActivity.this, rlphoto, CreateReportActivity.this);
+                       // ImageSelectorActivity.start((Activity) mContext, 9, ImageSelectorActivity.MODE_MULTIPLE, true, false, false, images.size() - 1);
                     } else {
                         Intent intent = new Intent(mContext, ImageAlbumManager.class);
                         if (mList.size() == 9) {
@@ -404,9 +402,9 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
 
                 break;
             case R.id.rlphoto:
-                ImageSelectorActivity.start(CreateReportActivity.this, 9, ImageSelectorActivity.MODE_MULTIPLE, true, false, false, images.size() - 1);
+                picPop = new PicPopu(CreateReportActivity.this, rlphoto, CreateReportActivity.this);
+               // ImageSelectorActivity.start(CreateReportActivity.this, 9, ImageSelectorActivity.MODE_MULTIPLE, true, false, false, images.size() - 1);
                 break;
-
         }
     }
     public void setEventEnable(boolean flag){
@@ -435,16 +433,13 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case ImageSelectorActivity.REQUEST_IMAGE:
-
                 if (data != null) {
-
                     ArrayList<String> images1 = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
                     if (images1 != null) {
                         for (int i = 0; i < images1.size(); i++) {
                             images.add(0, images1.get(i));
                         }
                         if (images.size() > 10) {
-
                             ToastUtils.showMessage(CreateReportActivity.this, "你最多可以选择9张");
                         }
                         if (images.size() == 10) {
@@ -453,7 +448,6 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
                     }
                     resultRecyclerView.setVisibility(View.VISIBLE);
                     rlphoto.setVisibility(View.GONE);
-
                     mAdapter.setmList(images);
                     mAdapter.notifyDataSetChanged();
                 }
@@ -470,7 +464,26 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
                     }
                 }
                 break;
+            case Constants.REQUEST_CODE_CAPTURE_CAMEIA:
+                String imgurl=picPop.getImageUrl();
+                File file=new File(imgurl);
+                if(file.exists()){
+                    images.add(0,imgurl);
+                    if (images.size() > 10) {
+                        ToastUtils.showMessage(CreateReportActivity.this, "你最多可以选择9张");
+                    }
+                    if (images.size() == 10) {
+                        images.remove(9);
+                    }
+                    resultRecyclerView.setVisibility(View.VISIBLE);
+                    rlphoto.setVisibility(View.GONE);
 
+                    mAdapter.setmList(images);
+                    mAdapter.notifyDataSetChanged();
+                }
+
+
+                break;
 
         }
     }
@@ -494,5 +507,14 @@ public class CreateReportActivity extends BaseActivity implements View.OnClickLi
         return m.replaceAll("").trim();
     }
 
+    @Override
+    public void onSelect() {
+        ImageSelectorActivity.start(CreateReportActivity.this, 9, ImageSelectorActivity.MODE_MULTIPLE, false, false, false, images.size() - 1);
+        if(picPop!=null && picPop.isShowing()){
+            picPop.dismiss();
+        }
+
+
+    }
 
 }

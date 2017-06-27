@@ -62,6 +62,7 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
     private ImageView ivmore;
     private TextView tv_title_sc;
     private TextView tv_title;
+    private TextView tv_fw;
     private TextView tv_diagnoseCount;
     private TextView tv_sign;
     private int index = 0;
@@ -117,6 +118,7 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
         tvnotie = (TextView) findViewById(R.id.tvnotie);
         tv_oltime = (TextView) findViewById(R.id.tv_oltime);
         rltop = (RelativeLayout) findViewById(R.id.rltop);
+        tv_fw=(TextView)findViewById(R.id.tv_fw);
         ViewGroup.LayoutParams para;
         para = rltop.getLayoutParams();
         para.width = ScreenUtils.getScreenWidth(DoctorDetialActivity.this);
@@ -281,6 +283,8 @@ public class DoctorDetialActivity extends BaseActivity implements View.OnClickLi
                                     }
                                 });
                                 isFisrt = true;
+                                String area=bean.getCategoryAddress();
+                                tv_fw.setText(area);
                             }
                             startTime = bean.getStartTime();
                             endTime = bean.getEndTime();

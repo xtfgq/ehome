@@ -3,8 +3,6 @@ package com.zzu.ehome.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import static u.aly.au.H;
-
 /**
  * @author Mersens
  * @title SharePreferenceUtil
@@ -23,6 +21,7 @@ public class SharePreferenceUtil {
     private static final String PARENT_ID = "parent_id";
     private static final String HOME_ID="home_id";
     private static final String GUID_ID="guid_id";
+    private static final String SMARTSEARCH_CODE="smartsearch_code";
 
 
 
@@ -69,6 +68,16 @@ public class SharePreferenceUtil {
         editor.putString(PARENT_ID, parentid);
         editor.commit();
     }
+
+    public String getSmartSearchCode() {
+        return mSharedPreferences.getString(SMARTSEARCH_CODE, "");
+    }
+
+    public void setSmartSearchCode(String code) {
+        editor.putString(SMARTSEARCH_CODE, code);
+        editor.commit();
+    }
+
 
     //用户id
     public String getUserId() {

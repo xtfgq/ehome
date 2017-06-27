@@ -60,6 +60,17 @@ public class MSDoctorDetailBean {
     @SerializedName("ApplyTo")
     private String ApplyTo;
 
+    public String getCategoryAddress() {
+        return CategoryAddress;
+    }
+
+    public void setCategoryAddress(String categoryAddress) {
+        CategoryAddress = categoryAddress;
+    }
+
+    @SerializedName("CategoryAddress")
+    private String CategoryAddress;
+
     public String getUserIsSign() {
         return UserIsSign;
     }

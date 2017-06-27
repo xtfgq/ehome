@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.zzu.ehome.R;
@@ -44,7 +43,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.UserInfo;
@@ -180,6 +178,7 @@ public class DoctorListFragment extends BaseFragment {
                     }
 
                 isRefresh=true;
+                RxBus.getInstance().send(new EventType("area"));
                 getDoctorListData(hosptialId, title,cardno);
             }
         });

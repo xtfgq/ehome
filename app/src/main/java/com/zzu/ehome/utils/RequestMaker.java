@@ -487,8 +487,8 @@ public class RequestMaker {
         str = String.format(str, new Object[]
                 {PatientId, "0", start, end});
         paramMap.put("str", str);
-        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.TREATMENTSEARCH, Constants.TREATMENTSEARCH,
-                SOAP_URL, paramMap);
+        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.TREATMENTSEARCH,
+                Constants.TREATMENTSEARCH, SOAP_URL, paramMap);
     }
 
     public void TreatmentCancel(String ReservationId, JsonAsyncTask_Info task) {
@@ -497,8 +497,8 @@ public class RequestMaker {
         str = String.format(str, new Object[]
                 {ReservationId});
         paramMap.put("str", str);
-        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.TREATMENTCANCEL, Constants.TREATMENTCANCEL,
-                SOAP_URL, paramMap);
+        task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.TREATMENTCANCEL,
+                Constants.TREATMENTCANCEL, SOAP_URL, paramMap);
     }
 
     public void HealthDataInquirywWithPageType(String usrid, String CardNo, String pagesize, String pageindex, String type, JsonAsyncTask_Info task) {

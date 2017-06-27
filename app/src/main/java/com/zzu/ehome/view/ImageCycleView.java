@@ -261,7 +261,10 @@ public class ImageCycleView extends LinearLayout {
                 }
             });
 
-            imageView.setTag(imageUrl);
+//            imageView.setTag(imageUrl);
+//            LinearLayout ll=new LinearLayout(mContext);
+//            ll.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+//            ll.
             container.addView(imageView);
             try {
                 mImageCycleViewListener.displayImage(imageUrl, imageView);

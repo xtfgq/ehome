@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.R;
 import com.zzu.ehome.service.DownloadServiceForAPK;
@@ -17,10 +16,8 @@ import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
 import com.zzu.ehome.view.DialogEnsureCancelView;
 import com.zzu.ehome.view.HeadView;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.Map;
 
 /**

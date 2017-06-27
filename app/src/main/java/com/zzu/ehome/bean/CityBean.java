@@ -8,6 +8,17 @@ public class CityBean {
     String title;
 
     String id;
+    String ParentID;
+    public String getParentID() {
+        return ParentID;
+    }
+
+    public void setParentID(String parentID) {
+        ParentID = parentID;
+    }
+
+
+
 
     public String getTitle() {
         return title;

@@ -207,18 +207,19 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                     }
 
                         String info=user.getUserno();
+                    if(!TextUtils.isEmpty(info)) {
                         try {
-                            if(info.length()==18){
-                                age=CardUtil.getCarInfo(info);
-                            }else if(info.length()==15){
-                                age=CardUtil.getCarInfo15W(info);
+                            if (info.length() == 18) {
+                                age = CardUtil.getCarInfo(info);
+                            } else if (info.length() == 15) {
+                                age = CardUtil.getCarInfo15W(info);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }finally {
+                        } finally {
                             sbf.append(" | " + age + "岁");
                         }
-
+                    }
 
 
                     if (!TextUtils.isEmpty(height)&& !"0".equals(height)) {
@@ -262,7 +263,6 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         }
         switch (v.getId()) {
             case R.id.layout_wdpg:
-
                 startActivity(new Intent(getActivity(), PingguTestActivity.class));
                 break;
             case R.id.tvGoMyFaimily:

@@ -14,10 +14,8 @@ import android.widget.RelativeLayout;
 import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.DemoContext;
 import com.zzu.ehome.R;
-import com.zzu.ehome.application.Constants;
 import com.zzu.ehome.bean.RefreshEvent;
 import com.zzu.ehome.bean.StepBean;
-import com.zzu.ehome.db.DBRongHelper;
 import com.zzu.ehome.db.EHomeDao;
 import com.zzu.ehome.db.EHomeDaoImpl;
 import com.zzu.ehome.main.ehome.MainActivity;
@@ -30,27 +28,16 @@ import com.zzu.ehome.utils.SharePreferenceUtil;
 import com.zzu.ehome.utils.ToastUtils;
 import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.HeadView;
-import com.zzu.ehome.view.crop.util.Log;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.Message;
-import tencent.tls.platform.TLSAccountHelper;
-import tencent.tls.platform.TLSErrInfo;
-import tencent.tls.platform.TLSPwdRegListener;
-import tencent.tls.platform.TLSStrAccRegListener;
-import tencent.tls.platform.TLSUserInfo;
-
-import static android.R.attr.accountType;
 
 /**
  * Created by zzu on 2016/4/15.
@@ -94,8 +81,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         if(!CommonUtils.isNotificationEnabled(SettingActivity.this)){
             showTitleDialog("请打开通知中心");
         }
-
-
     }
 
     public void initViews() {
@@ -111,7 +96,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             }
         });
     }
-
 
     @Override
     public void onResume() {
@@ -263,6 +247,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         dao.updateStep(step);
                         SharePreferenceUtil.getInstance(SettingActivity.this).setUserId("");
                         SharePreferenceUtil.getInstance(SettingActivity.this).setHomeId("");
+                        SharePreferenceUtil.getInstance(SettingActivity.this).setSmartSearchCode("");
                         EventBus.getDefault().post(new RefreshEvent(getResources().getInteger(R.integer.refresh_info)));
                         Intent intenthealth = new Intent("userrefresh");
                         sendBroadcast(intenthealth);
@@ -301,62 +286,40 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }, 3000);
     }
     private void clearConversation(){
-        DBRongHelper myDbHelper = new DBRongHelper(this);
-        try {
-            myDbHelper.removeDataBase();
-        } catch (IOException io) {
+        if (DemoContext.getInstance() != null) {
+            String token = DemoContext.getInstance().getSharedPreferences().getString("DEMO_TOKEN", "default");
+            if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED)) {
 
+                CommonUtils.connent(token, new CommonUtils.RongIMListener() {
+                    @Override
+                    public void OnSuccess(String userid) {
+
+                        try {
+                            clearMessage();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }else{
+                clearMessage();
+            }
         }
-//        if (DemoContext.getInstance() != null) {
-//            String token = DemoContext.getInstance().getSharedPreferences().getString("DEMO_TOKEN", "default");
-//            if (RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.DISCONNECTED)) {
-//
-//                CommonUtils.connent(token, new CommonUtils.RongIMListener() {
-//                    @Override
-//                    public void OnSuccess(String userid) {
-//
-//                        try {
-//                            clearMessage();
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
-//            }else{
-//                clearMessage();
-//            }
-//        }
         }
 
     /**
      * 清除本地聊天记录
      */
     private void clearMessage(){
-//        RongIM.getInstance().getRongIMClient().getLatestMessages(Conversation.ConversationType.PRIVATE,userid,20,new RongIMClient.ResultCallback<List<Message>>(){
-//            @Override
-//            public void onSuccess(List<Message> messages) {
-//                if(messages.size()>0) {
-//                    ToastUtils.showMessage(SettingActivity.this,messages.get(0).getContent()+"");
-//                }else{
-//                    ToastUtils.showMessage(SettingActivity.this,"0");
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onError(RongIMClient.ErrorCode errorCode) {
-//                ToastUtils.showMessage(SettingActivity.this,"xxxxx");
-//            }
-//        });
-//        RongIM.getInstance().getRongIMClient().clearConversations(new RongIMClient.ResultCallback<Boolean>(){
-//            @Override
-//            public void onSuccess(Boolean aBoolean) {
-//            }
-//            @Override
-//            public void onError(RongIMClient.ErrorCode errorCode) {
-//            }
-//        },Conversation.ConversationType.PRIVATE);
-    }
 
+        RongIM.getInstance().getRongIMClient().clearConversations(new RongIMClient.ResultCallback<Boolean>(){
+            @Override
+            public void onSuccess(Boolean aBoolean) {
+            }
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+            }
+        },Conversation.ConversationType.PRIVATE);
+    }
 
 }

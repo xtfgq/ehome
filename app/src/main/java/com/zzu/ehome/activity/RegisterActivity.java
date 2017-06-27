@@ -76,7 +76,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     Handler mCodeHandler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
+        public void handleMessage(Message msg) {
             if (msg.what == RegisterCodeTimer.IN_RUNNING) {// 正在倒计时
                 tv_getCode.setText(msg.obj.toString());
                 tv_getCode.setEnabled(false);
@@ -185,16 +185,28 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 if (CommonUtils.isFastClick()) {
                     return;
                 }
-                if (!usermobile.equals(editPhone.getText().toString().trim())) {
+                if (TextUtils.isEmpty(editPhone.getText().toString().trim())) {
+//                    ToastUtils.showMessage(RegisterActivity.this, R.string.reg_xingmingsubject);
+                    showDialog(getString(R.string.reg_xingmingsubject));
+                    return;
+                }
+                if (!IOUtils.isMobileNO(editPhone.getText().toString().trim())) {
+//                    ToastUtils.showMessage(RegisterActivity.this, R.string.phone_error);
+                    showDialog(getString(R.string.phone_error));
+                    return;
+                }
+                if(TextUtils.isEmpty(edCode.getText().toString().trim())){
+                    showDialog("请输入验证码");
+                    return;
+                }
+
+                if (!usermobile.equals(editPhone.getText().toString().trim())||
+                        !chkcode.equals(edCode.getText().toString().trim())) {
 //                   ToastUtils.showMessage(RegisterActivity.this, );
                    showDialog(getString(R.string.str002_findpass));
                     return;
                 }
-                if (!chkcode.equals(edCode.getText().toString().trim())) {
-//                    ToastUtils.showMessage(RegisterActivity.this, R.string.str002_findpass);
-                    showDialog(getString(R.string.str002_findpass));
-                    return;
-                }
+
 
                 if (isNetworkAvailable()) {
                     doRegister();
@@ -236,7 +248,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             chkcode = array.getJSONObject(0)
                                     .getString("MessageContent");
                           // ToastUtils.showMessage(RegisterActivity.this,chkcode+"");
-                            ToastUtils.showMessage(RegisterActivity.this,"验证码已发送，请注意查收。"+":::"+chkcode);
+                            ToastUtils.showMessage(RegisterActivity.this,"验证码已发送，请注意查收。");
                         } else {
                             showDialog(array.getJSONObject(0)
                                     .getString("MessageContent"));

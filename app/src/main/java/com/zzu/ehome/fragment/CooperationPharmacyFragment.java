@@ -233,20 +233,7 @@ public class CooperationPharmacyFragment extends BaseFragment {
                 holder.tv_h.setText(zk+"折");
             }
             String yb=p.getYibaoType();
-            if(TextUtils.isEmpty(yb)){
-                holder.layout_b.setVisibility(View.GONE);
-            }else if(yb.contains(",")){
-                String ybs[]=yb.split(",");
-                holder.tv_b.setText("省,市保");
-
-
-            }else if("1".equals(yb)){
-                holder.tv_b.setText("市保");
-
-            }else if("0".equals(yb)){
-                holder.tv_b.setText("省保");
-            }
-
+            holder.layout_b.setVisibility(View.INVISIBLE);
             double mLongitude = Double.valueOf(p.getLongitude());
             double mLatitude = Double.valueOf(p.getLatitude());
             long distance = getDistance(NearPharmacyActivity.getLocation().getLongitude(), NearPharmacyActivity.getLocation().getLatitude(), mLongitude, mLatitude);

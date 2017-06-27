@@ -163,7 +163,7 @@
                     android:textCursorDrawable="@null"
                     android:textColorHint="@color/text_color_gray"
                     android:layout_centerVertical="true"
-                    android:hint="请输入体检编号（非必填）"
+                    android:hint="请输入体检编号"
                     />
 
 

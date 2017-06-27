@@ -259,7 +259,6 @@ public class LiveActivity extends SupperBaseActivity implements ITXLivePlayListe
             return false;
         }
         mVideoPlay = true;
-
         return true;
     }
 
@@ -548,7 +547,8 @@ public class LiveActivity extends SupperBaseActivity implements ITXLivePlayListe
      * @return 当且仅当当前屏幕为竖屏时返回true, 否则返回false。
      */
     public static boolean isScreenOriatationPortrait(Context context) {
-        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+        return context.getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_PORTRAIT;
 
     }
 

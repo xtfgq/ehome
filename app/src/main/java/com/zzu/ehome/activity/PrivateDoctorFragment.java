@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,9 +27,10 @@ import android.widget.TextView;
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.BaseListAdapter;
 import com.zzu.ehome.bean.CityBean;
-import com.zzu.ehome.bean.TitleInquiryBean;
 import com.zzu.ehome.fragment.BaseFragment;
 import com.zzu.ehome.fragment.DoctorListFragment;
+import com.zzu.ehome.reciver.EventType;
+import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
@@ -41,9 +43,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static com.zzu.ehome.R.attr.position;
-import static com.zzu.ehome.R.id.tv_;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Mersens on 2016/8/26.
@@ -57,19 +63,26 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
     private List<CityBean> zcList = new ArrayList<CityBean>();
     private List<CityBean> mbList = new ArrayList<CityBean>();
     private List<CityBean> yyList = new ArrayList<CityBean>();
+    private List<CityBean> allList = new ArrayList<CityBean>();
+    //区域map
+    private Map<String,List<CityBean>> yMap=new ArrayMap<String,List<CityBean>>();
+    //街道map
+    private Map<String,List<CityBean>> yyMap=new ArrayMap<String,List<CityBean>>();
     public static final String QBYY = "全部医院";
     public static final String QBZC = "全部职称";
     public static final String QBMB = "全部慢病";
     private MyAdapter adapter = null;
     private View vTop;
     private Type type;
-    private String hosptialId = "3";
+    private String hosptialId = "";
     private String title = "";
     private String goodAt = "";
     private TextView tv_yy, tv_zc, tv_mb;
     private boolean isNoData=false;
     private boolean isFisrt=true;
     private SupperBaseActivity activity;
+    private CompositeSubscription compositeSubscription;
+    private int first=0,second=0;
 
     @Nullable
     @Override
@@ -90,6 +103,13 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
         mView = view;
         requestMaker = RequestMaker.getInstance();
         initViews();
+        allList.clear();
+        zcList.clear();
+
+        mbList.clear();
+//        yyList.clear();
+        yyList.clear();
+        initDatas();
         initEvent();
 
 
@@ -123,11 +143,7 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
     @Override
     public void onResume() {
         super.onResume();
-        zcList.clear();
-        mbList.clear();
-//        yyList.clear();
-        yyList.clear();
-        initDatas();
+
     }
 
     public void initEvent() {
@@ -164,54 +180,198 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
                 type = Type.DISEASE;
             }
         });
+        compositeSubscription = new CompositeSubscription();
+
+        //监听订阅事件
+        Subscription subscription = RxBus.getInstance().toObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object event) {
+                        if (event == null) {
+                            return;
+                        }
+
+                        if (event instanceof EventType){
+                            EventType type=(EventType)event;
+                            if("area".equals(type.getType())){
+                                allList.clear();
+                                zcList.clear();
+                                mbList.clear();
+                                yyList.clear();
+                                reflushDatas();
+                            }
+
+                        }
+
+
+                    }
+                });
+        //subscription交给compositeSubscription进行管理，防止内存溢出
+        compositeSubscription.add(subscription);
     }
 
     public void initDatas() {
 
-//        requestMaker.CategoryInfoInquiry("0",new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
-//            @Override
-//            public void processJsonObject(Object result) {
-//                JSONObject mySO = (JSONObject) result;
-//                try {
-//                    JSONArray array = mySO.getJSONArray("CategoryInfoInquiry");
-//                    if (array.getJSONObject(0).has("MessageCode")) {
-////                        Toast.makeText(getActivity(), array.getJSONObject(0).getString("MessageContent").toString(),
-////                                Toast.LENGTH_SHORT).show();
-//                    } else {
-//
-//                        for (int i = 0; i < array.length(); i++) {
-//                            JSONObject json = array.getJSONObject(i);
-//                            CityBean cb = new CityBean();
-//                            String id = json.getString("ID");
-//                            cb.setId(id);
-//                            String Value = json.getString("Title");
-//                            cb.setTitle(Value);
-//                            yyList.add(cb);
-//                        }
-//                        tv_yy.setText(yyList.get(0).getTitle());
+        requestMaker.CategoryInfoInquiry("",new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
+            @Override
+            public void processJsonObject(Object result) {
+                JSONObject mySO = (JSONObject) result;
+                try {
+                    JSONArray array = mySO.getJSONArray("CategoryInfoInquiry");
+                    if (array.getJSONObject(0).has("MessageCode")) {
+//                        Toast.makeText(getActivity(), array.getJSONObject(0).getString("MessageContent").toString(),
+//                                Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject json = array.getJSONObject(i);
+                            CityBean cb = new CityBean();
+                            String id = json.getString("ID");
+                            cb.setId(id);
+                            String Value = json.getString("Title");
+                            cb.setTitle(Value);
+                            String parentId=json.getString("ParentID");
+                            cb.setParentID(parentId);
+                            allList.add(cb);
+                            if(parentId.equals("0")) {
+                                yyList.add(cb);
+                            }
+                        }
+                        for(int i=0;i<yyList.size();i++){
+                            List<CityBean> clist=new ArrayList<CityBean>();
+                            for(CityBean bean:allList){
+                              if(yyList.get(i).getId().equals(bean.getParentID())){
+                                  clist.add(bean);
+                              }
+                            }
+                            yMap.put(yyList.get(i).getId(),clist);
+                        }
+
+                        for (Map.Entry<String, List<CityBean>> entry : yMap.entrySet()) {
+                            for(int i=0;i<entry.getValue().size();i++){
+                                List<CityBean> clist=new ArrayList<CityBean>();
+                                for(CityBean bean:allList){
+
+                                    if(entry.getValue().get(i).getId().equals(bean.getParentID())){
+                                        clist.add(bean);
+
+                                    }
+
+                                }
+                                yyMap.put(entry.getValue().get(i).getId(),clist);
+                            }
+
+                        }
+                        zcList.addAll(yMap.get(yyList.get(first).getId()));
+                        mbList.addAll(yyMap.get(zcList.get(first).getId()));
+                        tv_yy.setText(yyList.get(0).getTitle());
+                        tv_zc.setText(zcList.get(0).getTitle());
+                        tv_mb.setText(yyMap.get(zcList.get(0).getId()).get(0).getTitle());
+                        hosptialId=yyMap.get(zcList.get(0).getId()).get(0).getId();
+
+                        addFragment(Type.HOSPTIAL);
 //                        getArea(yyList.get(0).getId());
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+
+        }));
+
+//        CityBean cb = new CityBean();
+//        cb.setTitle("郑州市");
 //
-//        }));
+//        yyList.add(cb);
+//        tv_yy.setText(yyList.get(0).getTitle());
+//        CityBean cb2 = new CityBean();
+//        cb2.setTitle("高新区");
+//        zcList.add(cb2);
+//        tv_zc.setText("高新区");
+//        CityBean cb3 = new CityBean();
+//        cb3.setTitle("盛和苑");
+//        mbList.add(cb3);
+//        tv_mb.setText("盛和苑");
+//        addFragment(Type.HOSPTIAL);
 
-        CityBean cb = new CityBean();
-        cb.setTitle("郑州市");
+    }
+    public void reflushDatas() {
 
-        yyList.add(cb);
-        tv_yy.setText(yyList.get(0).getTitle());
-        CityBean cb2 = new CityBean();
-        cb2.setTitle("高新区");
-        zcList.add(cb2);
-        tv_zc.setText("高新区");
-        CityBean cb3 = new CityBean();
-        cb3.setTitle("盛和苑");
-        mbList.add(cb3);
-        tv_mb.setText("盛和苑");
-        addFragment(Type.HOSPTIAL);
+        requestMaker.CategoryInfoInquiry("",new JsonAsyncTask_Info(getActivity(), true, new JsonAsyncTaskOnComplete() {
+            @Override
+            public void processJsonObject(Object result) {
+                JSONObject mySO = (JSONObject) result;
+                try {
+                    JSONArray array = mySO.getJSONArray("CategoryInfoInquiry");
+                    if (array.getJSONObject(0).has("MessageCode")) {
+//                        Toast.makeText(getActivity(), array.getJSONObject(0).getString("MessageContent").toString(),
+//                                Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject json = array.getJSONObject(i);
+                            CityBean cb = new CityBean();
+                            String id = json.getString("ID");
+                            cb.setId(id);
+                            String Value = json.getString("Title");
+                            cb.setTitle(Value);
+                            String parentId=json.getString("ParentID");
+                            cb.setParentID(parentId);
+                            allList.add(cb);
+                            if(parentId.equals("0")) {
+                                yyList.add(cb);
+                            }
+                        }
+                        for(int i=0;i<yyList.size();i++){
+                            List<CityBean> clist=new ArrayList<CityBean>();
+                            for(CityBean bean:allList){
+                                if(yyList.get(i).getId().equals(bean.getParentID())){
+                                    clist.add(bean);
+                                }
+                            }
+                            yMap.put(yyList.get(i).getId(),clist);
+                        }
+
+                        for (Map.Entry<String, List<CityBean>> entry : yMap.entrySet()) {
+                            for(int i=0;i<entry.getValue().size();i++){
+                                List<CityBean> clist=new ArrayList<CityBean>();
+                                for(CityBean bean:allList){
+
+                                    if(entry.getValue().get(i).getId().equals(bean.getParentID())){
+                                        clist.add(bean);
+
+                                    }
+
+                                }
+                                yyMap.put(entry.getValue().get(i).getId(),clist);
+                            }
+                            zcList.addAll(yMap.get(yyList.get(first).getId()));
+                            mbList.addAll(yyMap.get(zcList.get(second).getId()));
+
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+
+        }));
+
+
 
     }
 
@@ -241,31 +401,52 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
 //                    }else{
 //                        hosptialId =yyList.get(position).getId();
 //                    }
-//                    tv_yy.setText(yyList.get(position).getTitle());
-                    Log.e("hosptialId", hosptialId);
-                    addFragment(Type.HOSPTIAL);
-                    turnToDown(img_arrow_yy);
+                    if(position==first) {
+                        turnToDown(img_arrow_yy);
+
+                    }else {
+                        tv_yy.setText(yyList.get(position).getTitle());
+                        zcList.clear();
+                        zcList.addAll(yMap.get(yyList.get(position).getId()));
+                        mbList.clear();
+                        mbList.addAll(yyMap.get(zcList.get(0).getId()));
+                        tv_zc.setText(zcList.get(0).getTitle());
+                        tv_mb.setText(yyMap.get(zcList.get(0).getId()).get(position).getTitle());
+                        hosptialId = yyMap.get(zcList.get(0).getId()).get(0).getId();
+                        Log.e("hosptialId", hosptialId);
+                        first = position;
+                        addFragment(Type.HOSPTIAL);
+                        turnToDown(img_arrow_yy);
+                    }
+
 //                    getArea(yyList.get(position).getId());
                     popDismiss();
                     break;
                 case POSITIONAL_TITLES:
                    String value2= zcList.get(position).getTitle();
-//                    if(QBZC.equals(value2)){
-//                        title="";
-//                    }else{
-//                        title=value2;
-//                    }
+                    if(QBZC.equals(value2)){
+                        title="";
+                    }else{
+                        title=value2;
+                    }
                     Log.e("title", title);
-//                    tv_zc.setText(zcList.get(position).getTitle());
-                    addFragment(Type.POSITIONAL_TITLES);
+                    second=position;
+                    mbList.clear();
+                    mbList.addAll(yyMap.get(zcList.get(position).getId()));
+                    tv_mb.setText(yyMap.get(zcList.get(position).getId()).get(0).getTitle());
+                    hosptialId=yyMap.get(zcList.get(position).getId()).get(0).getId();
+                    tv_zc.setText(zcList.get(position).getTitle());
                     turnToDown(img_arrow_zc);
+                    addFragment(Type.POSITIONAL_TITLES);
 //                    getOrganization(zcList.get(position).getId());
                     popDismiss();
                     break;
                 case DISEASE:
-                    String value3= mbList.get(position).getTitle();
-                    hosptialId="3";
-//                    tv_mb.setText(mbList.get(position).getTitle());
+//                    String value3= yyMap.get(zcList.get(position).getId()).get(position).getTitle();
+//                    hosptialId="3";
+//                    mbList.addAll(yyMap.get(zcList.get(position).getId()));
+                    hosptialId=mbList.get(position).getId();
+                    tv_mb.setText(mbList.get(position).getTitle());
                     Log.e("goodAt", goodAt);
                     addFragment(Type.DISEASE);
                     turnToDown(img_arrow_mb);
@@ -413,6 +594,9 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
                         }
                         tv_mb.setText(mbList.get(0).getTitle());
 
+//                            hosptialId =yyList.get(0).getId();
+
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -528,5 +712,11 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
         DialogTips dialog = new DialogTips(getActivity(), message, "确定");
         dialog.show();
         dialog = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeSubscription.unsubscribe();
     }
 }

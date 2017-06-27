@@ -116,13 +116,10 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
-
-
                     android:gravity="center_vertical"
                     android:paddingLeft="4dp"
                     android:textColor="#0f2536"
                     android:text=""
-
                     android:textSize="@dimen/text_size_normal" />
 
             </LinearLayout>
