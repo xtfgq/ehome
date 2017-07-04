@@ -82,9 +82,10 @@ public class NearPharmacyActivity extends BaseActivity {
                 if(!CommonUtils.isNotificationEnabled(NearPharmacyActivity.this)){
                     showTitleDialog("请打开通知中心");
                 }
-                index=0;
+                index=1;
                 setColor(Type.NEAR);
                 addFragment(Type.NEAR);
+
             }
         });
         layout_cooperation.setOnClickListener(new View.OnClickListener() {
@@ -97,9 +98,11 @@ public class NearPharmacyActivity extends BaseActivity {
                 if(!CommonUtils.isNotificationEnabled(NearPharmacyActivity.this)){
                     showTitleDialog("请打开通知中心");
                 }
-                index=1;
+                index=0;
                 setColor(Type.COOPERATION);
                 addFragment(Type.COOPERATION);
+
+
 
             }
         });
@@ -109,11 +112,12 @@ public class NearPharmacyActivity extends BaseActivity {
     public void initDatas() {
         unSelectColor = getResources().getColor(R.color.text_color2);
         selectColor = getResources().getColor(R.color.actionbar_color);
-        tv_near.setTextColor(selectColor);
-        tv_cooperation.setTextColor(unSelectColor);
+        tv_cooperation.setTextColor(selectColor);
+        tv_near .setTextColor(unSelectColor);
         fragments=new Fragment[2];
-        fragments[0]=NearPharmacyFragment.getInstance();
-        fragments[1]=CooperationPharmacyFragment.getInstance();
+
+        fragments[0]=CooperationPharmacyFragment.getInstance();
+        fragments[1]=NearPharmacyFragment.getInstance();
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,fragments[0]).commit();
     }
 
@@ -141,11 +145,10 @@ public class NearPharmacyActivity extends BaseActivity {
         Fragment fragment = null;
         switch (type) {
             case NEAR:
-                fragment = fragments[0];
-                break;
-
-            case COOPERATION:
                 fragment = fragments[1];
+                break;
+            case COOPERATION:
+                fragment = fragments[0];
                 break;
         }
 

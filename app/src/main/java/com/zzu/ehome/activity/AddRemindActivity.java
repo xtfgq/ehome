@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.yiguo.toast.Toast;/**/
 
 import com.igexin.sdk.PushManager;
 import com.zzu.ehome.R;

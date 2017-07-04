@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
+import com.yiguo.toast.Toast;/**/
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.SelectPatientAdapter;

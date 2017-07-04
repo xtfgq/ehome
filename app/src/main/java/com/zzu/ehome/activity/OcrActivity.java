@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.yiguo.toast.Toast;/**/
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.adapter.OcrAdapter;

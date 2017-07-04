@@ -15,6 +15,16 @@ public class PharmacyBean {
     private String Longitude;
     private String PicURL;
 
+    public String getJuli() {
+        return juli;
+    }
+
+    public void setJuli(String juli) {
+        this.juli = juli;
+    }
+
+    private String juli;
+
     public String getPharmacyPicUrl() {
         return PharmacyPicUrl;
     }

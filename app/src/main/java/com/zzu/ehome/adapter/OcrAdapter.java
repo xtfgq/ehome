@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.yiguo.toast.Toast;/**/
 
 import com.bumptech.glide.Glide;
 import com.zzu.ehome.R;

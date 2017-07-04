@@ -36,6 +36,7 @@ import com.zzu.ehome.reciver.EventType;
 import com.zzu.ehome.reciver.RxBus;
 import com.zzu.ehome.view.DialogTips;
 import com.zzu.ehome.view.PullToRefreshLayout;
+import com.zzu.ehome.view.crop.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -203,7 +204,7 @@ public class NearPharmacyFragment extends BaseFragment {
         nearbySearchOption.keyword(keyWorlds);
         nearbySearchOption.sortType(PoiSortType.distance_from_near_to_far);
         nearbySearchOption.radius(radius);
-
+        searchNearbyProcess(NearPharmacyActivity.getLocation());
     }
 
     class MyAdapter extends BaseAdapter {
@@ -264,7 +265,9 @@ public class NearPharmacyFragment extends BaseFragment {
             holder.tv_address.setText(p.address);
             double mLongitude = p.location.longitude;
             double mLatitude = p.location.latitude;
+
             int distance = getDistance(mLocation.getLongitude(), mLocation.getLatitude(), mLongitude, mLatitude);
+
             holder.tv_distance.setText(distance + "m");
             return convertView;
         }

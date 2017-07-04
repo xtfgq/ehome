@@ -24,6 +24,7 @@ import com.zzu.ehome.activity.SupperBaseActivity;
 import com.zzu.ehome.bean.PharmacyBean;
 import com.zzu.ehome.reciver.EventType;
 import com.zzu.ehome.reciver.RxBus;
+import com.zzu.ehome.utils.CommonUtils;
 import com.zzu.ehome.utils.JsonAsyncTaskOnComplete;
 import com.zzu.ehome.utils.JsonAsyncTask_Info;
 import com.zzu.ehome.utils.RequestMaker;
@@ -227,17 +228,18 @@ public class CooperationPharmacyFragment extends BaseFragment {
             holder.tv_name.setText(p.getPharmacyName());
             holder.tv_address.setText(p.getPharmacyAddress());
             String zk=p.getZhekou();
-            if(TextUtils.isEmpty(zk)){
-                holder.layout_h.setVisibility(View.GONE);
-            }else{
-                holder.tv_h.setText(zk+"折");
-            }
+//            if(TextUtils.isEmpty(zk)){
+//                holder.layout_h.setVisibility(View.GONE);
+//            }else{
+//                holder.tv_h.setText(zk);
+//            }
+            holder.layout_h.setVisibility(View.GONE);
             String yb=p.getYibaoType();
             holder.layout_b.setVisibility(View.INVISIBLE);
             double mLongitude = Double.valueOf(p.getLongitude());
             double mLatitude = Double.valueOf(p.getLatitude());
-            long distance = getDistance(NearPharmacyActivity.getLocation().getLongitude(), NearPharmacyActivity.getLocation().getLatitude(), mLongitude, mLatitude);
-            holder.tv_distance.setText(distance + "m");
+            double distance = Double.parseDouble(p.getJuli());
+            holder.tv_distance.setText(CommonUtils.ToKM(distance));
             return convertView;
         }
     }
@@ -251,7 +253,8 @@ public class CooperationPharmacyFragment extends BaseFragment {
         double radLat2 = rad(lat2);
         double a = radLat1 - radLat2;
         double b = rad(lon1) - rad(lon2);
-        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) *
+                Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
         s = s * EARTH_RADIUS;
         return (long) Math.round(s * 10000) / 10000;
     }
@@ -261,7 +264,8 @@ public class CooperationPharmacyFragment extends BaseFragment {
             activity.showNetWorkErrorDialog();
             return;
         }
-        requestMaker.PharmacyInquiry(NearPharmacyActivity.getLocation().getCity(),pagesize+"",pageindex+"", new JsonAsyncTask_Info(
+        requestMaker.PharmacyInquiry(NearPharmacyActivity.getLocation().getCity(),NearPharmacyActivity.getLocation().getLatitude()+"",
+                NearPharmacyActivity.getLocation().getLongitude()+"",pagesize+"",pageindex+"", new JsonAsyncTask_Info(
                 getActivity(), true, new JsonAsyncTaskOnComplete() {
             public void processJsonObject(Object result) {
                 JSONObject mySO = (JSONObject) result;
@@ -288,11 +292,18 @@ public class CooperationPharmacyFragment extends BaseFragment {
                             String Zhekou=json.getString("Zhekou");
                             pb.setZhekou(Zhekou);
                             String Latitude=json.getString("Latitude");
+                            if(TextUtils.isEmpty(Latitude))
+                                Latitude="0";
                             pb.setLatitude(Latitude);
                             String Longitude=json.getString("Longitude");
+                            if(TextUtils.isEmpty(Longitude))
+                                Longitude="0";
                             pb.setLongitude(Longitude);
                             String id=json.getString("ID");
+
                             pb.setId(id);
+                            String s=json.getString("juli");
+                            pb.setJuli(s);
                             mList.add(pb);
                         }
                         if(layout_no_msg!=null) {

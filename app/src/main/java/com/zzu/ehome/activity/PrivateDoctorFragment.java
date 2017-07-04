@@ -638,7 +638,7 @@ public class PrivateDoctorFragment extends BaseFragment implements DoctorListFra
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragment_container, creatFragment(type));
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
     public Fragment creatFragment(Type type) {

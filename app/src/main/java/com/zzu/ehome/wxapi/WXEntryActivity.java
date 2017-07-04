@@ -1,7 +1,7 @@
 package com.zzu.ehome.wxapi;
 
 import android.content.Intent;
-import android.widget.Toast;
+import com.yiguo.toast.Toast;/**/
 
 import cn.sharesdk.wechat.utils.WXAppExtendObject;
 import cn.sharesdk.wechat.utils.WXMediaMessage;

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import com.yiguo.toast.Toast;/**/
 
 
 import com.zzu.ehome.R;

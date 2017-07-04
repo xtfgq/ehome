@@ -12,7 +12,7 @@ import android.os.Message;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.yiguo.toast.Toast;/**/
 
 import com.dinuscxj.progressbar.CircleProgressBar;
 import com.lzy.okgo.OkGo;

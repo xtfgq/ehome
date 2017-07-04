@@ -34,7 +34,7 @@ public class RequestMaker {
     /**
      * 广告位
      *
-     * @param date
+     * @param dateShowAdsShowAds
      * @param task
      */
     public void searchAds(String date, JsonAsyncTask_Info task) {
@@ -1021,13 +1021,14 @@ public class RequestMaker {
                 SOAP_URL, paramMap);
     }
 
-    public void PharmacyInquiry(String city,String PageSize, String PageIndex, JsonAsyncTask_Info
+    public void PharmacyInquiry(String city,String lat,String lon,String PageSize, String PageIndex, JsonAsyncTask_Info
             task) {
+        //lat lon
         Map<String, Object> paramMap = new HashMap<String, Object>();
-        String str = "<Request><City>%s</City><PageSize>%s</PageSize><PageIndex>%s</PageIndex>" +
+        String str = "<Request><City>%s</City><lat>%s</lat><lon>%s</lon><PageSize>%s</PageSize><PageIndex>%s</PageIndex>" +
                 "</Request>";
         str = String.format(str, new Object[]
-                {city,PageSize, PageIndex});
+                {city,lat,lon,PageSize,PageIndex});
         paramMap.put("str", str);
         task.execute(SOAP_NAMESPACE, SOAP_NAMESPACE + Constants.PharmacyInquiry,
                 Constants.PharmacyInquiry, SOAP_URL, paramMap);

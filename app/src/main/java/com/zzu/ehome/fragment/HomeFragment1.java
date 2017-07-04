@@ -28,7 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.yiguo.toast.Toast;/**/
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -260,9 +260,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
             showGuide();
         }
         mListView.setFocusable(false);
-
         return mView;
-
     }
 
     private void initGuid(LayoutInflater inflater) {
@@ -1068,7 +1066,7 @@ public class HomeFragment1 extends BaseFragment implements View.OnClickListener 
 
                     }
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
                     if (isReflash) {

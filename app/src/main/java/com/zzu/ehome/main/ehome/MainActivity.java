@@ -46,8 +46,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-import static com.zzu.ehome.R.attr.position;
-import static com.zzu.ehome.application.CustomApplcation.mList;
+
 
 
 public class MainActivity extends BaseSimpleActivity implements View.OnClickListener{

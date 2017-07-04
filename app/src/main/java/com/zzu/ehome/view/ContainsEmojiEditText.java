@@ -7,7 +7,7 @@ import android.text.Spannable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.widget.EditText;
-import android.widget.Toast;
+import com.yiguo.toast.Toast;/**/
 
 /**
  * Created by Administrator on 2016/5/18.

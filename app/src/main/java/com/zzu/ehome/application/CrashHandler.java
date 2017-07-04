@@ -9,7 +9,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
+import com.yiguo.toast.Toast;/**/
 
 import com.umeng.analytics.MobclickAgent;
 import com.zzu.ehome.main.ehome.MainActivity;

@@ -20,7 +20,7 @@ public class Constants {
     public static final String Download = "http://file.staging.topmd.cn/upload/";
     public static String PlatformURL = "http://hd.staging.topmd.cn:81";
     //    正式服务器
-    //    public static String EhomeURL = "https://ehome.topmd.cn";
+//        public static String EhomeURL = "https://ehome.topmd.cn";
 //    public static final String ICON = "https://p2d.topmd.cn/Images/headImg/";
 //    public static final String URL002Topmd = "https://www.topmd.cn/android/TopMD.asmx";
 //    public static final String JE_BASE_URL = "https://www.topmd.cn/";

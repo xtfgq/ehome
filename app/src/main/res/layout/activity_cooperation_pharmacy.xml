@@ -72,7 +72,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
-                android:singleLine="true"
                 android:layout_toRightOf="@+id/img_location"
                 android:text="兴华北街与广场南路交叉口东北50米"
                 android:textColor="@color/actionbar_color"

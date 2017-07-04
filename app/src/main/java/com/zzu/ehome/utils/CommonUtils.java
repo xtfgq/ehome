@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
@@ -553,25 +554,37 @@ public class CommonUtils {
      */
 
     public static boolean isNotificationEnabled(Context context) {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
-            return true;
-        }
-        AppOpsManager mAppOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-        ApplicationInfo appInfo = context.getApplicationInfo();
-        String pkg = context.getApplicationContext().getPackageName();
-        int uid = appInfo.uid;
-        Class appOpsClass = null;
-        try {
-            appOpsClass = Class.forName(AppOpsManager.class.getName());
-            Method checkOpNoThrowMethod = appOpsClass.getMethod(CHECK_OP_NO_THROW, Integer.TYPE, Integer.TYPE, String.class);
-            Field opPostNotificationValue = appOpsClass.getDeclaredField(OP_POST_NOTIFICATION);
-            int value = (int) opPostNotificationValue.get(Integer.class);
-            return ((int) checkOpNoThrowMethod.invoke(mAppOps, value, uid, pkg) == AppOpsManager.MODE_ALLOWED);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
+//            return true;
+//        }
+//        AppOpsManager mAppOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+//        ApplicationInfo appInfo = context.getApplicationInfo();
+//        String pkg = context.getApplicationContext().getPackageName();
+//        int uid = appInfo.uid;
+//        Class appOpsClass = null;
+//        try {
+//            appOpsClass = Class.forName(AppOpsManager.class.getName());
+//            Method checkOpNoThrowMethod = appOpsClass.getMethod(CHECK_OP_NO_THROW, Integer.TYPE, Integer.TYPE, String.class);
+//            Field opPostNotificationValue = appOpsClass.getDeclaredField(OP_POST_NOTIFICATION);
+//            int value = (int) opPostNotificationValue.get(Integer.class);
+//            return ((int) checkOpNoThrowMethod.invoke(mAppOps, value, uid, pkg) == AppOpsManager.MODE_ALLOWED);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         return true;
+    }
+    public static String ToKM(double dis){
+        String result="";
+        if(dis>1000&&dis<100000){
+            result=String.format("%.1f", dis/1000)+"km";
+        }else if(dis>=100000){
+            result=Math.round(dis/1000000)+"km";
+        }else{
+            result=dis+"m";
+        }
+
+        return result;
     }
 
 

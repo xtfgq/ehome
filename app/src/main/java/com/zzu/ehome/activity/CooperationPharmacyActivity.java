@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.yiguo.toast.Toast;/**/
 
 import com.bumptech.glide.Glide;
 import com.zzu.ehome.R;
@@ -48,7 +48,6 @@ import java.util.List;
  */
 public class CooperationPharmacyActivity extends BaseActivity {
     private RecyclerView gridView;
-
     private RelativeLayout layout_tel;
     private TextView tv_tel;
     private ScrollView scrollView;
@@ -182,12 +181,7 @@ public class CooperationPharmacyActivity extends BaseActivity {
             }
         });
         String zk = pb.getZhekou();
-        if (TextUtils.isEmpty(zk)) {
-            tv_zk.setText("暂无折扣");
-        } else {
-            tv_zk.setText(zk + "折");
-        }
-
+        tv_zk.setText(zk);
         String yb = pb.getYibaoType();
         if (TextUtils.isEmpty(yb)) {
             tv_yb.setVisibility(View.GONE);

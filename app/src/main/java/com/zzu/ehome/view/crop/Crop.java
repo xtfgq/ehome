@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.widget.Toast;
+import com.yiguo.toast.Toast;/**/
 
 import com.zzu.ehome.R;
 import com.zzu.ehome.view.crop.util.VisibleForTesting;
